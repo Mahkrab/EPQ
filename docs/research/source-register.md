@@ -8,6 +8,7 @@
 | [S002](sources/002-stam-stable-fluids.md) | Stam (1999) | Peer-reviewed conference paper | Background comparison source for stable Eulerian, grid-based fluid simulation and the relationship between numerical stability, timestep selection and interactive performance. | [Official / DOI](https://doi.org/10.1145/311535.311548) |
 | [S003](sources/003-muller-charypar-gross-particle-based-fluid-simulation.md) | Müller, Charypar and Gross (2003) | Peer-reviewed conference paper | Foundational source for particle-based, Smoothed Particle Hydrodynamics-style fluid simulation and neighbour interactions. | [Official / DOI](https://doi.org/10.5555/846276.846298) |
 | [S004](sources/004-macklin-muller-position-based-fluids.md) | Macklin and Müller (2013) | Peer-reviewed journal paper | Core design reference for a position-based fluid constraint solver, density correction, solver iteration count and the trade-off between visual plausibility, stability and speed. | [Official / DOI](https://doi.org/10.1145/2461912.2461984) |
+| [S014](sources/014-witkin-particle-system-dynamics.md) | Witkin (1997) | University course notes | Foundational explanation of particle state, phase space, force accumulation and integration structure for interactive physically based simulation. | [Official / PDF](https://www.cs.cmu.edu/~baraff/pbm/particles.pdf) |
 
 ## Computational fluid dynamics
 
