@@ -33,3 +33,9 @@
 | [S011](sources/011-openfoam-v2606-user-guide.md) | OpenCFD (2026) | Official software documentation | Industry context and comparison point for case setup, mesh-based CFD workflows, parallel execution and validation expectations. | [Official / DOI](https://www.openfoam.com/documentation/user-guide) |
 | [S012](sources/012-nvidia-cuda-programming-guide-release-13-2.md) | NVIDIA (2026) | Official technical documentation | Primary implementation reference for CUDA’s execution model, memory hierarchy, kernel launches, synchronisation and host–device data management. | [Official / DOI](https://docs.nvidia.com/cuda/archive/13.2.0/pdf/CUDA_C_Programming_Guide.pdf) |
 | [S013](sources/013-macklin-muller-chentanez-kim-unified-particle-physics.md) | Macklin et al. (2014) | Peer-reviewed journal paper | Design and industry-context source for unified particle representations, position-based constraints, collisions and GPU-parallel real-time simulation. | [Official / DOI](https://doi.org/10.1145/2601097.2601152) |
+
+## Documentation standards
+
+| ID | Source | Type | Planned use | Link |
+|---|---|---|---|---|
+| [S015](sources/015-wikipedia-iso-8601.md) | Wikipedia contributors (2026) | Online encyclopedia article | Supporting reference for using ISO 8601-style year-week labels to classify weekly logbook entries consistently. | [Web article](https://en.wikipedia.org/wiki/ISO_8601) |
