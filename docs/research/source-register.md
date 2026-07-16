@@ -39,3 +39,40 @@
 | ID | Source | Type | Planned use | Link |
 |---|---|---|---|---|
 | [S015](sources/015-wikipedia-iso-8601.md) | Wikipedia contributors (2026) | Online encyclopedia article | Supporting reference for using ISO 8601-style year-week labels to classify weekly logbook entries consistently. | [Web article](https://en.wikipedia.org/wiki/ISO_8601) |
+
+## Networking and remote access
+
+| ID | Source | Type | Planned use | Link |
+|---|---|---|---|---|
+| [S016](sources/016-tailscale-what-is-tailscale.md) | Tailscale Inc. (2025) | Official software documentation | Technical background for explaining the secure private network used to connect development devices remotely. | [Official documentation](https://tailscale.com/docs/concepts/what-is-tailscale) |
+| [S017](sources/017-cloudflare-what-is-ssh.md) | Cloudflare Inc. (n.d.) | Technical educational web resource | Introductory explanation of encrypted remote command-line access, authentication and SSH tunnelling. | [Web article](https://www.cloudflare.com/learning/security/what-is-ssh/) |
+| [S018](sources/018-openbsd-openssh.md) | OpenBSD Project (n.d.) | Official software documentation | Primary product reference for the OpenSSH client, server, authentication and tunnelling tools used in the remote-development setup. | [Official website](https://www.openssh.org/) |
+| [S021](sources/021-cloudflare-what-is-a-lan.md) | Cloudflare Inc. (n.d.) | Technical educational web resource | Introductory reference for LANs, home routers and Wi-Fi connectivity. | [Web article](https://www.cloudflare.com/en-gb/learning/network-layer/what-is-a-lan/) |
+| [S022](sources/022-cloudflare-computer-ports.md) | Cloudflare Inc. (n.d.) | Technical educational web resource | Explanation of TCP ports, firewalls and SSH’s conventional use of port 22. | [Web article](https://www.cloudflare.com/en-gb/learning/network-layer/what-is-a-computer-port/) |
+| [S023](sources/023-microsoft-dhcp-basics.md) | Microsoft (2022) | Official technical documentation | Background for DHCP assignment and changes to a device’s LAN IP address. | [Official documentation](https://learn.microsoft.com/en-us/windows-server/troubleshoot/dynamic-host-configuration-protocol-basics) |
+| [S024](sources/024-microsoft-wsl-networking.md) | Microsoft (2025) | Official software documentation | Primary reference for WSL NAT, instance addresses, Windows port proxying and firewall behaviour. | [Official documentation](https://learn.microsoft.com/en-us/windows/wsl/networking) |
+| [S028](sources/028-openbsd-sshd-config.md) | OpenBSD Project (n.d.) | Official manual page | Configuration reference for OpenSSH authentication, keys, negotiation and forwarding. | [Official manual](https://man.openbsd.org/sshd_config) |
+| [S029](sources/029-cloudflare-ip-addresses.md) | Cloudflare Inc. (n.d.) | Technical educational web resource | Introductory reference for IP addresses, IPv4, IPv6 and dynamic addressing. | [Web article](https://www.cloudflare.com/learning/dns/glossary/what-is-my-ip-address/) |
+| [S030](sources/030-cloudflare-brute-force-attacks.md) | Cloudflare Inc. (n.d.) | Technical educational web resource | Security background for brute-force password attacks against SSH logins. | [Web article](https://www.cloudflare.com/learning/bots/brute-force-attack/) |
+| [S032](sources/032-rfc-2923-path-mtu-discovery.md) | Lahey (2000) | IETF informational RFC | Technical basis for identifying a Path MTU Discovery black hole when established TCP sessions hang on larger packets. | [RFC Editor](https://www.rfc-editor.org/info/rfc2923/) |
+| [S033](sources/033-openbsd-ssh-config.md) | OpenBSD Project (n.d.) | Official manual page | Client configuration reference for address-family selection, key exchange, identities, host keys and keepalives. | [Official manual](https://man.openbsd.org/ssh_config) |
+| [S034](sources/034-openssh-release-notes.md) | OpenSSH Project (2026) | Official release notes | Primary reference for OpenSSH post-quantum key exchange and the `sntrup761` algorithm observed during negotiation. | [Official release notes](https://www.openssh.org/releasenotes.html) |
+| [S035](sources/035-tailscale-acls.md) | Tailscale Inc. (2026) | Official software documentation | Product reference for checking whether Tailscale ACLs permit the intended connection. | [Official documentation](https://tailscale.com/docs/features/access-control/acls) |
+| [S036](sources/036-tailscale-cli.md) | Tailscale Inc. (2026) | Official software documentation | Command reference for the `tailscale status` and `tailscale ping` diagnostic tests. | [Official documentation](https://tailscale.com/docs/reference/tailscale-cli) |
+| [S037](sources/037-proton-vpn-split-tunneling.md) | Proton AG (n.d.) | Official software documentation | Product reference for Proton VPN application and IP-address split-tunnelling rules. | [Official documentation](https://protonvpn.com/support/protonvpn-split-tunneling) |
+| [S038](sources/038-cloudflare-what-is-dns.md) | Cloudflare Inc. (n.d.) | Technical educational web resource | Introductory explanation of DNS lookups and their role in locating named services. | [Web article](https://www.cloudflare.com/learning/dns/what-is-dns/) |
+| [S039](sources/039-cloudflare-what-is-tls.md) | Cloudflare Inc. (n.d.) | Technical educational web resource | Introductory explanation of TLS, service authentication and certificates. | [Web article](https://www.cloudflare.com/learning/ssl/transport-layer-security-tls/) |
+| [S040](sources/040-rfc-8731-curve25519-ssh.md) | Adamantiadis, Josefsson and Baushke (2020) | IETF Standards Track RFC | Primary specification for Curve25519 key exchange in SSH. | [RFC Editor](https://www.rfc-editor.org/info/rfc8731/) |
+| [S041](sources/041-rfc-8709-ed25519-ssh.md) | Harris and Velvindron (2020) | IETF Standards Track RFC | Primary specification for Ed25519 public-key authentication in SSH. | [RFC Editor](https://www.rfc-editor.org/info/rfc8709/) |
+| [S042](sources/042-tailscale-magicdns.md) | Tailscale Inc. (2026) | Official software documentation | Product reference for using stable machine names instead of literal Tailscale IP addresses. | [Official documentation](https://tailscale.com/docs/features/magicdns) |
+
+## Development environment
+
+| ID | Source | Type | Planned use | Link |
+|---|---|---|---|---|
+| [S019](sources/019-microsoft-what-is-wsl.md) | Microsoft (2025) | Official software documentation | Architectural background for the WSL 2 virtualised Linux environment hosted on the Windows development computer. | [Official documentation](https://learn.microsoft.com/en-us/windows/wsl/about) |
+| [S020](sources/020-canonical-ubuntu-on-wsl.md) | Canonical Ltd. (2026) | Official software documentation | Supporting reference for Ubuntu as the Linux distribution used for development and remote access within WSL 2. | [Official documentation](https://documentation.ubuntu.com/wsl/latest/) |
+| [S025](sources/025-microsoft-vscode-remote-ssh.md) | Microsoft (2026) | Official software documentation | Primary reference for VS Code Remote-SSH and reusable SSH host configuration. | [Official documentation](https://code.visualstudio.com/docs/remote/ssh) |
+| [S026](sources/026-microsoft-what-is-powershell.md) | Microsoft (2025) | Official software documentation | Introductory reference for PowerShell as a command-line shell and automation tool. | [Official documentation](https://learn.microsoft.com/en-us/powershell/scripting/overview?view=powershell-7.5) |
+| [S027](sources/027-raspberry-pi-about.md) | Raspberry Pi Ltd. (n.d.) | Official product website | Product context for the Raspberry Pi used in the first local SSH test. | [Official website](https://www.raspberrypi.com/about/) |
+| [S031](sources/031-microsoft-windows-documentation.md) | Microsoft (n.d.) | Official software documentation | Official documentation entry point for the Windows host platform. | [Official documentation](https://learn.microsoft.com/en-us/windows/) |
