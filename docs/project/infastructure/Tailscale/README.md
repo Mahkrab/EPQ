@@ -17,7 +17,7 @@
 
 # Initial design:
 
-### Stage 0: Local [network](https://en.wikipedia.org/wiki/Computer_network) test [SSH](https://en.wikipedia.org/wiki/Secure_Shell) to [RaspberryPI](https://en.wikipedia.org/wiki/Raspberry_Pi)<sup>[<a href="/docs/research/sources/027-raspberry-pi-about.md">S027</a>]</sup>
+## Stage 0: Local [network](https://en.wikipedia.org/wiki/Computer_network) test [SSH](https://en.wikipedia.org/wiki/Secure_Shell) to [RaspberryPI](https://en.wikipedia.org/wiki/Raspberry_Pi)<sup>[<a href="/docs/research/sources/027-raspberry-pi-about.md">S027</a>]</sup>
 
 First [SSH](https://en.wikipedia.org/wiki/Secure_Shell) workflow targeted a [RaspberryPi](https://en.wikipedia.org/wiki/Raspberry_Pi) by its own [local area network (LAN)](https://en.wikipedia.org/wiki/Local_area_network) [address](https://en.wikipedia.org/wiki/IP_address)<sup>[<a href="/docs/research/sources/029-cloudflare-ip-addresses.md">S029</a>]</sup>. [Command line](https://en.wikipedia.org/wiki/Command-line_interface) [SSH](https://en.wikipedia.org/wiki/Secure_Shell) worked, but the [Pi](https://en.wikipedia.org/wiki/Raspberry_Pi)'s [address](https://en.wikipedia.org/wiki/IP_address) later changed after [netowrk](https://en.wikipedia.org/wiki/Computer_network) changes, and [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) did not consistently interpret the [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) [SSH configuration](https://en.wikipedia.org/wiki/Secure_Shell).
 
