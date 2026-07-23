@@ -24,33 +24,32 @@ And other boilerplate git repository fluffer:
 
 ## Requirements and success criteria
 
-| ID | Requirement | Type | Planned verification | Status |
-| --- | --- | --- | --- | --- |
-| M00-R01 | Provide a complete single-threaded CPU implementation of the 3D PBF simulation behaviour selected for Maelstrom. | Functional | Headless correctness tests and reproducible simulation runs | Planned |
-| M00-R02 | Use brute-force neighbour search as the reference neighbour-search method. | Functional | Focused neighbour-search tests and implementation inspection | Planned |
-| M00-R03 | Produce deterministic results from identical initial state and configuration. | Correctness | Repeat identical headless runs and compare their results | Planned |
-| M00-R04 | Keep the simulation core independent from rendering, multithreading and CUDA. | Architecture | Module-boundary inspection and headless tests | Planned |
-| M00-R05 | Establish correctness and performance baselines that later milestones can compare against. | Evidence | Recorded tests and reproducible release-mode measurements | Planned |
+| ID | Requirement | Type | Planned verification |
+| --- | --- | --- | --- |
+| M00-0 | Complete a single-threaded CPU nieve implementation of the 3D PBF simulation                 | Functional   | Headless tests and simulation runs |
+| M00-1 | Use a brute fprce neighbout search as the reference neighbour search method                  | Functional   | Focused neighbout tests and implementation inspection |
+| M00-2 | Produce deterministic results from identical intial state and configuration                  | Correctness  | Repeat identical headless simulations and compare results |
+| M00-3 | Keep the simulation core independent from renderin, multithreading and CUDA                  | Architecture | Inspection and headless tests |
+| M00-4 | Establish *correctness* and performance baselines that later milestones can compare against. | Benchmarking | Record tests and reproducible measurements |
 
 ## Research and design basis
 
-The project has selected Macklin and Müller's [Position Based Fluids](https://doi.org/10.1145/2461912.2461984)<sup>[<a href="/docs/research/sources/004-macklin-muller-position-based-fluids.md">S004</a>]</sup> as the core reference for the fluid solver. The existing research records identify Müller, Charypar and Gross's particle-based fluid work<sup>[<a href="/docs/research/sources/003-muller-charypar-gross-particle-based-fluid-simulation.md">S003</a>]</sup> as support for particle representation and neighbour interactions, and Witkin's particle-system notes<sup>[<a href="/docs/research/sources/014-witkin-particle-system-dynamics.md">S014</a>]</sup> as support for particle state and numerical integration.
-
-The detailed numerical design has not yet been fixed. The relevant sources must be examined before choices such as solver parameters, kernels, boundary behaviour and tolerances are recorded as implementation decisions.
+A baseline for future optimisations, focusing on reproducible results, correctness over speed, and the ability to expand the application with other optimisations. 
 
 ### Design decisions
 
-| Decision | Reason | Evidence status |
-| --- | --- | --- |
-| Begin with a serial CPU backend. | It provides the simplest implementation against which later parallel backends can be checked. | Project architecture decision; not yet evaluated |
-| Begin with brute-force neighbour search. | It establishes a direct reference before spatial partitioning changes neighbour discovery and performance. | Defined by the [development plan](/docs/project/plan.md); not yet measured |
-| Keep rendering outside the simulation core. | Correctness tests and performance measurements must be able to run without a display or rendering workload. | Required by the Maelstrom engineering instructions; not yet verified |
+| Decision | Reason |
+| --- | --- |
+| Begin with a serial CPU backend | Provides the simplest implementation against whcih later parrallel backends can be checked |
+| Begin with brute force neighbour search | Establlishes a direct reference before spatial partitioning changes neighbour discovery and performance |
+| Keep rendering outside the simulation core | Correctness testa and performance measurements must be able to run without a display or rendering workload (for now) |
+
 
 ## Initial design
 
 ### Architecture
 
-The initial architecture centres on one headless serial simulation path. Scene construction and configuration provide input to the simulation core. The core owns the PBF solver and uses brute-force neighbour search. Its resulting state can then be consumed by tests, reproducible output and, in a later milestone, rendering.
+The initial architecture centres on one headless serial simulation path. Sceen construction and configuration provide input to the simulation corel. The core *owns* the PBF solver and uses brute force neighbour search. Its resultant state can then be the baseline for future testing.
 
 ```mermaid
 flowchart LR
@@ -61,20 +60,19 @@ flowchart LR
     State --> Evidence[Tests and baseline evidence]
 ```
 
-The diagram represents the planned initial design, not a verified implementation.
-
 ### Data and execution flow
 
-A run will begin from explicit configuration and deterministic 3D particle state. Each serial simulation step will discover neighbours by brute force, apply the selected PBF process and produce updated state. The exact state representation, step stages and numerical conventions remain to be designed before implementation.
+The simulation will begin with explicit configuration ( scene/material/config information ) Each step will find the neighbours by brute force, apply the selected PBF process and produce updated state. The exact state representation, step pages and numerial conventions are undecided.
 
 ### Risks and unresolved questions
 
 | Risk or question | Planned response |
 | --- | --- |
-| The detailed PBF equations, parameters and stability requirements have not yet been translated into a Maelstrom design. | Complete the focused algorithm design from the existing primary sources before implementing the solver. |
-| Brute-force neighbour search may restrict the particle counts that can be tested practically. | Preserve it as the reference and measure its limits using reproducible release-mode workloads. |
-| Later backends could accidentally change simulation behaviour rather than only execution strategy. | Define observable behaviour and correctness tolerances in this milestone and retain the serial implementation as the reference. |
-| Rendering or optimisation work could expand the milestone beyond its purpose. | Keep the milestone headless and serial, and defer those concerns to later development records. |
+| The detailed PBF equations, parameters and detailed implementation notes are not determined yet, but needed sources and infastructure is complete | Complete the focused algorithm design from sources before implementing the solver |
+| Brute force neighbout search will re strict the particle counts that can be tested initially, but as a basline, correctness takes priority | Keep it as the reference and measure its limits using reproducible worklods |
+| Later backends could change simulation behavior rather than only execution methods | although With the project focus on optimization and  correctness retainment, reproducible results will be vital |
+| Inablitiy to know which parts to optimise; e.g. the software implementation, should i always use the highest performance option in terms of implementation, and focusing on witholding optimizations when the optimization is based on large milestones etc | We will focus on always using the best software options, when it is purely software implementationary and non theoretical *odd wording come back later* |
+
 
 ## Implementation record
 
@@ -119,10 +117,3 @@ A run will begin from explicit configuration and deterministic 3D particle state
 ## Conclusion and next milestone
 
 ## Related records
-
-- [Project definition](/docs/project/definition.md)
-- [Development plan](/docs/project/plan.md)
-- [Maelstrom engineering instructions](/Maelstrom/AGENTS.md)
-- [Position Based Fluids source record](/docs/research/sources/004-macklin-muller-position-based-fluids.md)
-- [Particle-based fluid simulation source record](/docs/research/sources/003-muller-charypar-gross-particle-based-fluid-simulation.md)
-- [Particle-system dynamics source record](/docs/research/sources/014-witkin-particle-system-dynamics.md)
