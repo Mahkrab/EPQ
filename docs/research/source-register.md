@@ -9,6 +9,8 @@
 | [S003](sources/003-muller-charypar-gross-particle-based-fluid-simulation.md) | Müller, Charypar and Gross (2003) | Peer-reviewed conference paper | Foundational source for particle-based, Smoothed Particle Hydrodynamics-style fluid simulation and neighbour interactions. | [Official / DOI](https://doi.org/10.5555/846276.846298) |
 | [S004](sources/004-macklin-muller-position-based-fluids.md) | Macklin and Müller (2013) | Peer-reviewed journal paper | Core design reference for a position-based fluid constraint solver, density correction, solver iteration count and the trade-off between visual plausibility, stability and speed. | [Official / DOI](https://doi.org/10.1145/2461912.2461984) |
 | [S014](sources/014-witkin-particle-system-dynamics.md) | Witkin (1997) | University course notes | Foundational explanation of particle state, phase space, force accumulation and integration structure for interactive physically based simulation. | [Official / PDF](https://www.cs.cmu.edu/~baraff/pbm/particles.pdf) |
+| [S051](sources/051-ihmsen-sph-fluids-computer-graphics.md) | Ihmsen et al. (2014) | Peer-reviewed state-of-the-art report | Authoritative comparison source for SPH simulation order, timestep selection, neighbourhood search, density convergence, boundary handling and iterative-solver costs. | [Official / DOI](https://doi.org/10.2312/egst.20141034) |
+| [S052](sources/052-akinci-rigid-fluid-coupling.md) | Akinci et al. (2012) | Peer-reviewed journal paper | Primary source for boundary-density deficiency, boundary-particle volume correction and the trade-off between simple planes and density-aware solid boundaries. | [Official / DOI](https://doi.org/10.1145/2185520.2185558) |
 
 ## Computational fluid dynamics
 
@@ -25,6 +27,7 @@
 | [S008](sources/008-ericson-real-time-collision-detection.md) | Ericson (2005) | Professional technical textbook | Practical reference for broad-phase versus narrow-phase collision detection, bounding volumes, robustness and real-time algorithm choices. | [Official / DOI](https://realtimecollisiondetection.net/) |
 | [S009](sources/009-gilbert-johnson-keerthi-gjk.md) | Gilbert, Johnson and Keerthi (1988) | Peer-reviewed journal paper | Theoretical source for GJK distance and intersection queries between convex objects; useful as future collision-system context. | [Official / DOI](https://doi.org/10.1109/56.2083) |
 | [S010](sources/010-baraff-non-penetrating-rigid-bodies.md) | Baraff (1989) | Peer-reviewed conference paper | Theoretical background for non-penetration constraints, rigid-body contact and the limitations of simple collision responses. | [Official / DOI](https://doi.org/10.1145/74334.74356) |
+| [S050](sources/050-muller-position-based-dynamics.md) | Müller et al. (2006) | Peer-reviewed workshop paper | Primary source for the generic position-based prediction, inverse-mass-weighted constraint projection, collision and velocity-reconstruction loop beneath PBF. | [Official / DOI](https://doi.org/10.2312/PE/vriphys/vriphys06/071-080) |
 
 ## Implementations and tools
 
