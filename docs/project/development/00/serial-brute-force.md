@@ -111,7 +111,7 @@ $`r_{ij}=\|\mathbf{r}_{ij}\|`$, density uses the three-dimensional Poly6 kernel:
 ```math
 W_{\mathrm{poly6}}(r,h)=
 \begin{cases}
-\dfrac{315}{64\pi h^9}(h^2-r^2)^3, & 0\leq r<h,\cr
+\dfrac{315}{64\pi h^9}(h^2-r^2)^3, & 0\leq r<h,\\[0pt]
 0, & r\geq h.
 \end{cases}
 ```
@@ -121,7 +121,7 @@ For $0<r<h$, the solver uses the Spiky kernel gradient. The operator $\mathbf{G}
 ```math
 \mathbf{G}_{\mathrm{spiky}}(\mathbf{r},h)=
 \begin{cases}
--\dfrac{45}{\pi h^6}(h-r)^2\dfrac{\mathbf{r}}{r}, & 0<r<h,\cr
+-\dfrac{45}{\pi h^6}(h-r)^2\dfrac{\mathbf{r}}{r}, & 0<r<h,\\[0pt]
 \mathbf{0}, & r=0\ \text{or}\ r\geq h.
 \end{cases}
 ```
@@ -154,7 +154,7 @@ Density uses Poly6 while the PBF solver intentionally substitutes the Spiky oper
 \dfrac{1}{\widetilde{\rho}_0}\displaystyle\sum_{j\in\mathcal{N}_i}
 \mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ij},h), & k=i,\\[1.2em]
 -\dfrac{1}{\widetilde{\rho}_0}\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ik},h),
-& k\in\mathcal{N}_i,\cr
+& k\in\mathcal{N}_i,\\[0pt]
 \mathbf{0}, & \text{otherwise.}
 \end{cases}
 ```
