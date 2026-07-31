@@ -12,27 +12,27 @@
 - $\mathbf{a}_{\mathrm{ext},i}$: external acceleration, such as gravity.
 - $\Delta t$: the duration of one simulation step.
 
-$$
+```math
 \mathbf{v}_i^*
 =
 \mathbf{v}_i+\Delta t\,\mathbf{a}_{\mathrm{ext},i}
-$$
+```
 
 #### Meaning
 
 The particle's velocity is changed by acceleration: 
 
-$$
+```math
 \text{new velocity} 
 = 
 \text{old velocity} 
 + 
 \text{acceleration}\times\text{time}
-$$
+```
 
 For example, gravity makes the downward velocity increase during every timestep.
 
-*The star in $\mathbf{v}_i^*$ means that this is an intermediate velocity, $\therefore$ it is not necessarily the final velocity for the step.*
+*The star in $`\mathbf{v}_i^*`$ means that this is an intermediate velocity, $\therefore$ it is not necessarily the final velocity for the step.*
 
 ### Predict the new position 
 
@@ -43,11 +43,11 @@ For example, gravity makes the downward velocity increase during every timestep.
 - $\mathbf{v}_i^*$: its post-acceleration velocity.
 - $\Delta t$: the timestep duration.
 
-$$
+```math
 \mathbf{p}_i
 =
 \mathbf{x}_i+\Delta t\,\mathbf{v}_i^*
-$$
+```
 
 #### Meaning
 
@@ -66,33 +66,33 @@ This position is only a prediction. The density and boundary solvers may subsequ
 - $\lVert\mathbf{v}_i^*\rVert$: particle $i$'s speed.
 - $\max_i\lVert\mathbf{v}_i^*\rVert$: the greatest speed of any particle.
 
-$$
+```math
 \Delta t
 \leq
 \lambda_{\mathrm{CFL}}
 \frac{d_p}{\max_i\lVert\mathbf{v}_i^*\rVert}
-$$
+```
 
 A prticle should not travel too far during a single timestep. The fastest particle therefore determines the maximum timestep:
 
-$$
+```math
 \text{maximum timestep}
 \approx
 \frac{\text{particle size}}{\text{fastest speed}}
 \times
 \text{safety factor}
-$$
+```
 
-For example, if particles are $0.02\,\mathrm{m}$ wide, the fastest one travels at $1\,\mathrm{m,s^{-1}}$, and the safety factor is $0.4$, then:
+For example, if particles are $`0.02\,\mathrm{m}`$ wide, the fastest one travels at $`1\,\mathrm{m,s^{-1}}`$, and the safety factor is $0.4$, then:
 
 
-$$
+```math
 \Delta t
 \leq
 0.4\frac{0.02}{1}
 =
 0.008\,\mathrm{s}
-$$
+```
 
 ## Finding neighbouring particles
 
@@ -109,20 +109,20 @@ $$
 - $\mathcal{S}_i$: particles within $h$, including particle $i$ itself.
 - $\mathcal{N}_i$: interacting neighbours, excluding particle $i$.
 
-$$
+```math
 \mathcal{S}_i
 =
 \left\{
 j\mid
 \lVert\mathbf{p}_i-\mathbf{p}_j\rVert<h
 \right\}
-$$
+```
 
-$$
+```math
 \mathcal{N}_i
 =
 \mathcal{S}_i\setminus\{i\}
-$$
+```
 
 #### Meaning
 
@@ -134,9 +134,9 @@ The initial solver checks every pair of particles. For ${N}$ particles, it requi
 
 $\therefore$ its time complexity is:
 
-$$
+```math
 \Theta(N^2)
-$$
+```
 
 This is slow for large simulations, but it is straightforward and useful as a reference implementation.
 
@@ -154,17 +154,17 @@ A kernel is a weighting function. Nearby particles receive a large $\text{weight
 - $r_{ij}$: the scalar distance between the particles.
 - $\lVert\cdot\rVert$: vector length.
 
-$$
+```math
 \mathbf{r}_{ij}
 =
 \mathbf{p}_i-\mathbf{p}_j
-$$
+```
 
-$$
+```math
 r_{ij}
 =
 \lVert\mathbf{r}_{ij}\rVert
-$$
+```
 
 #### Meaning
 
@@ -178,7 +178,7 @@ $\mathbf{r}_{ij}$ records both distance and direction. $r_{ij}$ contains only th
 - $h$: the kernel support radius.
 - $W_{\mathrm{poly6}}(r,h)$: the scalar density weight.
 
-$$
+```math
 W_{\mathrm{poly6}}(r,h)
 =
 \begin{cases}
@@ -187,7 +187,7 @@ W_{\mathrm{poly6}}(r,h)
 0,
 & r\geq h.
 \end{cases}
-$$
+```
 
 #### Meaning 
 
@@ -211,7 +211,7 @@ Poly6 produces a scalar weight. It tells us how much a particle contributes to d
   position-correction directions.
 - $\mathbf{0}$: the zero vector.
 
-$$
+```math
 \mathbf{G}_{\mathrm{spiky}}(\mathbf{r},h)
 =
 \begin{cases}
@@ -222,7 +222,7 @@ $$
 \mathbf{0},
 & r=0\text{ or }r\geq h.
 \end{cases}
-$$
+```
 
 #### Meaning
 
@@ -252,20 +252,20 @@ This prevents invalid floating point values, but it does not seperate two perfec
 - $h$: the support radius.
 - $W_{\mathrm{poly6}}$: the Poly6 density kernel.
 
-$$
+```math
 \rho_i^{\mathrm{phys}}
 =
 m
 \sum_{j\in\mathcal{S}_i}
 W_{\mathrm{poly6}}(r_{ij},h)
-$$
+```
 
-$$
+```math
 \widetilde{\rho}_i
 =
 \sum_{j\in\mathcal{S}_i}
 W_{\mathrm{poly6}}(r_{ij},h)
-$$
+```
 
 #### Meaning 
 
@@ -279,11 +279,11 @@ Because every particle has the same mass, the solver can divide density by $m$:
 - $\rho_i^{\mathrm{phys}}$: the physical density.
 - $m$: the common fluid-particle mass.
 
-$$
+```math
 \widetilde{\rho}_i
 =
 \frac{\rho_i^{\mathrm{phys}}}{m}
-$$
+```
 
 #### Meaning 
 
@@ -300,13 +300,13 @@ This removes a repeated mass factor from later equations. Although it is called 
 - $\rho_0^{\mathrm{phys}}$: the desired physical rest density.
 - $\mathbf{p}$: the collection of all predicted particle positions.
 
-$$
+```math
 C_i(\mathbf{p})
 =
 \frac{\widetilde{\rho}_i}{\widetilde{\rho}_0}-1
 =
 \frac{\rho_i^{\mathrm{phys}}}{\rho_0^{\mathrm{phys}}}-1
-$$
+```
 
 #### Meaning
 
@@ -316,20 +316,20 @@ This measures the relative differece btween the current density and the target d
 - $C_i>0$: the region is too dense or compressed;
 - $C_i<0$: the region is less dense than the rest density.
 
-For example, if the density is $5\%$ too high, then: 
+For example, if the density is $`5\%`$ too high, then:
 
 #### Variables
 
 - $C_i$: the resulting relative density contraint error.
 - 1.05: the current density divided by the rest density.
 
-$$
+```math
 C_i
 =
 1.05-1
 =
 0.05
-$$
+```
 
 #### Meaning
 
@@ -352,7 +352,7 @@ The solver tries to move particles until $C_i$ is close to zero.
 - $\mathbf{G}_{\mathrm{spiky}}$: the Spiky gradient.
 - $h$: the support radius.
 
-$$
+```math
 \mathbf{g}_k^{(i)}
 =
 \begin{cases}
@@ -366,7 +366,7 @@ $$
 \mathbf{0},
 & \text{otherwise.}
 \end{cases}
-$$
+```
 
 #### Meaning 
 
@@ -400,7 +400,7 @@ Therefore. $\mathbf{g}_k^{(i)}$ is a solver defined substituted direction. It is
 - $j$: an index covering every particle affected by the constraint.
 - $\varepsilon$: a small positive regularisation value.
 
-$$
+```math
 \Delta\mathbf{p}_k^{(i)}
 =
 -\frac{
@@ -416,7 +416,7 @@ w_j
 \varepsilon
 }
 \nabla_{\mathbf{p}_k}C_i
-$$
+```
 
 #### Meaning
 
@@ -450,10 +450,11 @@ This small $\varepsilon$ prevents divisio by zero or by a very small denominator
 - $\varepsilon$: a positive regularisation value.
 
 
-$$
+```math
 \lambda_i
 =
--\frac{C_i}{
+-
+\frac{C_i}{
 \displaystyle
 \sum_k
 \left\lVert
@@ -462,7 +463,7 @@ $$
 +
 \varepsilon
 }
-$$
+```
 
 #### Meaning 
 
@@ -485,7 +486,7 @@ For positive density error, $C_i>0$, the leading minus normally makes $\lambda_i
 - $\mathbf{G}_{\mathrm{spiky}}$: the correction-direction operator.
 - $h$: the support radius.
 
-$$
+```math
 \Delta\mathbf{p}_i
 =
 \frac{1}{\widetilde{\rho}_0}
@@ -494,7 +495,7 @@ $$
 \lambda_i+\lambda_j+s_{\mathrm{corr},ij}
 \right)
 \mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ij},h)
-$$
+```
 
 #### Maning
 
@@ -509,7 +510,6 @@ Adding all the neighbour contributions gives the total change in predicted posit
 
 ### Apply the correction
 
-
 #### Variables
 
 - $\mathbf{p}_i$: the current working predicted position.
@@ -517,11 +517,11 @@ Adding all the neighbour contributions gives the total change in predicted posit
 - $\leftarrow$: replace the value on the left with the result on the right.
 
 
-$$
+```math
 \mathbf{p}_i
 \leftarrow
 \mathbf{p}_i+\Delta\mathbf{p}_i
-$$
+```
 
 #### Meaning
 
@@ -549,17 +549,17 @@ particles, and the result would depend on iteration order.
 - $\mathbf{v}_i$: the reconstructed velocity.
 - $\Delta t$: the timestep.
 
-$$
+```math
 \mathbf{v}_i
 \leftarrow
 \frac{\mathbf{p}_i-\mathbf{x}_i}{\Delta t}
-$$
+```
 
-$$
+```math
 \mathbf{x}_i
 \leftarrow
 \mathbf{p}_i
-$$
+```
 
 #### Meaning
 
@@ -572,11 +572,11 @@ actual corrected movement:
 - change in position: the corrected displacement during the timestep.
 - time: the timestep duration.
 
-$$
+```math
 \text{velocity}
 =
 \frac{\text{change in position}}{\text{time}}
-$$
+```
 
 #### Meaning
 
@@ -598,13 +598,13 @@ particle's new current position.
 - $\lvert\cdot\rvert$: absolute value.
 
 
-$$
+```math
 e_i
 =
 \left\lvert
 \frac{\widetilde{\rho}_i}{\widetilde{\rho}_0}-1
 \right\rvert
-$$
+```
 
 #### Meaning
 
@@ -616,7 +616,7 @@ For example:
 - a density $1.03$ times the target gives $e_i=0.03$;
 - a density $0.97$ times the target also gives $e_i=0.03$.
 
-Both represent a $3\%$ error.
+Both represent a $`3\%`$ error.
 
 ### Mean and maximum density error
 
@@ -628,18 +628,18 @@ Both represent a $3\%$ error.
 - $E_{\mathrm{mean}}$: the average density error.
 - $E_{\max}$: the largest density error.
 
-$$
+```math
 E_{\mathrm{mean}}
 =
 \frac{1}{\lvert\mathcal{E}\rvert}
 \sum_{i\in\mathcal{E}}e_i
-$$
+```
 
-$$
+```math
 E_{\max}
 =
 \max_{i\in\mathcal{E}}e_i
-$$
+```
 
 #### Meaning
 
@@ -671,12 +671,12 @@ particles.
 - $\mathbf{n}\cdot\mathbf{p}_i$: the dot product.
 - $C_{\mathrm{plane}}$: the signed plane constraint value.
 
-$$
+```math
 C_{\mathrm{plane}}(\mathbf{p}_i)
 =
 \mathbf{n}\cdot\mathbf{p}_i-d
 \geq 0
-$$
+```
 
 #### Meaning
 
@@ -695,20 +695,20 @@ $\mathbf{n}$ is a unit vector:
 - $C_{\mathrm{plane}}(\mathbf{p}_i)$: the negative signed distance.
 - $\mathbf{n}$: the outward unit normal.
 
-$$
+```math
 \mathbf{p}_i
 \leftarrow
 \mathbf{p}_i
 -
 C_{\mathrm{plane}}(\mathbf{p}_i)\mathbf{n}
-$$
+```
 
 #### Meaning
 
 When the constraint is negative, subtracting it creates a positive movement
 along the normal.
 
-For example, suppose the particle is $0.02\,\mathrm{m}$ inside the boundary:
+For example, suppose the particle is $`0.02\,\mathrm{m}`$ inside the boundary:
 
 #### Variables
 
@@ -716,11 +716,11 @@ For example, suppose the particle is $0.02\,\mathrm{m}$ inside the boundary:
 
 
 
-$$
+```math
 C_{\mathrm{plane}}
 =
 -0.02
-$$
+```
 
 The resulting movement along the normal is:
 
@@ -729,11 +729,11 @@ The resulting movement along the normal is:
 - $\mathbf{n}$: the outward unit normal.
 - $0.02$: the penetration depth in metres.
 
-$$
+```math
 -(-0.02)\mathbf{n}
 =
 0.02\mathbf{n}
-$$
+```
 
 #### Meaning
 
@@ -758,20 +758,20 @@ neighbours.
 - $\rho_0^{\mathrm{phys}}$: the physical rest density.
 - $\Psi_b$: boundary sample $b$'s SPH pseudo-mass.
 
-$$
+```math
 V_b
 =
 \left(
 \sum_l
 W(\mathbf{x}_b-\mathbf{x}_l,h)
 \right)^{-1}
-$$
+```
 
-$$
+```math
 \Psi_b
 =
 \rho_0^{\mathrm{phys}}V_b
-$$
+```
 
 #### Meaning
 
@@ -801,7 +801,7 @@ inertial mass of the solid object.
 - $h$: the support radius.
 
 
-$$
+```math
 \rho_i^{\mathrm{phys}}
 =
 \sum_{j\in\mathcal{S}_i}
@@ -809,7 +809,7 @@ m_jW(\mathbf{p}_i-\mathbf{p}_j,h)
 +
 \sum_{b\in\mathcal{B}_i}
 \Psi_bW(\mathbf{p}_i-\mathbf{x}_b,h)
-$$
+```
 
 #### Meaning
 
@@ -822,13 +822,13 @@ Density now has two parts:
 
  
 
-$$
+```math
 \text{density}
 =
 \text{fluid contribution}
 +
 \text{boundary contribution}
-$$
+```
 
 #### Meaning
 
@@ -847,11 +847,11 @@ density near boundaries than simple plane projection.
 
  
 
-$$
+```math
 \widetilde{\Psi}_b
 =
 \frac{\Psi_b}{m}
-$$
+```
 
 #### Meaning
 
@@ -877,7 +877,7 @@ the same density scale.
 
  
 
-$$
+```math
 \mathbf{g}_i^{(i)}
 =
 \frac{1}{\widetilde{\rho}_0}
@@ -889,7 +889,7 @@ $$
 \widetilde{\Psi}_b
 \mathbf{G}_{\mathrm{spiky}}(\mathbf{p}_i-\mathbf{x}_b,h)
 \right]
-$$
+```
 
 #### Meaning
 
@@ -923,7 +923,7 @@ calculate $\lambda_i$.
 
  
 
-$$
+```math
 \Delta\mathbf{p}_i
 =
 \frac{1}{\widetilde{\rho}_0}
@@ -939,7 +939,7 @@ $$
 \widetilde{\Psi}_b
 \mathbf{G}_{\mathrm{spiky}}(\mathbf{p}_i-\mathbf{x}_b,h)
 \right]
-$$
+```
 
 #### Meaning
 

@@ -72,59 +72,59 @@ This is the source derived mathematical basis for the initial solver.
 
 For particle $i$, let $\mathbf{x}_i$ be its position, $\mathbf{v}_i$ its velocity, $\mathbf{p}_i$ its predicted position and $\Delta t$ the timestep. External acceleration is applied befoe predicting position:
 
-$$
+```math
 \mathbf{v}_i^*=\mathbf{v}_i+\Delta t\,\mathbf{a}_{\mathrm{ext},i}
-$$
+```
 
-$$
+```math
 \mathbf{p}_i=\mathbf{x}_i+\Delta t\,\mathbf{v}_i^*
-$$
+```
 
 Let $d_p$ be the particle diameter used by the timestep criteria. A velocity based SPH CFL check for a candidate fixed timestep is:
 
-$$
+```math
 \Delta t\leq
 \lambda_{\mathrm{CFL}}
 \frac{d_p}{\max_i\|\mathbf{v}_i^*\|}
-$$
+```
 
-This check uses the post-acceleration velocity that predicts displacement. If $\max_i\|\mathbf{v}_i^*\|=0$, the velocity criterion imposes no restriction. The fixed timestep, particle diameter and safety factor are still paremeter decisions; satisfying this one criterion is not by itself proof of stability.
+This check uses the post-acceleration velocity that predicts displacement. If $`\max_i\|\mathbf{v}_i^*\|=0`$, the velocity criterion imposes no restriction. The fixed timestep, particle diameter and safety factor are still paremeter decisions; satisfying this one criterion is not by itself proof of stability.
 
 ### Brute force neighourhood 
 *spiderman*
 
 Let $h$ be the kernel support radius. The support set includes the particle itslf for densty estimation, while the interacation set excludes it.
 
-$$
+```math
 \mathcal{S}_i=\left\{j\mid\|\mathbf{p}_i-\mathbf{p}_j\|<h\right\},
 \qquad
 \mathcal{N}_i=\mathcal{S}_i\setminus\{i\}
-$$
+```
 
 Milestone 00 obtains these sets by testing particle pairs directly, giving $\Theta(N^2)$ neughbour search.
 
 ### SPH kernels
 
-For $\mathbf{r}_{ij}=\mathbf{p}_i-\mathbf{p}_j$ and
-$r_{ij}=\|\mathbf{r}_{ij}\|$, density uses the three-dimensional Poly6 kernel:
+For $`\mathbf{r}_{ij}=\mathbf{p}_i-\mathbf{p}_j`$ and
+$`r_{ij}=\|\mathbf{r}_{ij}\|`$, density uses the three-dimensional Poly6 kernel:
 
-$$
+```math
 W_{\mathrm{poly6}}(r,h)=
 \begin{cases}
 \dfrac{315}{64\pi h^9}(h^2-r^2)^3, & 0\leq r<h,\\
 0, & r\geq h.
 \end{cases}
-$$
+```
 
 For $0<r<h$, the solver uses the Spiky kernel gradient. The operator $\mathbf{G}_{\mathrm{spiky}}$ below also records the numerical convention of returning zero at $r=0$:
 
-$$
+```math
 \mathbf{G}_{\mathrm{spiky}}(\mathbf{r},h)=
 \begin{cases}
 -\dfrac{45}{\pi h^6}(h-r)^2\dfrac{\mathbf{r}}{r}, & 0<r<h,\\
 \mathbf{0}, & r=0\ \text{or}\ r\geq h.
 \end{cases}
-$$
+```
 
 The analytical vector gradient is undefined at $r=0$ because there is no unique direction for $\mathbf{r}/r$. Self interaction is excluded from the interaction set; for distinct particles at exactly the same position, returning zero is an implementation convention rather than an analytical result and supplies no separating direction.
 
@@ -132,23 +132,23 @@ The analytical vector gradient is undefined at $r=0$ because there is no unique 
 
 The initial formulation assumes equal particle mass absorbed ito the density scale, matchig the PBF derivation. Let $m$ be the common fluid-particle mass, $\rho_i^{\mathrm{phys}}$ the physical mass density and $\rho_0^{\mathrm{phys}}$ the physical rest density. The equal-mass solver uses the normalised density values $\widetilde{\rho}_i=\rho_i^{\mathrm{phys}}/m$ and $\widetilde{\rho}_0=\rho_0^{\mathrm{phys}}/m$:
 
-$$
+```math
 \rho_i^{\mathrm{phys}}
 =m\sum_{j\in\mathcal{S}_i}W_{\mathrm{poly6}}(r_{ij},h),
 \qquad
 \widetilde{\rho}_i
 =\sum_{j\in\mathcal{S}_i}W_{\mathrm{poly6}}(r_{ij},h)
-$$
+```
 
-$$
+```math
 C_i(\mathbf{p})
 =\frac{\widetilde{\rho}_i}{\widetilde{\rho}_0}-1
 =\frac{\rho_i^{\mathrm{phys}}}{\rho_0^{\mathrm{phys}}}-1
-$$
+```
 
 Density uses Poly6 while the PBF solver intentionally substitutes the Spiky operator when calculating its correction directions. Therefore, define $\mathbf{g}_k^{(i)}$ as the solver's substituted constraint-gradient direction, rather than the analytical gradient of the Poly6 density constraint:
 
-$$
+```math
 \mathbf{g}_k^{(i)}=
 \begin{cases}
 \dfrac{1}{\widetilde{\rho}_0}\displaystyle\sum_{j\in\mathcal{N}_i}
@@ -157,43 +157,43 @@ $$
 & k\in\mathcal{N}_i,\\
 \mathbf{0}, & \text{otherwise.}
 \end{cases}
-$$
+```
 
 ### Jacobi constraint projection
 
 The generic position based correction for constraint $C_i$ uses inverse mass $w_k=1/m_k$:
 
-$$
+```math
 \Delta\mathbf{p}_k^{(i)}
 =
 -\frac{w_k C_i}
 {\displaystyle\sum_jw_j\left\|\nabla_{\mathbf{p}_j}C_i\right\|^2+\varepsilon}
 \nabla_{\mathbf{p}_k}C_i
-$$
+```
 
 A fixed particle has $w_k=0$. Under the equal mass PBF formulation, the fluid specific constraint multiplier for relaxation value $\varepsilon>0$ is:
 
-$$
+```math
 \lambda_i=
 -\frac{C_i}
 {\displaystyle\sum_k\left\|\mathbf{g}_k^{(i)}\right\|^2+\varepsilon}
-$$
+```
 
 The optional artificial pressure term used to resist particle clumping is:
 
-$$
+```math
 \Delta\mathbf{p}_i=
 \frac{1}{\widetilde{\rho}_0}
 \sum_{j\in\mathcal{N}_i}
 \left(\lambda_i+\lambda_j+s_{\mathrm{corr},ij}\right)
 \mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ij},h)
-$$
+```
 
 Each solver iteration must calculate every $\lambda_i$ from the same predicted state, calculate every $\Delta\mathbf{p}_i$ from that state and only then be able to apply:
 
-$$
+```math
 \mathbf{p}_i\leftarrow\mathbf{p}_i+\Delta\mathbf{p}_i
-$$
+```
 
 This explicit Jacobi ordering is part of the reference behaviour, even though the implementation is single threaded.
 
@@ -201,57 +201,57 @@ This explicit Jacobi ordering is part of the reference behaviour, even though th
 
 After the final solver iteration:
 
-$$
+```math
 \mathbf{v}_i\leftarrow\frac{\mathbf{p}_i-\mathbf{x}_i}{\Delta t},
 \qquad
 \mathbf{x}_i\leftarrow\mathbf{p}_i
-$$
+```
 
 The baseline should record both mean and maximum relative density error over a evaluation set $\mathcal{E}$:
 
-$$
+```math
 e_i=\left|\frac{\widetilde{\rho}_i}{\widetilde{\rho}_0}-1\right|,
 \qquad
 E_{\mathrm{mean}}=\frac{1}{|\mathcal{E}|}\sum_{i\in\mathcal{E}}e_i,
 \qquad
 E_{\max}=\max_{i\in\mathcal{E}}e_i
-$$
+```
 
 ### Boundary alternatives
 
 A simple static plane can be represneted by a unit normal $\mathbf{n}$ and permitted offset $d$:
 
-$$
+```math
 C_{\mathrm{plane}}(\mathbf{p}_i)=\mathbf{n}\cdot\mathbf{p}_i-d\geq0
-$$
+```
 
 If $C_{\mathrm{plane}}<0$, non penetration is restored with:
 
-$$
+```math
 \mathbf{p}_i\leftarrow
 \mathbf{p}_i-C_{\mathrm{plane}}(\mathbf{p}_i)\mathbf{n}
-$$
+```
 
 The density aware alternatives uses explicit fluid masses and assigns each boundary sample $b$ a volme and SPH pseudo-mass:
 
-$$
+```math
 V_b=\left(\sum_l W(\mathbf{x}_b-\mathbf{x}_l,h)\right)^{-1},
 \qquad
 \Psi_b=\rho_0^{\mathrm{phys}}V_b
-$$
+```
 
 The pseudo-mass weights the boundary sample's density contribution; it is not the rigid body's inertial mass. Its contribution is then added to the physical fluid density:
 
-$$
+```math
 \rho_i^{\mathrm{phys}}=
 \sum_{j\in\mathcal{S}_i}m_jW(\mathbf{p}_i-\mathbf{p}_j,h)
 +
 \sum_{b\in\mathcal{B}_i}\Psi_bW(\mathbf{p}_i-\mathbf{x}_b,h)
-$$
+```
 
 For equal fluid mass $m$, this alternative maps into the normalised solver with $\widetilde{\Psi}_b=\Psi_b/m$. It must change the substituted direction for particle $i$ as well as the density:
 
-$$
+```math
 \mathbf{g}_i^{(i)}
 =
 \frac{1}{\widetilde{\rho}_0}
@@ -263,11 +263,11 @@ $$
 \widetilde{\Psi}_b
 \mathbf{G}_{\mathrm{spiky}}(\mathbf{p}_i-\mathbf{x}_b,h)
 \right]
-$$
+```
 
 For a static boundary, the boundary samples do not receive position corrections or own density constraints. The corresponding fluid-particle correction is:
 
-$$
+```math
 \Delta\mathbf{p}_i
 =
 \frac{1}{\widetilde{\rho}_0}
@@ -281,7 +281,7 @@ $$
 \widetilde{\Psi}_b
 \mathbf{G}_{\mathrm{spiky}}(\mathbf{p}_i-\mathbf{x}_b,h)
 \right]
-$$
+```
 
 Only one boundary model will be selected for the initial, and further implementations.
 
