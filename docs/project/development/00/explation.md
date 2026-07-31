@@ -112,10 +112,10 @@ For example, if particles are $`0.02\,\mathrm{m}`$ wide, the fastest one travels
 ```math
 \mathcal{S}_i
 =
-\left\{
+\lbrace
 j\mid
 \lVert\mathbf{p}_i-\mathbf{p}_j\rVert<h
-\right\}
+\rbrace
 ```
 
 ```math
@@ -183,7 +183,7 @@ W_{\mathrm{poly6}}(r,h)
 =
 \begin{cases}
 \dfrac{315}{64\pi h^9}(h^2-r^2)^3,
-& 0\leq r<h,\\
+& 0\leq r<h,\cr
 0,
 & r\geq h.
 \end{cases}
@@ -218,7 +218,7 @@ Poly6 produces a scalar weight. It tells us how much a particle contributes to d
 -\dfrac{45}{\pi h^6}
 (h-r)^2
 \dfrac{\mathbf{r}}{r},
-& 0<r<h,\\
+& 0<r<h,\cr
 \mathbf{0},
 & r=0\text{ or }r\geq h.
 \end{cases}
@@ -359,10 +359,10 @@ The solver tries to move particles until $C_i$ is close to zero.
 \dfrac{1}{\widetilde{\rho}_0}
 \displaystyle\sum_{j\in\mathcal{N}_i}
 \mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ij},h),
-& k=i,\\
+& k=i,\cr
 -\dfrac{1}{\widetilde{\rho}_0}
 \mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ik},h),
-& k\in\mathcal{N}_i,\\
+& k\in\mathcal{N}_i,\cr
 \mathbf{0},
 & \text{otherwise.}
 \end{cases}

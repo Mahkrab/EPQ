@@ -96,7 +96,7 @@ This check uses the post-acceleration velocity that predicts displacement. If $`
 Let $h$ be the kernel support radius. The support set includes the particle itslf for densty estimation, while the interacation set excludes it.
 
 ```math
-\mathcal{S}_i=\left\{j\mid\|\mathbf{p}_i-\mathbf{p}_j\|<h\right\},
+\mathcal{S}_i=\lbrace j\mid\|\mathbf{p}_i-\mathbf{p}_j\|<h\rbrace,
 \qquad
 \mathcal{N}_i=\mathcal{S}_i\setminus\{i\}
 ```
@@ -111,7 +111,7 @@ $`r_{ij}=\|\mathbf{r}_{ij}\|`$, density uses the three-dimensional Poly6 kernel:
 ```math
 W_{\mathrm{poly6}}(r,h)=
 \begin{cases}
-\dfrac{315}{64\pi h^9}(h^2-r^2)^3, & 0\leq r<h,\\
+\dfrac{315}{64\pi h^9}(h^2-r^2)^3, & 0\leq r<h,\cr
 0, & r\geq h.
 \end{cases}
 ```
@@ -121,7 +121,7 @@ For $0<r<h$, the solver uses the Spiky kernel gradient. The operator $\mathbf{G}
 ```math
 \mathbf{G}_{\mathrm{spiky}}(\mathbf{r},h)=
 \begin{cases}
--\dfrac{45}{\pi h^6}(h-r)^2\dfrac{\mathbf{r}}{r}, & 0<r<h,\\
+-\dfrac{45}{\pi h^6}(h-r)^2\dfrac{\mathbf{r}}{r}, & 0<r<h,\cr
 \mathbf{0}, & r=0\ \text{or}\ r\geq h.
 \end{cases}
 ```
@@ -154,7 +154,7 @@ Density uses Poly6 while the PBF solver intentionally substitutes the Spiky oper
 \dfrac{1}{\widetilde{\rho}_0}\displaystyle\sum_{j\in\mathcal{N}_i}
 \mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ij},h), & k=i,\\[1.2em]
 -\dfrac{1}{\widetilde{\rho}_0}\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ik},h),
-& k\in\mathcal{N}_i,\\
+& k\in\mathcal{N}_i,\cr
 \mathbf{0}, & \text{otherwise.}
 \end{cases}
 ```
