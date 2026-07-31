@@ -96,7 +96,7 @@ This check uses the post-acceleration velocity that predicts displacement. If $`
 Let $h$ be the kernel support radius. The support set includes the particle itslf for densty estimation, while the interacation set excludes it.
 
 ```math
-\mathcal{S}_i=\left\{j\mid\|\mathbf{p}_i-\mathbf{p}_j\|<h\right\},
+\mathcal{S}_i=\lbrace j\mid\|\mathbf{p}_i-\mathbf{p}_j\|<h\rbrace,
 \qquad
 \mathcal{N}_i=\mathcal{S}_i\setminus\{i\}
 ```
@@ -109,21 +109,26 @@ For $`\mathbf{r}_{ij}=\mathbf{p}_i-\mathbf{p}_j`$ and
 $`r_{ij}=\|\mathbf{r}_{ij}\|`$, density uses the three-dimensional Poly6 kernel:
 
 ```math
-W_{\mathrm{poly6}}(r,h)=
-\begin{cases}
-\dfrac{315}{64\pi h^9}(h^2-r^2)^3, & 0\leq r<h,\\
-0, & r\geq h.
-\end{cases}
+W_{\mathrm{poly6}}(r,h)=\dfrac{315}{64\pi h^9}(h^2-r^2)^3
+\qquad \text{for }0\leq r\lt h
+```
+
+```math
+W_{\mathrm{poly6}}(r,h)=0
+\qquad \text{for }r\geq h
 ```
 
 For $0<r<h$, the solver uses the Spiky kernel gradient. The operator $\mathbf{G}_{\mathrm{spiky}}$ below also records the numerical convention of returning zero at $r=0$:
 
 ```math
-\mathbf{G}_{\mathrm{spiky}}(\mathbf{r},h)=
-\begin{cases}
--\dfrac{45}{\pi h^6}(h-r)^2\dfrac{\mathbf{r}}{r}, & 0<r<h,\\
-\mathbf{0}, & r=0\ \text{or}\ r\geq h.
-\end{cases}
+\mathbf{G}_{\mathrm{spiky}}(\mathbf{r},h)
+=-\dfrac{45}{\pi h^6}(h-r)^2\dfrac{\mathbf{r}}{r}
+\qquad \text{for }0\lt r\lt h
+```
+
+```math
+\mathbf{G}_{\mathrm{spiky}}(\mathbf{r},h)=\mathbf{0}
+\qquad \text{for }r=0\text{ or }r\geq h
 ```
 
 The analytical vector gradient is undefined at $r=0$ because there is no unique direction for $\mathbf{r}/r$. Self interaction is excluded from the interaction set; for distinct particles at exactly the same position, returning zero is an implementation convention rather than an analytical result and supplies no separating direction.
@@ -154,7 +159,7 @@ Density uses Poly6 while the PBF solver intentionally substitutes the Spiky oper
 \dfrac{1}{\widetilde{\rho}_0}\displaystyle\sum_{j\in\mathcal{N}_i}
 \mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ij},h), & k=i,\\[1.2em]
 -\dfrac{1}{\widetilde{\rho}_0}\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ik},h),
-& k\in\mathcal{N}_i,\\
+& k\in\mathcal{N}_i,\\[0pt]
 \mathbf{0}, & \text{otherwise.}
 \end{cases}
 ```
