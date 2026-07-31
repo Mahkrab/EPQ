@@ -179,7 +179,13 @@ $`\mathbf{r}_{ij}`$ records both distance and direction. $`r_{ij}`$ contains onl
 - $W_{\mathrm{poly6}}(r,h)$: the scalar density weight.
 
 ```math
-W_{\mathrm{poly6}}(r,h)=\begin{cases}\dfrac{315}{64\pi h^9}(h^2-r^2)^3, & 0\leq r<h,\\[0pt]0, & r\geq h.\end{cases}
+W_{\mathrm{poly6}}(r,h)=\dfrac{315}{64\pi h^9}(h^2-r^2)^3
+\qquad \text{for }0\leq r\lt h
+```
+
+```math
+W_{\mathrm{poly6}}(r,h)=0
+\qquad \text{for }r\geq h
 ```
 
 #### Meaning 
@@ -205,7 +211,14 @@ Poly6 produces a scalar weight. It tells us how much a particle contributes to d
 - $\mathbf{0}$: the zero vector.
 
 ```math
-\mathbf{G}_{\mathrm{spiky}}(\mathbf{r},h)=\begin{cases}-\dfrac{45}{\pi h^6}(h-r)^2\dfrac{\mathbf{r}}{r}, & 0<r<h,\\[0pt]\mathbf{0}, & r=0\text{ or }r\geq h.\end{cases}
+\mathbf{G}_{\mathrm{spiky}}(\mathbf{r},h)
+=-\dfrac{45}{\pi h^6}(h-r)^2\dfrac{\mathbf{r}}{r}
+\qquad \text{for }0\lt r\lt h
+```
+
+```math
+\mathbf{G}_{\mathrm{spiky}}(\mathbf{r},h)=\mathbf{0}
+\qquad \text{for }r=0\text{ or }r\geq h
 ```
 
 #### Meaning
