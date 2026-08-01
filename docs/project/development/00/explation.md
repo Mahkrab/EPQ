@@ -469,6 +469,40 @@ A large density error generally produces a larger correlation. The denominator p
 
 For positive density error, $C_i>0$, the leading minus normally makes $\lambda_i$ negative. The final direction of movement also depends on the Spiky gradient.
 
+### Artificial pressure
+
+The PBF artificial-pressure term resists particle clumping at short distances.<sup>[<a href="/docs/research/sources/004-macklin-muller-position-based-fluids.md">S004</a>]</sup>
+
+#### Variables
+
+- $s_{\mathrm{corr},ij}$: the artificial-pressure contribution for particles
+  $i$ and $j$.
+- $k_{\mathrm{corr}}\geq0$: its strength.
+- $r_{ij}$: the distance between particles $i$ and $j$.
+- $\Delta q$: a fixed reference separation satisfying $0<\Delta q<h$.
+- $n_{\mathrm{corr}}>0$: the exponent controlling how sharply the term changes
+  with separation.
+
+```math
+s_{\mathrm{corr},ij}
+=
+-k_{\mathrm{corr}}
+\left(
+\frac{W_{\mathrm{poly6}}(r_{ij},h)}
+{W_{\mathrm{poly6}}(\Delta q,h)}
+\right)^{n_{\mathrm{corr}}}
+```
+
+#### Meaning
+
+The Poly6 ratio compares the current particle separation with the reference
+separation. Raising the ratio to $n_{\mathrm{corr}}$ makes the response grow
+more sharply when particles become very close. The leading minus sign makes the
+term contribute a separating correction when combined with the Spiky direction.
+
+The formula requires $W_{\mathrm{poly6}}(\Delta q,h)>0$, which is why the
+reference separation must remain inside the kernel support.
+
 ### Fluid particle position correction
 
 #### Variables 
@@ -954,29 +988,33 @@ The fluid particle moves while the boundary remains fixed.
 
 ## Complete solver loop
 
-In plain language, one timestep is approximately:
+The exact ordered behaviour is owned by the milestone's
+[timestep contract](/docs/project/development/00/serial-brute-force.md#timestep-contract). In plain language,
+one timestep:
 
-1. Apply gravity or another external acceleration.
-2. Predict every particle's new position.
-3. Find each particle's neighbours.
-4. Begin a fixed number of solver iterations.
-5. Estimate every particle's density from the same position state.
-6. Calculate every density constraint $C_i$.
-7. Calculate every multiplier $\lambda_i$.
-8. Calculate every correction $\Delta\mathbf{p}_i$.
-9. Apply all corrections simultaneously.
-10. Project particles out of boundaries if required.
-11. Repeat the density-correction iteration.
-12. Reconstruct velocity from the final corrected movement.
-13. Accept the corrected positions.
-14. Record mean and maximum density errors.
+1. Validates the current accepted state and configuration.
+2. Applies acceleration, records the CFL diagnostic and predicts all positions.
+3. Builds one fixed neighbour set from the complete prediction snapshot.
+4. Repeats four times:
+   1. Calculate all densities, constraints and multipliers from one position snapshot.
+   2. Calculate all corrections into separate storage.
+   3. Apply the corrections and plane projections to create the next snapshot.
+5. Reconstructs velocity, validates all proposed results and accepts the new state together.
+6. Exposes a read-only result for requested diagnostics or output.
+
+A correctness checkpoint may build a fresh brute-force neighbour set and recompute final density error. This
+audit does not change simulation state and is not part of timed solver work.
 
 The most important Jacobi rule is:
 
 > Read from one shared position state, write corrections into separate storage,
 > and apply those corrections only after every particle has been processed.
 
-## Parameters that are still undecided
+## Reference configuration parameters
+
+The canonical values are recorded in the
+[reference numerical configuration](/docs/project/development/00/serial-brute-force.md#reference-numerical-configuration).
+The table below explains their roles without duplicating the selected values.
 
 | Parameter | Simple meaning |
 | --- | --- |
@@ -995,10 +1033,6 @@ The most important Jacobi rule is:
 | $n_{\mathrm{corr}}$ | Expected exponent controlling how sharply artificial pressure changes with distance. |
 | Boundary model | Either simple plane projection or density-aware boundary particles. |
 | $\mathcal{E}$ | Particles included in the reported density-error statistics. |
-
-The $k_{\mathrm{corr}}$, $\Delta q$ and $n_{\mathrm{corr}}$ parameters imply
-that an artificial-pressure formula is intended, but that formula is currently
-missing from the numerical design.
 
 ## Boundary-model comparison
 
@@ -1019,5 +1053,5 @@ missing from the numerical design.
   equations.
 - Introduces more implementation and validation work.
 
-Only one should be selected for the initial reference solver so that the
-baseline remains clearly defined.
+Plane projection is selected for the initial reference solver and retained
+through the planned spatial, multithreaded and CUDA comparisons.

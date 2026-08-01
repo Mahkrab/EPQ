@@ -32,6 +32,7 @@ And other boilerplate git repository fluffer:
 | M00-2 | Produce deterministic results from identical intial state and configuration                  | Correctness  | Repeat identical headless simulations and compare results |
 | M00-3 | Keep the simulation core independent from renderin, multithreading and CUDA                  | Architecture | Inspection and headless tests |
 | M00-4 | Establish *correctness* and performance baselines that later milestones can compare against. | Benchmarking | Record tests and reproducible measurements |
+| M00-5 | Provide a stable numerical value configuration to act as the testing scenario for later milestones. | Correctness | Inspection and headless tests |
 
 ## Research and design basis
 
@@ -60,6 +61,8 @@ These sources inform thr next decisions without predetermining Maelstroms timest
 | Begin with a serial CPU backend | Provides the simplest implementation against whcih later parrallel backends can be checked |
 | Begin with brute force neighbour search | Establlishes a direct reference before spatial partitioning changes neighbour discovery and performance |
 | Keep rendering outside the simulation core | Correctness testa and performance measurements must be able to run without a display or rendering workload (for now) |
+| Use one fixed numerical reference configuration | Later neighbour-search and execution backends must be compared using the same numerical method and workload |
+| Use static plane boundaries throughout the optimisation study | Keeps boundary handling simple and prevents a boundary-method change from confounding performance comparisons |
 
 
 ## Initial design
@@ -187,6 +190,23 @@ A fixed particle has $w_k=0$. Under the equal mass PBF formulation, the fluid sp
 The optional artificial pressure term used to resist particle clumping is:
 
 ```math
+s_{\mathrm{corr},ij}
+=
+-k_{\mathrm{corr}}
+\left(
+\frac{W_{\mathrm{poly6}}(r_{ij},h)}
+{W_{\mathrm{poly6}}(\Delta q,h)}
+\right)^{n_{\mathrm{corr}}}
+```
+
+Here $k_{\mathrm{corr}}\geq0$ controls its strength, $0<\Delta q<h$ is a fixed
+reference separation and $n_{\mathrm{corr}}>0$ controls how sharply the
+repulsion grows at short distances. Their reference values are fixed in the
+reference numerical configuration below and remain configurable.
+
+The resulting total correction for fluid particle $i$ is:
+
+```math
 \Delta\mathbf{p}_i=
 \frac{1}{\widetilde{\rho}_0}
 \sum_{j\in\mathcal{N}_i}
@@ -288,53 +308,214 @@ For a static boundary, the boundary samples do not receive position corrections 
 \right]
 ```
 
-Only one boundary model will be selected for the initial, and further implementations.
+The reference solver selects plane projection. The density-aware model is retained above as a
+researched alternative, but it is outside Milestones 00 to 03 unless a later, separately documented
+revision changes the experimental design.
 
-## Parameter decisions still required
+### Reference numerical configuration
 
-| Parameter or policy | Role |
-| --- | --- |
-| $\Delta t$ | Fixed timestep |
-| $\Delta x$ and $d_p$ | Initial particle spacing and characteristic particle diameter |
-| $h$ | Kernel support radius; $h/\Delta x$ controls neighbourhood sampling |
-| $m$ and $\rho_0^{\mathrm{phys}}$ | Common particle mass and physical rest density; $\widetilde{\rho}_0=\rho_0^{\mathrm{phys}}/m$ is the derived normalised scale |
-| Solver iteration count | Deterministic runtime and density convergence |
-| $\varepsilon$ | Regularisation of small constraint-gradient denominators |
-| $k_{\mathrm{corr}},\Delta q,n_{\mathrm{corr}}$ | Artificial-pressure behaviour |
-| Boundary model | Simple plane projection or density-aware boundary particles |
-| Evaluation set $\mathcal{E}$ | Which particles contribute to reported density error |
+The following configuration is the canonical correctness and performance reference. Every value
+must remain configurable, but a run that changes one must record the deviation and must not be
+presented as directly comparable with the reference results.
+
+| Parameter or policy | Reference decision | Reason |
+| --- | --- | --- |
+| Scalar precision | IEEE-754 binary32 ( f32 ) for simulation state and solver arithmetic | Uses precision floats supported efficiently by the serial CPU, multithreaded CPU and CUDA targets |
+| Units and axes | Metres, seconds and kilograms, right-handed coordinates with positive $y$ upward | Makes configuration, diagnostics and scenes simpler |
+| External acceleration | $\mathbf{a}_{\mathrm{ext}}=(0,-9.81,0)\,\mathrm{m\,s^{-2}}$ | Defines the water like gravity workload used by the reference scene |
+| Fixed timestep | $\Delta t=1/120\,\mathrm{s}$ | Provides a conservative fixed update rate while keeping every backend on identical timesteps |
+| CFL diagnostic | $\lambda_{\mathrm{CFL}}=0.4$ using $d_p$ and post-acceleration velocity | Uses the sources safety factor as a diagnostic. |
+| Particle spacing and diameter | $\Delta x=d_p=0.05\,\mathrm{m}$ | Defines the initial cubic lattice and the displacement scale used by the CFL check |
+| Kernel support | $h=2\Delta x=0.10\,\mathrm{m}$ | Gives a fixed support-to-spacing ratio and a useful three-dimensional reference neighbourhood |
+| Physical rest density | $\rho_0^{\mathrm{phys}}=1000\,\mathrm{kg\,m^{-3}}$ | Defines a nominal water like project convention rather than exact material modelling |
+| Particle mass and normalised rest density | Derived from the interior reference lattice as shown below | Makes the initial interior lattice satisfy the discrete density target instead of assuming exact kernel quadrature *fancy* |
+| Solver iterations | Four Jacobi iterations per timestep | Uses the upper end of the paper's typical two-to-four iteration range and fixes solver work per step |
+| Relaxation | $\varepsilon=10^{-6}h^{-2}=10^{-4}\,\mathrm{m^{-2}}$ | Supplies a small scaleaware denominator without treating it as a tuned material property |
+| Artificial pressure | Enabled with $k_{\mathrm{corr}}=0.1h^2=0.001\,\mathrm{m^2}$, $\Delta q=0.2h=0.02\,\mathrm{m}$ and $n_{\mathrm{corr}}=4$ | Uses the paper's reported strength, exponent and midpoint of its reference-separation range, scaled to Maelstrom's length units |
+| Boundary model | Static unit-normal planes with projection, no boundary density contribution, restitution or friction | Produces a small, deterministic boundary contract that can remain unchanged across backends |
+| Optional velocity effects | XSPH viscosity and vorticity confinement disabled | Keeps the first baseline focused on the required density solver, either effect would require its own later decision and comparison |
+| Neighbour rebuild | Once per timestep after position prediction; distances and kernel values recalculated during every solver iteration | Matches the PBF algorithm while keeping neighbour discovery a separately measurable stage |
+| Particle order | Stable ascending particle identifier in the serial reference | Makes repeated serial runs and diagnosis reproducible without requiring later parallel reductions to be bitwise identical |
+| Density error audit | $\mathcal{E}$ contains every fluid particle, validation checkpoints recompute density from final positions using a fresh brute force support search | Avoids selectively hiding freesurface or plane-boundary error without changing solver state or including the audit in timed solver work |
+
+For an interior particle on the infinite cubic reference lattice, let
+$\mathcal{L}=\{\Delta x(a,b,c)\mid a,b,c\in\mathbb{Z},\ \|\Delta x(a,b,c)\|<h\}$.
+For $h=2\Delta x$, this set contains 27 sample offsets. The reference normalised rest density
+and common mass are derived by:
+
+```math
+\widetilde{\rho}_0
+=
+\sum_{\mathbf{r}\in\mathcal{L}}W_{\mathrm{poly6}}(\|\mathbf{r}\|,h)
+\approx8078.201335\,\mathrm{m^{-3}}
+```
+
+```math
+m
+=
+\frac{\rho_0^{\mathrm{phys}}}{\widetilde{\rho}_0}
+\approx0.123789933\,\mathrm{kg}
+```
+
+These derived values must be reproduced by a kernel-and-lattice test rather than trusted only as
+copied constants. Scalability workloads should change the domain and particle count while retaining
+this spacing, support ratio and numerical configuration.
+
+Under this normalisation, $\mathbf{g}_k^{(i)}$ has units of $\mathrm{m^{-1}}$.
+Consequently, $\varepsilon$ has units of $\mathrm{m^{-2}}$, while $\lambda_i$ and
+$s_{\mathrm{corr},ij}$ have units of $\mathrm{m^2}$. Expressing the relaxation as a multiple of
+$h^{-2}$ and artificial-pressure strength as a multiple of $h^2$ preserves those dimensions.
+
+The reference runner must record the maximum post-acceleration speed and the resulting CFL limit
+on every step. If the fixed timestep exceeds that limit, it must report the reference run as outside
+the selected numerical contract rather than silently changing $\Delta t$.
 
 
 ### Architecture
 
-The initial architecture centres on one headless serial simulation path. Sceen construction and configuration provide input to the simulation corel. The core *owns* the PBF solver and uses brute force neighbour search. Its resultant state can then be the baseline for future testing.
+The planned architecture separates stable behaviour from replaceable implementation. Scene construction
+and configuration provide deterministic inputs to a headless runner. The selected execution backend owns
+the physical layout of its working state and executes the numerical contract using a neighbour-search
+implementation. Diagnostics and rendering can observe explicit snapshots but cannot mutate a simulation
+step.
 
 ```mermaid
 flowchart LR
-    Input[Scene and configuration] --> Core[Serial CPU simulation core]
-    Core --> Search[Brute-force neighbour search]
-    Search --> Solver[PBF constraint solver]
-    Solver --> State[Updated simulation state]
-    State --> Evidence[Tests and baseline evidence]
+    Input[Scene and configuration] --> Runner[Simulation runner]
+    Contract[Numerical contract] --> Runner
+    Runner --> Backend[Execution backend]
+    State[Accepted simulation state] --> Backend
+    Backend --> Search[Neighbour-search stage]
+    Search --> Solver[PBF solver stages]
+    Solver --> State
+    State --> Diagnostics[Diagnostics and validation]
+    State --> Snapshot[Read-only snapshot]
+    Snapshot --> Renderer[Renderer or offline output]
 ```
+
+Milestone 00 composes the serial CPU backend with brute-force search. Later milestones may replace the
+search stage, execution backend and physical data layout independently, provided that their observable
+behaviour satisfies the same contracts.
 
 ### Data and execution flow
 
-The simulation will begin with explicit configuration ( scene/material/config information ) Each step will find the neighbours by brute force, apply the selected PBF process and produce updated state. The exact state representation, step pages and numerial conventions are undecided.
+#### Neighbour-set contract
+
+After prediction, the search stage builds one interaction set from the position snapshot
+$\mathbf{p}^{(0)}$:
+
+```math
+\mathcal{N}_i^{(0)}
+=
+\left\{j\ne i\mid
+\left\|\mathbf{p}_i^{(0)}-\mathbf{p}_j^{(0)}\right\|<h
+\right\}
+```
+
+The serial brute-force implementation returns valid, duplicate-free indices in ascending particle-ID
+order.
+
+The set is not rebuilt during the four solver iterations. Every iteration recalculates distances and
+kernels from its current position snapshot and therefore naturally ignores an original neighbour that has
+moved to $r\geq h$. A particle that newly moves inside $h$ is not added until the next timestep. This is a
+deliberate property of the selected PBF algorithm and must remain consistent across backends.
+
+#### Timestep contract
+
+For accepted state $(\mathbf{x}^n,\mathbf{v}^n)$, one timestep performs the following ordered stages:
+
+1. Validate the configuration, plane normals, particle indices and finiteness of the accepted state.
+   An empty particle set is valid and produces an unchanged successful step.
+2. Calculate every post-acceleration velocity $\mathbf{v}_i^*$ without changing the accepted state. Record
+   maximum speed and whether the fixed timestep exceeds the CFL diagnostic limit; a violation is reported
+   but does not silently alter $\Delta t$.
+3. Calculate every initial prediction $\mathbf{p}_i^{(0)}$ from $\mathbf{x}_i^n$ and
+   $\mathbf{v}_i^*$.
+4. Build every fixed interaction set $\mathcal{N}_i^{(0)}$ from the complete prediction snapshot.
+5. Repeat exactly four Jacobi iterations. For iteration $l$:
+   1. Read only $\mathbf{p}^{(l)}$ and $\mathcal{N}^{(0)}$ while calculating all densities,
+      constraints, substituted directions and multipliers.
+   2. Read the same position snapshot and the complete multiplier array while calculating every
+      $\Delta\mathbf{p}_i^{(l)}$ into separate storage.
+   3. Form every candidate $\mathbf{q}_i=\mathbf{p}_i^{(l)}+\Delta\mathbf{p}_i^{(l)}$.
+   4. Project each candidate against every configured plane in configuration order and write the result
+      to $\mathbf{p}_i^{(l+1)}$. Plane projection is therefore applied once per iteration.
+6. Reconstruct every final velocity from $\mathbf{p}^{(4)}-\mathbf{x}^n$, then check that all proposed
+   positions and velocities are finite.
+7. If validation succeeds, accept all new positions and velocities together as state
+   $(\mathbf{x}^{n+1},\mathbf{v}^{n+1})$. A failure must not expose a partially committed state.
+8. Return the step outcome, including the CFL diagnostic and any explicitly enabled stage measurements.
+   Rendering and correctness audits occur only through read-only state observations.
+
+The repeated stages are summarised below. The diagram describes planned behaviour, not an implemented or
+verified call structure.
+
+```mermaid
+sequenceDiagram
+    participant R as Runner
+    participant B as Execution backend
+    participant N as Neighbour search
+    participant S as PBF stages
+    participant P as Plane constraints
+    participant D as Diagnostics
+
+    R->>B: Accepted state and configuration
+    B->>B: Accelerate and predict
+    B->>N: Prediction snapshot and support radius
+    N-->>B: Fixed interaction sets
+    loop Four Jacobi iterations
+        B->>S: Position snapshot and interaction sets
+        S->>S: All densities and multipliers
+        S->>S: All position corrections
+        S->>P: Corrected candidates
+        P-->>B: Next position snapshot
+    end
+    B->>B: Reconstruct, validate and commit
+    B-->>R: Step outcome
+    R->>D: Optional read-only checkpoint
+```
+
+#### Correctness audit and timing boundary
+
+At requested validation checkpoints, diagnostics perform a fresh brute-force support search over the
+accepted final positions and recompute $E_{\mathrm{mean}}$ and $E_{\max}$ for every fluid particle. This
+audit detects density error independently of the solver's fixed neighbour approximation. It does not feed
+neighbours or corrected values back into the simulation.
+
+The audit is outside the timed simulation step and is disabled during primary throughput measurements
+except at declared checkpoints. Timed stage measurements distinguish neighbour search, density and
+multiplier calculation, correction and plane projection, and total backend step time. Later CUDA results
+must additionally report required synchronisation and transfer costs rather than hiding them inside an
+unlabelled total.
+
+#### Backend-equivalence rules
+
+- All primary comparisons use the reference configuration, initial state, timestep count and four-iteration
+  Jacobi contract.
+- The serial reference preserves ascending neighbour and particle order and must reproduce identical output
+  for repeated runs on the same supported environment.
+- Parallel backends may reorder independent work and floating-point reductions. They are compared with
+  documented tolerances rather than required to be bitwise identical.
+- A backend may fuse stages only when every logical Jacobi read observes the same position and multiplier
+  snapshots defined above.
+- Approximate mathematics, reduced precision, adaptive timesteps, different iteration counts and compiler
+  fast-math modes are separate experimental variants, not silent backend optimisations.
+- Diagnostics, logging and rendering must not alter state or be included selectively in only one backend's
+  primary timing.
 
 ### Risks and unresolved questions
 
 | Risk or question | Planned response |
 | --- | --- |
-| The detailed PBF equations, parameters and detailed implementation notes are not determined yet, but needed sources and infastructure is complete | Complete the focused algorithm design from sources before implementing the solver |
+| The selected reference values may expose instability or poor density behaviour when implemented | Test them against deterministic lattice and falling-fluid scenes; preserve the observation and revise the design only when evidence requires it |
 | Brute force neighbout search will re strict the particle counts that can be tested initially, but as a basline, correctness takes priority | Keep it as the reference and measure its limits using reproducible worklods |
-| Later backends could change simulation behavior rather than only execution methods | although With the project focus on optimization and  correctness retainment, reproducible results will be vital |
-| Inablitiy to know which parts to optimise; e.g. the software implementation, should i always use the highest performance option in terms of implementation, and focusing on witholding optimizations when the optimization is based on large milestones etc | We will focus on always using the best software options, when it is purely software implementationary and non theoretical *odd wording come back later* |
+| Later backends could change simulation behaviour rather than only execution | Apply the backend-equivalence rules and treat altered precision, mathematics, parameters or stage semantics as separately labelled experimental variants |
+| Software level improvements could become confused with the planned algorithm and hardware milestones | Profile the named stages, preserve the numerical contract and record substantial layout, allocation, vectorisation or compiler changes separately |
 
 
 ## Implementation record
 
-### Stage 1:
+### Stage 1: source-derived numerical contract
 
 #### Intention
 
@@ -343,12 +524,41 @@ Find the equations, algorithm stages, assumptions and guidance from the compiled
 #### Work completed
 
 - Added all three new sources to the source register and BibTeX database.
-- Extracted the source-derived equations into the numerical formulation rather than duplicating
-  them as reading notes in each source record.
+- Extracted the sources equations into the numerical formulation.
+- Completed the missing artificial pressure equation and without selecting the reference parameter values.
+- Selected a canonical numerical reference configuration for controlled backend comparisons.
 
 #### Evidence and observations
 
 - [Initial numerical formulation](/docs/project/development/00/serial-brute-force.md#numerical-formulation)
+- [Artificial-pressure explanation](/docs/project/development/00/explation.md#artificial-pressure)
+- [Reference numerical configuration](/docs/project/development/00/serial-brute-force.md#reference-numerical-configuration)
+
+### Stage 2: execution and architecture contract
+
+#### Intention
+
+Define the exact timestep semantics and stable responsibility boundaries before implementation, while
+leaving physical data layout and backend-specific optimisation open.
+
+#### Work completed
+
+- Defined the neighbour set behaviour and its approximation across solver iterations.
+- Defined the ordered four-iteration Jacobi step, per-iteration plane projection, validation and atomic
+  accepted-state update.
+- Separated execution, neighbour discovery, diagnostics and rendering responsibilities without prescribing
+  one code layout.
+- Defined the correctness-audit, timing and later backend-equivalence boundaries.
+
+#### Evidence and observations
+
+- [Planned architecture](/docs/project/development/00/serial-brute-force.md#architecture)
+- [Timestep contract](/docs/project/development/00/serial-brute-force.md#timestep-contract)
+- [Backend-equivalence rules](/docs/project/development/00/serial-brute-force.md#backend-equivalence-rules)
+
+The contract allows serial, multithreaded and CUDA implementations to use different storage and execution
+strategies. Their primary comparison remains meaningful only while the numerical configuration and logical
+Jacobi snapshots remain unchanged.
 
 ## Problems, diagnosis and revisions
 
