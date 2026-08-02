@@ -54,6 +54,42 @@ These sources seperate the three foundations needed for the numerical design.
 
 These sources inform thr next decisions without predetermining Maelstroms timestep, iteration and boundary modelling.
 
+### Relationship to the Navier-Stokes equations
+
+The Navier-Stokes equations provide the description of fluid motion and explain the roles of velocity, pressure, density, viscosity and external forces.<sup>[<a href="/docs/research/sources/007-nasa-glenn-navier-stokes-equation.md">S007</a>]</sup> Conventional engineering CFD commonly uses these governing equations over a mesh, whereas Maelstrom uses a Lagrangian particle method designed for interactive simulation.<sup>[<a href="/docs/research/sources/006-versteeg-malalasekera-introduction-to-cfd.md">S006</a>]</sup>
+
+For a constant density incompressible Newtonian fluid, the relevant physical context can be summarised by the incompressibility condition:
+
+```math
+\nabla\cdot\mathbf{u}=0
+```
+
+and the momentum equation:
+
+```math
+\frac{D\mathbf{u}}{Dt}
+=
+-\frac{1}{\rho}\nabla p
++
+\nu\nabla^2\mathbf{u}
++
+\mathbf{a}_{\mathrm{ext}}
+```
+
+Here $\mathbf{u}$ is fluid velocity, $\rho$ is density, $p$ is pressure, $\nu$ is kinematic viscosity and $\mathbf{a}_{\mathrm{ext}}$ represents external acceleration such as gravity. These equations are the physical background for the project, but Milestone 00 does not directly discretise and solve them as complete field equations.
+
+Instead, Position-Based Fluids (PBF) takes a different numerical route. Particles carry velocity and move with the flow, external acceleration is applied before position prediction, and SPH kernels estimate the density around each particle. The PBF density constraint then moves predicted particle positions towards the selected rest density. 
+
+The correspondence used by Maelstrom is therefore:
+
+| Fluid concept | Maelstrom |
+| --- | --- |
+| Motion and advection | Particles carry velocity and are advanced through predicted positions |
+| External body forces | Gravity is applied as $\mathbf{a}_{\mathrm{ext}}$ before prediction |
+| Density and incompressibility | SPH density estimates are projected towards the fixed rest density |
+| Pressure | Density errors generate pressure-like position corrections rather than an explicit pressure field |
+| Viscosity | The optional XSPH viscosity effect is disabled for the initial reference configuration |
+
 ### Design decisions
 
 | Decision | Reason |
