@@ -91,9 +91,9 @@ After all initial predictions exist, brute force checks every distinct pair and 
 
 ```math
 \mathcal{N}_i^{(0)}=
-\left\{j\ne i\mid
-\left\|\mathbf{p}_i^{(0)}-\mathbf{p}_j^{(0)}\right\|<h
-\right\}.
+\lbrace j\ne i\mid
+\left\|\mathbf{p}_i^{(0)}-\mathbf{p}_j^{(0)}\right\|\lt h
+\rbrace.
 ```
 
 The comparison is strict. A particle exactly $h$ away is not a neighbour. The list contains valid, unique
@@ -107,9 +107,9 @@ Distances and kernel values are still recomputed from the current iteration posi
 ```math
 \mathcal{S}_i^{(l)}=
 \{i\}\cup
-\left\{j\in\mathcal{N}_i^{(0)}\mid
-\left\|\mathbf{p}_i^{(l)}-\mathbf{p}_j^{(l)}\right\|<h
-\right\},
+\lbrace j\in\mathcal{N}_i^{(0)}\mid
+\left\|\mathbf{p}_i^{(l)}-\mathbf{p}_j^{(l)}\right\|\lt h
+\rbrace,
 ```
 
 ```math
@@ -141,7 +141,7 @@ the three-dimensional Poly6 density kernel is
 ```math
 W_{\mathrm{poly6}}(r,h)=
 \frac{315}{64\pi h^9}(h^2-r^2)^3
-\qquad\text{for }0\leq r<h,
+\qquad\text{for }0\leq r\lt h,
 ```
 
 ```math
@@ -157,7 +157,7 @@ The Spiky operator supplies a vector direction:
 ```math
 \mathbf{G}_{\mathrm{spiky}}(\mathbf{r},h)=
 -\frac{45}{\pi h^6}(h-r)^2\frac{\mathbf{r}}{r}
-\qquad\text{for }0<r<h,
+\qquad\text{for }0\lt r\lt h,
 ```
 
 ```math

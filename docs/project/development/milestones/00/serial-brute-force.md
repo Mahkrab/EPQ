@@ -165,9 +165,9 @@ Let $h>0$ be the kernel support radius. A strict comparison owns both neighbourh
 
 ```math  
 \mathcal{N}_i^{(0)}=
-\left\{j\ne i\mid
-\left\|\mathbf{p}_i^{(0)}-\mathbf{p}_j^{(0)}\right\|<h
-\right\}.
+\lbrace j\ne i\mid
+\left\|\mathbf{p}_i^{(0)}-\mathbf{p}_j^{(0)}\right\|\lt h
+\rbrace.
 ```
 
 Membership in $\mathcal{N}_i^{(0)}$ is fixed for all four iterations. At iteration $l$, distances are recomputed from $\mathbf{p}^{(l)}$ and the density support and active interaction sets are
@@ -175,7 +175,7 @@ Membership in $\mathcal{N}_i^{(0)}$ is fixed for all four iterations. At iterati
 ```math
 \mathcal{S}_i^{(l)}=
 \{i\}\cup
-\left\{j\in\mathcal{N}_i^{(0)}\mid r_{ij}^{(l)}<h\right\},
+\lbrace j\in\mathcal{N}_i^{(0)}\mid r_{ij}^{(l)}\lt h\rbrace,
 \qquad
 \mathcal{N}_i^{(l)}=
 \mathcal{S}_i^{(l)}\setminus\{i\}.
@@ -583,9 +583,9 @@ $\mathbf{p}^{(0)}$:
 ```math
 \mathcal{N}_i^{(0)}
 =
-\left\{j\ne i\mid
-\left\|\mathbf{p}_i^{(0)}-\mathbf{p}_j^{(0)}\right\|<h
-\right\}
+\lbrace j\ne i\mid
+\left\|\mathbf{p}_i^{(0)}-\mathbf{p}_j^{(0)}\right\|\lt h
+\rbrace
 ```
 
 The serial brute-force implementation returns valid, duplicate-free references in ascending stable
