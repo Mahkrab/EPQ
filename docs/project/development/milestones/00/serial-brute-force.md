@@ -248,14 +248,21 @@ summed in ascending stable particle-identity order, including self in its ordere
 Density uses Poly6 while the PBF solver intentionally substitutes the Spiky operator when calculating its correction directions. Therefore, define $\mathbf{g}_k^{(i,l)}$ as the solver's substituted constraint-gradient direction, rather than the analytical gradient of the Poly6 density constraint:
 
 ```math
-\mathbf{g}_k^{(i,l)}=
-\begin{cases}
-\dfrac{1}{\widetilde{\rho}_0}\displaystyle\sum_{j\in\mathcal{N}_i^{(l)}}
-\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ij}^{(l)},h), & k=i,\\[1.2em]
--\dfrac{1}{\widetilde{\rho}_0}\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ik}^{(l)},h),
-& k\in\mathcal{N}_i^{(l)},\\[0pt]
-\mathbf{0}, & \text{otherwise.}
-\end{cases}
+\mathbf{g}_k^{(i,l)}
+=\dfrac{1}{\widetilde{\rho}_0}\displaystyle\sum_{j\in\mathcal{N}_i^{(l)}}
+\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ij}^{(l)},h)
+\qquad\text{for }k=i
+```
+
+```math
+\mathbf{g}_k^{(i,l)}
+=-\dfrac{1}{\widetilde{\rho}_0}\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ik}^{(l)},h)
+\qquad\text{for }k\in\mathcal{N}_i^{(l)}
+```
+
+```math
+\mathbf{g}_k^{(i,l)}=\mathbf{0}
+\qquad\text{otherwise}
 ```
 
 Every vector sum follows ascending particle-identity order. $\mathbf{G}_{\mathrm{spiky}}$ has units

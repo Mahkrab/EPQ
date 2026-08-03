@@ -235,17 +235,23 @@ PBF estimates density with Poly6 but deliberately uses Spiky for correction dire
 $\mathbf{g}_k^{(i,l)}$ as:
 
 ```math
-\mathbf{g}_k^{(i,l)}=
-\begin{cases}
-\dfrac{1}{\widetilde{\rho}_0}
+\mathbf{g}_k^{(i,l)}
+=\dfrac{1}{\widetilde{\rho}_0}
 \displaystyle\sum_{j\in\mathcal{N}_i^{(l)}}
-\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ij}^{(l)},h),
-& k=i,\\[1.2em]
--\dfrac{1}{\widetilde{\rho}_0}
-\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ik}^{(l)},h),
-& k\in\mathcal{N}_i^{(l)},\\[0pt]
-\mathbf{0}, & \text{otherwise.}
-\end{cases}
+\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ij}^{(l)},h)
+\qquad\text{for }k=i
+```
+
+```math
+\mathbf{g}_k^{(i,l)}
+=-\dfrac{1}{\widetilde{\rho}_0}
+\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ik}^{(l)},h)
+\qquad\text{for }k\in\mathcal{N}_i^{(l)}
+```
+
+```math
+\mathbf{g}_k^{(i,l)}=\mathbf{0}
+\qquad\text{otherwise}
 ```
 
 $\mathbf{g}$ has units $\mathrm{m^{-1}}$. It is called a substituted direction because it is not literally the
@@ -302,11 +308,8 @@ Each of the four iterations follows the same strict order:
    density, constraint, direction and multiplier.
 2. After all multipliers exist, read the same position snapshot and complete multiplier snapshot while calculating
    every correction into separate storage.
-3. Form every candidate:
-
-   ```math
-   \mathbf{q}_i^{(l)}=\mathbf{p}_i^{(l)}+\Delta\mathbf{p}_i^{(l)}.
-   ```
+3. Form every candidate with
+   $\mathbf{q}_i^{(l)}=\mathbf{p}_i^{(l)}+\Delta\mathbf{p}_i^{(l)}$.
 
 4. Project each candidate once against every configured plane in configuration order. The projected results form
    the next immutable snapshot $\mathbf{p}^{(l+1)}$.
