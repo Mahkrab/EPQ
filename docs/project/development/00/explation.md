@@ -1,1057 +1,439 @@
-# Position Based Fluids Mathematics
+# Position-Based Fluids mathematics and behaviour
 
-## State and prediction
+This document explains the Milestone 00 reference solver in accessible language. The
+[serial brute-force milestone record](serial-brute-force.md) is the normative contract. If this explanation ever
+disagrees with it, the milestone record wins and this document must be corrected.
 
-### Apply external acceleration
+The published method comes mainly from the SPH kernels in
+[S003](/docs/research/sources/003-muller-charypar-gross-particle-based-fluid-simulation.md), the PBF equations and
+loop in [S004](/docs/research/sources/004-macklin-muller-position-based-fluids.md), and the general position-based
+update in [S050](/docs/research/sources/050-muller-position-based-dynamics.md). The exact numerical scale,
+binary32 arithmetic, plane-only boundary, ordering, warnings and failure behaviour are Maelstrom project
+decisions. The full provenance is recorded in the
+[contract authority table](serial-brute-force.md#contract-status-and-authority).
 
-#### Variables 
+## Reference state, arithmetic and units
 
-- $i$: the index of the particle.
-- $\mathbf{v}_i$: particle $i$'s current velocity.
-- $\mathbf{v}_i^*$: its velocity after external acceleration has been applied.
-- $\mathbf{a}_{\mathrm{ext},i}$: external acceleration, such as gravity.
-- $\Delta t$: the duration of one simulation step.
+At the start of timestep $n$, particle $i$ has an accepted position $\mathbf{x}_i^n$ in metres and velocity
+$\mathbf{v}_i^n$ in $\mathrm{m\,s^{-1}}$. A working predicted position is written $\mathbf{p}_i^{(l)}$, where
+$l$ is the Jacobi iteration. Working values do not become accepted state until the entire timestep succeeds.
+
+All configuration values, particle state, kernel calculations, solver arithmetic, derived values and serial
+reductions use IEEE-754 binary32 (`f32`). Particle processing, neighbour lists and sums use ascending stable
+particle identity. This stable order makes repeated serial runs deterministic on the same supported environment.
+Fast-math reassociation or reduced precision would be a separate experiment.
+
+The reference uses these project decisions:
+
+| Quantity | Reference value or policy |
+| --- | --- |
+| Coordinates | Right-handed metres, positive $y$ upward |
+| External acceleration | $(0,-9.81,0)\,\mathrm{m\,s^{-2}}$ |
+| Fixed timestep | $\Delta t=1/120\,\mathrm{s}$ |
+| Particle spacing and CFL diameter | $\Delta x=d_p=0.05\,\mathrm{m}$ |
+| Kernel support | $h=2\Delta x=0.10\,\mathrm{m}$ |
+| Physical rest density | $\rho_0^{\mathrm{phys}}=1000\,\mathrm{kg\,m^{-3}}$ |
+| Solver work | Exactly four Jacobi iterations |
+| Relaxation | $\varepsilon=10^{-6}h^{-2}=10^{-4}\,\mathrm{m^{-2}}$ nominally |
+| Artificial pressure | Enabled: $k_{\mathrm{corr}}=0.1h^2=0.001\,\mathrm{m^2}$, $\Delta q=0.2h=0.02\,\mathrm{m}$, $n_{\mathrm{corr}}=4$ nominally |
+| Boundaries | Static unit-normal planes acting on particle centres; no friction, restitution or boundary density |
+| Optional velocity effects | XSPH viscosity and vorticity confinement disabled |
+| Neighbour search | One rebuild after prediction per timestep |
+
+The relationships in the table are authoritative. For example, $h$ comes from $2\Delta x$, and the relaxation
+and artificial-pressure values come from $h$; they are not unrelated rounded values.
+
+## Acceleration, prediction and CFL warning
+
+External acceleration first produces an intermediate velocity:
 
 ```math
-\mathbf{v}_i^*
-=
-\mathbf{v}_i+\Delta t\,\mathbf{a}_{\mathrm{ext},i}
+\mathbf{v}_i^*=\mathbf{v}_i^n+\Delta t\,\mathbf{a}_{\mathrm{ext},i}.
 ```
 
-#### Meaning
-
-The particle's velocity is changed by acceleration: 
+The initial position prediction is then:
 
 ```math
-\text{new velocity} 
-= 
-\text{old velocity} 
-+ 
-\text{acceleration}\times\text{time}
+\mathbf{p}_i^{(0)}=\mathbf{x}_i^n+\Delta t\,\mathbf{v}_i^*.
 ```
 
-For example, gravity makes the downward velocity increase during every timestep.
+The star means “working velocity”, not final velocity. Density correction and plane projection can change the
+actual displacement, so the final velocity is reconstructed later.
 
-*The star in $`\mathbf{v}_i^*`$ means that this is an intermediate velocity, $\therefore$ it is not necessarily the final velocity for the step.*
-
-### Predict the new position 
-
-#### Variables 
-
-- $\mathbf{x}_i$: particle $i$'s position at the start of the timestep.
-- $\mathbf{p}_i$: its predicted position.
-- $\mathbf{v}_i^*$: its post-acceleration velocity.
-- $\Delta t$: the timestep duration.
+The diagnostic maximum speed is
 
 ```math
-\mathbf{p}_i
-=
-\mathbf{x}_i+\Delta t\,\mathbf{v}_i^*
+v_{\max}=\max_i\|\mathbf{v}_i^*\|,
 ```
 
-#### Meaning
-
-The solver predicts where the particle would move if it travlled at $\mathbf{v}_i^*$ for one timestep. 
-This position is only a prediction. The density and boundary solvers may subsequently move it.
-
-### CFL timestep check
-
-#### Variables
-
-- $\Delta t$: the proposed timestep.
-- $\lambda_{\mathrm{CFL}}$: a dimensionless safety factor, usually less than
-  $1$.
-- $d_p$: the characteristic particle diameter.
-- $\mathbf{v}_i^*$: particle $i$'s post-acceleration velocity.
-- $\lVert\mathbf{v}_i^*\rVert$: particle $i$'s speed.
-- $\max_i\lVert\mathbf{v}_i^*\rVert$: the greatest speed of any particle.
+and the selected velocity CFL check is
 
 ```math
-\Delta t
-\leq
-\lambda_{\mathrm{CFL}}
-\frac{d_p}{\max_i\lVert\mathbf{v}_i^*\rVert}
+\Delta t\leq\lambda_{\mathrm{CFL}}\frac{d_p}{v_{\max}},
+\qquad \lambda_{\mathrm{CFL}}=0.4.
 ```
 
-A prticle should not travel too far during a single timestep. The fastest particle therefore determines the maximum timestep:
+This is a diagnostic, not an adaptive timestep. If $v_{\max}>0$ and the fixed timestep is greater than the
+computed limit, the step continues and carries a non-fatal CFL warning. Equality passes. A successful warned run
+accepts its state but cannot be described as a warning-free canonical baseline.
+
+For an empty particle set, or any non-empty set whose post-acceleration speeds are all zero, Maelstrom defines
+$v_{\max}=0$. The limit is then semantically unbounded, there is no division by zero and there is no warning.
+
+## Three different kinds of neighbour set
+
+The contract distinguishes fixed solver membership, active per-iteration membership and fresh audit membership.
+Conflating them would change the experiment.
+
+### Fixed interaction membership
+
+After all initial predictions exist, brute force checks every distinct pair and builds:
 
 ```math
-\text{maximum timestep}
-\approx
-\frac{\text{particle size}}{\text{fastest speed}}
-\times
-\text{safety factor}
+\mathcal{N}_i^{(0)}=
+\left\{j\ne i\mid
+\left\|\mathbf{p}_i^{(0)}-\mathbf{p}_j^{(0)}\right\|<h
+\right\}.
 ```
 
-For example, if particles are $`0.02\,\mathrm{m}`$ wide, the fastest one travels at $`1\,\mathrm{m,s^{-1}}`$, and the safety factor is $0.4$, then:
+The comparison is strict. A particle exactly $h$ away is not a neighbour. The list contains valid, unique
+particles in ascending identity order and excludes $i$ itself. It is built once and is not rebuilt during the four
+iterations.
 
+### Active iteration support
 
-```math
-\Delta t
-\leq
-0.4\frac{0.02}{1}
-=
-0.008\,\mathrm{s}
-```
-
-## Finding neighbouring particles
-
-### Support and interaction sets
-
-#### Variables
-
-- $i$: the particle whose neighbours are being found.
-- $j$: a possible neighbouring particle.
-- $\mathbf{p}_i$ and $\mathbf{p}_j$: predicted particle positions.
-- $\lVert\mathbf{p}_i-\mathbf{p}_j\rVert$: the distance between particles $i$
-  and $j$.
-- $h$: the kernel support radius.
-- $\mathcal{S}_i$: particles within $h$, including particle $i$ itself.
-- $\mathcal{N}_i$: interacting neighbours, excluding particle $i$.
+Distances and kernel values are still recomputed from the current iteration positions. At iteration $l$:
 
 ```math
-\mathcal{S}_i
-=
-\lbrace
-j\mid
-\lVert\mathbf{p}_i-\mathbf{p}_j\rVert<h
-\rbrace
+\mathcal{S}_i^{(l)}=
+\{i\}\cup
+\left\{j\in\mathcal{N}_i^{(0)}\mid
+\left\|\mathbf{p}_i^{(l)}-\mathbf{p}_j^{(l)}\right\|<h
+\right\},
 ```
 
 ```math
-\mathcal{N}_i
-=
-\mathcal{S}_i\setminus\{i\}
+\mathcal{N}_i^{(l)}=\mathcal{S}_i^{(l)}\setminus\{i\}.
 ```
 
-#### Meaning
+Density support $\mathcal{S}$ includes the particle itself exactly once. Directional interaction $\mathcal{N}$
+does not. An original neighbour that moves to $r\geq h$ contributes zero. A particle that was originally outside
+and later moves inside is not added until the next timestep.
 
-$\mathcal{S}_i$ contains every particle closer than $h$ to particle $i$. It inclues $i$ itself becuase its distance from itself is zero.
+### Fresh correctness-audit support
 
-$\mathcal{N}_i$ removes partivle $i$ itself. It is used for interactions that require a direction between two different particles. 
+At a requested accepted-state checkpoint, the audit ignores all solver-owned membership and performs a fresh
+all-pairs strict-support search over the final accepted positions. This independently reveals error caused by the
+fixed per-step approximation. Audit membership never feeds back into simulation.
 
-The initial solver checks every pair of particles. For ${N}$ particles, it requires approximately $N^2$ comparisons.
+## Poly6 density weight and Spiky correction direction
 
-$\therefore$ its time complexity is:
+For displacement and distance
 
 ```math
-\Theta(N^2)
+\mathbf{r}_{ij}^{(l)}=\mathbf{p}_i^{(l)}-\mathbf{p}_j^{(l)},
+\qquad
+r_{ij}^{(l)}=\|\mathbf{r}_{ij}^{(l)}\|,
 ```
 
-This is slow for large simulations, but it is straightforward and useful as a reference implementation.
-
-## SPH kernels
-
-A kernel is a weighting function. Nearby particles receive a large $\text{weight}$, while particles new or betond the support radius recieve a small or zero $\text{weight}$
-
-### Relative displacement and distance
-
-#### Variables
-
-- $\mathbf{p}_i$ and $\mathbf{p}_j$: predicted particle positions.
-- $\mathbf{r}_{ij}$: the displacement vector from particle $j$ to particle
-  $i$.
-- $r_{ij}$: the scalar distance between the particles.
-- $\lVert\cdot\rVert$: vector length.
+the three-dimensional Poly6 density kernel is
 
 ```math
-\mathbf{r}_{ij}
-=
-\mathbf{p}_i-\mathbf{p}_j
-```
-
-```math
-r_{ij}
-=
-\lVert\mathbf{r}_{ij}\rVert
-```
-
-#### Meaning
-
-$`\mathbf{r}_{ij}`$ records both distance and direction. $`r_{ij}`$ contains only the distance.
-
-*The two r's are different if you look closely.*
-
-#### Variables
-
-- $r$: the distance between two particles.
-- $h$: the kernel support radius.
-- $W_{\mathrm{poly6}}(r,h)$: the scalar density weight.
-
-```math
-W_{\mathrm{poly6}}(r,h)=\dfrac{315}{64\pi h^9}(h^2-r^2)^3
-\qquad \text{for }0\leq r\lt h
+W_{\mathrm{poly6}}(r,h)=
+\frac{315}{64\pi h^9}(h^2-r^2)^3
+\qquad\text{for }0\leq r<h,
 ```
 
 ```math
 W_{\mathrm{poly6}}(r,h)=0
-\qquad \text{for }r\geq h
+\qquad\text{for }r\geq h.
 ```
 
-#### Meaning 
+Poly6 is a scalar weight with units $\mathrm{m^{-3}}$. It is non-zero for self at $r=0$ and zero at the strict
+support boundary.
 
-When another particle is inside the support radius, it contributes to the density estimate:
-
-- A very close particle has a large weight. 
-- The weight decreases smoothly as $r$ approches $h$
-- At or beyond $h$, the contribution is 0.
-
-Poly6 produces a scalar weight. It tells us how much a particle contributes to density, but it does not provide a correction direction.
-
-### Spiky gradient
-
-#### Variables
-
-- $\mathbf{r}$: the displacement vector between two particles.
-- $r=\lVert\mathbf{r}\rVert$: the distance between them.
-- $h$: the kernel support radius.
-- $\mathbf{r}/r$: a unit vector giving their relative direction.
-- $\mathbf{G}_{\mathrm{spiky}}(\mathbf{r},h)$: the vector used to construct
-  position-correction directions.
-- $\mathbf{0}$: the zero vector.
+The Spiky operator supplies a vector direction:
 
 ```math
-\mathbf{G}_{\mathrm{spiky}}(\mathbf{r},h)
-=-\dfrac{45}{\pi h^6}(h-r)^2\dfrac{\mathbf{r}}{r}
-\qquad \text{for }0\lt r\lt h
+\mathbf{G}_{\mathrm{spiky}}(\mathbf{r},h)=
+-\frac{45}{\pi h^6}(h-r)^2\frac{\mathbf{r}}{r}
+\qquad\text{for }0<r<h,
 ```
 
 ```math
 \mathbf{G}_{\mathrm{spiky}}(\mathbf{r},h)=\mathbf{0}
-\qquad \text{for }r=0\text{ or }r\geq h
+\qquad\text{for }r=0\text{ or }r\geq h.
 ```
 
-#### Meaning
+Its units are $\mathrm{m^{-4}}$. At zero distance, $\mathbf{r}/r$ has no unique direction. Returning zero is an
+explicit Maelstrom numerical convention, not an analytical direction. It avoids invalid arithmetic but cannot
+separate perfectly coincident particles.
 
-The Spiky gradient supplies both: 
+These zero branches apply only to valid finite arguments. A negative scalar distance, non-positive $h$, or any
+non-finite argument is invalid input and causes validation or timestep failure; it is not treated as
+out-of-support zero.
 
-- A strength based on how close the particles are
-- A direction based on $\mathbf{r}/r$
+## Physical density, normalised density and the lattice-derived mass
 
-It is zero outside the support radius.
-
-At $r=0$, the direction $\mathbf{r}/r$ would require division by zero.
-$\therefore$ two particles at the same position do not define a unique direction. The implementation therefore returns the zero vector. 
-
-This prevents invalid floating point values, but it does not seperate two perfectly overlapping particles. 
-
-## Density estimation
-
-### Physical and normalised density
-
-#### Variables
-
-- $m$: the common mass of every fluid particle.
-- $\rho_i^{\mathrm{phys}}$: the physical mass density around particle $i$.
-- $\widetilde{\rho}_i$: the normalised, or mass-divided, density.
-- $\mathcal{S}_i$: the support set, including particle $i$.
-- $r_{ij}$: the distance between particles $i$ and $j$.
-- $h$: the support radius.
-- $W_{\mathrm{poly6}}$: the Poly6 density kernel.
+Every fluid particle has the same positive mass $m$. Physical density is
 
 ```math
-\rho_i^{\mathrm{phys}}
+\rho_i^{\mathrm{phys},(l)}=
+m\sum_{j\in\mathcal{S}_i^{(l)}}
+W_{\mathrm{poly6}}(r_{ij}^{(l)},h)
+\quad[\mathrm{kg\,m^{-3}}].
+```
+
+Dividing out the common mass gives the solver's normalised density:
+
+```math
+\widetilde{\rho}_i^{(l)}=
+\frac{\rho_i^{\mathrm{phys},(l)}}{m}
 =
-m
-\sum_{j\in\mathcal{S}_i}
-W_{\mathrm{poly6}}(r_{ij},h)
+\sum_{j\in\mathcal{S}_i^{(l)}}
+W_{\mathrm{poly6}}(r_{ij}^{(l)},h)
+\quad[\mathrm{m^{-3}}].
+```
+
+“Normalised” here means mass-divided, not dimensionless.
+
+The target $\widetilde{\rho}_0$ is derived from an interior cubic lattice rather than guessed. With
+$h=2\Delta x$, strict support includes the 27 integer offsets whose length is less than $2\Delta x$:
+
+```math
+\widetilde{\rho}_0=
+\sum_{\mathbf{r}\in\mathcal{L}}
+W_{\mathrm{poly6}}(\|\mathbf{r}\|,h)
+\approx8078.201335\,\mathrm{m^{-3}},
 ```
 
 ```math
-\widetilde{\rho}_i
-=
-\sum_{j\in\mathcal{S}_i}
-W_{\mathrm{poly6}}(r_{ij},h)
+m=\frac{\rho_0^{\mathrm{phys}}}{\widetilde{\rho}_0}
+\approx0.123789933\,\mathrm{kg}.
 ```
 
-#### Meaning 
+The decimals are high-precision audit anchors, not copied runtime constants. The reference derives the values
+with the binary32 kernel and lexicographic $(a,b,c)$ offset sum. Phase 1 must verify that calculation
+independently with a justified floating-point tolerance.
 
-The physical density is estimated by adding the kernel contributions of nearby particles and multiplying each contribution by particle mass. 
+## Density constraint and substituted directions
 
-Because every particle has the same mass, the solver can divide density by $m$: 
-
-#### Variables
-
-- $\widetilde{\rho}_i$: the mass-divided density.
-- $\rho_i^{\mathrm{phys}}$: the physical density.
-- $m$: the common fluid-particle mass.
+The dimensionless density error is
 
 ```math
-\widetilde{\rho}_i
+C_i(\mathbf{p}^{(l)})=
+\frac{\widetilde{\rho}_i^{(l)}}{\widetilde{\rho}_0}-1
 =
-\frac{\rho_i^{\mathrm{phys}}}{m}
+\frac{\rho_i^{\mathrm{phys},(l)}}{\rho_0^{\mathrm{phys}}}-1.
 ```
 
-#### Meaning 
+$C_i>0$ means density is above rest density; $C_i<0$ means it is below rest density. The reference does not clamp
+negative constraints or multipliers. Free-surface, isolated and single-particle states are valid even when their
+density is far below the target.
 
-This removes a repeated mass factor from later equations. Although it is called "normalised density", $\widetilde{\rho}$ is not necessarily dimensionsless.
-
-### Density constraint 
-
-#### Variables
-
-- $C_i(\mathbf{p})$: the density constraint value for particle $i$.
-- $\widetilde{\rho}_i$: the estimated normalised density.
-- $\widetilde{\rho}_0$: the desired normalised rest density.
-- $\rho_i^{\mathrm{phys}}$: the estimated physical density.
-- $\rho_0^{\mathrm{phys}}$: the desired physical rest density.
-- $\mathbf{p}$: the collection of all predicted particle positions.
+PBF estimates density with Poly6 but deliberately uses Spiky for correction directions. Define
+$\mathbf{g}_k^{(i,l)}$ as:
 
 ```math
-C_i(\mathbf{p})
-=
-\frac{\widetilde{\rho}_i}{\widetilde{\rho}_0}-1
-=
-\frac{\rho_i^{\mathrm{phys}}}{\rho_0^{\mathrm{phys}}}-1
-```
-
-#### Meaning
-
-This measures the relative differece btween the current density and the target density: 
-
-- $C_i=0$: the density is exactly correct;
-- $C_i>0$: the region is too dense or compressed;
-- $C_i<0$: the region is less dense than the rest density.
-
-For example, if the density is $`5\%`$ too high, then:
-
-#### Variables
-
-- $C_i$: the resulting relative density contraint error.
-- 1.05: the current density divided by the rest density.
-
-```math
-C_i
-=
-1.05-1
-=
-0.05
-```
-
-#### Meaning
-
-The solver tries to move particles until $C_i$ is close to zero.
-
-## Density correction directions
-
-### Substituded gradient direction 
-
-#### Variables 
-
-- $i$: the particle whose density constraint is being solved.
-- $k$: the particle whose effect on constraint $i$ is being considered.
-- $\mathbf{g}_k^{(i)}$: the correction direction associated with particle $k$
-  and constraint $i$.
-- $\widetilde{\rho}_0$: the normalised rest density.
-- $\mathcal{N}_i$: the neighbours of particle $i$, excluding itself.
-- $\mathbf{r}_{ij}$: the displacement from particle $j$ to particle $i$.
-- $\mathbf{r}_{ik}$: the displacement from particle $k$ to particle $i$.
-- $\mathbf{G}_{\mathrm{spiky}}$: the Spiky gradient.
-- $h$: the support radius.
-
-```math
-\mathbf{g}_k^{(i)}
-=
+\mathbf{g}_k^{(i,l)}=
 \begin{cases}
 \dfrac{1}{\widetilde{\rho}_0}
-\displaystyle\sum_{j\in\mathcal{N}_i}
-\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ij},h),
-& k=i,\\[0pt]
+\displaystyle\sum_{j\in\mathcal{N}_i^{(l)}}
+\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ij}^{(l)},h),
+& k=i,\\[1.2em]
 -\dfrac{1}{\widetilde{\rho}_0}
-\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ik},h),
-& k\in\mathcal{N}_i,\\[0pt]
-\mathbf{0},
-& \text{otherwise.}
+\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ik}^{(l)},h),
+& k\in\mathcal{N}_i^{(l)},\\[0pt]
+\mathbf{0}, & \text{otherwise.}
 \end{cases}
 ```
 
-#### Meaning 
+$\mathbf{g}$ has units $\mathrm{m^{-1}}$. It is called a substituted direction because it is not literally the
+analytical derivative of the Poly6 expression.
 
-This equation asks: 
+## Multiplier, artificial pressure and correction
 
-- In which direction would moving particle $k$ change particle $i$'s density constrint? 
-
-There are three cases:
-
-1. When $k=i$, add the effects of every neighbour.
-2. When $k$ is one of $i$'s neihbours, use the opposite pairwise direction.
-3. When $k$ is unrelated to $i$, it has no effect, so the result is zero.
-
-The density itself is calculated using Poly6. However the correction direction is deliberately built using the Spiky gradient becuase it generally provides more usefull pressure like correction directions. 
-
-Therefore. $\mathbf{g}_k^{(i)}$ is a solver defined substituted direction. It is not literally the analytical gradient of the Poly6 density formula. 
-
-## Constraint projection
-
-### Genric Position based dynamics correlation
-
-#### Variables
-
-- $C_i$: the value of constraint $i$.
-- $\Delta\mathbf{p}_k^{(i)}$: the correction applied to particle $k$ because
-  of constraint $i$.
-- $m_k$: the mass of particle $k$.
-- $w_k=1/m_k$: the inverse mass of particle $k$.
-- $\nabla_{\mathbf{p}_k}C_i$: the direction in which moving particle $k$
-  changes constraint $i$.
-- $j$: an index covering every particle affected by the constraint.
-- $\varepsilon$: a small positive regularisation value.
+The relaxed multiplier is
 
 ```math
-\Delta\mathbf{p}_k^{(i)}
-=
--\frac{
-w_k C_i
-}{
-\displaystyle
-\sum_j
-w_j
-\left\lVert
-\nabla_{\mathbf{p}_j}C_i
-\right\rVert^2
-+
-\varepsilon
-}
-\nabla_{\mathbf{p}_k}C_i
+\lambda_i^{(l)}=
+-\frac{C_i(\mathbf{p}^{(l)})}
+{\displaystyle\sum_{k\in\mathcal{S}_i^{(l)}}\left\|\mathbf{g}_k^{(i,l)}\right\|^2+\varepsilon}.
 ```
 
-#### Meaning
+The denominator and $\varepsilon$ have units $\mathrm{m^{-2}}$, so $\lambda$ has units $\mathrm{m^2}$. The
+relaxation prevents division by a zero or very small direction sum. The particular value
+$10^{-6}h^{-2}$ is a scale-aware Maelstrom choice, not a calibrated material property.
 
-This is the general Position-Based Dynamics rule for moving particles so that a constraint becomes closer to zero. 
-
-The correction depends on: 
-
-- How severly the constraint is violated
-- Whihc direction changes it
-- How freely each particle is allowed to move
-- The combined strength of all relevant correction directions.
-
-Inverse mass controls how much a particle moves: 
-
-- A smaller mass means a larger inverse mass and more movement
-- A larger mass means a smaller inverse mass and less movement
-- A fixed particle has $w_k=0$, so it does not move.
-
-This small $\varepsilon$ prevents divisio by zero or by a very small denominator.
-
-### PBF constraint multiplier
-
-#### Variables
-
-- $\lambda_i$: the scalar correction multiplier for particle $i$'s density
-  constraint.
-- $C_i$: the density constraint error.
-- $\mathbf{g}_k^{(i)}$: the substituted correction direction associated with
-  particle $k$.
-- $\sum_k$: a sum over particle $i$ and its affected neighbours.
-- $\varepsilon$: a positive regularisation value.
-
+Artificial pressure is mandatory in the reference:
 
 ```math
-\lambda_i
-=
--
-\frac{C_i}{
-\displaystyle
-\sum_k
-\left\lVert
-\mathbf{g}_k^{(i)}
-\right\rVert^2
-+
-\varepsilon
-}
-```
-
-#### Meaning 
-
-$\lambda_i$ converts particle $i$'s density error into a correction strength. 
-A large density error generally produces a larger correlation. The denominator prevents an excessive correction directions are present.
-
-For positive density error, $C_i>0$, the leading minus normally makes $\lambda_i$ negative. The final direction of movement also depends on the Spiky gradient.
-
-### Artificial pressure
-
-The PBF artificial-pressure term resists particle clumping at short distances.<sup>[<a href="/docs/research/sources/004-macklin-muller-position-based-fluids.md">S004</a>]</sup>
-
-#### Variables
-
-- $s_{\mathrm{corr},ij}$: the artificial-pressure contribution for particles
-  $i$ and $j$.
-- $k_{\mathrm{corr}}\geq0$: its strength.
-- $r_{ij}$: the distance between particles $i$ and $j$.
-- $\Delta q$: a fixed reference separation satisfying $0<\Delta q<h$.
-- $n_{\mathrm{corr}}>0$: the exponent controlling how sharply the term changes
-  with separation.
-
-```math
-s_{\mathrm{corr},ij}
-=
+s_{\mathrm{corr},ij}^{(l)}=
 -k_{\mathrm{corr}}
 \left(
-\frac{W_{\mathrm{poly6}}(r_{ij},h)}
+\frac{W_{\mathrm{poly6}}(r_{ij}^{(l)},h)}
 {W_{\mathrm{poly6}}(\Delta q,h)}
-\right)^{n_{\mathrm{corr}}}
+\right)^{n_{\mathrm{corr}}}.
 ```
 
-#### Meaning
+$0<\Delta q<h$ makes the denominator positive. The ratio is dimensionless, while
+$k_{\mathrm{corr}}$ and $s_{\mathrm{corr}}$ have units $\mathrm{m^2}$ so they can be added to $\lambda$. The
+paper supplies the empirical form and reported coordinate-space values; scaling the strength as $0.1h^2$ is the
+project's dimensional choice.
 
-The Poly6 ratio compares the current particle separation with the reference
-separation. Raising the ratio to $n_{\mathrm{corr}}$ makes the response grow
-more sharply when particles become very close. The leading minus sign makes the
-term contribute a separating correction when combined with the Spiky direction.
-
-The formula requires $W_{\mathrm{poly6}}(\Delta q,h)>0$, which is why the
-reference separation must remain inside the kernel support.
-
-### Fluid particle position correction
-
-#### Variables 
-
-- $\Delta\mathbf{p}_i$: the total correction for particle $i$.
-- $\widetilde{\rho}_0$: the normalised rest density.
-- $\mathcal{N}_i$: the set of interacting neighbours.
-- $\lambda_i$ and $\lambda_j$: the density multipliers for particles $i$ and
-  $j$.
-- $s_{\mathrm{corr},ij}$: an optional artificial-pressure term.
-- $\mathbf{r}_{ij}$: the displacement between particles $i$ and $j$.
-- $\mathbf{G}_{\mathrm{spiky}}$: the correction-direction operator.
-- $h$: the support radius.
+The total fluid correction is
 
 ```math
-\Delta\mathbf{p}_i
-=
+\Delta\mathbf{p}_i^{(l)}=
 \frac{1}{\widetilde{\rho}_0}
-\sum_{j\in\mathcal{N}_i}
-\left(
-\lambda_i+\lambda_j+s_{\mathrm{corr},ij}
-\right)
-\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ij},h)
+\sum_{j\in\mathcal{N}_i^{(l)}}
+\left(\lambda_i^{(l)}+\lambda_j^{(l)}+s_{\mathrm{corr},ij}^{(l)}\right)
+\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ij}^{(l)},h).
 ```
 
-#### Maning
+The units reduce to metres. Coincident distinct particles can have finite density, multipliers and artificial
+pressure, but their Spiky direction is zero, so no arbitrary separating movement is created.
 
-Every neighbour contributes a small movement to particle $i$. The contribution uses: 
+## Jacobi snapshots and plane projection
 
-- Particle $i$'s density error
-- Neighbour $j$'s density error
-- An optional artificial pressure correction
-- The direction between the particles 
+Each of the four iterations follows the same strict order:
 
-Adding all the neighbour contributions gives the total change in predicted position.
+1. Read only $\mathbf{p}^{(l)}$ and fixed membership $\mathcal{N}^{(0)}$ while calculating every active set,
+   density, constraint, direction and multiplier.
+2. After all multipliers exist, read the same position snapshot and complete multiplier snapshot while calculating
+   every correction into separate storage.
+3. Form every candidate:
 
-### Apply the correction
+   ```math
+   \mathbf{q}_i^{(l)}=\mathbf{p}_i^{(l)}+\Delta\mathbf{p}_i^{(l)}.
+   ```
 
-#### Variables
+4. Project each candidate once against every configured plane in configuration order. The projected results form
+   the next immutable snapshot $\mathbf{p}^{(l+1)}$.
 
-- $\mathbf{p}_i$: the current working predicted position.
-- $\Delta\mathbf{p}_i$: the correction calculated for this iteration.
-- $\leftarrow$: replace the value on the left with the result on the right.
+No particle may see another particle's partly updated position or multiplier. This is Jacobi semantics even though
+the first implementation is serial.
 
+A plane uses a finite unit normal $\mathbf{n}$ pointing into the permitted half-space and finite offset $d$:
 
 ```math
-\mathbf{p}_i
-\leftarrow
-\mathbf{p}_i+\Delta\mathbf{p}_i
+C_{\mathrm{plane}}(\mathbf{p})=\mathbf{n}\cdot\mathbf{p}-d\geq0.
 ```
 
-#### Meaning
-
-This moves the predicted position by the calculated correction.
-
-The solver must use **Jacobi ordering**:
-
-1. Calculate every $\lambda_i$ from the same position state.
-2. Calculate every $\Delta\mathbf{p}_i$ from that same state.
-3. Store the corrections separately.
-4. Only then update all predicted positions.
-
-Particle $0$ must not be updated before particle $1$'s correction has been
-calculated. Otherwise, later particles would see newer data than earlier
-particles, and the result would depend on iteration order.
-
-## Reconstructing velocity
-
-### Final velocity and position
-
-#### Variables
-
-- $\mathbf{x}_i$: the position at the start of the timestep.
-- $\mathbf{p}_i$: the corrected final predicted position.
-- $\mathbf{v}_i$: the reconstructed velocity.
-- $\Delta t$: the timestep.
+If the computed value is negative, projection is
 
 ```math
-\mathbf{v}_i
-\leftarrow
-\frac{\mathbf{p}_i-\mathbf{x}_i}{\Delta t}
+\mathbf{p}\leftarrow
+\mathbf{p}-C_{\mathrm{plane}}(\mathbf{p})\mathbf{n}.
 ```
 
+The plane acts on the particle centre; $d_p$ does not create a hidden collision radius. A point exactly on the
+plane is unchanged. A non-unit, zero or non-finite normal is invalid configuration and is rejected rather than
+silently normalised. Phase 2 will freeze the input tolerance used to recognise unit normals.
+
+Sequential projections are deterministic. After iteration four, every proposed position must satisfy every
+configured plane. If a later projection has moved a point outside an earlier plane, the timestep fails rather than
+accepting penetration. There is no friction, restitution, velocity reflection, boundary density or boundary
+particle correction.
+
+## Velocity reconstruction and atomic acceptance
+
+After iteration four, velocity is reconstructed from the whole corrected displacement:
+
 ```math
-\mathbf{x}_i
-\leftarrow
-\mathbf{p}_i
+\mathbf{v}_i^{n+1}=
+\frac{\mathbf{p}_i^{(4)}-\mathbf{x}_i^n}{\Delta t},
+\qquad
+\mathbf{x}_i^{n+1}=\mathbf{p}_i^{(4)}.
 ```
 
-#### Meaning
+The position and velocity arrays are still only proposed state. The step checks every produced value for
+finiteness, checks identity and neighbour invariants, and checks all final plane constraints. Only when every
+check passes are all positions and velocities accepted together.
 
-The solver calculates the velocity that would have produced the particle's
-actual corrected movement:
+If any stage fails, the complete working step is discarded. The previous accepted
+$(\mathbf{x}^n,\mathbf{v}^n)$ remains unchanged; no partial particle or partial array update is visible. In a
+multi-step run, the state after the last fully successful step remains accepted, and the failed step is not counted
+as completed. Cancellation during a step follows the same rule. A CFL warning alone does not cause failure.
 
-#### Variables
+## Density-error audit
 
-- velocity: the reconstructed velocity.
-- change in position: the corrected displacement during the timestep.
-- time: the timestep duration.
-
-```math
-\text{velocity}
-=
-\frac{\text{change in position}}{\text{time}}
-```
-
-#### Meaning
-
-This is important because density and boundary corrections may have moved the
-particle away from its original predicted position.
-
-After calculating velocity, the corrected predicted position becomes the
-particle's new current position.
-
-## Measuring density error
-
-### Per-particle error
-
-#### Variables
-
-- $e_i$: the relative density error for particle $i$.
-- $\widetilde{\rho}_i$: the measured normalised density.
-- $\widetilde{\rho}_0$: the target normalised density.
-- $\lvert\cdot\rvert$: absolute value.
-
+At a requested accepted-state checkpoint, fresh support sets produce:
 
 ```math
-e_i
-=
-\left\lvert
-\frac{\widetilde{\rho}_i}{\widetilde{\rho}_0}-1
-\right\rvert
-```
-
-#### Meaning
-
-This reports how far the density is from the target without caring whether it
-is too high or too low.
-
-For example:
-
-- a density $1.03$ times the target gives $e_i=0.03$;
-- a density $0.97$ times the target also gives $e_i=0.03$.
-
-Both represent a $`3\%`$ error.
-
-### Mean and maximum density error
-
-#### Variables
-
-- $\mathcal{E}$: the set of particles selected for evaluation.
-- $\lvert\mathcal{E}\rvert$: the number of particles in the evaluation set.
-- $e_i$: particle $i$'s relative density error.
-- $E_{\mathrm{mean}}$: the average density error.
-- $E_{\max}$: the largest density error.
-
-```math
-E_{\mathrm{mean}}
-=
-\frac{1}{\lvert\mathcal{E}\rvert}
-\sum_{i\in\mathcal{E}}e_i
+e_i=
+\left|\frac{\widetilde{\rho}_i}{\widetilde{\rho}_0}-1\right|,
 ```
 
 ```math
-E_{\max}
-=
-\max_{i\in\mathcal{E}}e_i
+E_{\mathrm{mean}}=
+\frac{1}{|\mathcal{E}|}\sum_{i\in\mathcal{E}}e_i,
+\qquad
+E_{\max}=\max_{i\in\mathcal{E}}e_i,
 ```
 
-#### Meaning
+where $\mathcal{E}$ contains every accepted fluid particle. A large finite density error is diagnostic and never
+changes or invalidates state by itself. For an empty set, the audit reports sample count zero and both aggregates
+as unavailable; it does not divide by zero or report zero, infinity or NaN.
 
-The mean answers:
+The audit is outside primary solver timing and cannot mutate state. The primary backend-step boundary includes
+step validation, acceleration, prediction, neighbour search, four iterations, reconstruction, final validation and
+atomic commit. Scene/configuration loading, CLI parsing, audits, snapshots for presentation, serialisation,
+logging, rendering and formatting are outside. Phase 7 later owns clock placement, warm-up, sampling and
+aggregation policy without changing that logical boundary.
 
-> How accurate is the simulation on average?
+## Edge and failure classification
 
-The maximum answers:
+The behaviour most likely to be missed in tests is summarised here:
 
-> How bad is the worst particle?
-
-Both are useful. A low mean can hide a few particles with extremely large
-errors, while the maximum alone does not describe the typical particle.
-
-The evaluation set must be defined carefully. For example, surface particles
-naturally have fewer neighbours and may behave differently from interior
-particles.
-
-## Simple plane boundaries
-
-### Plane constraint
-
-#### Variables
-
-- $\mathbf{p}_i$: the predicted particle position.
-- $\mathbf{n}$: a unit normal pointing towards the permitted side of the
-  plane.
-- $d$: the plane offset.
-- $\mathbf{n}\cdot\mathbf{p}_i$: the dot product.
-- $C_{\mathrm{plane}}$: the signed plane constraint value.
-
-```math
-C_{\mathrm{plane}}(\mathbf{p}_i)
-=
-\mathbf{n}\cdot\mathbf{p}_i-d
-\geq 0
-```
-
-#### Meaning
-
-This defines which side of a plane the particle is allowed to occupy. Because
-$\mathbf{n}$ is a unit vector:
-
-- $C_{\mathrm{plane}}>0$: the particle is on the permitted side;
-- $C_{\mathrm{plane}}=0$: the particle is on the plane;
-- $C_{\mathrm{plane}}<0$: the particle has penetrated the boundary.
-
-### Remove plane penetration
-
-#### Variables
-
-- $\mathbf{p}_i$: the penetrated particle position.
-- $C_{\mathrm{plane}}(\mathbf{p}_i)$: the negative signed distance.
-- $\mathbf{n}$: the outward unit normal.
-
-```math
-\mathbf{p}_i
-\leftarrow
-\mathbf{p}_i
--
-C_{\mathrm{plane}}(\mathbf{p}_i)\mathbf{n}
-```
-
-#### Meaning
-
-When the constraint is negative, subtracting it creates a positive movement
-along the normal.
-
-For example, suppose the particle is $`0.02\,\mathrm{m}`$ inside the boundary:
-
-#### Variables
-
-- $C_{\mathrm{plane}}$: the signed penetration distance.
-
-
-
-```math
-C_{\mathrm{plane}}
-=
--0.02
-```
-
-The resulting movement along the normal is:
-
-#### Variables
-
-- $\mathbf{n}$: the outward unit normal.
-- $0.02$: the penetration depth in metres.
-
-```math
--(-0.02)\mathbf{n}
-=
-0.02\mathbf{n}
-```
-
-#### Meaning
-
-This places the particle exactly on the plane.
-
-Plane projection prevents penetration, but it does not contribute to the SPH
-density estimate. Fluid next to the wall can therefore appear to have missing
-neighbours.
-
-## Density-aware boundary particles
-
-### Boundary sample volume and pseudo-mass
-
-#### Variables
-
-- $b$: a boundary sample.
-- $l$: a neighbouring boundary sample.
-- $\mathbf{x}_b$ and $\mathbf{x}_l$: the fixed positions of boundary samples.
-- $W$: the selected scalar SPH density kernel.
-- $h$: the support radius.
-- $V_b$: the volume represented by boundary sample $b$.
-- $\rho_0^{\mathrm{phys}}$: the physical rest density.
-- $\Psi_b$: boundary sample $b$'s SPH pseudo-mass.
-
-```math
-V_b
-=
-\left(
-\sum_l
-W(\mathbf{x}_b-\mathbf{x}_l,h)
-\right)^{-1}
-```
-
-```math
-\Psi_b
-=
-\rho_0^{\mathrm{phys}}V_b
-```
-
-#### Meaning
-
-The first equation estimates how much volume one boundary sample represents.
-If many boundary samples are packed closely together, their kernel sum is
-large, so each sample represents a smaller volume.
-
-The second equation converts this volume into a density contribution that
-behaves like mass in SPH calculations.
-
-$\Psi_b$ is a pseudo-mass used for density estimation. It is not the physical
-inertial mass of the solid object.
-
-### Density including boundary samples
-
-#### Variables
-
-- $\rho_i^{\mathrm{phys}}$: the physical density estimated for fluid particle
-  $i$.
-- $\mathcal{S}_i$: the nearby fluid particles, including $i$.
-- $m_j$: the mass of fluid particle $j$.
-- $\mathbf{p}_i$ and $\mathbf{p}_j$: fluid-particle positions.
-- $\mathcal{B}_i$: the boundary samples near fluid particle $i$.
-- $\Psi_b$: the pseudo-mass of boundary sample $b$.
-- $\mathbf{x}_b$: the fixed boundary-sample position.
-- $W$: the density kernel.
-- $h$: the support radius.
-
-
-```math
-\rho_i^{\mathrm{phys}}
-=
-\sum_{j\in\mathcal{S}_i}
-m_jW(\mathbf{p}_i-\mathbf{p}_j,h)
-+
-\sum_{b\in\mathcal{B}_i}
-\Psi_bW(\mathbf{p}_i-\mathbf{x}_b,h)
-```
-
-#### Meaning
-
-Density now has two parts:
-
-#### Variables
-
-- fluid contribution: density supplied by neighbouring fluid particles.
-- boundary contribution: density supplied by nearby boundary samples.
-
- 
-
-```math
-\text{density}
-=
-\text{fluid contribution}
-+
-\text{boundary contribution}
-```
-
-#### Meaning
-
-The boundary samples replace some of the density contribution that would
-otherwise be missing near a solid wall. This can produce more consistent fluid
-density near boundaries than simple plane projection.
-
-### Normalised boundary weight
-
-#### Variables
-
-- $\Psi_b$: the boundary pseudo-mass.
-- $m$: the common fluid-particle mass.
-- $\widetilde{\Psi}_b$: the boundary contribution expressed in the solver's
-  normalised scale.
-
- 
-
-```math
-\widetilde{\Psi}_b
-=
-\frac{\Psi_b}{m}
-```
-
-#### Meaning
-
-The rest of the equal-mass solver has divided physical density by the common
-fluid mass $m$. Boundary pseudo-mass must be divided by the same value to use
-the same density scale.
-
-### Correction direction with boundaries
-
-#### Variables
-
-- $\mathbf{g}_i^{(i)}$: the correction direction for particle $i$'s own
-  constraint.
-- $\widetilde{\rho}_0$: the normalised rest density.
-- $\mathcal{N}_i$: nearby fluid neighbours.
-- $\mathcal{B}_i$: nearby boundary samples.
-- $\mathbf{r}_{ij}$: the displacement between fluid particles.
-- $\widetilde{\Psi}_b$: the normalised boundary weight.
-- $\mathbf{p}_i-\mathbf{x}_b$: the displacement from boundary sample $b$ to
-  particle $i$.
-- $\mathbf{G}_{\mathrm{spiky}}$: the correction-direction operator.
-- $h$: the support radius.
-
- 
-
-```math
-\mathbf{g}_i^{(i)}
-=
-\frac{1}{\widetilde{\rho}_0}
-\left[
-\sum_{j\in\mathcal{N}_i}
-\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ij},h)
-+
-\sum_{b\in\mathcal{B}_i}
-\widetilde{\Psi}_b
-\mathbf{G}_{\mathrm{spiky}}(\mathbf{p}_i-\mathbf{x}_b,h)
-\right]
-```
-
-#### Meaning
-
-The particle's correction direction now accounts for both:
-
-- nearby fluid particles;
-- nearby solid-boundary samples.
-
-Changing the density formula alone would be insufficient. Because boundaries
-affect density, they must also affect the direction used to reduce density
-error.
-
-This updated $\mathbf{g}_i^{(i)}$ also changes the denominator used to
-calculate $\lambda_i$.
-
-### Fluid correction with static boundaries
-
-#### Variables
-
-- $\Delta\mathbf{p}_i$: the total correction for fluid particle $i$.
-- $\widetilde{\rho}_0$: the normalised rest density.
-- $\mathcal{N}_i$: the fluid neighbours.
-- $\mathcal{B}_i$: the nearby boundary samples.
-- $\lambda_i$ and $\lambda_j$: the fluid density multipliers.
-- $s_{\mathrm{corr},ij}$: the artificial-pressure term.
-- $\widetilde{\Psi}_b$: the normalised boundary weight.
-- $\mathbf{G}_{\mathrm{spiky}}$: the correction-direction operator.
-- $\mathbf{r}_{ij}$: the fluid-particle displacement.
-- $\mathbf{p}_i-\mathbf{x}_b$: the fluid-to-boundary displacement.
-- $h$: the support radius.
-
- 
-
-```math
-\Delta\mathbf{p}_i
-=
-\frac{1}{\widetilde{\rho}_0}
-\left[
-\sum_{j\in\mathcal{N}_i}
-\left(
-\lambda_i+\lambda_j+s_{\mathrm{corr},ij}
-\right)
-\mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ij},h)
-+
-\lambda_i
-\sum_{b\in\mathcal{B}_i}
-\widetilde{\Psi}_b
-\mathbf{G}_{\mathrm{spiky}}(\mathbf{p}_i-\mathbf{x}_b,h)
-\right]
-```
-
-#### Meaning
-
-The first sum is the usual fluid-to-fluid correction. The second sum is the
-fluid-to-boundary correction.
-
-Only $\lambda_i$ appears in the boundary term because the boundary samples are
-static:
-
-- they do not have their own density constraints;
-- they do not calculate their own $\lambda_b$;
-- they do not receive position corrections.
-
-The fluid particle moves while the boundary remains fixed.
-
-## Complete solver loop
-
-The exact ordered behaviour is owned by the milestone's
-[timestep contract](/docs/project/development/00/serial-brute-force.md#timestep-contract). In plain language,
-one timestep:
-
-1. Validates the current accepted state and configuration.
-2. Applies acceleration, records the CFL diagnostic and predicts all positions.
-3. Builds one fixed neighbour set from the complete prediction snapshot.
-4. Repeats four times:
-   1. Calculate all densities, constraints and multipliers from one position snapshot.
-   2. Calculate all corrections into separate storage.
-   3. Apply the corrections and plane projections to create the next snapshot.
-5. Reconstructs velocity, validates all proposed results and accepts the new state together.
-6. Exposes a read-only result for requested diagnostics or output.
-
-A correctness checkpoint may build a fresh brute-force neighbour set and recompute final density error. This
-audit does not change simulation state and is not part of timed solver work.
-
-The most important Jacobi rule is:
-
-> Read from one shared position state, write corrections into separate storage,
-> and apply those corrections only after every particle has been processed.
-
-## Reference configuration parameters
-
-The canonical values are recorded in the
-[reference numerical configuration](/docs/project/development/00/serial-brute-force.md#reference-numerical-configuration).
-The table below explains their roles without duplicating the selected values.
-
-| Parameter | Simple meaning |
+| Condition | Classification and behaviour |
 | --- | --- |
-| $\Delta t$ | How much simulated time passes in one step. |
-| $\Delta x$ | Initial spacing between particle centres. |
-| $d_p$ | Characteristic particle diameter used by checks such as CFL. |
-| $h$ | Distance over which particles interact. |
-| $h/\Delta x$ | Roughly controls how many neighbours contribute to each estimate. |
-| $m$ | Common mass represented by each fluid particle. |
-| $\rho_0^{\mathrm{phys}}$ | Target physical density of the liquid. |
-| $\widetilde{\rho}_0$ | Target density after dividing out the common particle mass. |
-| Solver iterations | Number of times positions are corrected per timestep. |
-| $\varepsilon$ | Prevents unstable division by very small gradient sums. |
-| $k_{\mathrm{corr}}$ | Expected strength of artificial pressure. |
-| $\Delta q$ | Expected reference separation used by artificial pressure. |
-| $n_{\mathrm{corr}}$ | Expected exponent controlling how sharply artificial pressure changes with distance. |
-| Boundary model | Either simple plane projection or density-aware boundary particles. |
-| $\mathcal{E}$ | Particles included in the reported density-error statistics. |
+| Empty particle set | Valid; unchanged successful step, speed zero, unbounded CFL limit, audit count zero and aggregates unavailable |
+| One particle | Valid; self contributes to density, interaction set is empty, so only acceleration and planes move it |
+| Coincident distinct particles | Valid; each is the other's neighbour, Poly6 contributes, Spiky is zero and no arbitrary separation is invented |
+| Zero maximum speed | Valid; no division and no CFL warning |
+| Exactly at $r=h$ | Valid edge; excluded from support and interactions, both kernels zero |
+| Exactly on a plane | Valid edge; unchanged by that plane |
+| Finite density error of any size | Valid state plus diagnostic value; no automatic rejection |
+| CFL limit exceeded | Non-fatal warning; fixed timestep remains and otherwise valid state is accepted |
+| Non-finite configuration value or invalid parameter domain | Invalid configuration; reject before work and preserve accepted state |
+| Zero, non-finite or non-unit plane normal | Invalid configuration; reject, never silently normalise |
+| Non-finite accepted position or velocity, duplicate identity, or invalid/out-of-range particle reference or index | Invalid simulation state; reject and preserve accepted state |
+| Any non-finite intermediate or proposed value, broken neighbour invariant or final plane violation | Timestep failure; discard the whole proposal |
 
-## Boundary-model comparison
+## Complete reference timestep
 
-### Plane projection
+In one place, the ordered behaviour is:
 
-- Simple and inexpensive.
-- Easy to test.
-- Stops visible penetration.
-- Does not compensate for missing fluid neighbours near a wall.
-- May produce inaccurate density near boundaries.
+1. Validate configuration, planes, identities, particle references and accepted-state finiteness.
+2. Calculate every post-acceleration velocity and the warning-only CFL diagnostic without mutating accepted state.
+3. Predict every $\mathbf{p}^{(0)}$.
+4. Build one complete, stable, duplicate-free brute-force interaction set from the prediction snapshot.
+5. Perform exactly four Jacobi iterations, each with immutable multiplier/correction reads and one ordered plane
+   pass.
+6. Reconstruct velocities from $\mathbf{p}^{(4)}-\mathbf{x}^n$.
+7. Validate every produced value, invariant and final plane constraint.
+8. Accept all positions and velocities together, or accept none.
+9. Return the outcome and CFL status. Optional audits observe accepted state separately through a fresh search.
 
-### Density-aware boundary particles
+Every later backend must reproduce these mathematical sets, snapshots, edge cases, warning semantics and
+transactional outcomes. Parallel reductions may be compared with justified tolerances, but different precision,
+support inequalities, timesteps, iteration counts, mathematics, fast-math modes or adaptive updates are separate
+experimental variants.
 
-- More complex.
-- Allows boundary samples to contribute to density.
-- Usually gives better density behaviour near walls.
-- Requires boundary sampling, pseudo-mass calculation and modified correction
-  equations.
-- Introduces more implementation and validation work.
+## Boundary alternative that is not part of the reference
 
-Plane projection is selected for the initial reference solver and retained
-through the planned spatial, multithreaded and CUDA comparisons.
+[S052](/docs/research/sources/052-akinci-rigid-fluid-coupling.md) explains how sampled solid boundaries can
+contribute pseudo-mass to density and reduce the missing-neighbour problem near walls. That approach changes the
+density, direction and correction equations. It is retained in the normative record as researched context, but it
+is not an alternative selectable by the Milestone 00 reference. Milestones 00 to 03 use planes only. Enabling
+density-aware boundaries would require a separately documented experimental-contract revision.
+
+## Decisions intentionally left to later phases
+
+G00 freezes solver behaviour but does not invent later interfaces or evidence. The complete
+[open-decision register](serial-brute-force.md#g00-open-decision-register) assigns configuration and scene schemas
+to Phase 2/G02, result formats to Phase 4, CLI behaviour to Phase 5/G04, primitive and backend tolerances to
+Phases 1 and 6, golden results to Phase 6/G05, and measurement policy to Phase 7/G06. Those phases may choose
+representations and evidence rules, but they may not change the reference mathematics, edge classifications or
+timing inclusions recorded here without an explicit contract revision.

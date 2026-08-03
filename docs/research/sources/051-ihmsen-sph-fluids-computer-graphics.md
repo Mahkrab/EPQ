@@ -20,7 +20,11 @@ Peer-reviewed Eurographics state-of-the-art report written by researchers with e
 
 ## Reading notes
 
-- 
+- Describes a velocity CFL condition of the form $\Delta t\leq\lambda d/\|v_{\max}\|$, with particle diameter
+  $d$ and $\lambda\approx0.4$, while noting that further timestep aspects can also matter.
+- Treats neighbourhood search as a distinct expensive stage in Lagrangian particle simulation.
+- Supports reporting density deviations and separating correctness concerns from performance cost; Maelstrom's
+  fresh all-pairs audit and warning-only fixed-timestep policy are project decisions.
 
 #### Date added
 

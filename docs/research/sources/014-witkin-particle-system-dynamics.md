@@ -20,7 +20,8 @@ Official Carnegie Mellon University course material by Andrew Witkin, a major re
 
 ## Reading notes
 
-- 
+- Organises particle simulation around position, velocity, mass, force/acceleration and numerical state updates.
+- Supports treating accepted particle state separately from intermediate derivatives and integration work.
 
 #### Date added
 

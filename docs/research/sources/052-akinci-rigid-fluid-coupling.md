@@ -20,7 +20,11 @@ Primary peer-reviewed ACM SIGGRAPH paper published in *ACM Transactions on Graph
 
 ## Reading notes
 
-- 
+- Identifies particle deficiency near solid boundaries as a cause of discontinuous or inaccurate SPH quantities.
+- Assigns sampled boundary particles a volume-derived density contribution rather than treating them as ordinary
+  inertial fluid mass.
+- Supports the documented density-aware alternative; Maelstrom deliberately retains simple planes for the
+  Milestones 00--03 comparison instead.
 
 #### Date added
 

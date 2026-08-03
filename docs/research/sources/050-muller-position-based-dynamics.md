@@ -20,7 +20,10 @@ Primary peer-reviewed workshop paper published by the Eurographics Association. 
 
 ## Reading notes
 
-- 
+- Defines prediction, inverse-mass-weighted constraint projection, iterative constraint solving and velocity
+  reconstruction from corrected positions.
+- Supports projecting penetrated points back to valid locations; Maelstrom's ordered unit-plane operator and
+  transactional failure policy are project-specific specialisations.
 
 #### Date added
 
