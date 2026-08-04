@@ -1,0 +1,37 @@
+name: Github Markdown checks
+
+on:
+  pull_request:
+    branches:
+      - main
+      - documentation
+  push:
+    branches:
+      - main
+      - documentation
+  merge_group:
+
+permissions:
+  contents: read
+
+jobs:
+  github-markdown:
+    name: Check Github Markdown rendering
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Run unit tests
+        run: python3 -m unittest tests.markdown.test
+
+      - name: Check whitespace errors
+        run: git diff --check
+
+      - name: Check changed documentation through GitHub
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python3 tests/markdown/check.py
+          docs/project/development/milestones/00/explation.md
+          docs/project/development/milestones/00/serial-brute-force.md

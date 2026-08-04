@@ -20,7 +20,15 @@ Published in ACM Transactions on Graphics and accompanied by an author-hosted pr
 
 ## Reading notes
 
-- 
+- Defines the per-particle density constraint, equal-mass simplification, relaxed multiplier and pairwise PBF
+  position correction.
+- Uses Poly6 for density and Spiky for constraint directions, and solves particle constraints in Jacobi fashion.
+- Recomputes neighbourhoods once per timestep while recalculating distances and constraint values each solver
+  iteration.
+- Reports a typical fixed iteration count of two to four and the artificial-pressure form with
+  $|\Delta q|=0.1h$--$0.3h$, $k=0.1$ and $n=4$ working well in its simulation coordinates.
+- Presents XSPH viscosity and vorticity confinement as optional velocity post-processes; Maelstrom disables both
+  for the reference.
 
 #### Date added
 

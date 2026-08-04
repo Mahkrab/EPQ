@@ -20,7 +20,10 @@ Primary peer-reviewed research paper from ACM SIGGRAPH/Eurographics Symposium on
 
 ## Reading notes
 
-- 
+- Gives the standard SPH density summation used as the basis for the equal-mass density estimate.
+- Defines the three-dimensional Poly6 kernel and the Spiky kernel used for pressure-gradient directions.
+- Both sourced kernels vanish at their support boundary; Maelstrom's strict neighbour inequality and explicit
+  zero-distance convention are project decisions layered on those definitions.
 
 #### Date added
 
