@@ -684,3 +684,85 @@ sequenceDiagram
 | Brute force neighbout search will re strict the particle counts that can be tested initially, but as a basline, correctness takes priority | Keep it as the reference and measure its limits using reproducible worklods |
 | Later backends could change simulation behaviour rather than only execution | Apply the backend-equivalence rules and treat altered precision, mathematics, parameters or stage semantics as separately labelled experimental variants |
 | Software level improvements could become confused with the planned algorithm and hardware milestones | Profile the named stages, preserve the numerical contract and record substantial layout, allocation, vectorisation or compiler changes separately |
+
+## Phase 1 implementation and verification record
+
+### Scope and outcome
+
+Phase 1 establishes the numerical foundations that the application can later use,
+without redefining their mathematical behaviour. The ready Rust implementation now provides checked
+three-dimensional arithmetic, the selected kernels and fluid-constraint calculations, one complete Jacobi
+calculation, ordered plane projection, motion primitives, CFL diagnostics and derivation of the reference
+lattice values.
+
+The implementation does not discover neighbours, orchestrate a complete timestep, manage transactional
+simulation state, load scenes or configuration, provide a finished command-line interface, benchmark the
+solver, execute work in parallel or on a GPU, or render results. It supplies mathematical primitives and
+validation for the wider application to utilise.
+
+### Checkpoint identity and gate decision
+
+The reconstructed Maelstrom starting state is commit
+[`bd5e30a186d9bbd0c63cdbd88b4b5361f7924070`](https://github.com/Mahkrab/Maelstrom/commit/bd5e30a186d9bbd0c63cdbd88b4b5361f7924070),
+named by the annotated tag `milestone-00/phase-01/start`. The tag was created retrospectively because the
+original boundary was not recorded at the time, so it identifies the nearest defensible clean committed
+state rather than proving when Phase 1 began.
+
+The assessed Maelstrom source and tests are together in commit
+[`89393707d5f3e035150e33a67c14faf926d0c877`](https://github.com/Mahkrab/Maelstrom/commit/89393707d5f3e035150e33a67c14faf926d0c877),
+named by the annotated tag `milestone-00/phase-01/complete`. The EPQ gitlink records that exact commit. The
+EPQ starting state is commit
+[`c20c3ae26c65ac227c330d1bf23a8001165f81de`](https://github.com/Mahkrab/EPQ/commit/c20c3ae26c65ac227c330d1bf23a8001165f81de),
+named by the reconstructed annotated tag `milestone-00/phase-01/start`. The corresponding EPQ completion
+tag is `milestone-00/phase-01/complete`; that tag identifies the parent commit containing this record, so
+the record does not attempt to embed its own commit identity.
+
+**Gate decision: G01 is satisfied for the assessed revision.** The independently checked numerical
+foundations and the committed tests support beginning complete-timestep assembly. This decision claims no
+later work.
+
+### Rust implementation structure and decisions
+
+Phase 1 is implemented as a small library organised by numerical responsibility. The
+[library root](https://github.com/Mahkrab/Maelstrom/blob/89393707d5f3e035150e33a67c14faf926d0c877/src/lib.rs) exposes these modules without making them depend on the
+application's unfinished command-line or simulation-state code. The structure keeps the numerical contract
+inspectable while allowing the application to compose the operations later.
+
+| Implementation area | Rust evidence | How the contract is represented |
+| --- | --- | --- |
+| Checked numerical foundation | [vector maths](https://github.com/Mahkrab/Maelstrom/blob/89393707d5f3e035150e33a67c14faf926d0c877/src/math.rs), [shared validation](https://github.com/Mahkrab/Maelstrom/blob/89393707d5f3e035150e33a67c14faf926d0c877/src/validation.rs) and [typed errors](https://github.com/Mahkrab/Maelstrom/blob/89393707d5f3e035150e33a67c14faf926d0c877/src/error.rs) | Binary32 vector operations share finite, positive and positive domain checks. Invalid input and unrepresentable results fail through explicit numerical errors rather than returning unchecked values. |
+| Kernel calculations | [SPH kernels](https://github.com/Mahkrab/Maelstrom/blob/89393707d5f3e035150e33a67c14faf926d0c877/src/kernel.rs) | Poly6 and the Spiky correction direction implement strict support directly. |
+| Density and Jacobi calculation | [fluid calculations](https://github.com/Mahkrab/Maelstrom/blob/89393707d5f3e035150e33a67c14faf926d0c877/src/fluid.rs) | `InteractionSets` validates already discovered membership rather than searching for neighbours. Density, substituted directions, multipliers and artificial pressure retain ascending order, while the complete stage finishes all multipliers before writing corrections. |
+| Motion, planes and diagnostics | [motion integration](https://github.com/Mahkrab/Maelstrom/blob/89393707d5f3e035150e33a67c14faf926d0c877/src/integration.rs), [plane boundaries](https://github.com/Mahkrab/Maelstrom/blob/89393707d5f3e035150e33a67c14faf926d0c877/src/boundary.rs) and [CFL diagnostics](https://github.com/Mahkrab/Maelstrom/blob/89393707d5f3e035150e33a67c14faf926d0c877/src/diagnostics.rs) | Stateless operations apply acceleration, prediction, velocity reconstruction, deterministic plane projection and warning-only CFL evaluation without taking ownership of accepted simulation state. |
+| Reference values | [reference lattice](https://github.com/Mahkrab/Maelstrom/blob/89393707d5f3e035150e33a67c14faf926d0c877/src/reference.rs) | The implementation sums the 27 strict-support offsets in lexicographic order and derives particle mass from that binary32 density instead of embedding the displayed decimal approximations as production constants. |
+
+### Verification evidence
+
+The testing is split by responsibility across the
+[kernel and vector tests](https://github.com/Mahkrab/Maelstrom/blob/89393707d5f3e035150e33a67c14faf926d0c877/tests/kernels_and_math.rs),
+[fluid-foundation tests](https://github.com/Mahkrab/Maelstrom/blob/89393707d5f3e035150e33a67c14faf926d0c877/tests/fluid_foundations.rs),
+[motion, plane and diagnostic tests](https://github.com/Mahkrab/Maelstrom/blob/89393707d5f3e035150e33a67c14faf926d0c877/tests/motion_boundaries_diagnostics.rs), and
+[reference-lattice tests](https://github.com/Mahkrab/Maelstrom/blob/89393707d5f3e035150e33a67c14faf926d0c877/tests/reference_lattice.rs).
+[independent test support](https://github.com/Mahkrab/Maelstrom/blob/89393707d5f3e035150e33a67c14faf926d0c877/tests/support/mod.rs) binds them.
+
+The following checks were run. The Maelstrom commands used Rust and Cargo 1.96.0 on
+`x86_64-unknown-linux-gnu`, the final three commands checked the EPQ record.
+The Maelstrom checks used a clean detached worktree at the assessed completion commit on 2026-08-10.
+
+| Local command | Observed outcome |
+| --- | --- |
+| `cargo fmt --all -- --check` | Passed ( This check is purely formatting ) |
+| `cargo check --all-targets --all-features` | Passed |
+| `cargo clippy --all-targets --all-features -- -D warnings` | Passed with warnings denied |
+| `RUSTDOCFLAGS='-D warnings' cargo doc --no-deps --all-features` | Passed with warnings denied |
+| `cargo test --all-targets --all-features` | Passed all 32 integration tests: 12 fluid, 8 kernel/vector, 9 motion/plane/diagnostic and 3 lattice; the library and binary unit-test targets each ran 0 tests |
+| `cargo test --release --all-targets --all-features` | Passed the same 32 integration tests in the optimised profile; the library and binary unit-test targets each ran 0 tests |
+| `cargo test --doc --all-features` | Passed; the documentation-test target ran 0 tests |
+| `cargo build --release --all-targets --all-features` | Passed the optimised all-target build |
+| `python3 -m unittest tests.markdown.test` | Passed all 3 local Markdown-checker tests |
+| `python3 tests/markdown/check.py` | Passed through the GitHub Markdown endpoint, which preserved all 32 fenced mathematics blocks in this docment, and all 28 in [explanation.md](/docs/project/development/milestones/00/explation.md)|
+| `git diff --check -- docs/project/development/milestones/00/serial-brute-force.md` | Passed with no whitespace errors |
+
+These results are local evidence attached to the exact Maelstrom completion commit. No hosted CI result was
+observed for that commit; the annotated tag names the verified tree but does not itself prove that the checks
+ran.
