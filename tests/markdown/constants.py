@@ -2,7 +2,7 @@ import re
 
 FILES = (
     "docs/project/development/milestones/00/explation.md",
-    "docs/project/development/milestones/00/serial-brute-force.md",
+    "docs/project/development/milestones/00/phases/phase-00-design-contract.md",
 )
 DEFAULT_ENDPOINT = "https://api.github.com/markdown"
 DEFAULT_API_VERSION = "2026-03-10"
