@@ -1,39 +1,37 @@
-# Maelstrom EPQ Research Sources
+# Maelstrom EPQ research and citation standard
 
-Research record.
+This directory is the research base for the EPQ artefact. It records which external works were used, how trustworthy and relevant they are, and where their ideas support the project. The system has four coordinated parts:
 
-- [source-register.md](/docs/research/source-register.md) is the readable overview.
-- [references.bib](/docs/research/references.bib) is the citation database for the report.
-- [sources/](/docs/research/sources/) contains one focused evaluation record per source.
-- [sources/TEMPLATE.md](/docs/research/sources/TEMPLATE.md) is the format for new source records.
+- [source-register.md](/docs/research/source-register.md) is the readable catalogue
+  overview
+- [references.bib](/docs/research/references.bib) is the structured bibliography used for formal report citations
+- [sources/](/docs/research/sources/) contains one source and reading record per source
+- [sources/TEMPLATE.md](/docs/research/sources/TEMPLATE.md) is the starting format for a new source record.
 
-## How artefact pages cite these sources
+## Stable source identity
 
-Artefact pages use quick-definition links and evidence citations for different purposes. The first
-useful mention of an unfamiliar concept may link to Wikipedia or a clear authoritative overview for
-the reader. A registered source is cited after the punctuation of the claim it supports
+Every registered source has one permanent identifier in the form `S###`. The number identifies one specific source and, where distinction matters, the version or edition. 
 
-### Example
+Source records are nveer chnaged, renamed or moved. 
 
- 
-<div style="padding: 5px; border: 1px solid #575757">
+The source record, register row, BibTeX entry and reference must agree on the author or responsible organisation, title, year, edition or release, and stable destination. 
 
-The [Compute Unified Device Architecture (CUDA)](https://en.wikipedia.org/wiki/CUDA)
-toolchain compiles kernels for execution on NVIDIA GPUs.<sup><a href="#ref-s012">S012</a></sup>
+## Evidence citations and reader links
 
-</div>
+Reader links and evidence citations serve different purposes:
 
-Only the first useful occurrence of that concept receives the quick link. Later mentions remain
-plain text, while `S012` is repeated only where another claim needs clear attribution. Multiple
-sources supporting one claim share one superscript.
+- A reader link provides a quick link to a definition, explanation or exmaple of the term highlighted. 
+- An `S###` citation identifies the registered source which supports the tagged information. It links to the page footer, which in turn links to the source record and its BibTeX entry.
+- A project-evidence link points to Maelstrom source, tests, results, logs, decisions or Git checkpoints that demonstrate something about the project. 
 
-A page that uses registered sources ends with one compact, numerically ordered entry per cited ID:
+## Citation placement and syntax
 
-<div style="padding: 5px; border: 1px solid #575757">
+The citation will be after the punctuation of the smallest sentence, clause or cell that it supports.
+It will be superscript, using html escapes on github.  
 
-### References used
- <a name="ref-s012"></a> **S012 — NVIDIA Corporation (2026).** *CUDA Programming Guide*, Release 13.2. [Source record](/docs/research/sources/012-nvidia-cuda-programming-guide-release-13-2.md).
+Every page that uses registered citations, ends with one `References used` section, which will hold each link to the sources. 
 
-</div>
+## Presentation example
 
-The linked appraisal record contains the fuller reference, relevance, reliability and reading notes; `references.bib` remains the structured bibliography for the formal report. Source catalogue files do not cite themselves.
+The [CUDA infrastructure record](/docs/project/infastructure/CUDA/README.md) is the current exemplar
+for citation placement, combined markers and a page-level `References used` footer.
