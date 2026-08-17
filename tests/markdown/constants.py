@@ -1,7 +1,7 @@
 import re
 
 FILES = (
-    "docs/project/development/milestones/00/explation.md",
+    "docs/project/development/milestones/00/explanations/math.md",
     "docs/project/development/milestones/00/phases/phase-00-design-contract.md",
 )
 DEFAULT_ENDPOINT = "https://api.github.com/markdown"
