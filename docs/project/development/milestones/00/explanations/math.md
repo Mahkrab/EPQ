@@ -1,16 +1,16 @@
 # Position-Based Fluids mathematics and behaviour
 
 This document explains the Milestone 00 reference solver in accessible language. The
-[Phase 0 design contract](phases/phase-00-design-contract.md) is the normative contract. If this explanation ever
+[Phase 0 design contract](/docs/project/development/milestones/00/phases/phase-00-design-contract.md) is the normative contract. If this explanation ever
 disagrees with it, the milestone record wins and this document must be corrected.
 
 The published method comes mainly from the SPH kernels in
-[S003](/docs/research/sources/003-muller-charypar-gross-particle-based-fluid-simulation.md), the PBF equations and
-loop in [S004](/docs/research/sources/004-macklin-muller-position-based-fluids.md), and the general position-based
-update in [S050](/docs/research/sources/050-muller-position-based-dynamics.md). The exact numerical scale,
+[S003](#ref-s003), the PBF equations and
+loop in [S004](#ref-s004), and the general position-based
+update in [S050](#ref-s050). The exact numerical scale,
 binary32 arithmetic, plane-only boundary, ordering, warnings and failure behaviour are Maelstrom project
 decisions. The full provenance is recorded in the
-[contract authority table](phases/phase-00-design-contract.md#contract-status-and-authority).
+[contract authority table](/docs/project/development/milestones/00/phases/phase-00-design-contract.md#contract-status-and-authority).
 
 ## Reference state, arithmetic and units
 
@@ -426,8 +426,15 @@ experimental variants.
 
 ## Boundary alternative that is not part of the reference
 
-[S052](/docs/research/sources/052-akinci-rigid-fluid-coupling.md) explains how sampled solid boundaries can
+[S052](#ref-s052) explains how sampled solid boundaries can
 contribute pseudo-mass to density and reduce the missing-neighbour problem near walls. That approach changes the
 density, direction and correction equations. It is retained in the normative record as researched context, but it
 is not an alternative selectable by the Milestone 00 reference. Milestones 00 to 03 use planes only. Enabling
 density-aware boundaries would require a separately documented experimental-contract revision.
+
+## References used
+
+- <a name="ref-s003"></a> **S003 — Müller, Charypar and Gross (2003).** ‘Particle-Based Fluid Simulation for Interactive Applications’. [Source record](/docs/research/sources/003-muller-charypar-gross-particle-based-fluid-simulation.md).
+- <a name="ref-s004"></a> **S004 — Macklin and Müller (2013).** ‘Position Based Fluids’. [Source record](/docs/research/sources/004-macklin-muller-position-based-fluids.md).
+- <a name="ref-s050"></a> **S050 — Müller et al. (2006).** ‘Position Based Dynamics’. [Source record](/docs/research/sources/050-muller-position-based-dynamics.md).
+- <a name="ref-s052"></a> **S052 — Akinci et al. (2012).** ‘Versatile Rigid-Fluid Coupling for Incompressible SPH’. [Source record](/docs/research/sources/052-akinci-rigid-fluid-coupling.md).

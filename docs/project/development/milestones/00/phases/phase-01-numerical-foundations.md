@@ -72,5 +72,5 @@ The Maelstrom checks used a clean detached worktree at the assessed completion c
 | `cargo test --doc --all-features` | Passed; the documentation-test target ran 0 tests |
 | `cargo build --release --all-targets --all-features` | Passed the optimised all-target build |
 | `python3 -m unittest tests.markdown.test` | Passed all 3 local Markdown-checker tests |
-| `python3 tests/markdown/check.py` | Passed through the GitHub Markdown endpoint, which preserved all 32 fenced mathematics blocks in this docment, and all 28 in [explanation.md](/docs/project/development/milestones/00/explation.md)|
+| `python3 tests/markdown/check.py` | Passed through the GitHub Markdown endpoint, which preserved all 32 fenced mathematics blocks in this docment, and all 28 in [explanation.md](/docs/project/development/milestones/00/explanations/math.md)|
 | `git diff --check -- docs/project/development/milestones/00/serial-brute-force.md` | Passed with no whitespace errors |

@@ -1,25 +1,25 @@
 # Requirements
 
 ### Functional requirements: 
- * Allow for out of home [network](https://en.wikipedia.org/wiki/Computer_network)<sup>[<a href="/docs/research/sources/021-cloudflare-what-is-a-lan.md">S021</a>]</sup> communication between *more powerfull* home computer, and laptop, which i use for most development. 
- * Should be simple to connect, secure, fast, and avaliable from any [network](https://en.wikipedia.org/wiki/Computer_network).
- * Connect from laptop to desktop with "[ssh](https://en.wikipedia.org/wiki/Secure_Shell)<sup>[<a href="/docs/research/sources/017-cloudflare-what-is-ssh.md">S017</a>]</sup> pc"
- * Supporrt connections from both [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows)<sup>[<a href="/docs/research/sources/031-microsoft-windows-documentation.md">S031</a>]</sup> [PowerShell](https://learn.microsoft.com/en-us/powershell/)<sup>[<a href="/docs/research/sources/026-microsoft-what-is-powershell.md">S026</a>]</sup> and [WSL2](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)<sup>[<a href="/docs/research/sources/019-microsoft-what-is-wsl.md">S019</a>]</sup> [Ubuntu](https://en.wikipedia.org/wiki/Ubuntu)<sup>[<a href="/docs/research/sources/020-canonical-ubuntu-on-wsl.md">S020</a>]</sup> instance.
- * Support [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code)<sup>[<a href="/docs/research/sources/025-microsoft-vscode-remote-ssh.md">S025</a>]</sup> [Remote-SSH](https://code.visualstudio.com/docs/remote/ssh) useing the same `pc` alias.
- * Connect to the [Ubuntu](https://en.wikipedia.org/wiki/Ubuntu)  [WSL2](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) environment on the pc, nto the outer [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) [OpenSSH](https://en.wikipedia.org/wiki/OpenSSH)<sup>[<a href="/docs/research/sources/018-openbsd-openssh.md">S018</a>]</sup> server.
+ * Allow for out of home [network](https://en.wikipedia.org/wiki/Computer_network) communication between *more powerfull* home computer, and laptop, which i use for most development.<sup><a href="#ref-s021">S021</a></sup>
+ * Should be simple to connect, secure, fast, and avaliable from any network.
+ * Connect from laptop to desktop with "[ssh](https://en.wikipedia.org/wiki/Secure_Shell) pc"<sup><a href="#ref-s017">S017</a></sup>
+ * Supporrt connections from both [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) [PowerShell](https://learn.microsoft.com/en-us/powershell/) and [WSL2](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) [Ubuntu](https://en.wikipedia.org/wiki/Ubuntu) instance.<sup><a href="#ref-s019">S019</a>, <a href="#ref-s020">S020</a>, <a href="#ref-s026">S026</a>, <a href="#ref-s031">S031</a></sup>
+ * Support [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) [Remote-SSH](https://code.visualstudio.com/docs/remote/ssh) useing the same `pc` alias.<sup><a href="#ref-s025">S025</a></sup>
+ * Connect to the Ubuntu  WSL2 environment on the pc, nto the outer Windows [OpenSSH](https://en.wikipedia.org/wiki/OpenSSH) server.<sup><a href="#ref-s018">S018</a></sup>
  * Be suitable for development of performance intensive applications.
  * Be able to work away from home.
 
 ### Security requirements:
- * Use [publickey authentification](https://en.wikipedia.org/wiki/Public-key_cryptography)<sup>[<a href="/docs/research/sources/028-openbsd-sshd-config.md">S028</a>]</sup>.
- * Disable [SSH](https://en.wikipedia.org/wiki/Secure_Shell) [password authentification](https://en.wikipedia.org/wiki/Authentication). ( as to reject [brute force](https://en.wikipedia.org/wiki/Brute-force_attack)<sup>[<a href="/docs/research/sources/030-cloudflare-brute-force-attacks.md">S030</a>]</sup> on open [port22](https://en.wikipedia.org/wiki/Port_(computer_networking))<sup>[<a href="/docs/research/sources/022-cloudflare-computer-ports.md">S022</a>]</sup> )
- * Do not expose [port 22](https://en.wikipedia.org/wiki/Port_(computer_networking)) through the [router](https://en.wikipedia.org/wiki/Router_(computing)).
+ * Use [publickey authentification](https://en.wikipedia.org/wiki/Public-key_cryptography).<sup><a href="#ref-s028">S028</a></sup>
+ * Disable SSH [password authentification](https://en.wikipedia.org/wiki/Authentication). ( as to reject [brute force](https://en.wikipedia.org/wiki/Brute-force_attack) on open [port22](https://en.wikipedia.org/wiki/Port_(computer_networking)) )<sup><a href="#ref-s022">S022</a>, <a href="#ref-s030">S030</a></sup>
+ * Do not expose port 22 through the [router](https://en.wikipedia.org/wiki/Router_(computing)).
 
 # Initial design:
 
-## Stage 0: Local [network](https://en.wikipedia.org/wiki/Computer_network) test [SSH](https://en.wikipedia.org/wiki/Secure_Shell) to [RaspberryPI](https://en.wikipedia.org/wiki/Raspberry_Pi)<sup>[<a href="/docs/research/sources/027-raspberry-pi-about.md">S027</a>]</sup>
+## Stage 0: Local network test SSH to [RaspberryPI](https://en.wikipedia.org/wiki/Raspberry_Pi)<sup><a href="#ref-s027">S027</a></sup>
 
-First [SSH](https://en.wikipedia.org/wiki/Secure_Shell) workflow targeted a [RaspberryPi](https://en.wikipedia.org/wiki/Raspberry_Pi) by its own [local area network (LAN)](https://en.wikipedia.org/wiki/Local_area_network) [address](https://en.wikipedia.org/wiki/IP_address)<sup>[<a href="/docs/research/sources/029-cloudflare-ip-addresses.md">S029</a>]</sup>. [Command line](https://en.wikipedia.org/wiki/Command-line_interface) [SSH](https://en.wikipedia.org/wiki/Secure_Shell) worked, but the [Pi](https://en.wikipedia.org/wiki/Raspberry_Pi)'s [address](https://en.wikipedia.org/wiki/IP_address) later changed after [netowrk](https://en.wikipedia.org/wiki/Computer_network) changes, and [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) did not consistently interpret the [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) [SSH configuration](https://en.wikipedia.org/wiki/Secure_Shell).
+First SSH workflow targeted a RaspberryPi by its own [local area network (LAN)](https://en.wikipedia.org/wiki/Local_area_network) [address](https://en.wikipedia.org/wiki/IP_address). [Command line](https://en.wikipedia.org/wiki/Command-line_interface) SSH worked, but the Pi's address later changed after netowrk changes, and VSCode did not consistently interpret the Windows SSH configuration.<sup><a href="#ref-s029">S029</a></sup>
 
 ```mermaid
 flowchart LR
@@ -32,17 +32,17 @@ flowchart LR
 
 | Problem | Symptom | Cause | Fix | Outcome |
 |   ---   |   ---   |  ---  | --- |   ---   |
-|[VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) could not connect to the [Pi](https://en.wikipedia.org/wiki/Raspberry_Pi) although [shell](https://en.wikipedia.org/wiki/Shell_(computing)) [SSH](https://en.wikipedia.org/wiki/Secure_Shell) worked | [Remote-SSH](https://code.visualstudio.com/docs/remote/ssh) failed while `ssh mahkrab@192.168.0.58` succeeded | Inconsistent [WIndows](https://en.wikipedia.org/wiki/Microsoft_Windows) [SSH host entries](https://en.wikipedia.org/wiki/Secure_Shell) and [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) targets | Standardised named [host entries](https://en.wikipedia.org/wiki/Secure_Shell) and connected [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) to the alias, not to a pasted `ssh` command | Configuration became reusable by [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) |
-| The [Pi](https://en.wikipedia.org/wiki/Raspberry_Pi) became unreachable by its previous [address](https://en.wikipedia.org/wiki/IP_address) | [SSH key](https://en.wikipedia.org/wiki/Key_(cryptography)) existed, but the other [LAN](https://en.wikipedia.org/wiki/Local_area_network) [IP](https://en.wikipedia.org/wiki/IP_address) no longer responded after [WiFi](https://en.wikipedia.org/wiki/Wi-Fi) maintence | [DHCP](https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol)<sup>[<a href="/docs/research/sources/023-microsoft-dhcp-basics.md">S023</a>]</sup> changed the [Pi](https://en.wikipedia.org/wiki/Raspberry_Pi)'s [LAN](https://en.wikipedia.org/wiki/Local_area_network) [address](https://en.wikipedia.org/wiki/IP_address) | Rediscovered [Pi](https://en.wikipedia.org/wiki/Raspberry_Pi) and moved towards stable named [SSH entries](https://en.wikipedia.org/wiki/Secure_Shell) | Showed thr weakness of raw [LAN](https://en.wikipedia.org/wiki/Local_area_network) [addresses](https://en.wikipedia.org/wiki/IP_address) |
+|VSCode could not connect to the Pi although [shell](https://en.wikipedia.org/wiki/Shell_(computing)) SSH worked | [Remote-SSH](https://code.visualstudio.com/docs/remote/ssh) failed while `ssh mahkrab@192.168.0.58` succeeded | Inconsistent WIndows SSH host entries and VSCode targets | Standardised named host entries and connected VSCode to the alias, not to a pasted `ssh` command | Configuration became reusable by VSCode |
+| The Pi became unreachable by its previous address | [SSH key](https://en.wikipedia.org/wiki/Key_(cryptography)) existed, but the other LAN IP no longer responded after [WiFi](https://en.wikipedia.org/wiki/Wi-Fi) maintence | [DHCP](https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol) changed the Pi's LAN address<sup><a href="#ref-s023">S023</a></sup> | Rediscovered Pi and moved towards stable named SSH entries | Showed thr weakness of raw LAN addresses |
 
 This model and problems established two points:
 
-1. A named [SSH host entry](https://en.wikipedia.org/wiki/Secure_Shell) is better than repeatadly entering an [address](https://en.wikipedia.org/wiki/IP_address) and username.
-2. A dynamic [LAN](https://en.wikipedia.org/wiki/Local_area_network) [address](https://en.wikipedia.org/wiki/IP_address) is not a dependable identity. 
+1. A named SSH host entry is better than repeatadly entering an address and username.
+2. A dynamic LAN address is not a dependable identity.
 
-## Stage 1: [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) [Tailscale](https://en.wikipedia.org/wiki/Tailscale)<sup>[<a href="/docs/research/sources/016-tailscale-what-is-tailscale.md">S016</a>]</sup> with forwarding into [WSL2](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)
+## Stage 1: Windows [Tailscale](https://en.wikipedia.org/wiki/Tailscale) with forwarding into WSL2<sup><a href="#ref-s016">S016</a></sup>
 
-The first desktop --> PC design ran [Tailscale](https://en.wikipedia.org/wiki/Tailscale). [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) accepted traffic on its [Tailscale](https://en.wikipedia.org/wiki/Tailscale) [address](https://en.wikipedia.org/wiki/IP_address) and forwarded [TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) [port 22](https://en.wikipedia.org/wiki/Port_(computer_networking)) to the changing [WSL2](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) [NAT](https://en.wikipedia.org/wiki/Network_address_translation)<sup>[<a href="/docs/research/sources/024-microsoft-wsl-networking.md">S024</a>]</sup> [address](https://en.wikipedia.org/wiki/IP_address) using [`netsh interface portproxy`](https://learn.microsoft.com/en-us/windows-server/networking/technologies/netsh/netsh-interface-portproxy).
+The first desktop --> PC design ran Tailscale. Windows accepted traffic on its Tailscale address and forwarded [TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) port 22 to the changing WSL2 [NAT](https://en.wikipedia.org/wiki/Network_address_translation) address using [`netsh interface portproxy`](https://learn.microsoft.com/en-us/windows-server/networking/technologies/netsh/netsh-interface-portproxy).<sup><a href="#ref-s024">S024</a></sup>
 
 ```mermaid
 flowchart LR
@@ -79,11 +79,11 @@ Host pc
 
 ### Limitations of the initial design:
 
-- [WSL2s](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) [NAT](https://en.wikipedia.org/wiki/Network_address_translation) [address](https://en.wikipedia.org/wiki/IP_address) could change after a restart.
+- WSL2s NAT address could change after a restart.
 - [`portproxy`](https://learn.microsoft.com/en-us/windows-server/networking/technologies/netsh/netsh-interface-portproxy) needed to be updated manuallly.
-- [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) [Firewall](https://en.wikipedia.org/wiki/Firewall_(computing)), [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) [Tailscale](https://en.wikipedia.org/wiki/Tailscale), [`portproxy`](https://learn.microsoft.com/en-us/windows-server/networking/technologies/netsh/netsh-interface-portproxy), [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) [network](https://en.wikipedia.org/wiki/Computer_network), and [Ubuntu](https://en.wikipedia.org/wiki/Ubuntu) [SSH](https://en.wikipedia.org/wiki/Secure_Shell) all had to be healthy at one time, or whole system fail.
-- Troubleshooting crossed two vastly different [operating systems](https://en.wikipedia.org/wiki/Operating_system) and several layers ( [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) -> [WSL2](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) )
-- Both [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) and [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) could take different [network](https://en.wikipedia.org/wiki/Computer_network) paths despite using the same [SSH](https://en.wikipedia.org/wiki/Secure_Shell) command.
+- Windows [Firewall](https://en.wikipedia.org/wiki/Firewall_(computing)), Windows Tailscale, [`portproxy`](https://learn.microsoft.com/en-us/windows-server/networking/technologies/netsh/netsh-interface-portproxy), WSL network, and Ubuntu SSH all had to be healthy at one time, or whole system fail.
+- Troubleshooting crossed two vastly different [operating systems](https://en.wikipedia.org/wiki/Operating_system) and several layers ( Windows -> WSL2 )
+- Both Windows and WSL could take different network paths despite using the same SSH command.
 
 ### Probelems and fixes:
 
@@ -91,14 +91,14 @@ Host pc
 
 | Problem | Symptom | Cause | Fix | Outcome |
 |   ---   |   ---   |  ---  | --- |   ---   |
-| The PC design depended on [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) forwarding, which of course is unreliable | [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) [SSH](https://en.wikipedia.org/wiki/Secure_Shell) was reachable only through [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) [Tailscale](https://en.wikipedia.org/wiki/Tailscale), [Firewall](https://en.wikipedia.org/wiki/Firewall_(computing)), and [`portproxy`](https://learn.microsoft.com/en-us/windows-server/networking/technologies/netsh/netsh-interface-portproxy) | [Tailscale](https://en.wikipedia.org/wiki/Tailscale) was running on [windows](https://en.wikipedia.org/wiki/Microsoft_Windows) rather than inside the [Linux](https://en.wikipedia.org/wiki/Linux) environment | Installed and ran [Tailscale](https://en.wikipedia.org/wiki/Tailscale) directly in the PC's [Ubuntu](https://en.wikipedia.org/wiki/Ubuntu) [WSL2](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) instance | Removed the forwarding layer from the design |
-| `ssh pc` selected an unusable destination | The [Tailscale](https://en.wikipedia.org/wiki/Tailscale) [dashboard](https://en.wikipedia.org/wiki/Dashboard_(computing)) showed the [node](https://en.wikipedia.org/wiki/Node_(networking)) online, but [SSH](https://en.wikipedia.org/wiki/Secure_Shell) attempted a [IPv6](https://en.wikipedia.org/wiki/IPv6) [address](https://en.wikipedia.org/wiki/IP_address) with no working [route](https://en.wikipedia.org/wiki/Routing) | [Address](https://en.wikipedia.org/wiki/IP_address) selection prefered an [IPv6](https://en.wikipedia.org/wiki/IPv6) path that was not usable end to end | Pointed `pc` directly to `100.89.176.3` and set [`AddressFamily inet`](https://man.openbsd.org/ssh_config#AddressFamily)<sup>[<a href="/docs/research/sources/033-openbsd-ssh-config.md">S033</a>]</sup> | [SSH](https://en.wikipedia.org/wiki/Secure_Shell) consistently selected the working [Tailscale](https://en.wikipedia.org/wiki/Tailscale) [IPv4](https://en.wikipedia.org/wiki/Internet_Protocol_version_4) [route](https://en.wikipedia.org/wiki/Routing) |
-| [SSH](https://en.wikipedia.org/wiki/Secure_Shell) connected then hung | [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) [SSH](https://en.wikipedia.org/wiki/Secure_Shell) stalled during *[negotiation](https://en.wikipedia.org/wiki/Secure_Shell)*, especially at [`sntrup`](https://en.wikipedia.org/wiki/NTRU)<sup>[<a href="/docs/research/sources/034-openssh-release-notes.md">S034</a>]</sup> [key exchange](https://en.wikipedia.org/wiki/Key_exchange) | The larger [post-quantum](https://en.wikipedia.org/wiki/Post-quantum_cryptography) *fancy* [key exchange](https://en.wikipedia.org/wiki/Key_exchange) [packets](https://en.wikipedia.org/wiki/Network_packet) exposed an [MTU](https://en.wikipedia.org/wiki/Maximum_transmission_unit)<sup>[<a href="/docs/research/sources/032-rfc-2923-path-mtu-discovery.md">S032</a>]</sup> *[black hole](https://en.wikipedia.org/wiki/Path_MTU_Discovery)* through [WSL2](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) and [Tailscale](https://en.wikipedia.org/wiki/Tailscale) [encapsulation](https://en.wikipedia.org/wiki/Encapsulation_(networking))| Preffered [`curve25519-sha256`](https://en.wikipedia.org/wiki/Curve25519)<sup>[<a href="/docs/research/sources/040-rfc-8731-curve25519-ssh.md">S040</a>]</sup> and reduced the effective [tailscale](https://en.wikipedia.org/wiki/Tailscale) [MTU](https://en.wikipedia.org/wiki/Maximum_transmission_unit) | Interactive [SSH](https://en.wikipedia.org/wiki/Secure_Shell) became reliable *finally* |
-| [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) repeatedly cycled through connection stages | Plain [SSH](https://en.wikipedia.org/wiki/Secure_Shell) worked, but [VSCode-RemoteSSH](https://code.visualstudio.com/docs/remote/ssh) repeatedly reconnected whule installing or starting its remote server | [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) transferred more and larger data than a basic [shell](https://en.wikipedia.org/wiki/Shell_(computing)), triggering the same [MTU](https://en.wikipedia.org/wiki/Maximum_transmission_unit) problem | CLeared out old [processes](https://en.wikipedia.org/wiki/Process_(computing)) which started when connecting, shrank the [handshake](https://en.wikipedia.org/wiki/Handshaking) size ([KEX](https://en.wikipedia.org/wiki/Key_exchange)), and forced [network](https://en.wikipedia.org/wiki/Computer_network) to only send smaller [packets](https://en.wikipedia.org/wiki/Network_packet) ([MTU](https://en.wikipedia.org/wiki/Maximum_transmission_unit)), then restarted the server | Removed the known causes of the connection loop |
-| [Tailscale](https://en.wikipedia.org/wiki/Tailscale) failed on school [WiFI](https://en.wikipedia.org/wiki/Wi-Fi) while [VPN](https://en.wikipedia.org/wiki/Virtual_private_network) was active | [DNS](https://en.wikipedia.org/wiki/Domain_Name_System)<sup>[<a href="/docs/research/sources/038-cloudflare-what-is-dns.md">S038</a>]</sup> lookup failed for the [tailscale](https://en.wikipedia.org/wiki/Tailscale) control; anotjer attempt returnede an invalid [certificate](https://en.wikipedia.org/wiki/Public_key_certificate) response | [VPN](https://en.wikipedia.org/wiki/Virtual_private_network) or [network](https://en.wikipedia.org/wiki/Computer_network) interception effected [DNS](https://en.wikipedia.org/wiki/Domain_Name_System)/[TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security)<sup>[<a href="/docs/research/sources/039-cloudflare-what-is-tls.md">S039</a>]</sup> traffic | Adjusted [VPN](https://en.wikipedia.org/wiki/Virtual_private_network) [routing](https://en.wikipedia.org/wiki/Routing) so [tailscale](https://en.wikipedia.org/wiki/Tailscale) traffic bypassed the bad path | Thinned out issues with School [Wi-Ff](https://en.wikipedia.org/wiki/Wi-Fi) |
-| [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) [SSH](https://en.wikipedia.org/wiki/Secure_Shell) returned `Permission denied` while [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) [SSH](https://en.wikipedia.org/wiki/Secure_Shell) worked | The same [alias](https://en.wikipedia.org/wiki/Alias_(command)) and [key](https://en.wikipedia.org/wiki/Key_(cryptography)) worked in [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) but failed at the [windows](https://en.wikipedia.org/wiki/Microsoft_Windows) [socket](https://en.wikipedia.org/wiki/Network_socket) layer | [ProtonVPN](https://en.wikipedia.org/wiki/Proton_VPN)<sup>[<a href="/docs/research/sources/037-proton-vpn-split-tunneling.md">S037</a>]</sup> applied different filtering to [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) [OpenSSH](https://en.wikipedia.org/wiki/OpenSSH) and [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) traffic | Removed [OpenSSH](https://en.wikipedia.org/wiki/OpenSSH) and [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) application exclusions while keeping the [Tailscale](https://en.wikipedia.org/wiki/Tailscale) [network](https://en.wikipedia.org/wiki/Computer_network) exclusions | [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) `ssh pc` worked again on school [Wifi](https://en.wikipedia.org/wiki/Wi-Fi) |
-| [ProtonVPN](https://en.wikipedia.org/wiki/Proton_VPN) [split-tunneling](https://en.wikipedia.org/wiki/Split_tunneling) changes caused [timeouts](https://en.wikipedia.org/wiki/Timeout_(computing)) | Combining application exclusions with [Tailscale](https://en.wikipedia.org/wiki/Tailscale) [address](https://en.wikipedia.org/wiki/IP_address) exclusions changed [routed](https://en.wikipedia.org/wiki/Routing) unpredictably | Two overlapping [split tunnel](https://en.wikipedia.org/wiki/Split_tunneling) policies competed for the same traffic | Kept one [routing](https://en.wikipedia.org/wiki/Routing) strategy: exclidingthe [Tailscale](https://en.wikipedia.org/wiki/Tailscale) [address space](https://en.wikipedia.org/wiki/Address_space), but do not seperately exclude [OpenSSH](https://en.wikipedia.org/wiki/OpenSSH) or [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) | [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) and [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) followed a more consistent path |
-| [RemoteSSH](https://code.visualstudio.com/docs/remote/ssh) retained stale state after failed attempts | [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) continued cycling after [route](https://en.wikipedia.org/wiki/Routing) improved | Old local helper and remote [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) server [processes](https://en.wikipedia.org/wiki/Process_(computing)) survived different attempts | Again terminated old helpers and restarted the remote server installation/session | Clean connection state |
+| The PC design depended on Windows forwarding, which of course is unreliable | WSL SSH was reachable only through Windows Tailscale, Firewall, and [`portproxy`](https://learn.microsoft.com/en-us/windows-server/networking/technologies/netsh/netsh-interface-portproxy) | Tailscale was running on windows rather than inside the [Linux](https://en.wikipedia.org/wiki/Linux) environment | Installed and ran Tailscale directly in the PC's Ubuntu WSL2 instance | Removed the forwarding layer from the design |
+| `ssh pc` selected an unusable destination | The Tailscale [dashboard](https://en.wikipedia.org/wiki/Dashboard_(computing)) showed the [node](https://en.wikipedia.org/wiki/Node_(networking)) online, but SSH attempted a [IPv6](https://en.wikipedia.org/wiki/IPv6) address with no working [route](https://en.wikipedia.org/wiki/Routing) | Address selection prefered an IPv6 path that was not usable end to end | Pointed `pc` directly to `100.89.176.3` and set [`AddressFamily inet`](https://man.openbsd.org/ssh_config#AddressFamily)<sup><a href="#ref-s033">S033</a></sup> | SSH consistently selected the working Tailscale [IPv4](https://en.wikipedia.org/wiki/Internet_Protocol_version_4) route |
+| SSH connected then hung | WSL SSH stalled during *negotiation*, especially at [`sntrup`](https://en.wikipedia.org/wiki/NTRU) [key exchange](https://en.wikipedia.org/wiki/Key_exchange)<sup><a href="#ref-s034">S034</a></sup> | The larger [post-quantum](https://en.wikipedia.org/wiki/Post-quantum_cryptography) *fancy* key exchange [packets](https://en.wikipedia.org/wiki/Network_packet) exposed an [MTU](https://en.wikipedia.org/wiki/Maximum_transmission_unit) *[black hole](https://en.wikipedia.org/wiki/Path_MTU_Discovery)* through WSL2 and Tailscale [encapsulation](https://en.wikipedia.org/wiki/Encapsulation_(networking))<sup><a href="#ref-s032">S032</a></sup>| Preffered [`curve25519-sha256`](https://en.wikipedia.org/wiki/Curve25519) and reduced the effective tailscale MTU<sup><a href="#ref-s040">S040</a></sup> | Interactive SSH became reliable *finally* |
+| VSCode repeatedly cycled through connection stages | Plain SSH worked, but [VSCode-RemoteSSH](https://code.visualstudio.com/docs/remote/ssh) repeatedly reconnected whule installing or starting its remote server | VSCode transferred more and larger data than a basic shell, triggering the same MTU problem | CLeared out old [processes](https://en.wikipedia.org/wiki/Process_(computing)) which started when connecting, shrank the [handshake](https://en.wikipedia.org/wiki/Handshaking) size (KEX), and forced network to only send smaller packets (MTU), then restarted the server | Removed the known causes of the connection loop |
+| Tailscale failed on school WiFI while [VPN](https://en.wikipedia.org/wiki/Virtual_private_network) was active | [DNS](https://en.wikipedia.org/wiki/Domain_Name_System) lookup failed for the tailscale control; anotjer attempt returnede an invalid [certificate](https://en.wikipedia.org/wiki/Public_key_certificate) response<sup><a href="#ref-s038">S038</a></sup> | VPN or network interception effected DNS/[TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) traffic<sup><a href="#ref-s039">S039</a></sup> | Adjusted VPN routing so tailscale traffic bypassed the bad path | Thinned out issues with School Wi-Ff |
+| Windows SSH returned `Permission denied` while WSL SSH worked | The same [alias](https://en.wikipedia.org/wiki/Alias_(command)) and key worked in WSL but failed at the windows [socket](https://en.wikipedia.org/wiki/Network_socket) layer | [ProtonVPN](https://en.wikipedia.org/wiki/Proton_VPN) applied different filtering to Windows OpenSSH and WSL traffic<sup><a href="#ref-s037">S037</a></sup> | Removed OpenSSH and VSCode application exclusions while keeping the Tailscale network exclusions | Windows `ssh pc` worked again on school Wifi |
+| ProtonVPN [split-tunneling](https://en.wikipedia.org/wiki/Split_tunneling) changes caused [timeouts](https://en.wikipedia.org/wiki/Timeout_(computing)) | Combining application exclusions with Tailscale address exclusions changed routed unpredictably | Two overlapping split tunnel policies competed for the same traffic | Kept one routing strategy: exclidingthe Tailscale [address space](https://en.wikipedia.org/wiki/Address_space), but do not seperately exclude OpenSSH or VSCode | Windows and WSL followed a more consistent path |
+| [RemoteSSH](https://code.visualstudio.com/docs/remote/ssh) retained stale state after failed attempts | VSCode continued cycling after route improved | Old local helper and remote VSCode server processes survived different attempts | Again terminated old helpers and restarted the remote server installation/session | Clean connection state |
 
 ### Why basic SSH passed while VSCode failed:
 
@@ -126,7 +126,7 @@ sequenceDiagram
 
 ### Layered diagnostic method:
 
-Testing was deliberately performed from the lowest [network layer](https://en.wikipedia.org/wiki/Network_layer) upward. This prevents an [SSH](https://en.wikipedia.org/wiki/Secure_Shell) authentification problem from being comfused with [routing](https://en.wikipedia.org/wiki/Routing), [VPN](https://en.wikipedia.org/wiki/Virtual_private_network), or [transport](https://en.wikipedia.org/wiki/Transport_layer) problems. The method uses the Tailscale [`status`](https://tailscale.com/docs/reference/tailscale-cli#status) and [`ping`](https://tailscale.com/docs/reference/ping-types) commands<sup>[<a href="/docs/research/sources/036-tailscale-cli.md">S036</a>]</sup> and checks [access-control lists (ACLs)](https://en.wikipedia.org/wiki/Access-control_list)<sup>[<a href="/docs/research/sources/035-tailscale-acls.md">S035</a>]</sup> before testing SSH.
+Testing was deliberately performed from the lowest [network layer](https://en.wikipedia.org/wiki/Network_layer) upward. This prevents an SSH authentification problem from being comfused with routing, VPN, or [transport](https://en.wikipedia.org/wiki/Transport_layer) problems. The method uses the Tailscale [`status`](https://tailscale.com/docs/reference/tailscale-cli#status) and [`ping`](https://tailscale.com/docs/reference/ping-types) commands and checks [access-control lists (ACLs)](https://en.wikipedia.org/wiki/Access-control_list) before testing SSH.<sup><a href="#ref-s035">S035</a>, <a href="#ref-s036">S036</a></sup>
 
 ```mermaid
 flowchart TD
@@ -150,23 +150,23 @@ flowchart TD
 
 | Test | Windows client | WSL2 client | Purpose | Important discovery |
 |---|---:|---:|---|---|
-| [`tailscale status`](https://tailscale.com/docs/reference/tailscale-cli#status) | Yes | Yes | Confirm local [node](https://en.wikipedia.org/wiki/Node_(networking)) and [peer](https://en.wikipedia.org/wiki/Peer-to-peer) visibility | [Dashboard](https://en.wikipedia.org/wiki/Dashboard_(computing)) visibility alone did not prove a usable [SSH](https://en.wikipedia.org/wiki/Secure_Shell) [route](https://en.wikipedia.org/wiki/Routing) |
-| [`tailscale ping 100.89.176.3`](https://tailscale.com/docs/reference/ping-types) | Yes | Yes | Test the [tailnet](https://tailscale.com/docs/reference/tailnet-name) path without [SSH](https://en.wikipedia.org/wiki/Secure_Shell) | Helped separate [Tailscale](https://en.wikipedia.org/wiki/Tailscale) reachability from [OpenSSH](https://en.wikipedia.org/wiki/OpenSSH) problems |
-| [TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) test to [port 22](https://en.wikipedia.org/wiki/Port_(computer_networking)) | Yes | Yes | Confirm that [Ubuntu](https://en.wikipedia.org/wiki/Ubuntu) [`sshd`](https://en.wikipedia.org/wiki/OpenSSH) was listening and reachable | A reachable [port](https://en.wikipedia.org/wiki/Port_(computer_networking)) did not guarantee that larger [SSH](https://en.wikipedia.org/wiki/Secure_Shell) exchanges would survive |
-| `ssh -vvv pc` | Yes | Yes | Inspect [address](https://en.wikipedia.org/wiki/IP_address) selection, [KEX](https://en.wikipedia.org/wiki/Key_exchange), [key](https://en.wikipedia.org/wiki/Key_(cryptography)) use, and failure stage | Revealed unusable [IPv6](https://en.wikipedia.org/wiki/IPv6) selection and [negotiation](https://en.wikipedia.org/wiki/Secure_Shell) stalls |
-| Forced [IPv4](https://en.wikipedia.org/wiki/Internet_Protocol_version_4) | Yes | Yes | Remove [IPv6](https://en.wikipedia.org/wiki/IPv6) [route](https://en.wikipedia.org/wiki/Routing) ambiguity | Produced deterministic [routing](https://en.wikipedia.org/wiki/Routing) to the [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) [Tailscale](https://en.wikipedia.org/wiki/Tailscale) [node](https://en.wikipedia.org/wiki/Node_(networking)) |
-| [Curve25519](https://en.wikipedia.org/wiki/Curve25519)-only [KEX](https://en.wikipedia.org/wiki/Key_exchange) | Yes | Yes | Test whether [negotiation](https://en.wikipedia.org/wiki/Secure_Shell) [packet](https://en.wikipedia.org/wiki/Network_packet) size triggered the failure | Avoided the larger exchange associated with the observed stall |
-| Interactive `ssh pc` | Yes | Yes | Validate real [shell](https://en.wikipedia.org/wiki/Shell_(computing)) access and [key](https://en.wikipedia.org/wiki/Key_(cryptography))-only login | Worked after [VPN](https://en.wikipedia.org/wiki/Virtual_private_network) and [transport](https://en.wikipedia.org/wiki/Transport_layer) corrections |
-| [VS Code](https://en.wikipedia.org/wiki/Visual_Studio_Code) [Remote - SSH](https://code.visualstudio.com/docs/remote/ssh) | Yes | N/A | Validate server upload, startup and [port forwarding](https://en.wikipedia.org/wiki/Port_forwarding) | Exposed the [MTU](https://en.wikipedia.org/wiki/Maximum_transmission_unit) issue more reliably than a small [shell](https://en.wikipedia.org/wiki/Shell_(computing)) session |
-| School [Wi-Fi](https://en.wikipedia.org/wiki/Wi-Fi) with [ProtonVPN](https://en.wikipedia.org/wiki/Proton_VPN) | Yes | Yes | Validate operation on a restrictive external [network](https://en.wikipedia.org/wiki/Computer_network) | Showed that [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) and [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) followed different [VPN](https://en.wikipedia.org/wiki/Virtual_private_network) policies |
-| Remote identity commands | Yes | Yes | Confirm destination user, [hostname](https://en.wikipedia.org/wiki/Hostname), working directory, and [GPU](https://en.wikipedia.org/wiki/Graphics_processing_unit)<sup>[<a href="/docs/research/sources/012-nvidia-cuda-programming-guide-release-13-2.md">S012</a>]</sup> tools | Ensured the session landed inside the intended [Ubuntu](https://en.wikipedia.org/wiki/Ubuntu) [WSL2](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) environment |
+| [`tailscale status`](https://tailscale.com/docs/reference/tailscale-cli#status) | Yes | Yes | Confirm local node and [peer](https://en.wikipedia.org/wiki/Peer-to-peer) visibility | Dashboard visibility alone did not prove a usable SSH route |
+| [`tailscale ping 100.89.176.3`](https://tailscale.com/docs/reference/ping-types) | Yes | Yes | Test the [tailnet](https://tailscale.com/docs/concepts/tailnet) path without SSH | Helped separate Tailscale reachability from OpenSSH problems |
+| TCP test to port 22 | Yes | Yes | Confirm that Ubuntu `sshd` was listening and reachable | A reachable port did not guarantee that larger SSH exchanges would survive |
+| `ssh -vvv pc` | Yes | Yes | Inspect address selection, KEX, key use, and failure stage | Revealed unusable IPv6 selection and negotiation stalls |
+| Forced IPv4 | Yes | Yes | Remove IPv6 route ambiguity | Produced deterministic routing to the WSL Tailscale node |
+| Curve25519-only KEX | Yes | Yes | Test whether negotiation packet size triggered the failure | Avoided the larger exchange associated with the observed stall |
+| Interactive `ssh pc` | Yes | Yes | Validate real shell access and key-only login | Worked after VPN and transport corrections |
+| VS Code [Remote - SSH](https://code.visualstudio.com/docs/remote/ssh) | Yes | N/A | Validate server upload, startup and [port forwarding](https://en.wikipedia.org/wiki/Port_forwarding) | Exposed the MTU issue more reliably than a small shell session |
+| School Wi-Fi with ProtonVPN | Yes | Yes | Validate operation on a restrictive external network | Showed that Windows and WSL followed different VPN policies |
+| Remote identity commands | Yes | Yes | Confirm destination user, [hostname](https://en.wikipedia.org/wiki/Hostname), working directory, and [GPU](https://en.wikipedia.org/wiki/Graphics_processing_unit) tools<sup><a href="#ref-s012">S012</a></sup> | Ensured the session landed inside the intended Ubuntu WSL2 environment |
 
 
 # Revised designs:
 
-## Revision 1: direct [Tailscale](https://en.wikipedia.org/wiki/Tailscale) inside the destination [WSL2](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) instance:
+## Revision 1: direct Tailscale inside the destination WSL2 instance:
 
-[Tailscale](https://en.wikipedia.org/wiki/Tailscale) was moved from the [windows](https://en.wikipedia.org/wiki/Microsoft_Windows) [host](https://en.wikipedia.org/wiki/Host_(network)) into [Ubuntu](https://en.wikipedia.org/wiki/Ubuntu) [WSL2](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux). The laptop could then reach the same environment that ran [`sshd`](https://en.wikipedia.org/wiki/OpenSSH).
+Tailscale was moved from the windows [host](https://en.wikipedia.org/wiki/Host_(network)) into Ubuntu WSL2. The laptop could then reach the same environment that ran `sshd`.
 
 ```mermaid
 flowchart LR
@@ -195,15 +195,15 @@ flowchart LR
 
 Benefits:
 
-- No [windows](https://en.wikipedia.org/wiki/Microsoft_Windows) [`portproxy`](https://learn.microsoft.com/en-us/windows-server/networking/technologies/netsh/netsh-interface-portproxy) in the normal [data path](https://en.wikipedia.org/wiki/Data_path).
-- No dependency on the changing [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) [NAT](https://en.wikipedia.org/wiki/Network_address_translation) [address](https://en.wikipedia.org/wiki/IP_address).
-- The [Tailscale](https://en.wikipedia.org/wiki/Tailscale) [identity](https://en.wikipedia.org/wiki/Digital_identity) belongs to the actual [SSH](https://en.wikipedia.org/wiki/Secure_Shell) destination.
-- Fewer [firewall](https://en.wikipedia.org/wiki/Firewall_(computing)) and [forwarding](https://en.wikipedia.org/wiki/Packet_forwarding) layers.
+- No windows [`portproxy`](https://learn.microsoft.com/en-us/windows-server/networking/technologies/netsh/netsh-interface-portproxy) in the normal [data path](https://en.wikipedia.org/wiki/Data_path).
+- No dependency on the changing WSL NAT address.
+- The Tailscale [identity](https://en.wikipedia.org/wiki/Digital_identity) belongs to the actual SSH destination.
+- Fewer firewall and [forwarding](https://en.wikipedia.org/wiki/Packet_forwarding) layers.
 - Easier reasoning about [logs](https://en.wikipedia.org/wiki/Logging_(computing)) and failures.
 
 ### Revision 2: client behavior
 
-The [client](https://en.wikipedia.org/wiki/Client_(computing)) [configuration](https://en.wikipedia.org/wiki/Configuration_file) was hardened so both [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) and [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) used the intended [address](https://en.wikipedia.org/wiki/IP_address) and [key exchange](https://en.wikipedia.org/wiki/Key_exchange) behaviour.
+The [client](https://en.wikipedia.org/wiki/Client_(computing)) [configuration](https://en.wikipedia.org/wiki/Configuration_file) was hardened so both Windows and WSL used the intended address and key exchange behaviour.
 
 Representive configuration:
 
@@ -220,14 +220,14 @@ Host pc
    ServerAliveCountMax 3
 ```
 
-[Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) and [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) maintain seperate physical [SSH](https://en.wikipedia.org/wiki/Secure_Shell) [configuration files](https://en.wikipedia.org/wiki/Configuration_file), so this logical entry must remain equivalent in btoh environments:
+Windows and WSL maintain seperate physical SSH configuration files, so this logical entry must remain equivalent in btoh environments:
 
-- [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows): `\.ssh\config`
-- [WSL2](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) `~/.ssh/config`
+- Windows: `\.ssh\config`
+- WSL2 `~/.ssh/config`
 
-## Revision 3: single [VPN](https://en.wikipedia.org/wiki/Virtual_private_network)-[routing](https://en.wikipedia.org/wiki/Routing) policy
+## Revision 3: single VPN-routing policy
 
-The final [VPN](https://en.wikipedia.org/wiki/Virtual_private_network) rule seperates [Tailscale](https://en.wikipedia.org/wiki/Tailscale) [network](https://en.wikipedia.org/wiki/Computer_network) [routing](https://en.wikipedia.org/wiki/Routing) from application selection:
+The final VPN rule seperates Tailscale network routing from application selection:
 
 ```mermaid
 flowchart TD
@@ -238,7 +238,7 @@ flowchart TD
    TS --> PC[Remote WSL2 node]
 ```
 
-[OpenSSH](https://en.wikipedia.org/wiki/OpenSSH) and [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) are not independently excluded as applications. This avoids two [split-tunneling](https://en.wikipedia.org/wiki/Split_tunneling) mechanisms over the same [connection](https://en.wikipedia.org/wiki/Connection-oriented_communication).
+OpenSSH and VSCode are not independently excluded as applications. This avoids two split-tunneling mechanisms over the same [connection](https://en.wikipedia.org/wiki/Connection-oriented_communication).
 
 # Final implementation
 
@@ -300,34 +300,65 @@ sequenceDiagram
 
 ### Security properties
 
-- The [router](https://en.wikipedia.org/wiki/Router_(computing)) exposes no inbound [SSH](https://en.wikipedia.org/wiki/Secure_Shell) [port](https://en.wikipedia.org/wiki/Port_(computer_networking)). 
-- The [Ubuntu](https://en.wikipedia.org/wiki/Ubuntu) [SSH](https://en.wikipedia.org/wiki/Secure_Shell) [server](https://en.wikipedia.org/wiki/Server_(computing)) is recheable through [tailnet](https://tailscale.com/docs/reference/glossary#tailnet), not public [internet](https://en.wikipedia.org/wiki/Internet).
-- [Authentication](https://en.wikipedia.org/wiki/Authentication) is possession based through an [Ed25519](https://en.wikipedia.org/wiki/EdDSA#Ed25519)<sup>[<a href="/docs/research/sources/041-rfc-8709-ed25519-ssh.md">S041</a>]</sup> [private key](https://en.wikipedia.org/wiki/Public-key_cryptography).
-- [Password](https://en.wikipedia.org/wiki/Password) and [root](https://en.wikipedia.org/wiki/Superuser) [SSH](https://en.wikipedia.org/wiki/Secure_Shell) login remain disabled.
-- The [host alias](https://en.wikipedia.org/wiki/Hostname) always targets the [Ubuntu](https://en.wikipedia.org/wiki/Ubuntu) [WSL2](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) [Tailscale](https://en.wikipedia.org/wiki/Tailscale) [identity](https://en.wikipedia.org/wiki/Digital_identity).
-- [Tailscale](https://en.wikipedia.org/wiki/Tailscale) [encrypts](https://en.wikipedia.org/wiki/Encryption) [transport](https://en.wikipedia.org/wiki/Transport_layer) between the two enrolled devices.
-- The design does not depend on [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) [OpenSSH](https://en.wikipedia.org/wiki/OpenSSH) server.
+- The router exposes no inbound SSH port.
+- The Ubuntu SSH [server](https://en.wikipedia.org/wiki/Server_(computing)) is recheable through [tailnet](https://tailscale.com/docs/reference/glossary#tailnet), not public [internet](https://en.wikipedia.org/wiki/Internet).
+- Authentication is possession based through an [Ed25519](https://en.wikipedia.org/wiki/EdDSA#Ed25519) private key.<sup><a href="#ref-s041">S041</a></sup>
+- [Password](https://en.wikipedia.org/wiki/Password) and [root](https://en.wikipedia.org/wiki/Superuser) SSH login remain disabled.
+- The host alias always targets the Ubuntu WSL2 Tailscale identity.
+- Tailscale [encrypts](https://en.wikipedia.org/wiki/Encryption) transport between the two enrolled devices.
+- The design does not depend on Windows OpenSSH server.
 
 # Evaluation
 
 ### What worked well:
 
-- Moving [Tailscale](https://en.wikipedia.org/wiki/Tailscale) into the destination [WSL2](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) instance greatly simplified the design.
-- The direct [Tailscale](https://en.wikipedia.org/wiki/Tailscale) [IPv4](https://en.wikipedia.org/wiki/Internet_Protocol_version_4) [address](https://en.wikipedia.org/wiki/IP_address) removed both [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) [NAT](https://en.wikipedia.org/wiki/Network_address_translation) changing and [IPv6](https://en.wikipedia.org/wiki/IPv6) [route](https://en.wikipedia.org/wiki/Routing) ambiguity.
-- [Key](https://en.wikipedia.org/wiki/Key_(cryptography)) only [OpenSSH](https://en.wikipedia.org/wiki/OpenSSH) preserved strong [security](https://en.wikipedia.org/wiki/Computer_security) without exposing [port 22](https://en.wikipedia.org/wiki/Port_(computer_networking)) publically.
-- Layered testing succesfully seperated [routing](https://en.wikipedia.org/wiki/Routing), [transport](https://en.wikipedia.org/wiki/Transport_layer), [authentification](https://en.wikipedia.org/wiki/Authentication), [shell](https://en.wikipedia.org/wiki/Shell_(computing)), and [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) failures.
-- Testing from both [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) and [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) revealed [ProtonVPN](https://en.wikipedia.org/wiki/Proton_VPN) policy differences that single [client](https://en.wikipedia.org/wiki/Client_(computing)) testing would have missed. 
-- [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) acted as [stress test](https://en.wikipedia.org/wiki/Stress_testing_(software)) and exposed [MTU](https://en.wikipedia.org/wiki/Maximum_transmission_unit) faults normal [ssh](https://en.wikipedia.org/wiki/Secure_Shell) would of missed. 
+- Moving Tailscale into the destination WSL2 instance greatly simplified the design.
+- The direct Tailscale IPv4 address removed both WSL NAT changing and IPv6 route ambiguity.
+- Key only OpenSSH preserved strong [security](https://en.wikipedia.org/wiki/Computer_security) without exposing port 22 publically.
+- Layered testing succesfully seperated routing, transport, authentification, shell, and VSCode failures.
+- Testing from both Windows and WSL revealed ProtonVPN policy differences that single client testing would have missed.
+- VSCode acted as [stress test](https://en.wikipedia.org/wiki/Stress_testing_(software)) and exposed MTU faults normal ssh would of missed.
 
 ### Weaknesses: 
 
-- Using a literal [Tailscale](https://en.wikipedia.org/wiki/Tailscale) [IPv4](https://en.wikipedia.org/wiki/Internet_Protocol_version_4) [address](https://en.wikipedia.org/wiki/IP_address) is less stable than a [MagicDNS](https://tailscale.com/docs/features/magicdns)<sup>[<a href="/docs/research/sources/042-tailscale-magicdns.md">S042</a>]</sup> name.
-- [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) and [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) have seperate [SSH](https://en.wikipedia.org/wiki/Secure_Shell) [configuration files](https://en.wikipedia.org/wiki/Configuration_file) that can *[drift](https://en.wikipedia.org/wiki/Configuration_drift)* apart.
-- Restricting [KEX](https://en.wikipedia.org/wiki/Key_exchange) to [Curve25519](https://en.wikipedia.org/wiki/Curve25519) sacrifices the *[hybrid post quantum exchange](https://en.wikipedia.org/wiki/Post-quantum_cryptography)* until the [MTU](https://en.wikipedia.org/wiki/Maximum_transmission_unit) problem is corrected at the [network layer](https://en.wikipedia.org/wiki/Network_layer). 
-- Reducing the laptop [Tailscale](https://en.wikipedia.org/wiki/Tailscale) [MTU](https://en.wikipedia.org/wiki/Maximum_transmission_unit) is a workaround, and may reduce output slightly.
+- Using a literal Tailscale IPv4 address is less stable than a [MagicDNS](https://tailscale.com/docs/features/magicdns) name.<sup><a href="#ref-s042">S042</a></sup>
+- Windows and WSL have seperate SSH configuration files that can *[drift](https://en.wikipedia.org/wiki/Concept_drift#Data_configuration_decay)* apart.
+- Restricting KEX to Curve25519 sacrifices the *hybrid post quantum exchange* until the MTU problem is corrected at the network layer.
+- Reducing the laptop Tailscale MTU is a workaround, and may reduce output slightly.
 
 # Conclusion
 
-Moved form fragile, multi-layer [forwarding](https://en.wikipedia.org/wiki/Packet_forwarding) design to direct and secure [Linux](https://en.wikipedia.org/wiki/Linux) -> [Linux](https://en.wikipedia.org/wiki/Linux) [endpoint](https://en.wikipedia.org/wiki/Communication_endpoint) over [Tailscale](https://en.wikipedia.org/wiki/Tailscale) in the same [WSL2](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) environment as the [OpenSSH](https://en.wikipedia.org/wiki/OpenSSH) server. 
+Moved form fragile, multi-layer forwarding design to direct and secure Linux -> Linux [endpoint](https://en.wikipedia.org/wiki/Communication_endpoint) over Tailscale in the same WSL2 environment as the OpenSSH server.
 
 The final implementation meets the requirements.
+
+## References used
+
+- <a name="ref-s012"></a> **S012 — NVIDIA Corporation (2026).** *CUDA Programming Guide*, Release 13.2. [Source record](/docs/research/sources/012-nvidia-cuda-programming-guide-release-13-2.md).
+- <a name="ref-s016"></a> **S016 — Tailscale Inc. (2025).** ‘What is Tailscale?’. [Source record](/docs/research/sources/016-tailscale-what-is-tailscale.md).
+- <a name="ref-s017"></a> **S017 — Cloudflare Inc. (n.d.).** ‘What is SSH? Secure Shell (SSH) protocol’. [Source record](/docs/research/sources/017-cloudflare-what-is-ssh.md).
+- <a name="ref-s018"></a> **S018 — OpenBSD Project (n.d.).** ‘OpenSSH’. [Source record](/docs/research/sources/018-openbsd-openssh.md).
+- <a name="ref-s019"></a> **S019 — Microsoft (2025).** ‘What is the Windows Subsystem for Linux?’. [Source record](/docs/research/sources/019-microsoft-what-is-wsl.md).
+- <a name="ref-s020"></a> **S020 — Canonical Ltd. (2026).** ‘Ubuntu on WSL’. [Source record](/docs/research/sources/020-canonical-ubuntu-on-wsl.md).
+- <a name="ref-s021"></a> **S021 — Cloudflare Inc. (n.d.).** ‘What is a LAN (local area network)?’. [Source record](/docs/research/sources/021-cloudflare-what-is-a-lan.md).
+- <a name="ref-s022"></a> **S022 — Cloudflare Inc. (n.d.).** ‘What is a computer port? Ports in networking’. [Source record](/docs/research/sources/022-cloudflare-computer-ports.md).
+- <a name="ref-s023"></a> **S023 — Microsoft (2022).** ‘DHCP (Dynamic Host Configuration Protocol) Basics’. [Source record](/docs/research/sources/023-microsoft-dhcp-basics.md).
+- <a name="ref-s024"></a> **S024 — Microsoft (2025).** ‘Accessing network applications with WSL’. [Source record](/docs/research/sources/024-microsoft-wsl-networking.md).
+- <a name="ref-s025"></a> **S025 — Microsoft (2026).** ‘Remote Development using SSH’. [Source record](/docs/research/sources/025-microsoft-vscode-remote-ssh.md).
+- <a name="ref-s026"></a> **S026 — Microsoft (2025).** ‘What is PowerShell?’. [Source record](/docs/research/sources/026-microsoft-what-is-powershell.md).
+- <a name="ref-s027"></a> **S027 — Raspberry Pi Ltd. (n.d.).** ‘About us’. [Source record](/docs/research/sources/027-raspberry-pi-about.md).
+- <a name="ref-s028"></a> **S028 — OpenBSD Project (n.d.).** ‘sshd_config(5)’. [Source record](/docs/research/sources/028-openbsd-sshd-config.md).
+- <a name="ref-s029"></a> **S029 — Cloudflare Inc. (n.d.).** ‘What is my IP address?’. [Source record](/docs/research/sources/029-cloudflare-ip-addresses.md).
+- <a name="ref-s030"></a> **S030 — Cloudflare Inc. (n.d.).** ‘What is a brute force attack?’. [Source record](/docs/research/sources/030-cloudflare-brute-force-attacks.md).
+- <a name="ref-s031"></a> **S031 — Microsoft (n.d.).** ‘Windows technical documentation for developers and IT pros’. [Source record](/docs/research/sources/031-microsoft-windows-documentation.md).
+- <a name="ref-s032"></a> **S032 — Lahey (2000).** *TCP Problems with Path MTU Discovery*. RFC 2923. [Source record](/docs/research/sources/032-rfc-2923-path-mtu-discovery.md).
+- <a name="ref-s033"></a> **S033 — OpenBSD Project (n.d.).** ‘ssh_config(5)’. [Source record](/docs/research/sources/033-openbsd-ssh-config.md).
+- <a name="ref-s034"></a> **S034 — OpenSSH Project (2026).** ‘OpenSSH Release Notes’. [Source record](/docs/research/sources/034-openssh-release-notes.md).
+- <a name="ref-s035"></a> **S035 — Tailscale Inc. (2026).** ‘Manage permissions using ACLs’. [Source record](/docs/research/sources/035-tailscale-acls.md).
+- <a name="ref-s036"></a> **S036 — Tailscale Inc. (2026).** ‘Tailscale CLI’. [Source record](/docs/research/sources/036-tailscale-cli.md).
+- <a name="ref-s037"></a> **S037 — Proton AG (n.d.).** ‘How to use split tunneling’. [Source record](/docs/research/sources/037-proton-vpn-split-tunneling.md).
+- <a name="ref-s038"></a> **S038 — Cloudflare Inc. (n.d.).** ‘What is DNS?’. [Source record](/docs/research/sources/038-cloudflare-what-is-dns.md).
+- <a name="ref-s039"></a> **S039 — Cloudflare Inc. (n.d.).** ‘What is Transport Layer Security?’. [Source record](/docs/research/sources/039-cloudflare-what-is-tls.md).
+- <a name="ref-s040"></a> **S040 — Adamantiadis, Josefsson and Baushke (2020).** *Secure Shell (SSH) Key Exchange Method Using Curve25519 and Curve448*. RFC 8731. [Source record](/docs/research/sources/040-rfc-8731-curve25519-ssh.md).
+- <a name="ref-s041"></a> **S041 — Harris and Velvindron (2020).** *Ed25519 and Ed448 Public Key Algorithms for the Secure Shell (SSH) Protocol*. RFC 8709. [Source record](/docs/research/sources/041-rfc-8709-ed25519-ssh.md).
+- <a name="ref-s042"></a> **S042 — Tailscale Inc. (2026).** ‘MagicDNS’. [Source record](/docs/research/sources/042-tailscale-magicdns.md).
