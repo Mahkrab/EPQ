@@ -5,10 +5,14 @@ on:
     branches:
       - main
       - documentation
+      - "milestone/**"
+      - "phase/**"
   push:
     branches:
       - main
       - documentation
+      - "milestone/**"
+      - "phase/**"
   merge_group:
 
 permissions:
@@ -20,7 +24,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
 
       - name: Run unit tests
         run: python3 -m unittest tests.markdown.test
@@ -33,5 +39,5 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
           python3 tests/markdown/check.py
-          docs/project/development/milestones/00/explation.md
+          docs/project/development/milestones/00/explanations/math.md
           docs/project/development/milestones/00/phases/phase-00-design-contract.md
