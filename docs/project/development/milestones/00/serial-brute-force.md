@@ -7,7 +7,8 @@ Creating the complete single-threaded CPU reference implementation using brute-f
 ## Phases
 
 - [Phase 0 design contract](/docs/project/development/milestones/00/phases/phase-00-design-contract.md)
-- [Phase 1 implementation and verification record](/docs/project/development/milestones/00/phases/phase-01-numerical-foundations.md)
+- [Phase 1 numerical foundations](/docs/project/development/milestones/00/phases/phase-01-numerical-foundations.md)
+- [Phase 2 scene configuration](/docs/project/development/milestones/00/phases/phase-02-configuration-scenes.md)
 
 ## Related records
 

@@ -489,7 +489,7 @@ input file or scene may occur before a timestep, but the timestep boundary must 
 
 | Classification | Conditions | Required result |
 | --- | --- | --- |
-| Invalid configuration | Any non-finite numeric configuration value; $\Delta t\leq0$, $d_p\leq0$, $h\leq0$, $m\leq0$, either rest density $\leq0$, $\varepsilon\leq0$, $k_{\mathrm{corr}}<0$, $\Delta q\notin(0,h)$ or $n_{\mathrm{corr}}\leq0$; a non-finite plane offset; a zero, infinite or non-unit plane normal, or a reference-labelled run that changes a frozen reference policy without being labelled as an experiment | Reject before simulation work. Never silently clamp, substitute defaults, normalise a plane, or alter the fixed timestep. Any eventual input specification may add field-specific rules without weakening these mathematical domains. |
+| Invalid configuration | Any non-finite numeric configuration value; $\Delta t\leq0$, $d_p\leq0$, $h\leq0$, $m\leq0$, either rest density $\leq0$, $\varepsilon\leq0$, $k_{\mathrm{corr}}<0$, $\Delta q\notin(0,h)$ or $n_{\mathrm{corr}}\leq0$; a non-finite plane offset; or a zero, infinite or non-unit plane normal | Reject before simulation work. Never silently clamp, substitute defaults, normalise a plane, or alter the fixed timestep. Any eventual input specification may add field-specific rules without weakening these mathematical domains. |
 | Invalid accepted simulation state | Any non-finite accepted position or velocity, missing or duplicate stable particle identities, an invalid particle reference or index, a neighbour set containing self, duplicates, an out-of-range reference or order inconsistent with the identity contract | Reject the step or report an invariant failure. The previously accepted state remains unchanged. |
 | Valid edge case | Empty particle set, one particle, distinct particles at the same position, zero maximum post-acceleration speed, a particle exactly at $r=h$, a particle exactly on a plane; or finite density above or below rest density | Execute the explicit conventions below. These cases do not fail merely because they are degenerate or have large finite density error. |
 | Non-fatal diagnostic warning | The fixed $\Delta t$ is greater than the finite CFL limit | Continue with the fixed timestep. If all other checks pass, accept the state atomically and return a successful outcome carrying the warning. |
@@ -508,11 +508,6 @@ The valid edge cases have these exact meanings:
 - When maximum speed is zero, CFL division is not evaluated and there is no warning.
 - At exactly $r=h$, the pair is outside both support and interaction sets and both kernels are zero.
 - At exactly $C_{\mathrm{plane}}=0$, projection leaves the centre unchanged.
-
-Particle identities are stable and unique, but their external representation remains open until scene-contract
-work begins. Any positional index used to refer to a particle must resolve to the intended valid identity; indices
-do not replace identity-based ordering. Configuration deviations that remain inside the mathematical domain are
-valid only as explicitly labelled experiments and are not reference results.
 
 State acceptance is transactional. Every acceleration, prediction, neighbour set, multiplier, correction,
 projection and reconstructed velocity is working data until all finiteness, identity, neighbour and final-plane
