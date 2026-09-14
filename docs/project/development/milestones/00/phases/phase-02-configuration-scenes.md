@@ -11,8 +11,7 @@ This phase started from the [Phase 1 completion commit](https://github.com/Mahkr
 
 Phase 2 turned the fixed numerical decisions from Phase 0/1, into explicit, repeatable, inputs. Maelstrom
 can now load and inspect strict configurations, then construct ordinary external scenes in a stable order.
-EPQ has selected which of those inputs form the permanent comparison family before any golden result or
-performance baseline is produced.
+The benchmark scene will be selected after the complete simulator is finished. 
 
 This phase stil does not discover neighbours, run a complete timestep, produce result, or benchmark.
 
@@ -31,8 +30,8 @@ binary32 value. Scene equivalence adds the randomness policy, ordered planes and
 identity, position and velocity. Names, descriptions, provenance and EPQ workload roles do not decide this
 equivalence, although deterministic inspection still records the display metadata and field provenance.
 
-The selected numerical values are ordinary external data in
-[defaults-v1.toml](/Maelstrom/config/defaults-v1.toml). Each selected
+The numerical values are ordinary external data in
+[defaults-v1.toml](/Maelstrom/config/defaults-v1.toml). Each
 [falling-block scene](/Maelstrom/scenes/) refers to that file through the public relative-path loader; none
 uses a special reference-scene path. The files fix a half-open lattice at `[0.20, 0.40, 0.20] m`, `0.05 m`
 spacing, zero initial velocity, identities beginning at zero, x-then-y-then-z construction with z fastest,
