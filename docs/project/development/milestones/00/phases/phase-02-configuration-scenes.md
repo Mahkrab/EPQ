@@ -36,23 +36,9 @@ The selected numerical values are ordinary external data in
 [falling-block scene](/Maelstrom/scenes/) refers to that file through the public relative-path loader; none
 uses a special reference-scene path. The files fix a half-open lattice at `[0.20, 0.40, 0.20] m`, `0.05 m`
 spacing, zero initial velocity, identities beginning at zero, x-then-y-then-z construction with z fastest,
-and the ordered minimum/maximum X, Y and Z planes. Their count-specific box dimensions and exact binary32
+and the ordered minimum/maximum X, Y and Z planes. Their cont-specific box dimensions and exact binary32
 plane offsets are stored in the scene data and independently asserted by
 [external-scene tests](/Maelstrom/tests/external_scenes.rs).
-
-EPQ assigns the research use of those neutral files as follows:
-
-| EPQ use | Ordinary scene input | Run length and checkpoints |
-| --- | --- | --- |
-| Frequent correctness check | [falling-block-06.toml](/Maelstrom/scenes/falling-block-06.toml), 216 particles | 240 timesteps; `0, 1, 60, 120, 240` |
-| Eventual golden result | [falling-block-10.toml](/Maelstrom/scenes/falling-block-10.toml), 1,000 particles | 240 timesteps; `0, 1, 60, 120, 240` |
-| Scalability sequence | [04](/Maelstrom/scenes/falling-block-04.toml), [06](/Maelstrom/scenes/falling-block-06.toml), [08](/Maelstrom/scenes/falling-block-08.toml), [10](/Maelstrom/scenes/falling-block-10.toml), [12](/Maelstrom/scenes/falling-block-12.toml), [16](/Maelstrom/scenes/falling-block-16.toml), [20](/Maelstrom/scenes/falling-block-20.toml): 64 to 8,000 particles | 20 timesteps each; `0, 1, 20` |
-
-Changing a selected file creates a separately recorded EPQ experiment with new evidence; it does not alter
-the meaning of an earlier result. That is a documented investigation rule rather than a general Rust input
-classification. Focused empty, single-particle, interaction, support-boundary, coincidence and plane cases now
-remain at the [test boundary](/Maelstrom/tests/scene_contract.rs), rather than appearing as simulator domain
-types.
 
 ## Verification
 
@@ -64,7 +50,7 @@ The new behaviour is covered by:
 
 | Local check | Observed outcome |
 | --- | --- |
-| `cargo fmt --all -- --check` and `cargo check --all-targets --all-features` | Passed |
+| `cargo fmt --all -- --check` and `cargo check --all-targets --all-features` | Passed after "cargo fmt" to remove whitespace |
 | `cargo clippy --all-targets --all-features -- -D warnings` | Passed with warnings denied |
 | `RUSTDOCFLAGS='-D warnings' cargo doc --no-deps --all-features` | Passed with warnings denied |
 | `cargo test --all-targets --all-features` and the equivalent release test | Passed all 63 integration tests in each profile |

@@ -5,9 +5,9 @@ This document explains the Milestone 00 reference solver in accessible language.
 disagrees with it, the milestone record wins and this document must be corrected.
 
 The published method comes mainly from the SPH kernels in
-[S003](#ref-s003), the PBF equations and
-loop in [S004](#ref-s004), and the general position-based
-update in [S050](#ref-s050). The exact numerical scale,
+<sup><a href="#ref-s003">S003</a></sup>, the PBF equations and
+loop in <sup><a href="#ref-s004">S004</a></sup>, and the general position-based
+update in <sup><a href="#ref-s050">S050</a></sup>. The exact numerical scale,
 binary32 arithmetic, plane-only boundary, ordering, warnings and failure behaviour are Maelstrom project
 decisions. The full provenance is recorded in the
 [contract authority table](/docs/project/development/milestones/00/phases/phase-00-design-contract.md#contract-status-and-authority).
@@ -426,7 +426,7 @@ experimental variants.
 
 ## Boundary alternative that is not part of the reference
 
-[S052](#ref-s052) explains how sampled solid boundaries can
+<sup><a href="#ref-s052">S052</a></sup> explains how sampled solid boundaries can
 contribute pseudo-mass to density and reduce the missing-neighbour problem near walls. That approach changes the
 density, direction and correction equations. It is retained in the normative record as researched context, but it
 is not an alternative selectable by the Milestone 00 reference. Milestones 00 to 03 use planes only. Enabling

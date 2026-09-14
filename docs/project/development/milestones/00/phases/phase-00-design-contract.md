@@ -8,11 +8,11 @@ override this record.
 
 | Area | Evidence supplied by the sources | Maelstrom project decision |
 | --- | --- | --- |
-| Particle state, prediction and velocity reconstruction | Particle state and integration structure from [S014](#ref-s014) and position-based prediction/projection from [S050](#ref-s050) | Fixed binary32 arithmetic, fixed timestep, transactional state acceptance and the exact validation policy |
-| Density and kernels | SPH density interpolation and the three-dimensional Poly6 and Spiky kernels from [S003](#ref-s003) | Strict support membership, explicit zerodistance behaviour and the equalmass normalisation used by this solver |
-| Fluid constraint | Density constraint, relaxed multiplier, artificial pressure form, Jacobi loop and once-per-step neighbour search from [S004](#ref-s004) | Four iterations, SI-scaled relaxation and artificial-pressure strength, stable reduction order  |
-| Timestep diagnostic and density auditing | Velocity CFL guidance, neighbour search context and density error practice from [S051](#ref-s051) | A non-adaptive warning-only CFL diagnostic, its selected values, and a fresh untimed brute-force correctness audit |
-| Boundaries | Position projection from [S050](#ref-s050), the boundary density deficiency and a density-aware alternative from [S052](#ref-s052) | Static plane projection only, with no boundary density, friction or restitution, for Milestones 00 to 03 |
+| Particle state, prediction and velocity reconstruction | Particle state and integration structure from <sup><a href="#ref-s014">S014</a></sup> and position-based prediction/projection from <sup><a href="#ref-s050">S050</a></sup> | Fixed binary32 arithmetic, fixed timestep, transactional state acceptance and the exact validation policy |
+| Density and kernels | SPH density interpolation and the three-dimensional Poly6 and Spiky kernels from <sup><a href="#ref-s003">S003</a></sup> | Strict support membership, explicit zerodistance behaviour and the equalmass normalisation used by this solver |
+| Fluid constraint | Density constraint, relaxed multiplier, artificial pressure form, Jacobi loop and once-per-step neighbour search from <sup><a href="#ref-s004">S004</a></sup> | Four iterations, SI-scaled relaxation and artificial-pressure strength, stable reduction order  |
+| Timestep diagnostic and density auditing | Velocity CFL guidance, neighbour search context and density error practice from <sup><a href="#ref-s051">S051</a></sup> | A non-adaptive warning-only CFL diagnostic, its selected values, and a fresh untimed brute-force correctness audit |
+| Boundaries | Position projection from <sup><a href="#ref-s050">S050</a></sup>, the boundary density deficiency and a density-aware alternative from <sup><a href="#ref-s052">S052</a></sup> | Static plane projection only, with no boundary density, friction or restitution, for Milestones 00 to 03 |
 
 ## Requirements and success criteria
 
@@ -424,19 +424,19 @@ and override mechanism remains open, but it may not reinterpret these reference 
 | Units and axes | Metres, seconds and kilograms, right-handed coordinates with positive $y$ upward | Project convention |
 | External acceleration | $\mathbf{a}_{\mathrm{ext}}=(0,-9.81,0)\,\mathrm{m\,s^{-2}}$ uniformly for every particle | Project reference workload |
 | Fixed timestep | $\Delta t=1/120\,\mathrm{s}$; never adapted by CFL | Project reference workload |
-| CFL diagnostic | $\lambda_{\mathrm{CFL}}=0.4$, using $d_p$ and post-acceleration speed | Velocity form and approximate factor supported by [S051](#ref-s051), warning-only policy is a project decision |
+| CFL diagnostic | $\lambda_{\mathrm{CFL}}=0.4$, using $d_p$ and post-acceleration speed | Velocity form and approximate factor supported by <sup><a href="#ref-s051">S051</a></sup>, warning-only policy is a project decision |
 | Particle spacing and diameter | $\Delta x=d_p=0.05\,\mathrm{m}$ | Project reference resolution |
 | Kernel support | $h=2\Delta x=0.10\,\mathrm{m}$ | Project support-to-spacing ratio |
 | Physical rest density | $\rho_0^{\mathrm{phys}}=1000\,\mathrm{kg\,m^{-3}}$ | Project's water-like convention |
 | Particle mass and normalised rest density | Derived from the strict-support 27-offset interior lattice below; never independently tuned | Project discrete-equilibrium decision using the sourced Poly6 kernel |
-| Solver iterations | Exactly four Jacobi iterations per timestep | Upper end of the typical two-to-four fixed range reported by [S004](#ref-s004) |
-| Relaxation | $\varepsilon=10^{-6}h^{-2}=10^{-4}\,\mathrm{m^{-2}}$ nominally | Project SI-scaled regularisation; [S004](#ref-s004) supports relaxation but not this SI value |
-| Artificial pressure | Enabled with $k_{\mathrm{corr}}=0.1h^2=0.001\,\mathrm{m^2}$, $\Delta q=0.2h=0.02\,\mathrm{m}$ and $n_{\mathrm{corr}}=4$ nominally | Shape, $0.1h$--$0.3h$ separation range, reported strength and exponent from [S004](#ref-s004); SI scaling of $k$ is a project decision |
-| Boundary model | Static unit-normal plane projection on particle centres; no boundary-density contribution, restitution or friction | Project choice informed by [S050](#ref-s050) and [S052](#ref-s052) |
-| Optional velocity effects | XSPH viscosity and vorticity confinement disabled | Project decision; both are optional additions in [S004](#ref-s004) |
-| Neighbour rebuild | Once after prediction per timestep; membership fixed while distances and kernels are recalculated in every iteration | Published PBF behaviour in [S004](#ref-s004) |
+| Solver iterations | Exactly four Jacobi iterations per timestep | Upper end of the typical two-to-four fixed range reported by <sup><a href="#ref-s004">S004</a></sup> |
+| Relaxation | $\varepsilon=10^{-6}h^{-2}=10^{-4}\,\mathrm{m^{-2}}$ nominally | Project SI-scaled regularisation; <sup><a href="#ref-s004">S004</a></sup> supports relaxation but not this SI value |
+| Artificial pressure | Enabled with $k_{\mathrm{corr}}=0.1h^2=0.001\,\mathrm{m^2}$, $\Delta q=0.2h=0.02\,\mathrm{m}$ and $n_{\mathrm{corr}}=4$ nominally | Shape, $0.1h$--$0.3h$ separation range, reported strength and exponent from <sup><a href="#ref-s004">S004</a></sup>; SI scaling of $k$ is a project decision |
+| Boundary model | Static unit-normal plane projection on particle centres; no boundary-density contribution, restitution or friction | Project choice informed by <sup><a href="#ref-s050">S050</a></sup> and <sup><a href="#ref-s052">S052</a></sup> |
+| Optional velocity effects | XSPH viscosity and vorticity confinement disabled | Project decision; both are optional additions in <sup><a href="#ref-s004">S004</a></sup> |
+| Neighbour rebuild | Once after prediction per timestep; membership fixed while distances and kernels are recalculated in every iteration | Published PBF behaviour in <sup><a href="#ref-s004">S004</a></sup> |
 | Particle and reduction order | Stable ascending particle identity for particle processing, neighbour lists and every serial sum | Project determinism decision |
-| Density-error audit | Every accepted fluid particle; fresh brute-force support search at declared checkpoints | Project correctness boundary informed by [S051](#ref-s051) |
+| Density-error audit | Every accepted fluid particle; fresh brute-force support search at declared checkpoints | Project correctness boundary informed by <sup><a href="#ref-s051">S051</a></sup> |
 
 Reference decimal literals and the relationships above are interpreted in binary32 before simulation arithmetic.
 The relationships are authoritative: for example, $h$ is derived from $2\Delta x$, and the relaxation and
