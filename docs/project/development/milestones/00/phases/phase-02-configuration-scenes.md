@@ -18,11 +18,11 @@ This phase stil does not discover neighbours, run a complete timestep, produce r
 ## Decisions and implementation
 
 Maelstrom owns the technical input contract, not the investigation's classification. Its
-[configuration resolver](/Maelstrom/src/config/resolved.rs) starts from neutral built-in defaults and applies
+[configuration resolver](https://github.com/Mahkrab/Maelstrom/blob/4f4e71882fd72578f648491f2524b960baeaa5f8/src/config/resolved.rs) starts from neutral built-in defaults and applies
 configuration-file, scene and eventual command-line values in that order. Each field retains its source for
 inspection. Unknown, contradictory, unsupported, invalid and non-finite values are rejected, but a different
 supported value does not require a research label. Primary values remain separate from the authoritative
-[derived calculations](/Maelstrom/src/config/validation.rs); supplied derived values are exact assertions, not
+[derived calculations](https://github.com/Mahkrab/Maelstrom/blob/4f4e71882fd72578f648491f2524b960baeaa5f8/src/config/validation.rs); supplied derived values are exact assertions, not
 independent tuning inputs.
 
 Technical configuration equivalence is represented from every resolved policy, primary value and derived
@@ -31,21 +31,21 @@ identity, position and velocity. Names, descriptions, provenance and EPQ workloa
 equivalence, although deterministic inspection still records the display metadata and field provenance.
 
 The numerical values are ordinary external data in
-[defaults-v1.toml](/Maelstrom/config/defaults-v1.toml). Each
-[falling-block scene](/Maelstrom/scenes/) refers to that file through the public relative-path loader; none
+[defaults-v1.toml](https://github.com/Mahkrab/Maelstrom/blob/4f4e71882fd72578f648491f2524b960baeaa5f8/config/defaults-v1.toml). Each
+[falling-block scene](https://github.com/Mahkrab/Maelstrom/tree/4f4e71882fd72578f648491f2524b960baeaa5f8/scenes) refers to that file through the public relative-path loader; none
 uses a special reference-scene path. The files fix a half-open lattice at `[0.20, 0.40, 0.20] m`, `0.05 m`
 spacing, zero initial velocity, identities beginning at zero, x-then-y-then-z construction with z fastest,
 and the ordered minimum/maximum X, Y and Z planes. Their cont-specific box dimensions and exact binary32
 plane offsets are stored in the scene data and independently asserted by
-[external-scene tests](/Maelstrom/tests/external_scenes.rs).
+[external-scene tests](https://github.com/Mahkrab/Maelstrom/blob/4f4e71882fd72578f648491f2524b960baeaa5f8/tests/external_scenes.rs).
 
 ## Verification
 
 The new behaviour is covered by:
 
-- [configuration](/Maelstrom/tests/configuration_contract.rs)
-- [scene](/Maelstrom/tests/scene_contract.rs)
-- [external inputs](/Maelstrom/tests/external_scenes.rs)
+- [configuration](https://github.com/Mahkrab/Maelstrom/blob/4f4e71882fd72578f648491f2524b960baeaa5f8/tests/configuration_contract.rs)
+- [scene](https://github.com/Mahkrab/Maelstrom/blob/4f4e71882fd72578f648491f2524b960baeaa5f8/tests/scene_contract.rs)
+- [external inputs](https://github.com/Mahkrab/Maelstrom/blob/4f4e71882fd72578f648491f2524b960baeaa5f8/tests/external_scenes.rs)
 
 | Local check | Observed outcome |
 | --- | --- |
