@@ -13,7 +13,7 @@ Phase 4 added the headless workflow around the solver, without changing its time
 It accepts a resolved scene and a step/checkpoint request, retains accepted observations, and produces
 replayable JSON or a human-readable summary. The assessed implementation is Maelstrom
 [`a126ac215ca51384f330b3c4f3357b5c148b89ce`](https://github.com/Mahkrab/Maelstrom/tree/a126ac215ca51384f330b3c4f3357b5c148b89ce),
-currently committed locally but not published.
+published with the annotated `milestone-00/phase-04/complete` tag.
 
 The public CLI, benchmark-scene selection, performance baselines and rendering are outside this work.
 
@@ -62,6 +62,9 @@ accepted-state bits and CFL outcomes. A separate six-step run replays from its J
 These are test fixtures, not a selected benchmark. Snapshot round trips cover signed zero, subnormals and
 the largest particle identity; compile-fail tests prevent mutation through snapshot accessors.
 
+Checks were rerun locally on 14 October 2026, using Ubuntu 24.04.5 LTS, Rust/Cargo 1.98.1 and
+`x86_64-unknown-linux-gnu`. Build and test commands used `--locked --offline`, with display variables unset.
+
 | Local check | Observed result |
 | --- | --- |
 | `cargo fmt --all -- --check` | Passed |
@@ -78,6 +81,6 @@ not performed. Diagnostics and requested snapshots remain in memory, so long run
 checkpoint selection. Publication requires hard-link support and does not guarantee directory-entry
 durability after a crash.
 
-Neither repository has a `milestone-00/phase-04/complete` tag. Those are the intended completion checkpoints;
-EPQ's gitlink still names the starting Maelstrom commit. The links here identify the assessed local commit,
-but will not resolve on GitHub until it is published. This record does not establish a completion boundary.
+The matching annotated `milestone-00/phase-04/complete` tags identify the assessed Maelstrom implementation
+and the EPQ record. EPQ's gitlink pins that exact Maelstrom commit. Both phase branches are integrated into
+their milestone branches and published; these checkpoints complete Phase 4, not Gate G04.
