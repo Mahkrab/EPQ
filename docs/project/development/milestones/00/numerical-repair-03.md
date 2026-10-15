@@ -3,7 +3,7 @@
 ## Scope and outcome
 
 The [second repair](/docs/project/development/milestones/00/numerical-repair-02.md) established small
-stability fixtures. This work adds a reproducible bounded qualification runner, longer runs, lateral
+stability fixtures. This work adds longer bounded runs, lateral
 and spreading flows, and a controlled timestep-refinement path through `maelstrom`.
 The [numerical contract](/docs/project/development/milestones/00/phases/phase-00-design-contract.md)
 owns the changed correction equation and operating bounds. The revised reference is `defaults-v4`:
@@ -62,20 +62,7 @@ regressions were not loosened. A compressed initial spreading trial exceeded tha
 screen; the qualified spreading fixture starts at nominal spacing, while compression remains a
 separate stage study. Compressed dynamic releases are outside this envelope.
 
-The independent Python [qualification runner](/tools/qualify_simulator.py) invokes the public CLI,
-retains full result files and hashes, and audits checkpoints using binary64 kernels and a fresh
-spatial search. Separation, compression, free-surface deficit, energy, containment, identity and
-settling are distinct checks. Larger cases are checked at declared checkpoints, not every step.
-Each child has a 60-second limit; timeout means unqualified, never passed. Reports refuse replacement.
-
-From the EPQ root, with the tested release command installed:
-
-```sh
-uv run --offline --script tools/qualify_simulator.py \
-  --output /tmp/maelstrom-new-qualification --timeout 60
-```
-
-The destination must be new. `--case NAME` permits a bounded subset. Normal simulator use remains:
+For an explicit refined run:
 
 ```sh
 maelstrom run falling-block-04 --duration 3 --refine-timestep 2 \
@@ -84,12 +71,9 @@ maelstrom run falling-block-04 --duration 3 --refine-timestep 2 \
 
 ## Local evidence
 
-Checks ran on 14 October 2026 in WSL2 Ubuntu 24.04.5, Rust/Cargo 1.98.1 and uv-managed Python 3.14.3, using locked/offline
+Checks ran on 14 October 2026 in WSL2 Ubuntu 24.04.5, Rust/Cargo 1.98.1, using locked/offline
 Cargo verification. Both debug and release suites passed 148 integration tests, three unit tests and
-two doctests per profile. Formatting, all-target checking, strict Clippy and Rustdoc passed. Eight
-parent-tool tests cover independent quantities, malformed state, collisions, identity changes,
-refinement failure, timeout and non-replacing publication. Initial audit-format and fixture mistakes
-were corrected before the final qualification run.
+two doctests per profile. Formatting, all-target checking, strict Clippy and Rustdoc passed.
 
 The final 12-case release qualification passed with no audit failures. Full results and hashes are
 retained locally in `/tmp/maelstrom-qualification-convergence/report.json`; the report also records
