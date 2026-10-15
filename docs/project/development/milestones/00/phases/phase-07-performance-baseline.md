@@ -19,6 +19,10 @@ The [readable baseline](/docs/project/development/milestones/00/assets/performan
 and [dataset index](/docs/project/development/milestones/00/assets/performance-baseline-v1/dataset.json)
 retain the results and raw-file hashes.
 
+The implementation is retained in Maelstrom commit
+[`d8454231255133f732a682f83ecc14f83f256831`](https://github.com/Mahkrab/Maelstrom/tree/d8454231255133f732a682f83ecc14f83f256831).
+EPQ's gitlink pins that exact revision. Implementation links below identify this committed tree.
+
 ## Decisions and implementation
 
 Primary measurements time complete transactional steps, including mandatory CFL diagnostics and
@@ -49,10 +53,10 @@ Clippy and strict Rustdoc passed. The parent tooling and Markdown suites passed 
 independently calculated summary statistics, outlier retention, signed-zero comparison, partial-run
 exclusion, cooperative timeout publication, forced termination and evidence-file protection.
 
-The [reference tests](/Maelstrom/tests/reference_verification.rs) compare measured runs against both
+The [reference tests](https://github.com/Mahkrab/Maelstrom/blob/d8454231255133f732a682f83ecc14f83f256831/tests/reference_verification.rs) compare measured runs against both
 complete frozen goldens, including intermediate checkpoints and signed zero. They cover zero steps,
 empty state, invalid inputs, numerical failure and cancellation without changing polling order or
-accepted work. The [CLI checks](/Maelstrom/tests/cli_workflow.rs) cover both measurement modes,
+accepted work. The [CLI checks](https://github.com/Mahkrab/Maelstrom/blob/d8454231255133f732a682f83ecc14f83f256831/tests/cli_workflow.rs) cover both measurement modes,
 argument constraints, text/JSON output and replay. Existing independent every-step health checks
 continue to qualify the correctness trajectory; sparse baseline checkpoints do not replace them.
 
@@ -84,10 +88,10 @@ samples were faster; differences between campaigns are not claimed as an optimis
 
 The measured Maelstrom tree is identified by base commit above plus worktree SHA-256
 `fafad4c4feed66cef8a571b454bca9e4edc9309850089fa71fdc7a84fd455b4c`.
-The dataset records every source-file hash and the measured binary hash. This is local worktree
-evidence, not an immutable completion commit. The intended annotated completion tags are
-`milestone-00/phase-07/complete` in both repositories; creating them, committing and advancing the
-parent gitlink remain outside this implementation request.
+The dataset records every source-file hash and the measured binary hash. All 76 recorded file hashes
+match the committed implementation exactly, with no missing or extra files. The original worktree
+identity and measured binary hash remain unchanged in the dataset; checkpointing does not relabel
+the measured executable as a later rebuild.
 
 Shared WSL/Windows load, scheduling, thermal state and uncontrolled frequency limit the performance
 claim to this recorded environment. Three primary samples expose variation without establishing
@@ -99,6 +103,8 @@ remains open for its separate evaluation and handoff.
 G06's protocol, correctness, scalability, raw-sample and summary evidence is satisfied locally for
 this stated scope. Report regeneration reproduced the stored Markdown exactly; source, binary,
 collector, protocol, correctness-result and raw-file hashes all matched. Independent sums and
-statistics agreed within floating-point accumulation roundoff. The implementation and records
-remain unstaged, with the original branches, tags and parent gitlink retained. A durable
-completion checkpoint and milestone closure are not claimed.
+statistics agreed within floating-point accumulation roundoff. A stray character after one table row
+was removed during checkpointing, restoring byte-for-byte report regeneration without changing any
+measurement. The matching annotated `milestone-00/phase-07/complete` tags identify the implementation
+and EPQ evidence checkpoint. Both phase branches are integrated into their milestone branches and
+published. This completes Phase 7, not milestone closure.
