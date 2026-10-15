@@ -8,11 +8,11 @@ The library already supported headless runs and replayable results, but the bina
 printed a greeting. The [headless-workflow record](/docs/project/development/milestones/00/phases/phase-04-diagnostics-results.md)
 therefore left Gate G04 open pending the public CLI.
 
-Both repositories now use `phase/00-05-cli`. The annotated `milestone-00/phase-05/start`
+Work used `phase/00-05-cli` in both repositories. The annotated `milestone-00/phase-05/start`
 tags were created retrospectively on 15 October 2026 at the committed starting points:
 Maelstrom's commit above and EPQ `40b1703e5f3f8c99ae67174a8040c8fa2734ce35`.
-Work had already begun on the milestone branches. These local tags capture only the
-baseline, not the staged or unstaged implementation, repairs or documentation.
+Work had already begun on the milestone branches. These published tags capture only the
+baseline, not the implementation, repairs or documentation that were uncommitted at the time.
 
 ## Scope and outcome
 
@@ -21,13 +21,11 @@ and `replay`. It supports bundled and external scenes, explicit configuration
 selection and overrides, step or simulated-duration limits, correctness checkpoints,
 text or JSON results, standalone snapshots and cooperative Ctrl-C cancellation.
 
-The assessed source is the **uncommitted Maelstrom working tree** on top of the
-starting commit, with EPQ based on `40b1703e5f3f8c99ae67174a8040c8fa2734ce35`.
-Links to the [CLI](/Maelstrom/src/cli/mod.rs),
-[subprocess tests](/Maelstrom/tests/cli_workflow.rs) and
-[user guide](/Maelstrom/README.md) below identify live working files, not an immutable
-completion revision. No implementation commits, completion tags, pushes or gitlink
-updates have been made; only the local phase branches and retrospective start tags exist.
+The assessed source is Maelstrom commit
+[`54c5176fe0475b39e53759f11aab355c4c815583`](https://github.com/Mahkrab/Maelstrom/tree/54c5176fe0475b39e53759f11aab355c4c815583).
+Links to the [CLI](https://github.com/Mahkrab/Maelstrom/blob/54c5176fe0475b39e53759f11aab355c4c815583/src/cli/mod.rs),
+[subprocess tests](https://github.com/Mahkrab/Maelstrom/blob/54c5176fe0475b39e53759f11aab355c4c815583/tests/cli_workflow.rs) identify that exact revision. EPQ's gitlink pins
+the same commit; the completion checkpoints are described below.
 
 ## Decisions and implementation
 
@@ -48,8 +46,7 @@ The binary delegates to the library, with parsing before stepping and presentati
 Stdout carries requested data; stderr carries warnings, verbose context and errors.
 Quiet mode retains data and errors. Plain presentation has no terminal-dependent colour,
 animated progress or prompts. Distinct exit codes identify usage, input, execution,
-publication and cancellation failures. Help and the user guide document precedence,
-defaults, examples, channels and compatibility boundaries.
+publication and cancellation failures. Command help documents precedence, defaults and examples.
 
 Results reuse existing versioned records and safe publication. A small library addition
 publishes standalone snapshots through the same non-replacing writer and retains any
@@ -134,10 +131,10 @@ An installed-command check ran from a temporary directory and reproduced the sam
 
 ## Limitations and Gate G04
 
-**Gate G04 is satisfied locally for the assessed working tree.** This completes the
-requested implementation and user-facing evidence; it is not a durable Git checkpoint
-or completion of the whole milestone. No `milestone-00/phase-05/complete` annotated tags
-were created in either repository.
+**Gate G04 is satisfied by local verification of the assessed commit.** The matching
+annotated `milestone-00/phase-05/complete` tags identify the Maelstrom implementation
+and this EPQ record with its exact gitlink. Both phase branches are integrated into
+their milestone branches and published. This completes Phase 5, not the whole milestone.
 
 Hosted and Windows/macOS verification were not performed. Replay across platforms
 is not certified. Observations remain in memory, cancellation is polled during stepping,

@@ -9,12 +9,13 @@ This record covers the first repair of the collapse: an equation and scaling aud
 regressions, and a revised regularisation default. It does not establish final fluid quality.
 It describes the historical `defaults-v2` setting; the
 [second repair](/docs/project/development/milestones/00/numerical-repair-02.md) subsequently selected
-`defaults-v3`. Working-file links may therefore show later changes.
+`defaults-v3`. The implementation links therefore include subsequent repairs.
 
-The assessed source is the local, uncommitted Maelstrom working tree over
-`a126ac215ca51384f330b3c4f3357b5c148b89ce`, with EPQ based on
-`40b1703e5f3f8c99ae67174a8040c8fa2734ce35`. Live links below identify working files,
-not immutable completion evidence. No commits, tags, pushes or gitlink changes were made.
+The retained implementation is Maelstrom commit
+[`54c5176fe0475b39e53759f11aab355c4c815583`](https://github.com/Mahkrab/Maelstrom/tree/54c5176fe0475b39e53759f11aab355c4c815583),
+also pinned by EPQ's gitlink. This intermediate repair was not committed separately;
+the links identify the final combined implementation, not a reconstruction of the earlier working tree.
+The measurements below remain the local observations recorded during this repair.
 
 ## Audit and decision
 
@@ -32,10 +33,10 @@ pair at separation `0.9h` gives a per-particle correction of about `45.31h` with
 `relaxation_scale = 1e-6`. With `relaxation_scale = 1.0`, it gives about `0.02852h`.
 Production binary32 calculations reproduce this mechanism, so it is not explained by rounding alone.
 
-The [first revised defaults](/Maelstrom/config/defaults-v2.toml), built-in configuration and all seven
+The [first revised defaults](https://github.com/Mahkrab/Maelstrom/blob/54c5176fe0475b39e53759f11aab355c4c815583/config/defaults-v2.toml), built-in configuration and all seven
 falling-block scene references initially selected `relaxation_scale = 1.0`, hence nominal relaxation
 `100 m⁻²` at support `0.1 m`. The original
-[defaults](/Maelstrom/config/defaults-v1.toml) remain byte-for-byte intact for explicit comparison.
+[defaults](https://github.com/Mahkrab/Maelstrom/blob/54c5176fe0475b39e53759f11aab355c4c815583/config/defaults-v1.toml) remain byte-for-byte intact for explicit comparison.
 Configuration identity records the changed value; backend arithmetic remains `v2`.
 
 ## Verification
@@ -43,7 +44,7 @@ Configuration identity records the changed value; backend arithmetic remains `v2
 Checks ran on 14 October 2026 in WSL2 Ubuntu 24.04.5, Rust/Cargo 1.98.1,
 `x86_64-unknown-linux-gnu`, with locked, offline Cargo commands.
 
-The new [regularisation tests](/Maelstrom/tests/solver_regularisation.rs) independently derive
+The new [regularisation tests](https://github.com/Mahkrab/Maelstrom/blob/54c5176fe0475b39e53759f11aab355c4c815583/tests/solver_regularisation.rs) independently derive
 density, constraints, multipliers and corrections for an asymmetric six-particle snapshot in 12
 configurations: three spacings, two relaxation values, and artificial pressure enabled or disabled.
 The oracle uses binary64 scalar equations and independently derives lattice rest density. Tolerances

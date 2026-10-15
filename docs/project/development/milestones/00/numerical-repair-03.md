@@ -9,10 +9,10 @@ The [numerical contract](/docs/project/development/milestones/00/phases/phase-00
 owns the changed correction equation and operating bounds. The revised reference is `defaults-v4`:
 eight full Jacobi corrections with `relaxation_scale = 20.0` (nominally `2000 m⁻²`).
 
-Evidence applies to the uncommitted Maelstrom working tree over
-`a126ac215ca51384f330b3c4f3357b5c148b89ce`, with EPQ based on
-`40b1703e5f3f8c99ae67174a8040c8fa2734ce35`. Working-file links below are not immutable checkpoints.
-No commits, pushes, tags or gitlink changes were made.
+The retained implementation is Maelstrom commit
+[`54c5176fe0475b39e53759f11aab355c4c815583`](https://github.com/Mahkrab/Maelstrom/tree/54c5176fe0475b39e53759f11aab355c4c815583),
+also pinned by EPQ's gitlink. Implementation links identify that exact revision;
+the qualification results below remain local observations, not hosted verification.
 
 ## Defect and correction
 
@@ -24,7 +24,7 @@ as inverse timestep squared.
 
 An initial control scaled relaxation and artificial pressure separately. It improved the final shape
 but failed the strict energy check because the whole multiplier denominator was not scaled. The
-implemented [correction scale](/Maelstrom/src/fluid.rs) instead multiplies each complete Jacobi
+implemented [correction scale](https://github.com/Mahkrab/Maelstrom/blob/54c5176fe0475b39e53759f11aab355c4c815583/src/fluid.rs) instead multiplies each complete Jacobi
 correction. `--refine-timestep N` divides timestep by `N` and this scale by `N²`, after ordinary
 overrides. Relaxation, artificial pressure, precision, support membership, configured fixed iteration count and plane
 ordering retain their meanings. This is an explicit project variant, not adaptive timestep selection.
@@ -48,7 +48,7 @@ their earlier work counts and correction scale; their assertions were not loosen
 
 ## Verification approach
 
-The [Rust stability suite](/Maelstrom/tests/fluid_stability.rs) retains the reference-only energy
+The [Rust stability suite](https://github.com/Mahkrab/Maelstrom/blob/54c5176fe0475b39e53759f11aab355c4c815583/tests/fluid_stability.rs) retains the reference-only energy
 guards and adds lateral wall contact, spreading, an independent refined-step position/velocity oracle,
 and matched-time shape convergence. Every small dynamic step is checked. The original timestep-only
 negative control still fails even the extended refinement allowance.
@@ -104,7 +104,8 @@ Refinement factors 2 and 4 in the small study reported no CFL warnings.
 Qualification is local and bounded. It does not freeze a golden result or qualify all configurations,
 all initial states, factors above four, other platforms or performance. Static-plane density deficiency
 and empirical artificial pressure remain limitations. The 8,000-particle ten-second request remains
-outside the verified duration envelope. No Gate G05 or durable completion checkpoint is claimed.
+outside the verified duration envelope. The implementation is retained by the matching
+`milestone-00/phase-05/complete` checkpoints; these do not freeze a golden result or establish Gate G05.
 
 ## References used
 

@@ -13,10 +13,11 @@ parameter change that satisfies them. It leaves the equations, four Jacobi itera
 acceptance unchanged. The [numerical contract](/docs/project/development/milestones/00/phases/phase-00-design-contract.md)
 owns the revised defaults and verification bounds.
 
-Evidence applies to the uncommitted Maelstrom working tree over
-`a126ac215ca51384f330b3c4f3357b5c148b89ce`, with EPQ based on
-`40b1703e5f3f8c99ae67174a8040c8fa2734ce35`. Links below identify live files; neither repository
-has a new historical checkpoint. No commits, tags, pushes or gitlink changes were made.
+The retained implementation is Maelstrom commit
+[`54c5176fe0475b39e53759f11aab355c4c815583`](https://github.com/Mahkrab/Maelstrom/tree/54c5176fe0475b39e53759f11aab355c4c815583),
+also pinned by EPQ's gitlink. This intermediate repair was not committed separately;
+the links identify the final combined implementation, including subsequent changes.
+The measurements below remain the local observations recorded during this repair.
 
 ## Decision and implementation
 
@@ -33,7 +34,7 @@ the 216-particle block despite a low mean density error. The paper describes an 
 between clustering and surface tension and notes that artificial-pressure parameters depend on
 resolution and timestep.<sup><a href="#ref-s004">S004</a></sup>
 
-The [current defaults](/Maelstrom/config/defaults-v3.toml), built-in defaults and all falling-block
+The [current defaults](https://github.com/Mahkrab/Maelstrom/blob/54c5176fe0475b39e53759f11aab355c4c815583/config/defaults-v3.toml), built-in defaults and all falling-block
 scenes therefore select `relaxation_scale = 10.0`, nominally `1000 m⁻²` at support `0.1 m`.
 Artificial pressure stays unchanged. `defaults-v1.toml` and `defaults-v2.toml` retain their original
 contents for comparisons and replay. Input identity distinguishes every setting; backend arithmetic
@@ -45,7 +46,7 @@ separation and bounded motion in the tested states.
 Checks ran locally on 14 October 2026 under WSL2 Ubuntu 24.04.5, Rust/Cargo 1.98.1,
 `x86_64-unknown-linux-gnu`, using locked, offline Cargo commands.
 
-The eight [fluid stability tests](/Maelstrom/tests/fluid_stability.rs) cover:
+The eight [fluid stability tests](https://github.com/Mahkrab/Maelstrom/blob/54c5176fe0475b39e53759f11aab355c4c815583/tests/fluid_stability.rs) cover:
 
 - Sparse-pair ordering during every correction, and filled interior equilibrium.
 - Unforced 64-particle blocks and floor impacts at spacings `0.025`, `0.05` and `0.10 m`.
