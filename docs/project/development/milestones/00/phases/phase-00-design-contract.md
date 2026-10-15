@@ -10,7 +10,7 @@ override this record.
 | --- | --- | --- |
 | Particle state, prediction and velocity reconstruction | Particle state and integration structure from <sup><a href="#ref-s014">S014</a></sup> and position-based prediction/projection from <sup><a href="#ref-s050">S050</a></sup> | Fixed binary32 arithmetic, fixed timestep, transactional state acceptance and the exact validation policy |
 | Density and kernels | SPH density interpolation and the three-dimensional Poly6 and Spiky kernels from <sup><a href="#ref-s003">S003</a></sup> | Strict support membership, explicit zerodistance behaviour and the equalmass normalisation used by this solver |
-| Fluid constraint | Density constraint, relaxed multiplier, artificial pressure form, Jacobi loop and once-per-step neighbour search from <sup><a href="#ref-s004">S004</a></sup> | Four iterations, SI-scaled relaxation and artificial-pressure strength, stable reduction order  |
+| Fluid constraint | Density constraint, relaxed multiplier, artificial pressure form, Jacobi loop and once-per-step neighbour search from <sup><a href="#ref-s004">S004</a></sup> | Eight iterations, SI-scaled relaxation and artificial-pressure strength, stable reduction order  |
 | Timestep diagnostic and density auditing | Velocity CFL guidance, neighbour search context and density error practice from <sup><a href="#ref-s051">S051</a></sup> | A non-adaptive warning-only CFL diagnostic, its selected values, and a fresh untimed brute-force correctness audit |
 | Boundaries | Position projection from <sup><a href="#ref-s050">S050</a></sup>, the boundary density deficiency and a density-aware alternative from <sup><a href="#ref-s052">S052</a></sup> | Static plane projection only, with no boundary density, friction or restitution, for Milestones 00 to 03 |
 
@@ -143,7 +143,7 @@ Let $h>0$ be the kernel support radius. A strict comparison owns both neighbourh
 \rbrace.
 ```
 
-Membership in $\mathcal{N}_i^{(0)}$ is fixed for all four iterations. At iteration $l$, distances are recomputed from $\mathbf{p}^{(l)}$ and the density support and active interaction sets are
+Membership in $\mathcal{N}_i^{(0)}$ is fixed for all configured iterations. At iteration $l$, distances are recomputed from $\mathbf{p}^{(l)}$ and the density support and active interaction sets are
 
 ```math
 \mathcal{S}_i^{(l)}=
@@ -284,13 +284,18 @@ The resulting total correction for fluid particle $i$ is:
 
 ```math
 \Delta\mathbf{p}_i^{(l)}=
-\frac{1}{\widetilde{\rho}_0}
+\frac{s_p}{\widetilde{\rho}_0}
 \sum_{j\in\mathcal{N}_i^{(l)}}
 \left(\lambda_i^{(l)}+\lambda_j^{(l)}+s_{\mathrm{corr},ij}^{(l)}\right)
 \mathbf{G}_{\mathrm{spiky}}(\mathbf{r}_{ij}^{(l)},h)
 ```
 
-For each of exactly four iterations $l=0,1,2,3$, every density, constraint, substituted direction and
+Here $s_p$ is the finite dimensionless `correction_scale`, with $0<s_p\leq1$ and
+reference value 1.0. Evaluate the original complete correction before applying this
+scale; the unit case retains the original arithmetic without another multiplication.
+
+The reference uses exactly eight iterations $l=0,\ldots,7$. An explicitly recorded numerical variant
+may select a fixed count $L\in[1,64]$ instead. For every configured iteration, each density, constraint, substituted direction and
 $\lambda_i^{(l)}$ is calculated from the immutable snapshot $\mathbf{p}^{(l)}$ and fixed membership
 $\mathcal{N}^{(0)}$, using the current active sets $\mathcal{N}^{(l)}$. All multipliers must exist before any
 correction is calculated. Every $\Delta\mathbf{p}_i^{(l)}$ then reads that same position snapshot and the
@@ -311,9 +316,9 @@ ascending particle-identity order.
 After the final solver iteration:
 
 ```math
-\mathbf{v}_i^{n+1}=\frac{\mathbf{p}_i^{(4)}-\mathbf{x}_i^n}{\Delta t},
+\mathbf{v}_i^{n+1}=\frac{\mathbf{p}_i^{(L)}-\mathbf{x}_i^n}{\Delta t},
 \qquad
-\mathbf{x}_i^{n+1}=\mathbf{p}_i^{(4)}.
+\mathbf{x}_i^{n+1}=\mathbf{p}_i^{(L)}.
 ```
 
 Velocity is reconstructed from the complete corrected and plane-projected displacement, not from $\mathbf{v}_i^*$ and not from only the density correction. applied afterwards. The pair $(\mathbf{x}^{n+1},\mathbf{v}^{n+1})$ remains proposed state until every acceptance check succeeds.
@@ -353,7 +358,22 @@ $C_{\mathrm{plane}}<0$, projection is:
 A normal that is zero, infinite or not unit length is invalid config. It must be rejected Every candidate $\mathbf{q}_i^{(l)}$ is tested once against every plane in configuration order. Each projection feeds the next
 plane test, and the final result becomes $\mathbf{p}_i^{(l+1)}$. No friction, restitution, reflected velocity, boundary density, boundary particles or iterative contact solve is present.
 
-After the fourth ordered plane pass, every proposed position must satisfy every configured halfspace according
+For a plane whose normal is exactly a positive or negative coordinate-axis unit vector, represent
+contact directly by setting that axis coordinate to the signed plane offset. Keep the other computed
+coordinates unchanged and retain the finite checks on the correction and projected vector. This is the
+binary32 evaluation of the same mathematical projection for axis-aligned walls; it prevents subtraction
+cancellation from leaving contact just outside the wall. Other normals retain the ordered formula above.
+The acceptance comparison remains strict: no penetration tolerance or extra projection pass is added.
+
+This evaluation correction is authorised and recorded on 14 October 2026. The original evaluation
+projected `x = 4.0276384` against `x <= 1.4` to `x = 1.4000001`, leaving a constraint of
+`-1.1920929e-7 m` and rejecting the third step of the 8,000-particle falling block. The corrected
+arithmetic is identified by backend contract `serial-brute-force-pbf-binary32-four-jacobi-v2`.
+Earlier `v1` results retain their historical meaning and must not be silently replayed using `v2`.
+The input and result schemas are unchanged; corrected results must be generated from the original
+scene and configuration. No frozen golden output or measured performance baseline is replaced.
+
+After the last configured ordered plane pass, every proposed position must satisfy every configured halfspace according
 to the same binary32 comparison. If a later plane has moved a point back outside an earlier plane, the timestep
 fails rather than accepting penetration. Any eventual scene contract must reject contradictory canonical scene
 geometry; it must not change this deterministic per-iteration projection order.
@@ -429,8 +449,9 @@ and override mechanism remains open, but it may not reinterpret these reference 
 | Kernel support | $h=2\Delta x=0.10\,\mathrm{m}$ | Project support-to-spacing ratio |
 | Physical rest density | $\rho_0^{\mathrm{phys}}=1000\,\mathrm{kg\,m^{-3}}$ | Project's water-like convention |
 | Particle mass and normalised rest density | Derived from the strict-support 27-offset interior lattice below; never independently tuned | Project discrete-equilibrium decision using the sourced Poly6 kernel |
-| Solver iterations | Exactly four Jacobi iterations per timestep | Upper end of the typical two-to-four fixed range reported by <sup><a href="#ref-s004">S004</a></sup> |
-| Relaxation | $\varepsilon=10^{-6}h^{-2}=10^{-4}\,\mathrm{m^{-2}}$ nominally | Project SI-scaled regularisation; <sup><a href="#ref-s004">S004</a></sup> supports relaxation but not this SI value |
+| Solver iterations | Exactly eight Jacobi iterations per timestep | Project convergence revision after the four-iteration large-impact failure; a fixed work count remains consistent with the sourced method |
+| Complete correction scale | $s_p=1$; explicit timestep refinement divides it by the square of the refinement factor | Project decision preserving the original reference evaluation and recording refined variants |
+| Relaxation | $\varepsilon=20h^{-2}=2000\,\mathrm{m^{-2}}$ nominally, with `relaxation_scale = 20.0` | Project SI-scaled regularisation, revised after sparse-neighbour, separation and energy failures; <sup><a href="#ref-s004">S004</a></sup> supports relaxation but not this SI value |
 | Artificial pressure | Enabled with $k_{\mathrm{corr}}=0.1h^2=0.001\,\mathrm{m^2}$, $\Delta q=0.2h=0.02\,\mathrm{m}$ and $n_{\mathrm{corr}}=4$ nominally | Shape, $0.1h$--$0.3h$ separation range, reported strength and exponent from <sup><a href="#ref-s004">S004</a></sup>; SI scaling of $k$ is a project decision |
 | Boundary model | Static unit-normal plane projection on particle centres; no boundary-density contribution, restitution or friction | Project choice informed by <sup><a href="#ref-s050">S050</a></sup> and <sup><a href="#ref-s052">S052</a></sup> |
 | Optional velocity effects | XSPH viscosity and vorticity confinement disabled | Project decision; both are optional additions in <sup><a href="#ref-s004">S004</a></sup> |
@@ -473,6 +494,99 @@ Under this normalisation, $\mathbf{g}_k^{(i,l)}$ has units of $\mathrm{m^{-1}}$.
 Consequently, $\varepsilon$ has units of $\mathrm{m^{-2}}$, while $\lambda_i$ and
 $s_{\mathrm{corr},ij}$ have units of $\mathrm{m^2}$. Expressing the relaxation as a multiple of
 $h^{-2}$ and artificial-pressure strength as a multiple of $h^2$ preserves those dimensions.
+
+### Regularisation revision following numerical failure
+
+On 14 October 2026, the user authorised revisiting earlier numerical choices after falling blocks
+collapsed into coincident groups. An independent binary64 evaluation of the recorded equations
+confirmed the instability: for two particles separated by $0.9h$, the original
+$\varepsilon=10^{-6}h^{-2}$ produced a correction of approximately $45.31h$ per particle. The
+first revised $\varepsilon=h^{-2}$ produces approximately $0.02852h$ for the same state. The equations
+and dimensional relationships were consistent; the original regularisation magnitude was insufficient
+for sparse interactions. The paper identifies small gradient denominators and low neighbour counts
+as instability mechanisms, without prescribing Maelstrom's SI regularisation value.<sup><a href="#ref-s004">S004</a></sup>
+
+The first repair selected `relaxation_scale = 1.0` in `defaults-v2.toml` and built-in defaults;
+the bundled and external falling-block scenes initially selected that file. `defaults-v1.toml` retains every original value for
+explicit comparison. Fully recorded numerical inputs continue to determine replay, and configuration
+identity distinguishes the two settings. Backend arithmetic remains `v2` because this revision
+changes a recorded input, not its evaluation.
+
+That first repair was not final calibration. Bounded one-second checks of the 64-, 216- and
+1,000-particle blocks avoided their previous coincidence collapse, but smaller blocks still exhibited
+large speeds and density deficiencies. The [repair record](/docs/project/development/milestones/00/numerical-repair-01.md)
+owns the audit, regression evidence and remaining limitations. Fluid-quality and benchmark-readiness
+claims require further verification; completing a CLI run does not establish them.
+
+### Separation, energy and convergence revision
+
+Further checks found that `relaxation_scale = 1.0` still allowed a nominally spaced isolated pair
+to cross during a Jacobi correction. Stationary blocks gained excessive motion, and scaled falling
+blocks could nearly coincide or coincide on impact. Bounded controls therefore compared separation,
+compression and specific mechanical energy, rather than selecting the smallest absolute density error.
+Reducing artificial pressure improved density error while worsening separation, so its strength remains
+unchanged. The second repair selected `defaults-v3.toml` with four iterations and
+`relaxation_scale = 10.0`. Both earlier files retained their original contents for explicit comparison
+and recorded replay. The arithmetic backend remains `v2`.
+
+The [second repair record](/docs/project/development/milestones/00/numerical-repair-02.md)
+owns the bounded evidence. Its verification envelope uses stationary and falling 64-particle blocks
+at spacings $0.025$, $0.05$ and $0.10\,\mathrm{m}$, a perturbed impact, and nominal 64- and
+216-particle blocks through three simulated seconds. At every checked step, initially separated
+block particles must remain at least $0.5\Delta x$ apart. This is a regression guard, not a particle
+radius or a collision constraint in the solver.
+
+For an unforced stationary block, the maximum reconstructed displacement must remain below
+$0.5\Delta x$ per step and mean specific kinetic energy below
+$B=\tfrac12(0.2\Delta x/\Delta t)^2$. At 120 steps its mean kinetic energy must be below 1% of
+the observed peak. In a falling block, mean specific mechanical energy
+$\langle\tfrac12\|\mathbf{v}\|^2+9.81y\rangle$ must not exceed its initial value plus $B$;
+maximum positive density error must remain below 35%, contact must actually occur, and final mean
+kinetic energy must be below 1% of initial mechanical energy. These dimensioned budgets screen
+excessive numerical energy; artificial pressure is empirical, so they are not conservation laws.
+
+A block compressed to $0.8\Delta x$ must reduce mean positive density error below 10% of its
+initial value, and maximum positive density error below 25% of its initial value, at correction
+counts 4, 8 and 16 for the earlier four-iteration configuration, and 8, 16 and 32 for the revised
+reference, without losing separation. Additional counts are untimed stage studies; each production
+step performs its recorded fixed count. Free-surface deficits are measured separately from compression
+and are not required to vanish. These bounds qualify the tested fixtures, not all possible fluid states.
+
+### Matched timestep refinement and broader qualification
+
+The [third repair record](/docs/project/development/milestones/00/numerical-repair-03.md)
+owns the broader run envelope and timestep study. Merely reducing $\Delta t$ leaves the positional
+correction unchanged and can increase reconstructed velocity. An explicit refinement by integer
+$N\in[1,16]$ instead sets $\Delta t'=\Delta t/N$ and $s_p'=s_p/N^2$, preserving the other
+resolved primary values. Apply the operation after the requesting layer's primary overrides and
+before its derived assertions. Each resulting value and its source are recorded; the recipe is not
+needed for replay. Factor 1 is a no-op. Factors above 4 are valid inputs but remain unqualified.
+
+The original reference-only energy guards above remain in force for their fixtures. The broader
+refinement screen also allows an initial scalar soft-constraint energy
+$U_0=\langle C_i^2\rangle s_p/(2\varepsilon\Delta t^2)$ in addition to $B$. It is independently
+derived from initial density and is invariant under matched refinement. The allowed mean mechanical
+energy is then its initial value plus $B+U_0$. This is a project screening allowance, not an exact
+pressure energy or conservation claim: density and substituted gradients use different kernels, and
+artificial pressure is empirical. The timestep-only negative control must still exceed the fixed
+reference allowance. Settled mean height and horizontal RMS radius must change by less than
+$0.1\Delta x$ from factor 1 to 2, with a smaller combined change from 2 to 4 at the same simulated time.
+
+Legacy configurations and records imply $s_p=1$ when absent. Unit-scale records retain their original
+comparison key and arithmetic. Non-unit scales are present in the numerical record and provenance
+and add their exact binary32 bits to configuration identity. This extends the available recorded
+variants without silently changing earlier evaluations or the historical four-iteration evaluation.
+
+The serial solver now honours the configured fixed iteration count rather than rejecting all counts
+other than four. The historical four-iteration backend identity remains unchanged. Other counts use
+`serial-brute-force-pbf-binary32-N-jacobi-v2`, and replay validates the count against that identity.
+Iteration studies change declared solver work; they are not transparent optimisations or adaptive
+convergence loops. The revised reference, `defaults-v4.toml`, uses eight iterations, unit correction scale and
+`relaxation_scale = 20.0`. Eight passes at the previous relaxation exceeded the small-case motion
+budget; half-sized corrections passed the small guards but failed large-impact separation. Stronger
+regularisation with full corrections passes both without loosening the guards. Built-in and external
+falling-block scenes select this common configuration. The earlier four-pass configuration remains
+explicit in `defaults-v3.toml`; all three earlier files remain unchanged.
 
 The reference runner must record the maximum post-acceleration speed and the resulting CFL limit
 on every step. If the fixed timestep exceeds that limit, it must report the reference run as outside
@@ -560,7 +674,7 @@ The serial brute-force implementation returns valid, duplicate-free references i
 particle-identity order. The corresponding support set for iteration $l$ is exactly the self particle plus members
 of $\mathcal{N}_i^{(0)}$ whose recomputed distance remains strictly below $h$.
 
-The set is not rebuilt during the four solver iterations. Every iteration recalculates distances and
+The set is not rebuilt during the configured solver iterations. Every iteration recalculates distances and
 kernels from its current position snapshot and therefore naturally ignores an original neighbour that has
 moved to $r\geq h$. A particle that newly moves inside $h$ is not added until the next timestep. This is a
 deliberate property of the selected PBF algorithm and must remain consistent across backends.
@@ -577,7 +691,7 @@ For accepted state $(\mathbf{x}^n,\mathbf{v}^n)$, one timestep performs the foll
 3. Calculate every initial prediction $\mathbf{p}_i^{(0)}$ from $\mathbf{x}_i^n$ and
    $\mathbf{v}_i^*$.
 4. Build every fixed interaction set $\mathcal{N}_i^{(0)}$ from the complete prediction snapshot.
-5. Repeat exactly four Jacobi iterations. For iteration $l$:
+5. Repeat the configured fixed number of Jacobi iterations (eight in the reference). For iteration $l$:
    1. Read only $\mathbf{p}^{(l)}$ and $\mathcal{N}^{(0)}$ while calculating all densities,
       constraints, substituted directions and multipliers in ascending identity order. A neighbour retained in
       $\mathcal{N}^{(0)}$ contributes only while its recomputed distance is strictly below $h$.
@@ -586,7 +700,7 @@ For accepted state $(\mathbf{x}^n,\mathbf{v}^n)$, one timestep performs the foll
    3. Form every candidate $\mathbf{q}_i=\mathbf{p}_i^{(l)}+\Delta\mathbf{p}_i^{(l)}$.
    4. Project each candidate against every configured plane in configuration order and write the result
       to $\mathbf{p}_i^{(l+1)}$. Plane projection is therefore applied once per iteration.
-6. Reconstruct every final velocity from $\mathbf{p}^{(4)}-\mathbf{x}^n$, then check every intermediate and
+6. Reconstruct every final velocity from $\mathbf{p}^{(L)}-\mathbf{x}^n$, where $L$ is the configured iteration count, then check every intermediate and
    proposed numerical value for finiteness, recheck identity and neighbour invariants, and require every proposed
    position to satisfy every configured plane.
 7. If every acceptance check succeeds, accept all new positions and velocities together as state
@@ -611,7 +725,7 @@ sequenceDiagram
     B->>B: Accelerate and predict
     B->>N: Prediction snapshot and support radius
     N-->>B: Fixed interaction sets
-    loop Four Jacobi iterations
+    loop Eight Jacobi iterations
         B->>S: Position snapshot and interaction sets
         S->>S: All densities and multipliers
         S->>S: All position corrections
@@ -625,10 +739,10 @@ sequenceDiagram
 
 ### Backend-equivalence rules
 
-- All primary comparisons use the reference configuration, initial state, timestep count and four-iteration
+- All primary comparisons use the reference configuration, initial state, timestep count and eight-iteration
   Jacobi contract.
 - Every backend must preserve strict support, self-including density, self-excluding interactions, one rebuild per
-  step, current-distance filtering, four immutable Jacobi snapshots, ordered plane projection, reconstruction and
+  step, current-distance filtering, eight immutable Jacobi snapshots, ordered plane projection, reconstruction and
   transactional acceptance. Replacing brute force with a grid may change discovery work but not resulting set
   membership.
 - The serial reference preserves ascending particle, neighbour and reduction order and must reproduce identical
