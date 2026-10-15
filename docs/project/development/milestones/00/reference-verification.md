@@ -5,7 +5,7 @@
 This is the project decision for the comparison workload and tolerance policy assigned to Phase 6 by
 the [numerical contract](/docs/project/development/milestones/00/phases/phase-00-design-contract.md).
 It supplements that contract without changing the solver. The machine-readable input manifest lives
-in [Maelstrom's reference directory](/Maelstrom/reference/manifest.json); its SHA-256 entries freeze
+in [Maelstrom's reference directory](https://github.com/Mahkrab/Maelstrom/blob/48c43e7dec3d18a94ab74cc5efcbb6de13760654/reference/manifest.json); its SHA-256 entries freeze
 the exact input bytes. Changes require a new family version and an explicit account of affected results.
 
 The `falling-block-refined-v1` family uses the existing external falling-block scenes and
@@ -40,8 +40,10 @@ Each golden JSON is an ordinary versioned CLI result: complete effective configu
 particles, ordered planes, request, every accepted CFL diagnostic, checkpoint snapshots and density
 audits, final snapshot and completion status. It can be replayed without the original files.
 The recorded build revision identifies the exact unchanged solver implementation used to generate it.
-The manifest, golden files and verification tests become a durable checkpoint only when committed;
-local generation and review do not authorise creating that checkpoint.
+The manifest, golden files and verification tests are retained in Maelstrom commit
+[`48c43e7dec3d18a94ab74cc5efcbb6de13760654`](https://github.com/Mahkrab/Maelstrom/tree/48c43e7dec3d18a94ab74cc5efcbb6de13760654),
+identified by `milestone-00/phase-06/complete`. EPQ's matching checkpoint pins that exact commit;
+the golden files retain their original generating solver revision.
 
 Repeated serial runs on the supported environment must match every binary32 bit, particle identity,
 step, warning and completion outcome, including signed zero. Build context (revision, debug assertions,
@@ -86,4 +88,4 @@ reference hashes so discrepancies can be reproduced. Missing checkpoints, unavai
 non-finite values or a truncated run are failures, never omitted samples. Timing and presentation
 metadata are reported as context and do not participate in numerical acceptance.
 
-Performance sampling, warm-up, measurement boundaries and baseline results remain owned by Phase 7.
+Performance sampling, warm-up, measurement boundaries and baseline results remain outside this verification contract.
