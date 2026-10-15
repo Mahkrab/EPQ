@@ -1,0 +1,100 @@
+# Serial baseline measurement protocol
+
+## Frozen policy
+
+`serial-baseline-v1` is the project measurement decision for the
+[frozen comparison family](/docs/project/development/milestones/00/reference-verification.md).
+It is fixed before collecting the baseline. Inputs remain the manifest's seven falling blocks,
+in ascending order: 64, 216, 512, 1,000, 1,728, 4,096 and 8,000 particles. Every full invocation
+starts from an independently constructed initial state and requests 480 steps, factor-four
+matched refinement, eight Jacobi iterations and checkpoints 0, 1, 120, 240 and 480.
+No size, checkpoint, numerical parameter or solver work is adjusted to fit the measurement budget.
+
+Build once with `cargo build --release --locked --offline`, the standard Cargo release profile,
+no custom Rust flags, fast-math or target-specific tuning. Record Rust/Cargo versions, target,
+compiler commit and LLVM version, profile, flags, application/backend IDs, build revision and binary
+SHA-256. Record EPQ and Maelstrom base commits, tracked and non-ignored source-file hashes and their
+combined tree fingerprint; a dirty tree is explicitly a local implementation, not a committed revision.
+Record UTC collection times, OS release, kernel, architecture, CPU model and visible CPU topology,
+CPU affinity, virtualisation and available memory. Do not infer physical host memory or controlled
+frequency from a virtual guest. Record affinity and scheduling controls actually applied.
+
+Before timing, replay the frozen 64-particle correctness request through the ordinary CLI and compare
+all numerical output bits with its golden, excluding build context only. Retain the complete result,
+checkpoint density errors, CFL diagnostics and finite-state, separation, compression, contact and
+energy evidence supplied by the reference tests. Check manifest input and golden hashes before use.
+
+For each size, run **one complete untimed warm-up**, then **three independent total-only samples**,
+then **one independent instrumented stage profile**. Each invocation is a fresh process; warm-up
+prepares OS code/data caches and the machine, not an in-process JIT or solver-state cache. Solver
+construction is always outside timing. Run sizes and samples sequentially; do not run other project
+checks concurrently. No CPU pinning, priority or frequency changes are required. Shared WSL/host
+load, thermal state and scheduler migration remain threats to validity.
+
+Each invocation has a **120-second wall-clock budget**, including its untimed setup, observations and
+output. On expiry request cooperative cancellation, allow **30 seconds** to finish the current
+non-interruptible stage and publish partial state, then kill if necessary. Retain actual exit status,
+wall time, timeout flag, accepted work and failed-attempt time when available. A timed-out warm-up
+prevents primary sampling at that size; still attempt one bounded stage profile. A failed primary
+sample stops further primary samples at that size, retaining those already obtained, and does not
+prevent the profile or later sizes. No partial run contributes to a full-workload summary.
+A warning disqualifies a clean baseline sample while retaining its data. The practical limit is the
+largest member completing warm-up and all three warning-free primary samples within this policy;
+it is an observed limit of this machine and budget, not a universal algorithmic maximum.
+
+## Timing boundary and units
+
+All clocks are monotonic elapsed wall time; seconds are stored as binary64 JSON numbers. Primary
+total begins immediately before entering the existing timestep body and ends after it returns,
+including local destruction. It includes mandatory validation, allocations, acceleration, the CFL
+calculation, prediction, discovery, every Jacobi iteration, plane projection, reconstruction,
+cancellation polls, final checks and atomic acceptance. It excludes configuration and scene loading,
+solver construction, workflow record allocation, checkpoint copies, fresh density audits, hashing,
+CLI parsing, formatting, publication and process start-up. Invocation wall time is recorded separately
+and never substituted for primary solver time. Failed attempts are recorded separately, never counted
+as successful steps. Zero-step runs have no step measurements or rates.
+
+The stage profile uses the same body and arithmetic, with additional clock reads. Contiguous intervals
+end after the named stage and its cancellation poll, except acceptance ends just after commit:
+
+| JSON field | Responsibility |
+| --- | --- |
+| `validation_and_acceleration_s` | Initial cancellation and accepted-state checks, acceleration, mandatory CFL diagnostic |
+| `prediction_s` | Complete prediction snapshot |
+| `neighbour_search_s` | Complete brute-force discovery and membership validation |
+| `jacobi_s` | Densities, multipliers, corrections and physical-density checks, accumulated across all eight iterations |
+| `projection_s` | Candidate construction, ordered plane projection and position replacement, accumulated across all iterations |
+| `acceptance_s` | Reconstruction, proposed-state and final-plane checks, cancellation and atomic commit |
+
+Intervals partition the body without overlapping. Their sum may be smaller than total because clock
+setup, return and local destruction lie outside them. Retain that residual, not a fabricated stage.
+Stage proportions divide each stage sum by the instrumented total. Report profiles separately from
+primary timings; their overhead matters most at small sizes. Measurement invariance tests compare
+every accepted numerical value, checkpoint, CFL diagnostic and cancellation outcome with ordinary runs.
+
+## Aggregation, profiling and retained evidence
+
+Preserve every per-step timing for each attempted sample, including partial samples. For each complete
+primary sample sum step seconds; report median, minimum, maximum, arithmetic mean and sample standard
+deviation across the three run totals. Median time per step is median total / 480. Throughput is
+`particle_count * 480 / median_total_s`, in particle updates per second. Report instrumented stage sums,
+proportions and residual independently. Do not delete outliers or apply a significance claim to three
+samples. The min–max range and standard deviation expose observed variability. Failed, warning-bearing
+or incomplete samples remain visible and produce no complete three-sample summary.
+
+Stage profiles at every size identify representative bottlenecks. Optimise only a demonstrated,
+algorithmically neutral implementation problem; preserving arithmetic, reduction order, support,
+validation and transaction semantics is mandatory. If an optimisation is made, retain before/after
+samples under this policy and rerun the full correctness suite. No optimisation is required merely
+because a quadratic neighbour search dominates: replacing it belongs to the next milestone.
+
+Memory is **not measured** in this baseline. Guest available memory is environment context, not process
+peak memory, allocation volume or a working-set measurement. No memory-performance claim follows.
+
+The parent utility `python3 -m tools.baseline.main collect OUTPUT_DIRECTORY` builds the local source,
+checks the manifest, records environment and source identities, and writes raw JSON plus a generated
+Markdown report. `python3 -m tools.baseline.main report OUTPUT_DIRECTORY` recomputes the report without
+running the solver. Destinations must be new; collection never replaces an earlier dataset. The
+versioned JSON retains policy, inputs, command arguments, raw samples, correctness observations,
+source/binary identities and calculated summaries. Large duplicate particle arrays are represented by
+SHA-256 digests in performance samples; the separately retained correctness result remains replayable.
