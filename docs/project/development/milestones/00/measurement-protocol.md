@@ -1,5 +1,20 @@
 # Serial baseline measurement protocol
 
+## Primary measurement device
+
+The PC reached through `ssh pc` is the primary device for important baselines and backend comparisons.
+Routine verification and exploratory timings may run on the laptop. If the PC is unavailable, retain
+any fallback timings as provisional, machine-specific evidence; do not pool them with PC samples or
+silently replace the primary baseline. Device, source revision, toolchain and policy must be recorded
+for every campaign, and comparisons between implementations should use the same device.
+
+The current [primary PC campaign](/docs/project/development/milestones/00/assets/performance-baseline-pc-v1/README.md)
+uses the unchanged `serial-baseline-v1` sampling and timing policy below. The
+[laptop campaign](/docs/project/development/milestones/00/assets/performance-baseline-v1/README.md)
+is retained separately. Both campaigns captured the
+[protocol before this device designation](https://github.com/Mahkrab/EPQ/blob/dae2a2070c825846a54bc515983aad3adfab634a/docs/project/development/milestones/00/measurement-protocol.md);
+their recorded protocol hashes refer to those original bytes, not this later annotation.
+
 ## Frozen policy
 
 `serial-baseline-v1` is the project measurement decision for the

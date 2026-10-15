@@ -21,3 +21,4 @@ Creating the complete single-threaded CPU reference implementation using brute-f
 - [Maelstrom development roadmap](/docs/project/plan.md)
 - [Frozen serial reference and backend comparison](/docs/project/development/milestones/00/reference-verification.md)
 - [Serial baseline measurement protocol](/docs/project/development/milestones/00/measurement-protocol.md)
+- [Primary PC performance baseline](/docs/project/development/milestones/00/assets/performance-baseline-pc-v1/README.md)
