@@ -758,6 +758,10 @@ sequenceDiagram
 - Empty, single-particle, coincident-particle, exact-support and failure-path semantics are inherited by every
   backend, not treated as serial-only implementation details.
 
+The [frozen reference and comparison policy](/docs/project/development/milestones/00/reference-verification.md)
+now owns the selected scene family, explicit matched-refinement variant, checkpoint and scalability
+sequence, golden provenance, quantity-specific backend tolerances and disagreement report.
+
 ## Risks and unresolved questions
 
 | Risk or question | Planned response |
