@@ -323,6 +323,8 @@ After the final solver iteration:
 
 Velocity is reconstructed from the complete corrected and plane-projected displacement, not from $\mathbf{v}_i^*$ and not from only the density correction. applied afterwards. The pair $(\mathbf{x}^{n+1},\mathbf{v}^{n+1})$ remains proposed state until every acceptance check succeeds.
 
+## Correctness audit and timing boundary
+
 At a requested checkpoint, the audit records both mean and maximum relative density error over the complete set
 $\mathcal{E}$ of accepted fluid particles:
 
@@ -336,6 +338,11 @@ E_{\max}=\max_{i\in\mathcal{E}}e_i
 
 The audit recomputes $\widetilde{\rho}_i$ from accepted checkpoint positions using fresh strict support sets it does not reuse solver membership. If $|\mathcal{E}|=0$ the sample count is zero and both aggregate metrics are **not available**. They must not be reported as zero, r NaN. Density error is diagnostic: no magnitude
 of finite density error by itself invalidates or changes accepted simulation state.
+
+Fresh audits and snapshot copies observe accepted state outside primary solver timing. Mandatory
+validation and the warning-only CFL diagnostic remain inside each transactional step. The
+[measurement protocol](/docs/project/development/milestones/00/measurement-protocol.md) owns exact
+clock placement, stage intervals and sampling; presentation and publication do not enter those clocks.
 
 ## Boundary alternatives
 
@@ -435,8 +442,9 @@ For a static boundary, the boundary samples do not receive position corrections 
 ## Reference numerical configuration
 
 The following is the  correctness and performance reference. All numerical entries are Maelstrom
-project decisions unless the basis column explicitly identifies a sourced range or algorithm. The representation
-and override mechanism remains open, but it may not reinterpret these reference relationships.
+project decisions unless the basis column explicitly identifies a sourced range or algorithm. The
+[input specification](/Maelstrom/docs/inputs.md) now documents representation and overrides; these
+do not reinterpret the reference relationships.
 
 | Parameter or policy | Reference decision | Basis |
 | --- | --- | --- |
@@ -462,7 +470,8 @@ and override mechanism remains open, but it may not reinterpret these reference 
 Reference decimal literals and the relationships above are interpreted in binary32 before simulation arithmetic.
 The relationships are authoritative: for example, $h$ is derived from $2\Delta x$, and the relaxation and
 artificial-pressure values are derived from $h$ rather than accepted as unrelated rounded inputs. The exact
-configuration-file treatment of derived fields remains open until configuration work begins.
+configuration-file treatment is now frozen: supplied derived values are exact binary32 assertions
+after their layer is resolved, rather than independent tuning inputs.
 
 For an interior particle on the infinite cubic reference lattice, let
 $\mathcal{L}=\{\Delta x(a,b,c)\mid a,b,c\in\mathbb{Z},\ \|\Delta x(a,b,c)\|<h\}$.
@@ -487,7 +496,8 @@ The displayed approximations are high precision audit anchors, not additional au
 reference implementation must evaluate the Poly6 terms and accumulate the 27 offsets in lexicographic
 $(a,b,c)$ order using the selected binary32 arithmetic, then derive $m$ from that binary32 sum. An independent
 test must reproduce the derivation with independently calculated expected values and a justified tolerance. The
-exact tolerance remains open until that test is designed from implementation evidence. Scalability workloads
+implemented lattice tolerances are `0.01 m⁻³` for normalised rest density and `2e-7 kg` for mass,
+justified in the independent reference-lattice test. Scalability workloads
 change the domain and particle count while retaining this spacing, support ratio and numerical configuration.
 
 Under this normalisation, $\mathbf{g}_k^{(i,l)}$ has units of $\mathrm{m^{-1}}$.
@@ -761,6 +771,40 @@ sequenceDiagram
 The [frozen reference and comparison policy](/docs/project/development/milestones/00/reference-verification.md)
 now owns the selected scene family, explicit matched-refinement variant, checkpoint and scalability
 sequence, golden provenance, quantity-specific backend tolerances and disagreement report.
+
+### Numerical comparison policy
+
+Analytically exact cases use exact expectations where the arithmetic permits them. Independent
+binary64 expectations use quantity-specific absolute tolerances justified beside their tests;
+they do not replace binary32 reference arithmetic. The lattice tolerances above allow rounding
+while detecting changed membership or constants. Independent complete-step checks restart from
+the same accepted binary32 state, avoiding accumulated cross-precision trajectory drift.
+
+Repeated supported serial runs and the serial uniform-grid replacement must preserve every
+numerical bit, including signed zero, as well as structural identity, ordering, warning and failure
+behaviour. Variable build context is retained but excluded from numerical equality. Only future
+parallel execution uses the separately frozen budgets in `reference-comparison-v1`; these cannot
+excuse changed equations, membership or solver work. Cross-platform bitwise replay is not certified.
+
+### G00 open-decision register
+
+The questions deferred by the initial design now have recorded owners and outcomes: configuration
+representation, precedence and derived assertions are documented in the
+[input specification](/Maelstrom/docs/inputs.md); primitive tolerances are justified in the
+[foundation evidence](/docs/project/development/milestones/00/phases/phase-01-numerical-foundations.md);
+scene selection, goldens and backend budgets belong to the
+[reference policy](/docs/project/development/milestones/00/reference-verification.md); timing and
+sampling belong to the [measurement protocol](/docs/project/development/milestones/00/measurement-protocol.md).
+No implementation-critical decision remains open for the serial reference. Accepted numerical and
+measurement limitations are evaluated in the
+[main milestone record](/docs/project/development/milestones/00/serial-brute-force.md).
+
+### G00 source assessment
+
+The [contract authority table](#contract-status-and-authority) distinguishes published methods from
+Maelstrom's choices. The [research and design basis](#research-and-design-basis) and source records
+below retain provenance; later numerical repairs are explicit project revisions supported by tests,
+not values attributed retrospectively to the papers. This consolidation adds no new sourced claim.
 
 ## Risks and unresolved questions
 

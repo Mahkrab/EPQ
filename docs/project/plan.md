@@ -8,6 +8,13 @@ Define the documentation stages, infastructure behind the code, and api's, tools
 
 Create and verify the complete single-threaded CPU reference implementation using bruteforce neighbour search.
 
+The headless reference, local verification, evaluation and uniform-grid handoff are complete. The
+[milestone record](/docs/project/development/milestones/00/serial-brute-force.md) records the
+requirement assessments and accepted limits; the
+[evaluation record](/docs/project/development/milestones/00/phases/phase-08-evaluation-handoff.md)
+records the final local gate review and checkpoint boundary.
+Phase 8 and milestone completion commits/tags remain pending separately authorised checkpointing.
+
 ## Milestone 01: serial CPU uniform-grid optimisation
 
 Replace bruteforce neighbour discovery with uniform-grid spatial partitioning while retaining the serial CPU execution and numerical reference contract.
