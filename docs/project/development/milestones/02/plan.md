@@ -59,41 +59,41 @@ independently owned simulation state and reliable failure behaviour.
 
 ### Work
 
-- [ ] Review the serial grid handoff, stage dependencies and measured bottlenecks. Decide which work
+- [x] Review the serial grid handoff, stage dependencies and measured bottlenecks. Decide which work
       to distribute and which to retain serially, with a reason for each important boundary.
-- [ ] Choose task granularity, scheduling, worker ownership and lifetime. Justify any dependency and
+- [x] Choose task granularity, scheduling, worker ownership and lifetime. Justify any dependency and
       avoid creating workers repeatedly where a reusable execution resource fits the actual workflow.
       Record whether any small-workload fallback runs serially; do not hide it in performance claims.
-- [ ] Define explicit thread-count selection, its default, valid domain and effective count. Decide
+- [x] Define explicit thread-count selection, its default, valid domain and effective count. Decide
       how unavailable capacity, invalid values and incompatible backend options are reported. Keep
       execution settings separate from physical configuration and record enough information for replay.
-- [ ] Preserve immutable Jacobi inputs, complete-stage barriers, ordered per-particle plane projection
+- [x] Preserve immutable Jacobi inputs, complete-stage barriers, ordered per-particle plane projection
       and whole-step acceptance. Workers must not observe partially updated positions or multipliers.
-- [ ] Build membership from complete prediction once per timestep, retaining strict support, stable
+- [x] Build membership from complete prediction once per timestep, retaining strict support, stable
       identities, duplicate/self exclusion and current-distance filtering. Parallel discovery must
       preserve the grid's rounded-arithmetic coverage and reference validation, not just real geometry.
-- [ ] Prefer distributing independent particle work while retaining each particle's reduction order.
+- [x] Prefer distributing independent particle work while retaining each particle's reduction order.
       Require exact agreement where arithmetic is unchanged. Any changed reduction order must be
       explicit and qualified under the existing parallel policy, not excused by a blanket tolerance.
-- [ ] Keep cancellation and error collection coordinated. Failed or cancelled work must leave accepted
+- [x] Keep cancellation and error collection coordinated. Failed or cancelled work must leave accepted
       state unchanged, workers must finish or stop safely, and retry must not inherit partial buffers.
       Preserve the contract's failure classification and error precedence rather than exposing whichever
       worker happens to report first. Do not call a caller-owned cancellation predicate concurrently.
-- [ ] Integrate selection into the library, public CLI, recorded execution identity and backend-preserving
+- [x] Integrate selection into the library, public CLI, recorded execution identity and backend-preserving
       replay. Keep existing serial defaults and historical records working. Separate execution mode from
       discovery method where needed; do not force a threaded solver into a search-only abstraction.
-- [ ] Keep diagnostics independent of threaded membership and accepted snapshots read-only to observers.
+- [x] Keep diagnostics independent of threaded membership and accepted snapshots read-only to observers.
       Record any shared-resource policy and avoid hidden global settings that let one run alter another.
-- [ ] Extend independent geometry, stage and full-run tests across one worker, several worker counts,
+- [x] Extend independent geometry, stage and full-run tests across one worker, several worker counts,
       uneven work partitions, empty input and fewer particles than workers. Exercise repeated runs,
       independent simultaneous solver instances where supported, and worker-resource lifecycle.
-- [ ] Cover dense/coincident and sparse inputs, negative/cell/support boundaries, extreme coordinates,
+- [x] Cover dense/coincident and sparse inputs, negative/cell/support boundaries, extreme coordinates,
       invalid inputs, numerical failures, cancellation, rollback and retry. Use deliberate controls that
       expose missing barriers, stale buffers, lost work, changed ordering and nondeterministic errors.
-- [ ] Compare ordinary, measured, profiled and replayed results with both serial controls and retained
+- [x] Compare ordinary, measured, profiled and replayed results with both serial controls and retained
       goldens. Check every required component, checkpoint, audit, CFL outcome and completion classification.
       Preserve exact structural and membership obligations even where numerical budgets apply.
-- [ ] Establish repeatability for each supported execution setting and compare across tested worker
+- [x] Establish repeatability for each supported execution setting and compare across tested worker
       counts. Record the actual guarantee and any permitted differences; a single successful run cannot
       establish independence from scheduling. Retain the policy's disagreement reports and worst cases.
 
@@ -103,6 +103,11 @@ The application and library can select and replay threaded execution with explic
 Independent tests establish stage isolation, coverage and transactional behaviour; complete comparisons
 qualify numerical results under the declared policy. Serial controls still pass their exact checks.
 Record implementation decisions, actual verification and limits before accepting comparative timings.
+
+Local implementation and verification satisfy G00. The
+[implementation record](/docs/project/development/milestones/02/phases/phase-00-threaded-cpu.md)
+records the execution contract, exact comparison evidence and limits. The work remains uncommitted;
+completion checkpointing and comparative PC measurements are separate.
 
 ## Phase 1: measure scaling and compare on the primary PC
 
