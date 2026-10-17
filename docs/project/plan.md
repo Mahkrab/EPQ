@@ -35,6 +35,10 @@ tags retain the final parent/submodule pairing; remote publication remains separ
 
 Parallelise the uniform grid simulation on the CPU while retaining the same inputs, numerical behaviour and observable outputs.
 
+The [Milestone 02 completion plan](/docs/project/development/milestones/02/plan.md) groups the work into
+threaded implementation and verification, PC measurement and scaling, then evaluation and CUDA handoff.
+It reuses the existing infrastructure and retains explicit, evidence-led contract revision.
+
 ## Milestone 03: CUDA GPU implementation
 
 Implement the uniform grid simulation for CUDA-capable GPUs and preserve comparability with the CPU reference implementations.
