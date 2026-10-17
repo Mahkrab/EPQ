@@ -15,11 +15,16 @@ The main milestone page was a phase index and lacked evaluation or a concrete ha
 The [main record](/docs/project/development/milestones/00/serial-brute-force.md) now consolidates
 implementation, diagnosed revisions, verification, individual M00 requirement assessments,
 limitations and the exact uniform-grid objective. The
-[usage guide](/Maelstrom/docs/usage.md) and [input specification](/Maelstrom/docs/inputs.md) document
+[usage guide](https://github.com/Mahkrab/Maelstrom/blob/2d05b4b9c35e7679156bf29fd34535ca35e9dd26/docs/usage.md) and [input specification](https://github.com/Mahkrab/Maelstrom/blob/2d05b4b9c35e7679156bf29fd34535ca35e9dd26/docs/inputs.md) document
 the supported application interface. The milestone plan, project roadmap and current weekly record
 now distinguish local technical completion from a durable completion checkpoint.
 The detailed milestone plan is intentionally Git-ignored local planning; the tracked main record,
 roadmap and this record carry the reviewable completion evidence.
+
+The completion tree is Maelstrom
+[`2d05b4b9c35e7679156bf29fd34535ca35e9dd26`](https://github.com/Mahkrab/Maelstrom/tree/2d05b4b9c35e7679156bf29fd34535ca35e9dd26),
+which adds the usage and input documentation to the unchanged measured implementation above.
+EPQ's completion gitlink pins this full revision; the PC dataset retains its original measured revision.
 
 Only documentation changed. Solver source, tests, dependencies, lockfiles, frozen inputs, goldens
 and raw measurements retain their existing bytes. No optimisation, new benchmark campaign or later
@@ -70,6 +75,10 @@ sample statistics and stage totals agreed within accumulation roundoff. This ver
 evidence rather than a new PC execution. Local file/anchor links, pinned implementation targets,
 Markdown fences and both repositories' whitespace checks passed.
 
+Checkpoint verification was repeated locally on 17 October 2026: the same Rust and parent suites
+passed, both documented TOML examples validated, a release-CLI example replayed byte for byte,
+and the retained PC data and provenance checks passed. No new benchmark campaign was run.
+
 ## Limitations and Gate G07
 
 **G07 is satisfied locally:** the record has implementation, verification, evaluation and conclusion;
@@ -81,9 +90,7 @@ No new hosted CI, browser rendering, native Windows/macOS execution, GPU validat
 replay, memory benchmark or physical experiment is claimed. Important measurements remain the
 retained PC campaign, not local verification timings.
 
-Changes remain unstaged in their owning repositories. No completion commit/tag or gitlink advance
-was authorised or performed. Intended annotated checkpoints are
-`milestone-00/phase-08/complete` and `milestone-00/complete` in both repositories. A later authorised
-checkpoint must verify and commit Maelstrom's documentation with its unchanged implementation,
-then update EPQ's gitlink and record that full revision before committing/tagging EPQ. These
-working-tree documents do not themselves establish that historical boundary.
+The matching annotated `milestone-00/phase-08/complete` and `milestone-00/complete` tags identify
+the Maelstrom completion tree and this EPQ record with its exact gitlink. Both phase branches are
+integrated into their milestone branches and published. These checkpoints close Milestone 00
+within the stated headless scope; they do not claim completion of the wider project or its later backends.

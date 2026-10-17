@@ -13,7 +13,8 @@ The headless reference, local verification, evaluation and uniform-grid handoff 
 requirement assessments and accepted limits; the
 [evaluation record](/docs/project/development/milestones/00/phases/phase-08-evaluation-handoff.md)
 records the final local gate review and checkpoint boundary.
-Phase 8 and milestone completion commits/tags remain pending separately authorised checkpointing.
+Matching annotated `milestone-00/phase-08/complete` and `milestone-00/complete` tags in both
+repositories identify the published completion checkpoints and exact implementation gitlink.
 
 ## Milestone 01: serial CPU uniform-grid optimisation
 

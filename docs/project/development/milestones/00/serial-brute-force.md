@@ -7,14 +7,16 @@ study. It accepts explicit configurations and scenes, advances three-dimensional
 Fluids (PBF), produces replayable observations and retains correctness and performance evidence.
 The numerical implementation assessed here is Maelstrom
 [`d8454231255133f732a682f83ecc14f83f256831`](https://github.com/Mahkrab/Maelstrom/tree/d8454231255133f732a682f83ecc14f83f256831),
-which EPQ's gitlink currently pins. New usage documentation is a local working-tree addition;
-source and test links below identify the assessed committed implementation.
+whose numerical source, tests and retained data are unchanged in the completion tree
+[`2d05b4b9c35e7679156bf29fd34535ca35e9dd26`](https://github.com/Mahkrab/Maelstrom/tree/2d05b4b9c35e7679156bf29fd34535ca35e9dd26).
+EPQ's completion gitlink pins that full revision, including the usage and input documentation.
+Source and test links below retain the assessed numerical implementation revision.
 
 **Local completion decision, 15 October 2026:** requirements M00-0 through M00-5 and gates G00
 through G07 are satisfied for the scope and environment below. The evaluation and handoff are
-complete locally. This is not a published milestone-completion checkpoint. The existing Phase 7
-tags retain their original evidence; the PC campaign was added afterwards. Phase 8 and milestone
-completion commits/tags remain pending separately authorised checkpointing in both repositories.
+complete. Matching annotated `milestone-00/phase-08/complete` and `milestone-00/complete` tags in
+both repositories retain the published completion checkpoints. The earlier performance tags retain
+their original evidence; the PC campaign was added afterwards and remains the primary baseline.
 
 ## Implementation and revisions
 
@@ -70,11 +72,11 @@ distances from their current snapshot but retain prediction-time membership. A n
 particle enters only on the next timestep. Self contributes to density, never to interactions.
 Cancellation and failure cannot install part of a candidate step.
 
-The [usage guide](/Maelstrom/docs/usage.md) documents discovery, validation, effective inspection,
+The [usage guide](https://github.com/Mahkrab/Maelstrom/blob/2d05b4b9c35e7679156bf29fd34535ca35e9dd26/docs/usage.md) documents discovery, validation, effective inspection,
 named/external execution, limits, checkpoints, replay, publication, JSON interpretation and exit
-codes. The [input specification](/Maelstrom/docs/inputs.md) covers all configuration fields, units,
-defaults, validation, scene construction and schema compatibility. These are live documentation
-links, not immutable implementation evidence. TOML schema 1 and result/snapshot schema 1 are
+codes. The [input specification](https://github.com/Mahkrab/Maelstrom/blob/2d05b4b9c35e7679156bf29fd34535ca35e9dd26/docs/inputs.md) covers all configuration fields, units,
+defaults, validation, scene construction and schema compatibility. These links identify the committed
+completion documentation. TOML schema 1 and result/snapshot schema 1 are
 distinct representations: recorded particle identities and counters use decimal strings, and full
 result inputs suffice for replay after source files disappear. Warnings and incomplete outcomes
 remain visible; an exit-zero warning-bearing run is not a clean baseline sample.
@@ -187,10 +189,10 @@ Introduce the narrow replaceable boundary when that real implementation needs it
 
 | Inherited contract | Frozen owner and obligation |
 | --- | --- |
-| Configuration, scenes and physical inputs | [Input specification](/Maelstrom/docs/inputs.md), assessed `config`/`scene` implementation and manifest hashes; preserve schema handling, precedence, resolved identity, particle and plane order |
+| Configuration, scenes and physical inputs | [Input specification](https://github.com/Mahkrab/Maelstrom/blob/2d05b4b9c35e7679156bf29fd34535ca35e9dd26/docs/inputs.md), assessed `config`/`scene` implementation and manifest hashes; preserve schema handling, precedence, resolved identity, particle and plane order |
 | Numerical and timestep semantics | [Design contract](/docs/project/development/milestones/00/phases/phase-00-design-contract.md); binary32 equations, complete Jacobi snapshots, eight recorded passes, refinement, projection, CFL classification and atomic acceptance remain unchanged |
 | Neighbour semantics | [Neighbour-set contract](/docs/project/development/milestones/00/phases/phase-00-design-contract.md#neighbour-set-contract); discover once from the complete prediction, strict distance less than h, self excluded, no duplicates, ascending identity and identical reductions; retain a fresh independent brute-force audit |
-| Requests, outputs and failure behaviour | [Usage guide](/Maelstrom/docs/usage.md) and assessed `workflow`/CLI; retain replayable inputs, schema interpretation, statuses, warning history, cancellation/rollback and publication guarantees; identify the new backend explicitly |
+| Requests, outputs and failure behaviour | [Usage guide](https://github.com/Mahkrab/Maelstrom/blob/2d05b4b9c35e7679156bf29fd34535ca35e9dd26/docs/usage.md) and assessed `workflow`/CLI; retain replayable inputs, schema interpretation, statuses, warning history, cancellation/rollback and publication guarantees; identify the new backend explicitly |
 | Fixtures and numerical acceptance | [Reference policy](/docs/project/development/milestones/00/reference-verification.md) and manifest; grid output must match serial numerical bits exactly, including signed zero; future parallel tolerances do not relax the grid requirement |
 | Measurement and baseline | [Protocol](/docs/project/development/milestones/00/measurement-protocol.md) and primary PC dataset; preserve workloads, solver work, clocks, warm-up, sampling, budgets, raw retention and device; include grid construction in neighbour-search timing |
 
