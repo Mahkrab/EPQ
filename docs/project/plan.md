@@ -20,6 +20,12 @@ repositories identify the published completion checkpoints and exact implementat
 
 Replace bruteforce neighbour discovery with uniform-grid spatial partitioning while retaining the serial CPU execution and numerical reference contract.
 
+The [Milestone 01 completion plan](/docs/project/development/milestones/01/plan.md) groups the work into
+implementation and verification, PC measurement, and evaluation and handoff. Existing numerical and
+measurement contracts provide the comparison basis, not a ban on future revision. Evidence-led changes
+must be recorded and applied to both sides of any affected comparison, with earlier results left identifiable.
+Milestone records and datasets will feed one final project document rather than becoming immutable final prose.
+
 ## Milestone 02: multithreaded CPU implementation
 
 Parallelise the uniform grid simulation on the CPU while retaining the same inputs, numerical behaviour and observable outputs.
