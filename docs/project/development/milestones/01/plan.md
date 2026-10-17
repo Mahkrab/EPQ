@@ -109,7 +109,7 @@ geometry cases and brute-force comparisons establish membership correctness; ful
 that the grid has not changed the timestep, diagnostics or failure semantics. Record actual verification,
 important implementation decisions and remaining limitations before performance claims begin.
 
-G00 is satisfied locally as recorded in the [implementation and verification record](/docs/project/development/milestones/01/phases/phase-00-serial-uniform-grid.md). The grid and supporting tests remain unstaged; no completion checkpoint or PC performance comparison is implied. The retained exact CLI comparison is linked from that record.
+G00 is satisfied locally as recorded in the [implementation and verification record](/docs/project/development/milestones/01/phases/phase-00-serial-uniform-grid.md). Annotated `milestone-01/phase-00/complete` checkpoints identify the committed implementation and its evidence. The retained exact CLI comparison is linked from that record; no PC performance comparison is implied.
 
 ## Phase 1: measure and compare on the primary PC
 

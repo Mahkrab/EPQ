@@ -8,8 +8,9 @@ the matching `milestone-01/phase-00/start` checkpoints; both worktrees were clea
 [inherited numerical contract](/docs/project/development/milestones/00/phases/phase-00-design-contract.md),
 [exact comparison policy](/docs/project/development/milestones/00/reference-verification.md) and
 [measurement boundary](/docs/project/development/milestones/00/measurement-protocol.md) remain the basis.
-The implementation assessed here is an unstaged working-tree addition to that Maelstrom commit;
-the retained report identifies its actual file hashes.
+The implementation assessed here is Maelstrom
+[`b179e6e42b4efd6e269d6eb35fbee50dba4fcfa1`](https://github.com/Mahkrab/Maelstrom/tree/b179e6e42b4efd6e269d6eb35fbee50dba4fcfa1).
+All 80 source-file hashes in the retained working-tree report match that committed implementation.
 
 ## Scope and outcome
 
@@ -22,13 +23,13 @@ Backend and run identities distinguish discovery; physical input/configuration i
 CLI replay restores the recorded method and rejects unsupported contracts. The existing
 `replay_inputs` helper still accepts historical brute-force records; the new `replay_execution`
 also returns discovery selection, preventing grid records from silently becoming brute-force runs.
-The [usage guide](/Maelstrom/docs/usage.md) documents both selections and replay.
+The [usage guide](https://github.com/Mahkrab/Maelstrom/blob/b179e6e42b4efd6e269d6eb35fbee50dba4fcfa1/docs/usage.md) documents both selections and replay.
 
 ## Decisions and implementation
 
 ### Coverage, ordering and storage
 
-The [grid implementation, in the assessed worktree](/Maelstrom/src/neighbours/grid.rs) uses a
+The [grid implementation](https://github.com/Mahkrab/Maelstrom/blob/b179e6e42b4efd6e269d6eb35fbee50dba4fcfa1/src/neighbours/grid.rs) uses a
 sorted sparse vector of occupied-cell entries. It avoids allocation proportional to spatial volume
 and does not depend on hash iteration. Each particle appears once; each query visits the containing
 cell and its 26 neighbours. Candidate rows exclude self, apply the original checked binary32
@@ -70,7 +71,7 @@ Verification ran locally on 17 October 2026 with Rust/Cargo 1.98.1, x86_64 WSL2 
 Locked/offline debug and release suites each passed **178 integration tests, 5 unit tests and
 2 doctests**. Formatting, strict all-target/all-feature Clippy and warning-free Rustdoc also passed.
 
-[Independent geometry tests](/Maelstrom/tests/uniform_grid.rs) cover all adjacent directions,
+[Independent geometry tests](https://github.com/Mahkrab/Maelstrom/blob/b179e6e42b4efd6e269d6eb35fbee50dba4fcfa1/tests/uniform_grid.rs) cover all adjacent directions,
 negative and exact boundaries, strict support, ordering, coincident/dense/sparse inputs, invalid
 arguments, repeated construction, distance overflow and underflow. Generated comparisons cover
 translated/scaled clouds, arbitrary finite bits and power-of-two boundaries throughout the finite
@@ -98,6 +99,7 @@ can remain quadratic; checked reservations are not a process memory budget. Actu
 was not induced. Full 480-step equivalence is established for the 64-particle golden, not every family size.
 No PC speedup, memory measurement, hosted verification or cross-platform bitwise claim follows.
 
-Changes remain unstaged. Neither repository was committed, tagged, pushed or switched, and the parent
-gitlink remains the starting Maelstrom commit. Intended completion tags in both histories are
-`milestone-01/phase-00/complete`; creating that durable boundary requires separate authorisation.
+The parent gitlink records the assessed Maelstrom commit. Annotated
+`milestone-01/phase-00/complete` tags identify the completion checkpoints in both histories.
+The original working-tree report and results are retained unchanged; publication and hosted
+verification are separate from this local checkpoint.

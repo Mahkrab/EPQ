@@ -6,6 +6,10 @@ identifies the exact uncommitted Maelstrom worktree by per-file hashes and a com
 the release binary hash, compiler/build context, commands, frozen input/golden hashes and comparison
 policy. Its base commit identifies the starting implementation, not a committed grid endpoint.
 
+The later Maelstrom checkpoint
+[`b179e6e42b4efd6e269d6eb35fbee50dba4fcfa1`](https://github.com/Mahkrab/Maelstrom/tree/b179e6e42b4efd6e269d6eb35fbee50dba4fcfa1)
+matches all 80 recorded source-file hashes. The original report and result files are retained unchanged.
+
 The retained candidates are [the 27-particle lattice](/docs/project/development/milestones/01/assets/verification-v1/small-lattice.json)
 over 12 steps and [the refined 64-particle falling block](/docs/project/development/milestones/01/assets/verification-v1/falling-block.json)
 over 480 steps. Both are ordinary complete CLI result documents, including every CFL diagnostic,
