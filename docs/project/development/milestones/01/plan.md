@@ -76,29 +76,29 @@ Make the grid a usable alternative to brute-force search while preserving the ag
 
 ### Work
 
-- [ ] Review the inherited contracts and existing search call sites. Record the grid's responsibilities
+- [x] Review the inherited contracts and existing search call sites. Record the grid's responsibilities
       and any contract issue that needs resolving before implementation.
-- [ ] Decide cell width, position-to-cell mapping, storage and candidate traversal from the supported
+- [x] Decide cell width, position-to-cell mapping, storage and candidate traversal from the supported
       coordinate and support-radius domains. Explain how the searched cells cover every possible neighbour.
-- [ ] Define deterministic behaviour for negative coordinates, cell faces/edges/corners, sparse space,
+- [x] Define deterministic behaviour for negative coordinates, cell faces/edges/corners, sparse space,
       dense cells, coincident particles, empty input and extreme representable values.
-- [ ] Implement checked indexing and resource handling. Invalid or unrepresentable operations must fail
+- [x] Implement checked indexing and resource handling. Invalid or unrepresentable operations must fail
       clearly, without overflow, lost particles, uncontrolled allocation or partial accepted state.
-- [ ] Build search membership from the complete prediction snapshot once per timestep. Retain the existing
+- [x] Build search membership from the complete prediction snapshot once per timestep. Retain the existing
       within-step membership and current-distance rules rather than rebuilding during Jacobi iterations.
-- [ ] Produce exactly the same strict-support neighbour sets, self exclusion, duplicate prevention and
+- [x] Produce exactly the same strict-support neighbour sets, self exclusion, duplicate prevention and
       ascending particle-identity order as brute force. Cell or container iteration must not change reductions.
-- [ ] Integrate explicit backend selection into the existing workflow, CLI, replay and result metadata.
+- [x] Integrate explicit backend selection into the existing workflow, CLI, replay and result metadata.
       Retain existing brute-force use and historical replay behaviour; do not duplicate timestep orchestration.
-- [ ] Keep correctness audits independent of grid-owned membership. Grid and reference runs must own their
+- [x] Keep correctness audits independent of grid-owned membership. Grid and reference runs must own their
       state separately, including during cancellation and failure.
-- [ ] Test cell mapping and candidate coverage with independently derived small cases, then compare complete
+- [x] Test cell mapping and candidate coverage with independently derived small cases, then compare complete
       neighbour rows against brute force across deterministic generated and adversarial inputs.
-- [ ] Exercise unsupported/invalid inputs, exact support boundaries, cell crossings, repeated construction
+- [x] Exercise unsupported/invalid inputs, exact support boundaries, cell crossings, repeated construction
       and next-step rebuilding. Include cases that would expose a missed adjacent cell or changed ordering.
-- [ ] Compare complete simulation outputs, checkpoints, CFL outcomes, failure handling and accepted-state
+- [x] Compare complete simulation outputs, checkpoints, CFL outcomes, failure handling and accepted-state
       preservation using the existing small fixtures and goldens. Cover both ordinary and measured execution.
-- [ ] For the current serial contract, require exact numerical agreement, including signed zero, after
+- [x] For the current serial contract, require exact numerical agreement, including signed zero, after
       accounting only for intentional backend/build/timing metadata differences. Do not borrow parallel
       tolerances to excuse a serial ordering defect.
 
@@ -108,6 +108,8 @@ The public application can select either search and reproduce equivalent physica
 geometry cases and brute-force comparisons establish membership correctness; full-run tests establish
 that the grid has not changed the timestep, diagnostics or failure semantics. Record actual verification,
 important implementation decisions and remaining limitations before performance claims begin.
+
+G00 is satisfied locally as recorded in the [implementation and verification record](/docs/project/development/milestones/01/phases/phase-00-serial-uniform-grid.md). The grid and supporting tests remain unstaged; no completion checkpoint or PC performance comparison is implied. The retained exact CLI comparison is linked from that record.
 
 ## Phase 1: measure and compare on the primary PC
 

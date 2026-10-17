@@ -1,0 +1,604 @@
+{
+  "schema_version": 1,
+  "policy": "reference-comparison-v1",
+  "purpose": "Local serial-grid correctness verification; no performance comparison",
+  "collected_at_utc": "2026-10-17T15:48:49.524393+00:00",
+  "epq_base_commit": "7fc932586a572f281dfe982e2fdaa2785df562a1",
+  "candidate_source": {
+    "base_commit": "2d05b4b9c35e7679156bf29fd34535ca35e9dd26",
+    "worktree_status": "M docs/usage.md\n M src/cli/arguments.rs\n M src/cli/mod.rs\n M src/error.rs\n M src/neighbours.rs\n M src/simulation/mod.rs\n M src/simulation/timing.rs\n M src/workflow/mod.rs\n M tests/cli_workflow.rs\n M tests/headless_workflow.rs\n M tests/reference_verification.rs\n M tests/serial_simulation.rs\n M tests/support/mod.rs\n?? src/neighbours/\n?? tests/uniform_grid.rs",
+    "files_sha256": {
+      ".gitattributes": "5cd539182273a059990f9bc49ce87b5e266556d648fa88508448cca699c871a2",
+      ".gitignore": "f85461acfdcd26fe6988c6f596bbfd8b2639c514cd4fd283bf66d5e59b9b390e",
+      "Cargo.lock": "60e6175f9fe6313b4686153d4c4e39e3d1f78f360ea73a35b575147bc036e662",
+      "Cargo.toml": "5bb15f3ad048f1870678e2d19cd9e62c9093f8720952c6700784cf1471ccd7f1",
+      "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "README.md": "9faa28e165e4d895b6d2a1dd0276dc93bc6f88d4b7ebe468191e8811dfb502cd",
+      "config/defaults-v1.toml": "f0e3efb6430d2110a50a780b569e9bc6a958b98ff9e783129a7525c76fd0e3aa",
+      "config/defaults-v2.toml": "85ba844aed990a073d1cc8f4de221f45f7900989ba3cc300bae130c66d97d8e7",
+      "config/defaults-v3.toml": "03fff988f47728ea0220b75ae0bfc6adec5acf29c9c181b5b6b258b94c1f930e",
+      "config/defaults-v4.toml": "3635b375c9b4b3c673d3ca5ff5d100176c60ef17698ed04e96f68ef3fe689d16",
+      "docs/inputs.md": "731f885e474d3b3f3e102a7c6b09732ff419049f617e260fc9814a338f95c636",
+      "docs/usage.md": "8d5bc3fe014878c1f5a43a2cfd649e729865a90034094235319f8f20ad17665b",
+      "reference/README.md": "db237719ed7643e7d7688ff8a25f356461b3795aa82e659a7ba26844756f9dd5",
+      "reference/falling-block-v1.json": "acc3b5e91097f0870482de2deba1f2556599415b16d72c5e49ed0d15dbf7d389",
+      "reference/family-review-v1.json": "eac9941338f5c6b22a670d1581f264167a38cf27bcc7bdfcad76ef1425624e2e",
+      "reference/manifest.json": "a79365b3d5d266c6c193a76ebac11f3663a0ddcd81f244d64d807101a7361721",
+      "reference/small-lattice-v1.json": "7f695eb73024eae0b745a483809760b815dba9757b72977581a9ee044d19ee7a",
+      "reference/small-lattice.toml": "acab9dc1bd432c5d973b5fad9dd3dd6be63aa9209197522d35ecd8c40ba98621",
+      "scenes/falling-block-04.toml": "4cd7ddc3c7ee50c576cbde7871e4e8ae93dda86badc75e5d2964c88a7cd80c1e",
+      "scenes/falling-block-06.toml": "9aa4995a35fece9b82e5c6a01cedad5406c973cc7054bfbc9f2a4f713706db93",
+      "scenes/falling-block-08.toml": "4bb005471c246a998bf20296833820e70a16744f4a7df211cdb72b26c068ac35",
+      "scenes/falling-block-10.toml": "f986950681cd5b9e009c6f9e350cc3a21d4eb864f47d41231b7858c1ea73ee68",
+      "scenes/falling-block-12.toml": "b9389d8cbeba895650aef1e140f6622f7301c8c60a376b2fdcd4f0be0de281b7",
+      "scenes/falling-block-16.toml": "91a47f55ea90ac27da48aee3ab63327aebe838d3c021a9ebe14ed131dc874094",
+      "scenes/falling-block-20.toml": "2d8420db4a85f03908343e383324363b350e476173f4c4379571603d50bd4dec",
+      "src/boundary.rs": "4c8d9cc141a23c2ae40f51bd3d8bbfc16e79501c4671334ceebf558f2d5831d2",
+      "src/cli/arguments.rs": "89839b0efa3e3fa253ff1279803a39860df62ea86adee7ec4ec0844de20730ba",
+      "src/cli/inputs.rs": "6504b2d70e08e9a65c7a0879da9a921bee76073ea544941f460623f19f743fc8",
+      "src/cli/mod.rs": "ed12784c2883fcc9ef3466ba6b6561c6b5511206c620ff5d4649b833eadadb4b",
+      "src/config/document.rs": "4e8ae143e304ca52cdd2d22022510abba9574220403c078b7a82ea9a4ff58695",
+      "src/config/inspection.rs": "0fa4d4584bc7020ac4c0746eb1eeff4e1417741e856c2f241a9786648a0dc99c",
+      "src/config/mod.rs": "485e43b9b835d49cd594656eda8fbd29a50e7789ffd7ad7909710fc2415954fe",
+      "src/config/resolved.rs": "c1cca10195477ece010daf391711f1d21a1a7ec19abeffd99cd6aa495acd7ed1",
+      "src/config/validation.rs": "5786b0173e4d9edeeda26c66b4c553cf9a2cc764fd36e4380967805cb6078945",
+      "src/diagnostics.rs": "ed82807aac915b16ceebe44a0a021c53b6f70eafbe0eceb2402013d6ef585bb1",
+      "src/error.rs": "cb5b9ca11bac39d562bcc81943f3b87db9462281e7b2f8bc124af28cf5e54dd0",
+      "src/fluid.rs": "f66b5c0346c4aa3a8a5df24dad2af646099c64d2c93a3d078a37f811cb32c5a6",
+      "src/integration.rs": "feb1350c8f0214360fa3789da7a32a0ca1cf779d7bc739c7c666fd11b18ee430",
+      "src/kernel.rs": "9d19f2726abeadb1aa2ec4ed91f55d4539acff8fe6ecd1676523cc3e9e4d79a6",
+      "src/lib.rs": "dc70e33de917581d6e831371d3165687983f101a560e6361ab6d77803d4d3368",
+      "src/main.rs": "adf85c6030a49e7a141ad6c70cf744d2c16415484c8ceb3d7c31dcec1151a6eb",
+      "src/math.rs": "f7af521200c1c4202c6087b81d7f2a09491b44a41df5fae822e286e58789e2ba",
+      "src/neighbours.rs": "87f9d984101ce8e1f6fef90dd0a0c05e20dca44c3991e4ee123cb71cb65bb6f1",
+      "src/neighbours/grid.rs": "143369f4bbb858aea622d740ae6d62e6410da4c804c2a3bb60285201773b7598",
+      "src/reference.rs": "2382c1291b7221f74a6ad53331d54ac2a5441ed1ff3d360886fdf4ce0486b090",
+      "src/scene/document.rs": "af92aa9b670e509ebf58920ce36082cf64f996d4d0609359f605453b364cb916",
+      "src/scene/geometry.rs": "df80d841c44eb3b2b44a41455d04888b59c091254a6bbe3787b1ac20781d8b87",
+      "src/scene/inspection.rs": "40f5cbca9021fb901ee02d9f203c28af37691e9f6f886dc53cf537bab348f8e5",
+      "src/scene/mod.rs": "dca9598b3260186cf5bf5b803c7ed3b590e6e6453002dbdf58759109fda7fa62",
+      "src/scene/particles.rs": "c1be43f0f44af7c7b2947d09d13e897362c5fa0918bf73eb2f56394fe297cdac",
+      "src/scene/resolved.rs": "6fa5f6eff466291eab4dbb5c5a4871887bd742f6ad1895b57fba5237eeae4ef6",
+      "src/simulation/error.rs": "c5e74032b5831e603722329c9641321219dca88c26ee227b30eda8c1845bae40",
+      "src/simulation/mod.rs": "e84917326455be0f88fc922a59008e7f6622c95a89c86cce5f6b588a97b6d0eb",
+      "src/simulation/state.rs": "8d293dff304087d601df33fa44b33bdf90eab651b73a6d12ab64329831a34d30",
+      "src/simulation/timing.rs": "36f8057223984e772b1d69310cef9385d639eefeea7d928081833919072c333e",
+      "src/validation.rs": "198364992fae5a9390fce38aa9da8e090af704bd36e18852e6e732871aac2313",
+      "src/workflow/measurement.rs": "f7064db540dd475692e5053566e3cf54eba7b6728fda0555d473e2ce96cfe442",
+      "src/workflow/mod.rs": "c5b1423c542128dddae5ced927c0285c3313ad9976f8e47aac7e9f790fdf248f",
+      "src/workflow/output.rs": "9670c7f32097678904d02071905c9c72ae4c45b0df82ec92adc74637e2e9ce96",
+      "src/workflow/record.rs": "370a398ea6d60e5ada5959efdeb6f3d999225faf7c1da3d0b03f7c9831634bef",
+      "tests/cli_workflow.rs": "61cc2944c11290aa657c3cbc730e77ce9523c0409a6e9d066cbaa371d93d2feb",
+      "tests/configuration_contract.rs": "f63e9e7d79d93706b2feb2c0550117682713a078f4c0efd57aaef5a75fb7afbc",
+      "tests/external_scenes.rs": "0087d54637492585940db2b01229001a9609b90a73af088d9c352e248f71618e",
+      "tests/fixtures/invalid/config-derived-mismatch.toml": "82a63a3ac994f7d3201ef6a28b7a7fc39f2e61b4f9174d38242268d32844f83a",
+      "tests/fixtures/invalid/config-unknown-field.toml": "7ed83fcb0552f3c89ef26099a7d6ac5ea0bd02a51020cbc1b8e017d0aa4ee97b",
+      "tests/fixtures/invalid/scene-duplicate-identity.toml": "0c468f8f1b8962fc63a919c10a179ef3b2c27ab8141550724dca1415c311edcc",
+      "tests/fixtures/invalid/scene-out-of-bounds.toml": "f6d944a3a2e2a73e5a3464910d5e77057368cdc63a38e1cee604d86678ec646a",
+      "tests/fluid_foundations.rs": "9157757f5accbfefc886ebd71069d57bf85c3235843f2769bb63741f76de2a92",
+      "tests/fluid_stability.rs": "aeec8ca59d640ddc41d960dd83c2bfafa493950dcb590b86cbe9fea8177e4a46",
+      "tests/headless_workflow.rs": "b752e1e6765439d6b57035f8330627441e2b5e38bbbc6142cba6d9766255b807",
+      "tests/kernels_and_math.rs": "30c3a5e1cef13b74b36029345fb630e3530884b58baeb3705a466e8b3be72df5",
+      "tests/motion_boundaries_diagnostics.rs": "32fadeee2d7b01d422854115b860fdabd188e45c83c9db77b3eec7004de76641",
+      "tests/reference_lattice.rs": "a667a61a5f1347e16f333eecaafca4870631834fbe5e64d5bcb3be0358d98a5c",
+      "tests/reference_verification.rs": "9b3904081a7cc02800598c1967f6dacd29946af0e9df2e1efef267acf3e2b227",
+      "tests/scene_contract.rs": "96aad79419e05ed5ab48b81bd72ea59090a6f3768dabe85c8adfcbc4b78f09ed",
+      "tests/serial_simulation.rs": "2133fdb478f183f23f8e5aa220aa4cf0c9f37005d10e6174dcc14b028323e2e5",
+      "tests/solver_regularisation.rs": "09ec44553cd0f14f795675aedaa679872c2e05e68f55c0fb4449d0a8842a0aea",
+      "tests/support/mod.rs": "323c51edf515993c85463a3299a97731741a09cae3378cca1a5196b255288831",
+      "tests/support/serial_oracle.rs": "374c960c8a9c11f72d74bdec11ae31d084199382f1091a4815d785e455db7d52",
+      "tests/uniform_grid.rs": "89cca175da88218c5a6fa42a89e111f43eafe6d341ce265ab9e685d334c2ad92"
+    },
+    "tree_sha256": "0709e7886673749eb9d4986b732479eedbc09127a3fb618a43526210e050dbd6"
+  },
+  "candidate_binary_sha256": "783aca6ef39faa907de6527a29c53545258ee88f48aa5b44416f0e2ea4b4a976",
+  "reference_manifest_sha256": "a79365b3d5d266c6c193a76ebac11f3663a0ddcd81f244d64d807101a7361721",
+  "comparison_contract_sha256": "1f60b2a98fd68594adc4b64184bcedecbdff335392b6e0fbb51595a292120ce3",
+  "environment": {
+    "os": "Ubuntu 24.04.5 LTS",
+    "kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "architecture": "x86_64",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)\nbinary: rustc\ncommit-hash: 48a229ceaefd4985c50990b14116b6d856af0985\ncommit-date: 2026-09-01\nhost: x86_64-unknown-linux-gnu\nrelease: 1.98.1\nLLVM version: 22.1.8",
+    "cargo": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+    "profile": "release",
+    "build_command": [
+      "cargo",
+      "build",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "RUSTFLAGS": "",
+    "CARGO_ENCODED_RUSTFLAGS": "",
+    "device_role": "local verification, not the primary PC campaign"
+  },
+  "excluded_fields": [
+    "backend",
+    "metadata.backend",
+    "metadata.run_id",
+    "metadata.build_revision",
+    "metadata.target_os",
+    "metadata.target_arch",
+    "metadata.debug_assertions",
+    "measurements"
+  ],
+  "fixture_hashes_checked": true,
+  "cases": [
+    {
+      "scene": "reference/small-lattice.toml",
+      "scene_sha256": "acab9dc1bd432c5d973b5fad9dd3dd6be63aa9209197522d35ecd8c40ba98621",
+      "configuration": "config/defaults-v4.toml",
+      "configuration_sha256": "3635b375c9b4b3c673d3ca5ff5d100176c60ef17698ed04e96f68ef3fe689d16",
+      "reference_result": "reference/small-lattice-v1.json",
+      "reference_sha256": "7f695eb73024eae0b745a483809760b815dba9757b72977581a9ee044d19ee7a",
+      "reference_backend": "serial-brute-force-pbf-binary32-8-jacobi-v2",
+      "reference_build_revision": "54c5176fe0475b39e53759f11aab355c4c815583",
+      "reference_build_context": {
+        "application_version": "0.1.0",
+        "target_os": "linux",
+        "target_arch": "x86_64",
+        "debug_assertions": false
+      },
+      "candidate_result": "small-lattice.json",
+      "candidate_sha256": "f91cb4db42b424f5162d1dadf6e8339b56833b589063a5bf71e3f27f5f91dc28",
+      "candidate_backend": "serial-uniform-grid-pbf-binary32-8-jacobi-v2",
+      "candidate_build_revision": null,
+      "input_id": "sha256:3d9bcf4a023d39803cbaadef97a94ce454493c575f1d56c356241e55bb026a34",
+      "configuration_id": "sha256:6a917a477430c0557b0371a08362389d31ba29470a740a2d623cd74d90134621",
+      "reference_run_id": "sha256:29dfa5cbb0de202f66a1b99cabff0f63a6128a35b3bf7227941f5070f9bd0bfc",
+      "candidate_run_id": "sha256:3badfec3da0cf728ee7fd4bd6502641b6680aa5ad900d85542ed5dca619c65e2",
+      "command": [
+        "./target/release/maelstrom",
+        "run",
+        "reference/small-lattice.toml",
+        "--backend",
+        "uniform-grid",
+        "--refine-timestep",
+        "1",
+        "--steps",
+        "12",
+        "--checkpoints",
+        "0,1,4,12",
+        "--format",
+        "json",
+        "--quiet"
+      ],
+      "request": {
+        "steps": "12",
+        "checkpoints": [
+          "0",
+          "1",
+          "4",
+          "12"
+        ]
+      },
+      "completed_steps": "12",
+      "expected_status": "completed",
+      "actual_status": "completed",
+      "structural_mismatches": [],
+      "numerical_mismatches": [],
+      "checkpoints": [
+        {
+          "completed_steps": "0",
+          "position_m": {
+            "particle_count": 27,
+            "component_count": 81,
+            "maximum_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "unequal_binary32_components": 0,
+            "worst_particle_component": null,
+            "absolute_limit": 0,
+            "passed": true
+          },
+          "velocity_m_s": {
+            "particle_count": 27,
+            "component_count": 81,
+            "maximum_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "unequal_binary32_components": 0,
+            "worst_particle_component": null,
+            "absolute_limit": 0,
+            "passed": true
+          },
+          "expected_density": {
+            "sample_count": 27,
+            "mean_error": 0.3423119,
+            "maximum_error": 0.48484862
+          },
+          "actual_density": {
+            "sample_count": 27,
+            "mean_error": 0.3423119,
+            "maximum_error": 0.48484862
+          },
+          "passed": true
+        },
+        {
+          "completed_steps": "1",
+          "position_m": {
+            "particle_count": 27,
+            "component_count": 81,
+            "maximum_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "unequal_binary32_components": 0,
+            "worst_particle_component": null,
+            "absolute_limit": 0,
+            "passed": true
+          },
+          "velocity_m_s": {
+            "particle_count": 27,
+            "component_count": 81,
+            "maximum_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "unequal_binary32_components": 0,
+            "worst_particle_component": null,
+            "absolute_limit": 0,
+            "passed": true
+          },
+          "expected_density": {
+            "sample_count": 27,
+            "mean_error": 0.15731679,
+            "maximum_error": 0.36948955
+          },
+          "actual_density": {
+            "sample_count": 27,
+            "mean_error": 0.15731679,
+            "maximum_error": 0.36948955
+          },
+          "passed": true
+        },
+        {
+          "completed_steps": "4",
+          "position_m": {
+            "particle_count": 27,
+            "component_count": 81,
+            "maximum_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "unequal_binary32_components": 0,
+            "worst_particle_component": null,
+            "absolute_limit": 0,
+            "passed": true
+          },
+          "velocity_m_s": {
+            "particle_count": 27,
+            "component_count": 81,
+            "maximum_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "unequal_binary32_components": 0,
+            "worst_particle_component": null,
+            "absolute_limit": 0,
+            "passed": true
+          },
+          "expected_density": {
+            "sample_count": 27,
+            "mean_error": 0.14620155,
+            "maximum_error": 0.37557805
+          },
+          "actual_density": {
+            "sample_count": 27,
+            "mean_error": 0.14620155,
+            "maximum_error": 0.37557805
+          },
+          "passed": true
+        },
+        {
+          "completed_steps": "12",
+          "position_m": {
+            "particle_count": 27,
+            "component_count": 81,
+            "maximum_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "unequal_binary32_components": 0,
+            "worst_particle_component": null,
+            "absolute_limit": 0,
+            "passed": true
+          },
+          "velocity_m_s": {
+            "particle_count": 27,
+            "component_count": 81,
+            "maximum_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "unequal_binary32_components": 0,
+            "worst_particle_component": null,
+            "absolute_limit": 0,
+            "passed": true
+          },
+          "expected_density": {
+            "sample_count": 27,
+            "mean_error": 0.14573856,
+            "maximum_error": 0.37903535
+          },
+          "actual_density": {
+            "sample_count": 27,
+            "mean_error": 0.14573856,
+            "maximum_error": 0.37903535
+          },
+          "passed": true
+        }
+      ],
+      "final_snapshot": {
+        "position_m": {
+          "particle_count": 27,
+          "component_count": 81,
+          "maximum_absolute_error": 0.0,
+          "rms_error": 0.0,
+          "unequal_binary32_components": 0,
+          "worst_particle_component": null,
+          "absolute_limit": 0,
+          "passed": true
+        },
+        "velocity_m_s": {
+          "particle_count": 27,
+          "component_count": 81,
+          "maximum_absolute_error": 0.0,
+          "rms_error": 0.0,
+          "unequal_binary32_components": 0,
+          "worst_particle_component": null,
+          "absolute_limit": 0,
+          "passed": true
+        }
+      },
+      "cfl_diagnostics_compared": 12,
+      "cfl_mismatching_steps": [],
+      "failures": [],
+      "first_divergent_checkpoint": null,
+      "exact_replay_passed": true,
+      "passed": true
+    },
+    {
+      "scene": "scenes/falling-block-04.toml",
+      "scene_sha256": "4cd7ddc3c7ee50c576cbde7871e4e8ae93dda86badc75e5d2964c88a7cd80c1e",
+      "configuration": "config/defaults-v4.toml",
+      "configuration_sha256": "3635b375c9b4b3c673d3ca5ff5d100176c60ef17698ed04e96f68ef3fe689d16",
+      "reference_result": "reference/falling-block-v1.json",
+      "reference_sha256": "acc3b5e91097f0870482de2deba1f2556599415b16d72c5e49ed0d15dbf7d389",
+      "reference_backend": "serial-brute-force-pbf-binary32-8-jacobi-v2",
+      "reference_build_revision": "54c5176fe0475b39e53759f11aab355c4c815583",
+      "reference_build_context": {
+        "application_version": "0.1.0",
+        "target_os": "linux",
+        "target_arch": "x86_64",
+        "debug_assertions": false
+      },
+      "candidate_result": "falling-block.json",
+      "candidate_sha256": "1dde47100af06c32906175d6d581e0f99ca7628d2549a2329b2633505d5e6c95",
+      "candidate_backend": "serial-uniform-grid-pbf-binary32-8-jacobi-v2",
+      "candidate_build_revision": null,
+      "input_id": "sha256:f5e544b6df5b1e3f44811af3d0a36506683ed0eeb6379249889a0d099b7b1f54",
+      "configuration_id": "sha256:4a73d76fd2ac85476796c3f615cd3da7d340a15fee2a844b288a7d471e1e770e",
+      "reference_run_id": "sha256:28314f1441f500eb6177cd68dfcb5934b6f1e25dcb23b338a84daab5c2b98f4d",
+      "candidate_run_id": "sha256:28a5b13270cc446962bd3a0b68d2de87e3bbeeb36ced3e184d0fc01457a825d8",
+      "command": [
+        "./target/release/maelstrom",
+        "run",
+        "scenes/falling-block-04.toml",
+        "--backend",
+        "uniform-grid",
+        "--refine-timestep",
+        "4",
+        "--steps",
+        "480",
+        "--checkpoints",
+        "0,1,120,240,480",
+        "--format",
+        "json",
+        "--quiet"
+      ],
+      "request": {
+        "steps": "480",
+        "checkpoints": [
+          "0",
+          "1",
+          "120",
+          "240",
+          "480"
+        ]
+      },
+      "completed_steps": "480",
+      "expected_status": "completed",
+      "actual_status": "completed",
+      "structural_mismatches": [],
+      "numerical_mismatches": [],
+      "checkpoints": [
+        {
+          "completed_steps": "0",
+          "position_m": {
+            "particle_count": 64,
+            "component_count": 192,
+            "maximum_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "unequal_binary32_components": 0,
+            "worst_particle_component": null,
+            "absolute_limit": 0,
+            "passed": true
+          },
+          "velocity_m_s": {
+            "particle_count": 64,
+            "component_count": 192,
+            "maximum_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "unequal_binary32_components": 0,
+            "worst_particle_component": null,
+            "absolute_limit": 0,
+            "passed": true
+          },
+          "expected_density": {
+            "sample_count": 64,
+            "mean_error": 0.26401517,
+            "maximum_error": 0.48484862
+          },
+          "actual_density": {
+            "sample_count": 64,
+            "mean_error": 0.26401517,
+            "maximum_error": 0.48484862
+          },
+          "passed": true
+        },
+        {
+          "completed_steps": "1",
+          "position_m": {
+            "particle_count": 64,
+            "component_count": 192,
+            "maximum_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "unequal_binary32_components": 0,
+            "worst_particle_component": null,
+            "absolute_limit": 0,
+            "passed": true
+          },
+          "velocity_m_s": {
+            "particle_count": 64,
+            "component_count": 192,
+            "maximum_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "unequal_binary32_components": 0,
+            "worst_particle_component": null,
+            "absolute_limit": 0,
+            "passed": true
+          },
+          "expected_density": {
+            "sample_count": 64,
+            "mean_error": 0.24676108,
+            "maximum_error": 0.4580449
+          },
+          "actual_density": {
+            "sample_count": 64,
+            "mean_error": 0.24676108,
+            "maximum_error": 0.4580449
+          },
+          "passed": true
+        },
+        {
+          "completed_steps": "120",
+          "position_m": {
+            "particle_count": 64,
+            "component_count": 192,
+            "maximum_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "unequal_binary32_components": 0,
+            "worst_particle_component": null,
+            "absolute_limit": 0,
+            "passed": true
+          },
+          "velocity_m_s": {
+            "particle_count": 64,
+            "component_count": 192,
+            "maximum_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "unequal_binary32_components": 0,
+            "worst_particle_component": null,
+            "absolute_limit": 0,
+            "passed": true
+          },
+          "expected_density": {
+            "sample_count": 64,
+            "mean_error": 0.107244276,
+            "maximum_error": 0.1749335
+          },
+          "actual_density": {
+            "sample_count": 64,
+            "mean_error": 0.107244276,
+            "maximum_error": 0.1749335
+          },
+          "passed": true
+        },
+        {
+          "completed_steps": "240",
+          "position_m": {
+            "particle_count": 64,
+            "component_count": 192,
+            "maximum_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "unequal_binary32_components": 0,
+            "worst_particle_component": null,
+            "absolute_limit": 0,
+            "passed": true
+          },
+          "velocity_m_s": {
+            "particle_count": 64,
+            "component_count": 192,
+            "maximum_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "unequal_binary32_components": 0,
+            "worst_particle_component": null,
+            "absolute_limit": 0,
+            "passed": true
+          },
+          "expected_density": {
+            "sample_count": 64,
+            "mean_error": 0.09295937,
+            "maximum_error": 0.23792523
+          },
+          "actual_density": {
+            "sample_count": 64,
+            "mean_error": 0.09295937,
+            "maximum_error": 0.23792523
+          },
+          "passed": true
+        },
+        {
+          "completed_steps": "480",
+          "position_m": {
+            "particle_count": 64,
+            "component_count": 192,
+            "maximum_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "unequal_binary32_components": 0,
+            "worst_particle_component": null,
+            "absolute_limit": 0,
+            "passed": true
+          },
+          "velocity_m_s": {
+            "particle_count": 64,
+            "component_count": 192,
+            "maximum_absolute_error": 0.0,
+            "rms_error": 0.0,
+            "unequal_binary32_components": 0,
+            "worst_particle_component": null,
+            "absolute_limit": 0,
+            "passed": true
+          },
+          "expected_density": {
+            "sample_count": 64,
+            "mean_error": 0.09173302,
+            "maximum_error": 0.20032573
+          },
+          "actual_density": {
+            "sample_count": 64,
+            "mean_error": 0.09173302,
+            "maximum_error": 0.20032573
+          },
+          "passed": true
+        }
+      ],
+      "final_snapshot": {
+        "position_m": {
+          "particle_count": 64,
+          "component_count": 192,
+          "maximum_absolute_error": 0.0,
+          "rms_error": 0.0,
+          "unequal_binary32_components": 0,
+          "worst_particle_component": null,
+          "absolute_limit": 0,
+          "passed": true
+        },
+        "velocity_m_s": {
+          "particle_count": 64,
+          "component_count": 192,
+          "maximum_absolute_error": 0.0,
+          "rms_error": 0.0,
+          "unequal_binary32_components": 0,
+          "worst_particle_component": null,
+          "absolute_limit": 0,
+          "passed": true
+        }
+      },
+      "cfl_diagnostics_compared": 480,
+      "cfl_mismatching_steps": [],
+      "failures": [],
+      "first_divergent_checkpoint": null,
+      "exact_replay_passed": true,
+      "passed": true
+    }
+  ],
+  "passed": true
+}
