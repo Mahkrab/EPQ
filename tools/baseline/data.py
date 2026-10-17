@@ -31,6 +31,10 @@ STAGES = (
     "validation_and_acceleration_s", "prediction_s", "neighbour_search_s",
     "jacobi_s", "projection_s", "acceptance_s",
 )
+BACKENDS = {
+    "brute-force": "serial-brute-force-pbf-binary32-8-jacobi-v2",
+    "uniform-grid": "serial-uniform-grid-pbf-binary32-8-jacobi-v2",
+}
 
 
 def sha256(data: bytes) -> str:
@@ -50,6 +54,15 @@ def numerical_document(document: dict) -> dict:
     value.pop("measurements", None)
     for key in ("build_revision", "target_os", "target_arch", "debug_assertions"):
         value["metadata"].pop(key, None)
+    return value
+
+
+def physical_document(document: dict) -> dict:
+    """Compare either search while retaining physical identity and every observation."""
+    value = numerical_document(document)
+    value.pop("backend")
+    for key in ("backend", "run_id"):
+        value["metadata"].pop(key)
     return value
 
 
@@ -127,6 +140,7 @@ def clean(attempt: dict) -> bool:
     result = attempt.get("result")
     return bool(
         result is not None and attempt["exit_code"] == 0 and not attempt["timed_out"]
+        and not attempt.get("interrupted", False)
         and result["status"] == "completed" and result["failures"] == []
         and attempt.get("numerical_agreement", True)
         and result["completed_steps"] == str(POLICY["steps"])
@@ -223,7 +237,8 @@ def correctness_observations(result: dict) -> dict:
 
 def markdown(dataset: dict, rows: list[dict]) -> str:
     env = dataset["environment"]
-    text = ["# Serial brute-force performance baseline", "",
+    backend = dataset.get("backend", "brute-force")
+    text = [f"# Serial {backend} performance baseline", "",
             f"Policy: `{POLICY['id']}`. Collection: {dataset['started_utc']} to {dataset['finished_utc']}.", "",
             f"Environment: {env['cpu_model']}; {env['os_release']}; kernel `{env['kernel']}`; {env['architecture']}.",
             "Standard Cargo release build; sequential processes; no affinity, priority or frequency changes.",

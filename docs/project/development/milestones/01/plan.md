@@ -120,29 +120,29 @@ favour either implementation.
 
 ### Work
 
-- [ ] Confirm that the candidate passes the correctness gate and that the selected source revisions,
+- [x] Confirm that the candidate passes the correctness gate and that the selected source revisions,
       inputs, comparison policy and measurement protocol are identifiable before collection.
-- [ ] Extend the existing collector only as needed to select and identify both backends. Include grid
+- [x] Extend the existing collector only as needed to select and identify both backends. Include grid
       construction, clearing/rebuilding, candidate enumeration and neighbour ordering in the appropriate
       search and total timings; do not move grid setup outside the measured timestep to hide its cost.
-- [ ] Use the primary PC through `ssh pc` for the important campaign. Verify its checkout and toolchain,
+- [x] Use the primary PC through `ssh pc` for the important campaign. Verify its checkout and toolchain,
       build optimised binaries consistently, and record the environment and controls actually applied.
-- [ ] Begin with the existing seven-size family, 480-step requests and checkpoint sequence. Keep the
+- [x] Begin with the existing seven-size family, 480-step requests and checkpoint sequence. Keep the
       agreed warm-up, primary-sample, separate-profile and timeout policies common to both searches.
-- [ ] Retain the current [PC baseline](/docs/project/development/milestones/00/assets/performance-baseline-pc-v1/README.md).
+- [x] Retain the current [PC baseline](/docs/project/development/milestones/00/assets/performance-baseline-pc-v1/README.md).
       Review its compatibility and collect paired brute-force controls on the same PC rather than relying
       only on an older campaign under potentially different load or build conditions.
-- [ ] Check exact numerical agreement before accepting timings. Retain warnings, failed attempts, timeouts
+- [x] Check exact numerical agreement before accepting timings. Retain warnings, failed attempts, timeouts
       and incomplete sizes visibly; none may become a clean completed sample.
-- [ ] Report raw timings, spread, throughput, search cost, total-step cost and speedup or slowdown at each
+- [x] Report raw timings, spread, throughput, search cost, total-step cost and speedup or slowdown at each
       shared size. Keep stage-profile overhead separate from primary samples and identify the crossover,
       if one is observed, rather than assuming the grid helps the smallest scenes.
-- [ ] Investigate measured bottlenecks and any useful neutral optimisation. Retain before/after evidence
+- [x] Investigate measured bottlenecks and any useful neutral optimisation. Retain before/after evidence
       for material changes and repeat correctness checks; do not optimise merely to produce a positive result.
-- [ ] If larger workloads are practical, label them as an additional series with explicit inputs and policy.
+- [x] If larger workloads are practical, label them as an additional series with explicit inputs and policy.
       A grid-only completed size can demonstrate reach, but cannot supply a speedup ratio against an absent
       or incomplete brute-force result.
-- [ ] If the PC is unreachable, continue ordinary verification or clearly provisional local exploration.
+- [x] If the PC is unreachable, continue ordinary verification or clearly provisional local exploration.
       Do not mix devices or replace the primary comparison with laptop timings without an explicit revision.
 
 ### Gate G01 evidence
@@ -151,6 +151,8 @@ Retained raw results, correctness checks and independently checked summaries sup
 same-device comparison. The timing boundaries include all required search work, and the observations
 separate algorithmic benefit from changed settings, noise, profiling overhead and incomplete workloads.
 An unfavourable or mixed performance result is still a valid outcome when supported by evidence.
+
+G01 is satisfied by the [paired PC evidence](/docs/project/development/milestones/01/assets/performance-comparison-pc-v1/README.md) and [measurement record](/docs/project/development/milestones/01/phases/phase-01-performance-comparison.md). Only the original seven-size family was collected; no additional series or practical maximum is claimed. The PC was reachable, so no fallback device was used.
 
 ## Phase 2: evaluate, document and hand off
 

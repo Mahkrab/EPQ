@@ -19,7 +19,8 @@ import time
 from pathlib import Path
 
 from .data import (
-    POLICY, clean, compact_result, correctness_observations, markdown, numerical_document, read_json,
+    BACKENDS, POLICY, clean, compact_result, correctness_observations, markdown, numerical_document,
+    physical_document, read_json,
     require_exact, sha256, summarise, timing_totals,
 )
 
@@ -134,8 +135,8 @@ def invoke(args: list[str], timeout_s: float = POLICY["timeout_s"], grace_s: flo
     }
 
 
-def solver_args(binary: Path, case: dict, kind: str) -> list[str]:
-    args = [str(binary), "run", case["scene"], "--steps", str(case["steps"]),
+def solver_args(binary: Path, case: dict, kind: str, backend: str = "brute-force") -> list[str]:
+    args = [str(binary), "run", case["scene"], "--backend", backend, "--steps", str(case["steps"]),
             "--refine-timestep", str(case["refine_timestep"]), "--checkpoints",
             ",".join(str(s) for s in case["checkpoints"]), "--format", "json", "--quiet"]
     if kind != "warmup":
@@ -172,7 +173,9 @@ def report(directory: Path) -> str:
     return markdown(dataset, rows)
 
 
-def collect(directory: Path) -> None:
+def collect(directory: Path, backend: str = "brute-force") -> None:
+    if backend not in BACKENDS:
+        raise ValueError("unsupported search backend")
     if sys.platform != "linux":
         raise ValueError("environment collection currently requires Linux /proc and lscpu")
     prohibited = [key for key, value in os.environ.items() if value and (
@@ -192,7 +195,7 @@ def collect(directory: Path) -> None:
     tool_hashes = {path.relative_to(ROOT).as_posix(): sha256(path.read_bytes())
                    for path in [PROTOCOL, *sorted(Path(__file__).parent.glob("*.py"))]}
     dataset = {
-        "schema_version": 1, "policy": POLICY, "started_utc": now(), "environment": environment(),
+        "schema_version": 1, "backend": backend, "policy": POLICY, "started_utc": now(), "environment": environment(),
         "epq_base_commit": command_output(["git", "rev-parse", "HEAD"], ROOT),
         "source": source, "collector_files_sha256": tool_hashes,
         "build_revision": label, "binary_sha256": sha256(binary.read_bytes()),
@@ -202,13 +205,20 @@ def collect(directory: Path) -> None:
     write_json(directory / "collection.json", dataset)
     attempts = []
     # Preserve a full replayable correctness result before compacting performance samples.
-    correctness = invoke(solver_args(binary, manifest["cases"][1], "warmup"))
+    correctness = invoke(solver_args(binary, manifest["cases"][1], "warmup", backend))
     result = correctness["result"]
     if correctness["exit_code"] != 0 or correctness["timed_out"] or result is None:
         write_json(directory / "correctness-failure.json", correctness)
         raise ValueError("correctness request failed; retained correctness-failure.json")
     golden = read_json(SIMULATOR / manifest["cases"][1]["golden"])
-    require_exact(numerical_document(result), numerical_document(golden))
+    if result["backend"] != BACKENDS[backend] or result["metadata"]["backend"] != BACKENDS[backend]:
+        write_json(directory / "correctness-failure.json", correctness)
+        raise ValueError("correctness request returned the wrong backend")
+    try:
+        require_exact(physical_document(result), physical_document(golden))
+    except ValueError:
+        write_json(directory / "correctness-failure.json", correctness)
+        raise
     write_json(directory / "correctness.json", result)
     dataset["correctness"] = {
         "golden_exact": True, "result_sha256": sha256((directory / "correctness.json").read_bytes()),
@@ -219,13 +229,14 @@ def collect(directory: Path) -> None:
     for case in manifest["cases"][1:]:
         def attempt(kind: str, index: int) -> dict:
             print(f"{case['particles']} particles: {kind} {index}", file=sys.stderr, flush=True)
-            args = solver_args(binary, case, kind)
+            args = solver_args(binary, case, kind, backend)
             value = invoke(args)
             value.update(particles=case["particles"], kind=kind, index=index,
                          arguments=args[1:])
             if value["result"] is not None:
                 metadata = value["result"]["metadata"]
-                if metadata["debug_assertions"] or metadata["build_revision"] != label:
+                if (metadata["debug_assertions"] or metadata["build_revision"] != label
+                        or metadata["backend"] != BACKENDS[backend] or value["result"]["backend"] != BACKENDS[backend]):
                     raise ValueError("solver result does not identify the expected release build")
                 input_id = metadata["input_id"]
                 if identities.setdefault(case["particles"], input_id) != input_id:
@@ -281,10 +292,12 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("operation", choices=["collect", "report"])
     parser.add_argument("directory", type=Path)
+    parser.add_argument("--backend", choices=BACKENDS, default="brute-force",
+                        help="discovery method to collect (default: brute-force)")
     args = parser.parse_args()
     try:
         if args.operation == "collect":
-            collect(args.directory.resolve())
+            collect(args.directory.resolve(), args.backend)
         else:
             print(report(args.directory.resolve()), end="")
     except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:

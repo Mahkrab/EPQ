@@ -1,0 +1,1187 @@
+{
+  "schema_version": 1,
+  "policy": "serial-baseline-v1",
+  "comparison_policy": "reference-comparison-v1",
+  "datasets_sha256": {
+    "brute-force": "dda9b8c57764068c226be1cb6df67e54d50a12973ddb506cfdca088d99441948",
+    "uniform-grid": "f3149b741c36bc6d98c8582ec225a764ca615f0d4cd0ed885c50ce38497830c4"
+  },
+  "rows": [
+    {
+      "particles": 64,
+      "exact_complete_attempts": 10,
+      "qualified": true,
+      "speedup": 0.9556657170110777,
+      "brute_force": {
+        "particles": 64,
+        "primary": {
+          "sample_totals_s": [
+            0.256728384,
+            0.26317791700000037,
+            0.2568576970000003
+          ],
+          "median_s": 0.2568576970000003,
+          "minimum_s": 0.256728384,
+          "maximum_s": 0.26317791700000037,
+          "mean_s": 0.2589213326666669,
+          "sample_standard_deviation_s": 0.0036868771478145842,
+          "median_step_s": 0.0005351202020833339,
+          "particle_updates_per_s": 119599.29703800143
+        },
+        "profile": {
+          "complete": true,
+          "completed_steps": "480",
+          "total_s": 0.25767459800000003,
+          "stages_s": {
+            "validation_and_acceleration_s": 0.0002740709999999998,
+            "prediction_s": 0.00019480000000000026,
+            "neighbour_search_s": 0.008347859000000008,
+            "jacobi_s": 0.23420624900000012,
+            "projection_s": 0.012417176,
+            "acceptance_s": 0.0018599569999999978
+          },
+          "proportions": {
+            "validation_and_acceleration_s": 0.0010636322017275439,
+            "prediction_s": 0.0007559922534544916,
+            "neighbour_search_s": 0.03239690316699362,
+            "jacobi_s": 0.9089225357014047,
+            "projection_s": 0.04818936789415307,
+            "acceptance_s": 0.007218239649684047
+          },
+          "residual_s": 0.0003744859999998962
+        },
+        "attempts": [
+          {
+            "kind": "warmup",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 2,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 3,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "profile",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          }
+        ]
+      },
+      "uniform_grid": {
+        "particles": 64,
+        "primary": {
+          "sample_totals_s": [
+            0.26831866899999984,
+            0.2788537919999999,
+            0.2687735810000003
+          ],
+          "median_s": 0.2687735810000003,
+          "minimum_s": 0.26831866899999984,
+          "maximum_s": 0.2788537919999999,
+          "mean_s": 0.271982014,
+          "sample_standard_deviation_s": 0.005955479484718063,
+          "median_step_s": 0.0005599449604166674,
+          "particle_updates_per_s": 114296.9479578425
+        },
+        "profile": {
+          "complete": true,
+          "completed_steps": "480",
+          "total_s": 0.2751249789999997,
+          "stages_s": {
+            "validation_and_acceleration_s": 0.00029851999999999884,
+            "prediction_s": 0.0002129749999999993,
+            "neighbour_search_s": 0.021464684000000026,
+            "jacobi_s": 0.2383080460000001,
+            "projection_s": 0.012533775999999998,
+            "acceptance_s": 0.0019073970000000008
+          },
+          "proportions": {
+            "validation_and_acceleration_s": 0.001085034158239769,
+            "prediction_s": 0.0007741027396861684,
+            "neighbour_search_s": 0.07801793962154213,
+            "jacobi_s": 0.8661810602082785,
+            "projection_s": 0.045556663177428215,
+            "acceptance_s": 0.006932838330175766
+          },
+          "residual_s": 0.0003995809999995936
+        },
+        "attempts": [
+          {
+            "kind": "warmup",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 2,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 3,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "profile",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          }
+        ]
+      }
+    },
+    {
+      "particles": 216,
+      "exact_complete_attempts": 10,
+      "qualified": true,
+      "speedup": 0.9485910429127039,
+      "brute_force": {
+        "particles": 216,
+        "primary": {
+          "sample_totals_s": [
+            1.0008316970000009,
+            1.0408627200000002,
+            1.0620582399999996
+          ],
+          "median_s": 1.0408627200000002,
+          "minimum_s": 1.0008316970000009,
+          "maximum_s": 1.0620582399999996,
+          "mean_s": 1.0345842190000003,
+          "sample_standard_deviation_s": 0.03109239574297749,
+          "median_step_s": 0.0021684640000000006,
+          "particle_updates_per_s": 99609.67763356918
+        },
+        "profile": {
+          "complete": true,
+          "completed_steps": "480",
+          "total_s": 1.0239575209999994,
+          "stages_s": {
+            "validation_and_acceleration_s": 0.0010894029999999996,
+            "prediction_s": 0.0006310399999999993,
+            "neighbour_search_s": 0.062918256,
+            "jacobi_s": 0.9074819929999995,
+            "projection_s": 0.04439174599999999,
+            "acceptance_s": 0.00615779299999999
+          },
+          "proportions": {
+            "validation_and_acceleration_s": 0.001063914251966318,
+            "prediction_s": 0.0006162755652048184,
+            "neighbour_search_s": 0.061446158370470176,
+            "jacobi_s": 0.8862496484363438,
+            "projection_s": 0.04335311288758044,
+            "acceptance_s": 0.006013719196071996
+          },
+          "residual_s": 0.00128728999999983
+        },
+        "attempts": [
+          {
+            "kind": "warmup",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 2,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 3,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "profile",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          }
+        ]
+      },
+      "uniform_grid": {
+        "particles": 216,
+        "primary": {
+          "sample_totals_s": [
+            1.0985188629999998,
+            1.0972723469999999,
+            1.055930873
+          ],
+          "median_s": 1.0972723469999999,
+          "minimum_s": 1.055930873,
+          "maximum_s": 1.0985188629999998,
+          "mean_s": 1.0839073609999998,
+          "sample_standard_deviation_s": 0.024236364437455638,
+          "median_step_s": 0.00228598405625,
+          "particle_updates_per_s": 94488.84799062563
+        },
+        "profile": {
+          "complete": true,
+          "completed_steps": "480",
+          "total_s": 1.0556715660000004,
+          "stages_s": {
+            "validation_and_acceleration_s": 0.001047380999999999,
+            "prediction_s": 0.0006301710000000007,
+            "neighbour_search_s": 0.10879970299999998,
+            "jacobi_s": 0.8945347059999998,
+            "projection_s": 0.04330385799999995,
+            "acceptance_s": 0.006061730000000012
+          },
+          "proportions": {
+            "validation_and_acceleration_s": 0.0009921466426992868,
+            "prediction_s": 0.000596938498957355,
+            "neighbour_search_s": 0.10306207584262995,
+            "jacobi_s": 0.8473608031231178,
+            "projection_s": 0.041020199269059344,
+            "acceptance_s": 0.005742060499903631
+          },
+          "residual_s": 0.0012940170000006468
+        },
+        "attempts": [
+          {
+            "kind": "warmup",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 2,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 3,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "profile",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          }
+        ]
+      }
+    },
+    {
+      "particles": 512,
+      "exact_complete_attempts": 10,
+      "qualified": true,
+      "speedup": 0.9948483871176853,
+      "brute_force": {
+        "particles": 512,
+        "primary": {
+          "sample_totals_s": [
+            2.638061911,
+            2.6594067789999976,
+            2.662386339999996
+          ],
+          "median_s": 2.6594067789999976,
+          "minimum_s": 2.638061911,
+          "maximum_s": 2.662386339999996,
+          "mean_s": 2.6532850099999976,
+          "sample_standard_deviation_s": 0.013267498004935983,
+          "median_step_s": 0.005540430789583328,
+          "particle_updates_per_s": 92411.58665182158
+        },
+        "profile": {
+          "complete": true,
+          "completed_steps": "480",
+          "total_s": 2.6453668860000015,
+          "stages_s": {
+            "validation_and_acceleration_s": 0.0022130849999999996,
+            "prediction_s": 0.0013615389999999971,
+            "neighbour_search_s": 0.26000613200000017,
+            "jacobi_s": 2.261312948,
+            "projection_s": 0.10321917200000004,
+            "acceptance_s": 0.014477892000000006
+          },
+          "proportions": {
+            "validation_and_acceleration_s": 0.0008365890613178253,
+            "prediction_s": 0.0005146881542993641,
+            "neighbour_search_s": 0.0982873617175837,
+            "jacobi_s": 0.8548201612288567,
+            "projection_s": 0.03901884934988181,
+            "acceptance_s": 0.005472924030545984
+          },
+          "residual_s": 0.0027761180000012153
+        },
+        "attempts": [
+          {
+            "kind": "warmup",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 2,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 3,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "profile",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          }
+        ]
+      },
+      "uniform_grid": {
+        "particles": 512,
+        "primary": {
+          "sample_totals_s": [
+            2.6571461000000007,
+            2.7035618709999985,
+            2.6731779569999983
+          ],
+          "median_s": 2.6731779569999983,
+          "minimum_s": 2.6571461000000007,
+          "maximum_s": 2.7035618709999985,
+          "mean_s": 2.6779619759999993,
+          "sample_standard_deviation_s": 0.023574797511862842,
+          "median_step_s": 0.005569120743749997,
+          "particle_updates_per_s": 91935.51793155092
+        },
+        "profile": {
+          "complete": true,
+          "completed_steps": "480",
+          "total_s": 2.673905202999999,
+          "stages_s": {
+            "validation_and_acceleration_s": 0.0022159039999999973,
+            "prediction_s": 0.0013746989999999998,
+            "neighbour_search_s": 0.30004875599999986,
+            "jacobi_s": 2.2507810309999985,
+            "projection_s": 0.10254616099999998,
+            "acceptance_s": 0.01423009299999998
+          },
+          "proportions": {
+            "validation_and_acceleration_s": 0.0008287144950067244,
+            "prediction_s": 0.0005141165806692214,
+            "neighbour_search_s": 0.11221368493668321,
+            "jacobi_s": 0.8417579757407725,
+            "projection_s": 0.03835070924913415,
+            "acceptance_s": 0.005321839003130877
+          },
+          "residual_s": 0.0027085590000006654
+        },
+        "attempts": [
+          {
+            "kind": "warmup",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 2,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 3,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "profile",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          }
+        ]
+      }
+    },
+    {
+      "particles": 1000,
+      "exact_complete_attempts": 10,
+      "qualified": true,
+      "speedup": 0.9972297627205253,
+      "brute_force": {
+        "particles": 1000,
+        "primary": {
+          "sample_totals_s": [
+            5.959772208,
+            5.905200055999995,
+            5.898429173000005
+          ],
+          "median_s": 5.905200055999995,
+          "minimum_s": 5.898429173000005,
+          "maximum_s": 5.959772208,
+          "mean_s": 5.921133812333333,
+          "sample_standard_deviation_s": 0.03363265420570209,
+          "median_step_s": 0.012302500116666655,
+          "particle_updates_per_s": 81284.29103977514
+        },
+        "profile": {
+          "complete": true,
+          "completed_steps": "480",
+          "total_s": 5.9109864030000026,
+          "stages_s": {
+            "validation_and_acceleration_s": 0.004031813999999999,
+            "prediction_s": 0.0026423529999999996,
+            "neighbour_search_s": 0.8432298530000001,
+            "jacobi_s": 4.826703966000002,
+            "projection_s": 0.2011072550000002,
+            "acceptance_s": 0.028149606
+          },
+          "proportions": {
+            "validation_and_acceleration_s": 0.0006820881871685126,
+            "prediction_s": 0.0004470240362351242,
+            "neighbour_search_s": 0.14265467648039856,
+            "jacobi_s": 0.8165648906839483,
+            "projection_s": 0.03402262182466403,
+            "acceptance_s": 0.004762251861332862
+          },
+          "residual_s": 0.005121556000000638
+        },
+        "attempts": [
+          {
+            "kind": "warmup",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 2,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 3,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "profile",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          }
+        ]
+      },
+      "uniform_grid": {
+        "particles": 1000,
+        "primary": {
+          "sample_totals_s": [
+            5.921604305000003,
+            5.929062818,
+            5.695838751000003
+          ],
+          "median_s": 5.921604305000003,
+          "minimum_s": 5.695838751000003,
+          "maximum_s": 5.929062818,
+          "mean_s": 5.8488352913333355,
+          "sample_standard_deviation_s": 0.13255136125109993,
+          "median_step_s": 0.012336675635416674,
+          "particle_updates_per_s": 81059.11426650108
+        },
+        "profile": {
+          "complete": true,
+          "completed_steps": "480",
+          "total_s": 5.695764576000002,
+          "stages_s": {
+            "validation_and_acceleration_s": 0.0040037319999999986,
+            "prediction_s": 0.0026220839999999994,
+            "neighbour_search_s": 0.665106965,
+            "jacobi_s": 4.790717505000002,
+            "projection_s": 0.20011107099999983,
+            "acceptance_s": 0.02812115400000001
+          },
+          "proportions": {
+            "validation_and_acceleration_s": 0.000702931440823652,
+            "prediction_s": 0.00046035680811818693,
+            "neighbour_search_s": 0.11677220083894138,
+            "jacobi_s": 0.8411017416672104,
+            "projection_s": 0.035133311486082,
+            "acceptance_s": 0.004937204412993631
+          },
+          "residual_s": 0.005082065000000746
+        },
+        "attempts": [
+          {
+            "kind": "warmup",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 2,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 3,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "profile",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          }
+        ]
+      }
+    },
+    {
+      "particles": 1728,
+      "exact_complete_attempts": 10,
+      "qualified": true,
+      "speedup": 1.0660793236157862,
+      "brute_force": {
+        "particles": 1728,
+        "primary": {
+          "sample_totals_s": [
+            11.568857968999996,
+            11.986372272000011,
+            11.560358434
+          ],
+          "median_s": 11.568857968999996,
+          "minimum_s": 11.560358434,
+          "maximum_s": 11.986372272000011,
+          "mean_s": 11.705196225000002,
+          "sample_standard_deviation_s": 0.24354268122593517,
+          "median_step_s": 0.024101787435416657,
+          "particle_updates_per_s": 71695.92730955587
+        },
+        "profile": {
+          "complete": true,
+          "completed_steps": "480",
+          "total_s": 11.554677397000013,
+          "stages_s": {
+            "validation_and_acceleration_s": 0.006705241000000018,
+            "prediction_s": 0.004398948000000001,
+            "neighbour_search_s": 2.3116643629999976,
+            "jacobi_s": 8.828029087999994,
+            "projection_s": 0.3454106330000001,
+            "acceptance_s": 0.049959732000000055
+          },
+          "proportions": {
+            "validation_and_acceleration_s": 0.000580305340393227,
+            "prediction_s": 0.00038070712395156243,
+            "neighbour_search_s": 0.20006308125921232,
+            "jacobi_s": 0.7640221171637427,
+            "projection_s": 0.02989357652595999,
+            "acceptance_s": 0.004323766928618128
+          },
+          "residual_s": 0.008509392000021876
+        },
+        "attempts": [
+          {
+            "kind": "warmup",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 2,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 3,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "profile",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          }
+        ]
+      },
+      "uniform_grid": {
+        "particles": 1728,
+        "primary": {
+          "sample_totals_s": [
+            10.872579387000004,
+            10.851779706000002,
+            10.4467653
+          ],
+          "median_s": 10.851779706000002,
+          "minimum_s": 10.4467653,
+          "maximum_s": 10.872579387000004,
+          "mean_s": 10.723708131000002,
+          "sample_standard_deviation_s": 0.2400648983382356,
+          "median_step_s": 0.022607874387500004,
+          "particle_updates_per_s": 76433.5456921779
+        },
+        "profile": {
+          "complete": true,
+          "completed_steps": "480",
+          "total_s": 10.515062353000017,
+          "stages_s": {
+            "validation_and_acceleration_s": 0.006796609999999991,
+            "prediction_s": 0.004484949999999998,
+            "neighbour_search_s": 1.2709059780000003,
+            "jacobi_s": 8.829310936999992,
+            "projection_s": 0.3442217159999998,
+            "acceptance_s": 0.050534241000000035
+          },
+          "proportions": {
+            "validation_and_acceleration_s": 0.0006463689678512342,
+            "prediction_s": 0.0004265262391639943,
+            "neighbour_search_s": 0.12086528213856976,
+            "jacobi_s": 0.8396822235182401,
+            "projection_s": 0.03273606037170013,
+            "acceptance_s": 0.004805890759704556
+          },
+          "residual_s": 0.008807921000025587
+        },
+        "attempts": [
+          {
+            "kind": "warmup",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 2,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 3,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "profile",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          }
+        ]
+      }
+    },
+    {
+      "particles": 4096,
+      "exact_complete_attempts": 10,
+      "qualified": true,
+      "speedup": 1.331729905629645,
+      "brute_force": {
+        "particles": 4096,
+        "primary": {
+          "sample_totals_s": [
+            35.261179746000025,
+            34.77482721900003,
+            34.93319150699998
+          ],
+          "median_s": 34.93319150699998,
+          "minimum_s": 34.77482721900003,
+          "maximum_s": 35.261179746000025,
+          "mean_s": 34.989732824000015,
+          "sample_standard_deviation_s": 0.24805722228125793,
+          "median_step_s": 0.07277748230624996,
+          "particle_updates_per_s": 56281.14452714786
+        },
+        "profile": {
+          "complete": true,
+          "completed_steps": "480",
+          "total_s": 35.722129464,
+          "stages_s": {
+            "validation_and_acceleration_s": 0.015418689000000001,
+            "prediction_s": 0.010393259999999977,
+            "neighbour_search_s": 11.850389425999989,
+            "jacobi_s": 22.913158857999964,
+            "projection_s": 0.7999655699999995,
+            "acceptance_s": 0.11291109400000013
+          },
+          "proportions": {
+            "validation_and_acceleration_s": 0.000431628495595108,
+            "prediction_s": 0.00029094738068384426,
+            "neighbour_search_s": 0.33173804596230916,
+            "jacobi_s": 0.6414275744980813,
+            "projection_s": 0.0223941176520898,
+            "acceptance_s": 0.003160816437715157
+          },
+          "residual_s": 0.019892567000049155
+        },
+        "attempts": [
+          {
+            "kind": "warmup",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 2,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 3,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "profile",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          }
+        ]
+      },
+      "uniform_grid": {
+        "particles": 4096,
+        "primary": {
+          "sample_totals_s": [
+            26.23143879200001,
+            26.284729033,
+            26.183837924000024
+          ],
+          "median_s": 26.23143879200001,
+          "minimum_s": 26.183837924000024,
+          "maximum_s": 26.284729033,
+          "mean_s": 26.233335249666677,
+          "sample_standard_deviation_s": 0.050472283310470996,
+          "median_step_s": 0.05464883081666669,
+          "particle_updates_per_s": 74951.28328986703
+        },
+        "profile": {
+          "complete": true,
+          "completed_steps": "480",
+          "total_s": 26.198715338999975,
+          "stages_s": {
+            "validation_and_acceleration_s": 0.015449450000000019,
+            "prediction_s": 0.01042966,
+            "neighbour_search_s": 3.4028060660000032,
+            "jacobi_s": 21.828087515000014,
+            "projection_s": 0.7968075080000003,
+            "acceptance_s": 0.11281791799999999
+          },
+          "proportions": {
+            "validation_and_acceleration_s": 0.0005897025789276634,
+            "prediction_s": 0.0003980981458458836,
+            "neighbour_search_s": 0.12988446272915194,
+            "jacobi_s": 0.8331739641640463,
+            "projection_s": 0.030413991590414184,
+            "acceptance_s": 0.004306238551783369
+          },
+          "residual_s": 0.03231722199995701
+        },
+        "attempts": [
+          {
+            "kind": "warmup",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 2,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 3,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "profile",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          }
+        ]
+      }
+    },
+    {
+      "particles": 8000,
+      "exact_complete_attempts": 10,
+      "qualified": true,
+      "speedup": 1.6184594508052943,
+      "brute_force": {
+        "particles": 8000,
+        "primary": {
+          "sample_totals_s": [
+            92.21848390799998,
+            89.52352974000003,
+            90.02110936200003
+          ],
+          "median_s": 90.02110936200003,
+          "minimum_s": 89.52352974000003,
+          "maximum_s": 92.21848390799998,
+          "mean_s": 90.58770767000001,
+          "sample_standard_deviation_s": 1.4340396521283543,
+          "median_step_s": 0.18754397783750007,
+          "particle_updates_per_s": 42656.661612092415
+        },
+        "profile": {
+          "complete": true,
+          "completed_steps": "480",
+          "total_s": 89.7402425529999,
+          "stages_s": {
+            "validation_and_acceleration_s": 0.02938055399999998,
+            "prediction_s": 0.020280441000000014,
+            "neighbour_search_s": 43.58781667399998,
+            "jacobi_s": 44.296250962,
+            "projection_s": 1.5452933399999993,
+            "acceptance_s": 0.22260865300000005
+          },
+          "proportions": {
+            "validation_and_acceleration_s": 0.0003273955269582434,
+            "prediction_s": 0.00022599048568453043,
+            "neighbour_search_s": 0.4857109300574639,
+            "jacobi_s": 0.4936052065586849,
+            "projection_s": 0.017219625176379046,
+            "acceptance_s": 0.0024805889383297474
+          },
+          "residual_s": 0.03861192899991295
+        },
+        "attempts": [
+          {
+            "kind": "warmup",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 2,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 3,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "profile",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          }
+        ]
+      },
+      "uniform_grid": {
+        "particles": 8000,
+        "primary": {
+          "sample_totals_s": [
+            55.621479622000024,
+            55.81414865699998,
+            55.45831621399999
+          ],
+          "median_s": 55.621479622000024,
+          "minimum_s": 55.45831621399999,
+          "maximum_s": 55.81414865699998,
+          "mean_s": 55.631314831,
+          "sample_standard_deviation_s": 0.1781199887011286,
+          "median_step_s": 0.11587808254583339,
+          "particle_updates_per_s": 69038.07712589437
+        },
+        "profile": {
+          "complete": true,
+          "completed_steps": "480",
+          "total_s": 53.57650529999996,
+          "stages_s": {
+            "validation_and_acceleration_s": 0.02950047000000001,
+            "prediction_s": 0.020299769999999977,
+            "neighbour_search_s": 7.3447267640000025,
+            "jacobi_s": 44.375278985000016,
+            "projection_s": 1.5451312629999996,
+            "acceptance_s": 0.2228523910000001
+          },
+          "proportions": {
+            "validation_and_acceleration_s": 0.0005506232598564064,
+            "prediction_s": 0.0003788931339648238,
+            "neighbour_search_s": 0.13708857498027233,
+            "jacobi_s": 0.8282600504926932,
+            "projection_s": 0.02883971722955959,
+            "acceptance_s": 0.004159517119531129
+          },
+          "residual_s": 0.038715656999940506
+        },
+        "attempts": [
+          {
+            "kind": "warmup",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 2,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "sample",
+            "index": 3,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          },
+          {
+            "kind": "profile",
+            "index": 1,
+            "clean": true,
+            "timed_out": false,
+            "exit_code": 0,
+            "completed_steps": "480"
+          }
+        ]
+      }
+    }
+  ]
+}

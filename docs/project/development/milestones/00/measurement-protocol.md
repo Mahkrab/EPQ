@@ -76,7 +76,7 @@ end after the named stage and its cancellation poll, except acceptance ends just
 | --- | --- |
 | `validation_and_acceleration_s` | Initial cancellation and accepted-state checks, acceleration, mandatory CFL diagnostic |
 | `prediction_s` | Complete prediction snapshot |
-| `neighbour_search_s` | Complete brute-force discovery and membership validation |
+| `neighbour_search_s` | Complete selected discovery and membership validation, including grid bounds checks, cell construction, candidate enumeration, ordering and temporary search-storage destruction |
 | `jacobi_s` | Densities, multipliers, corrections and physical-density checks, accumulated across all eight iterations |
 | `projection_s` | Candidate construction, ordered plane projection and position replacement, accumulated across all iterations |
 | `acceptance_s` | Reconstruction, proposed-state and final-plane checks, cancellation and atomic commit |
@@ -113,3 +113,28 @@ running the solver. Destinations must be new; collection never replaces an earli
 versioned JSON retains policy, inputs, command arguments, raw samples, correctness observations,
 source/binary identities and calculated summaries. Large duplicate particle arrays are represented by
 SHA-256 digests in performance samples; the separately retained correctness result remains replayable.
+
+## Paired search comparison
+
+The same policy also applies to serial uniform-grid measurements. No numerical or sampling setting
+changes: construction and ordering occur inside discovery, and the complete transactional step stays
+inside total timing. This clarification does not rewrite the original PC or laptop datasets; their
+recorded protocol and collector hashes continue to identify the bytes used for those campaigns.
+
+`python3 -m tools.baseline.main collect NEW_DIRECTORY --backend uniform-grid` selects an identified
+grid series; the default remains brute force. `python3 -m tools.baseline.compare collect NEW_DIRECTORY`
+collects a fresh brute-force control series followed by the grid on the same device. Each uses the
+same binary, source, manifest and policy; fixed collection order remains a potential load/thermal bias.
+Run the complete campaign sequentially without concurrent project checks on that device.
+
+Before accepting paired timings, compare each clean complete attempt against the brute-force warm-up
+at that size. Exclude only backend/run identity, optional timings and variable build context; preserve
+physical identities, every checkpoint and final snapshot, audits, CFL diagnostics, statuses and failures.
+Snapshot and input hashes retain signed-zero distinctions. The full 64-particle correctness results
+remain replayable and are checked against the golden before each series. Missing clean reference or
+primary sets, warnings and partial runs supply no speedup ratio. Stage profiles remain separate.
+
+`python3 -m tools.baseline.compare report DIRECTORY` verifies raw hashes, recomputes both backend
+summaries and exact comparisons, checks shared source/build/environment context, and regenerates the
+comparison report. Each backend's ordinary `report` command remains available; historical datasets
+without an explicit backend field retain their original brute-force interpretation and report text.

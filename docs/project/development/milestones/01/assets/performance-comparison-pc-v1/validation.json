@@ -1,0 +1,165 @@
+{
+  "verified_utc": "2026-10-17T16:41:18.351805+00:00",
+  "method": "Independent standard-library calculation from hashed raw samples; no collector imports",
+  "python": "3.12.3",
+  "complete_exact_attempts": 70,
+  "source_files_matched_to_commit": 80,
+  "golden_checks": 2,
+  "rows": [
+    {
+      "particles": 64,
+      "brute_force": {
+        "median_s": 0.256857697,
+        "minimum_s": 0.256728384,
+        "maximum_s": 0.263177917,
+        "mean_s": 0.25892133266666667,
+        "sample_standard_deviation_s": 0.0036868771478144376,
+        "median_step_s": 0.0005351202020833333,
+        "particle_updates_per_s": 119599.29703800155
+      },
+      "uniform_grid": {
+        "median_s": 0.268773581,
+        "minimum_s": 0.268318669,
+        "maximum_s": 0.278853792,
+        "mean_s": 0.271982014,
+        "sample_standard_deviation_s": 0.005955479484718165,
+        "median_step_s": 0.0005599449604166666,
+        "particle_updates_per_s": 114296.94795784264
+      },
+      "speedup": 0.9556657170110778
+    },
+    {
+      "particles": 216,
+      "brute_force": {
+        "median_s": 1.04086272,
+        "minimum_s": 1.000831697,
+        "maximum_s": 1.06205824,
+        "mean_s": 1.034584219,
+        "sample_standard_deviation_s": 0.031092395742978143,
+        "median_step_s": 0.002168464,
+        "particle_updates_per_s": 99609.6776335692
+      },
+      "uniform_grid": {
+        "median_s": 1.097272347,
+        "minimum_s": 1.055930873,
+        "maximum_s": 1.098518863,
+        "mean_s": 1.083907361,
+        "sample_standard_deviation_s": 0.024236364437455766,
+        "median_step_s": 0.0022859840562500003,
+        "particle_updates_per_s": 94488.84799062561
+      },
+      "speedup": 0.9485910429127036
+    },
+    {
+      "particles": 512,
+      "brute_force": {
+        "median_s": 2.659406779,
+        "minimum_s": 2.638061911,
+        "maximum_s": 2.66238634,
+        "mean_s": 2.65328501,
+        "sample_standard_deviation_s": 0.013267498004937968,
+        "median_step_s": 0.0055404307895833334,
+        "particle_updates_per_s": 92411.58665182149
+      },
+      "uniform_grid": {
+        "median_s": 2.673177957,
+        "minimum_s": 2.6571461,
+        "maximum_s": 2.703561871,
+        "mean_s": 2.677961976,
+        "sample_standard_deviation_s": 0.023574797511863775,
+        "median_step_s": 0.00556912074375,
+        "particle_updates_per_s": 91935.51793155086
+      },
+      "speedup": 0.9948483871176858
+    },
+    {
+      "particles": 1000,
+      "brute_force": {
+        "median_s": 5.905200056,
+        "minimum_s": 5.898429173,
+        "maximum_s": 5.959772208,
+        "mean_s": 5.921133812333333,
+        "sample_standard_deviation_s": 0.03363265420570233,
+        "median_step_s": 0.012302500116666667,
+        "particle_updates_per_s": 81284.29103977507
+      },
+      "uniform_grid": {
+        "median_s": 5.921604305,
+        "minimum_s": 5.695838751,
+        "maximum_s": 5.929062818,
+        "mean_s": 5.848835291333334,
+        "sample_standard_deviation_s": 0.1325513612511005,
+        "median_step_s": 0.012336675635416666,
+        "particle_updates_per_s": 81059.11426650113
+      },
+      "speedup": 0.9972297627205269
+    },
+    {
+      "particles": 1728,
+      "brute_force": {
+        "median_s": 11.568857969,
+        "minimum_s": 11.560358434,
+        "maximum_s": 11.986372272,
+        "mean_s": 11.705196225,
+        "sample_standard_deviation_s": 0.243542681225928,
+        "median_step_s": 0.024101787435416668,
+        "particle_updates_per_s": 71695.92730955586
+      },
+      "uniform_grid": {
+        "median_s": 10.851779706,
+        "minimum_s": 10.4467653,
+        "maximum_s": 10.872579387,
+        "mean_s": 10.723708131,
+        "sample_standard_deviation_s": 0.24006489833823405,
+        "median_step_s": 0.0226078743875,
+        "particle_updates_per_s": 76433.54569217791
+      },
+      "speedup": 1.0660793236157866
+    },
+    {
+      "particles": 4096,
+      "brute_force": {
+        "median_s": 34.933191507,
+        "minimum_s": 34.774827219,
+        "maximum_s": 35.261179746,
+        "mean_s": 34.989732824,
+        "sample_standard_deviation_s": 0.24805722228125696,
+        "median_step_s": 0.07277748230624999,
+        "particle_updates_per_s": 56281.14452714783
+      },
+      "uniform_grid": {
+        "median_s": 26.231438792,
+        "minimum_s": 26.183837924,
+        "maximum_s": 26.284729033,
+        "mean_s": 26.233335249666666,
+        "sample_standard_deviation_s": 0.05047228331048339,
+        "median_step_s": 0.05464883081666667,
+        "particle_updates_per_s": 74951.28328986706
+      },
+      "speedup": 1.331729905629646
+    },
+    {
+      "particles": 8000,
+      "brute_force": {
+        "median_s": 90.021109362,
+        "minimum_s": 89.52352974,
+        "maximum_s": 92.218483908,
+        "mean_s": 90.58770767,
+        "sample_standard_deviation_s": 1.4340396521283785,
+        "median_step_s": 0.18754397783750001,
+        "particle_updates_per_s": 42656.66161209243
+      },
+      "uniform_grid": {
+        "median_s": 55.621479622,
+        "minimum_s": 55.458316214,
+        "maximum_s": 55.814148657,
+        "mean_s": 55.631314831,
+        "sample_standard_deviation_s": 0.17811998870113302,
+        "median_step_s": 0.11587808254583334,
+        "particle_updates_per_s": 69038.0771258944
+      },
+      "speedup": 1.6184594508052945
+    }
+  ],
+  "collector_provenance": "main.py and data.py match; protocol matches EPQ base; compare.py reconstructs exactly by removing the two-line interruption guard"
+}
