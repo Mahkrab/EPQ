@@ -11,8 +11,12 @@ The `milestone-01/start` checkpoints identify EPQ
 `2f5ad7a63a2960dd71a4367cfb77c3b33c39002c` and Maelstrom
 [`2d05b4b9c35e7679156bf29fd34535ca35e9dd26`](https://github.com/Mahkrab/Maelstrom/tree/2d05b4b9c35e7679156bf29fd34535ca35e9dd26).
 The [completed reference and handoff](/docs/project/development/milestones/00/serial-brute-force.md)
-provide the starting behaviour and its accepted limitations. No grid implementation or milestone
-completion is implied by this plan.
+provide the starting behaviour and its accepted limitations. The grid correctness checkpoint is
+complete; [paired PC measurement](/docs/project/development/milestones/01/phases/phase-01-performance-comparison.md)
+and [evaluation and handoff](/docs/project/development/milestones/01/phases/phase-02-evaluation-handoff.md)
+are complete locally. The [milestone evaluation](/docs/project/development/milestones/01/serial-uniform-grid.md)
+records the current evidence and limitations. Local annotated `milestone-01/complete` tags identify
+the completed milestone; remote publication remains separate.
 
 There are three phases: implementation and verification, measurement, then evaluation and handoff.
 Agents should follow the applicable `AGENTS.md` instructions and choose suitable internal designs.
@@ -162,23 +166,24 @@ Explain what the grid changed, what the evidence supports and what the multithre
 
 ### Work
 
-- [ ] Record the main design decisions, diagnosed defects and any revisions to inherited contracts without
+- [x] Record the main design decisions, diagnosed defects and any revisions to inherited contracts without
       rewriting the original reference as though those changes had always been present.
-- [ ] Assess search correctness, deterministic simulation equivalence, public usability and measured
+- [x] Assess search correctness, deterministic simulation equivalence, public usability and measured
       performance individually. Link each judgement to implementation, tests or retained results.
-- [ ] Explain results across particle counts, the observed crossover and bottlenecks, and the practical
+- [x] Explain results across particle counts, the observed crossover and bottlenecks, and the practical
       tested range. Do not equate faster execution with improved physical fluid accuracy.
-- [ ] Evaluate limitations such as occupancy, clustering, sparse domains, ordering cost, retained storage
+- [x] Evaluate limitations such as occupancy, clustering, sparse domains, ordering cost, retained storage
       and measurement variability where the implementation or evidence makes them relevant. Do not claim
       measured memory use unless it was actually measured under a declared method.
-- [ ] Update the supported backend, replay and usage documentation and any affected project records.
+- [x] Update the supported backend, replay and usage documentation and any affected project records.
       Keep the milestone summary concise enough to feed the final project document.
-- [ ] State the next objective: parallelise the established grid-based execution without silently changing
+- [x] State the next objective: parallelise the established grid-based execution without silently changing
       inputs, solver work, acceptance, diagnostics or the agreed comparison and measurement policies.
-- [ ] Preserve the serial grid and brute-force reference, reusable fixtures, exact outputs, tolerance
+- [x] Preserve the serial grid and brute-force reference, reusable fixtures, exact outputs, tolerance
       policies and datasets so later work can be assessed without inventing a new experiment.
-- [ ] When separately authorised, complete the implementation-first EPQ/Maelstrom checkpoint sequence,
-      pin evidence to full revisions and publish the milestone completion boundary.
+- [x] Complete the authorised implementation-first EPQ/Maelstrom checkpoint sequence,
+      pin evidence to full revisions and establish the local milestone completion boundary.
+      Remote publication remains separate.
 
 ### Gate G02 evidence
 
@@ -186,6 +191,8 @@ The milestone record contains an evidence-backed conclusion, accepted limitation
 multithreading handoff. Another agent can identify the current contracts and reproduce the comparison.
 The final checkpoint retains the assessed code, tests, documentation and exact parent/submodule pairing;
 it does not imply that the wider project or final comparative evaluation is complete.
+
+The [evaluation and handoff record](/docs/project/development/milestones/01/phases/phase-02-evaluation-handoff.md) completes the assessment. G02 is satisfied by the retained evidence and local annotated completion checkpoints, including the exact final parent/submodule pairing. No remote publication or hosted verification is implied.
 
 ## Working records and checkpoints
 

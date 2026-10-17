@@ -26,6 +26,11 @@ measurement contracts provide the comparison basis, not a ban on future revision
 must be recorded and applied to both sides of any affected comparison, with earlier results left identifiable.
 Milestone records and datasets will feed one final project document rather than becoming immutable final prose.
 
+The [evaluation and multithreading handoff](/docs/project/development/milestones/01/serial-uniform-grid.md)
+assesses the implemented search and its retained evidence. The serial correctness checkpoint is
+complete, and paired PC measurement and evaluation are complete. Local annotated `milestone-01/complete`
+tags retain the final parent/submodule pairing; remote publication remains separate.
+
 ## Milestone 02: multithreaded CPU implementation
 
 Parallelise the uniform grid simulation on the CPU while retaining the same inputs, numerical behaviour and observable outputs.
