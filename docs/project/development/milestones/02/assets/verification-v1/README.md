@@ -6,6 +6,10 @@ identifies the uncommitted Maelstrom worktree by its full base commit, per-file 
 fingerprint. It also records the release binary hash, verifier hashes, compiler/build environment,
 commands, frozen reference hashes, execution settings and exit status of every invocation.
 
+The later Maelstrom checkpoint
+[`60b9a767636428a26f39a1901e2cac4276c75c83`](https://github.com/Mahkrab/Maelstrom/tree/60b9a767636428a26f39a1901e2cac4276c75c83)
+matches all 82 recorded source-file hashes. The original collection, report and results remain unchanged.
+
 The [comparison report](/docs/project/development/milestones/02/assets/verification-v1/report.json)
 contains **36 complete comparisons** against the unchanged goldens: the 27-particle unforced lattice
 for 12 steps and the refined 64-particle falling block for 480 steps. Each fixture has fresh serial

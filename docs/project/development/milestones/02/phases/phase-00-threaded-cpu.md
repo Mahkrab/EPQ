@@ -14,9 +14,10 @@ calculations. It does not establish a threading speedup.
 The CLI and library support threaded grid execution while retaining both serial controls and their
 defaults. For example, `run falling-block-04 --backend uniform-grid --execution threaded --threads 3
 --steps 12` selects a private three-worker pool. Replay restores the exact execution settings.
-The [usage guide](/Maelstrom/docs/usage.md#threaded-cpu-execution) documents selection, validation,
-resource ownership and failure behaviour. These implementation links describe the current worktree;
-the base commit above does not contain this change.
+The [usage guide](https://github.com/Mahkrab/Maelstrom/blob/60b9a767636428a26f39a1901e2cac4276c75c83/docs/usage.md#threaded-cpu-execution) documents selection, validation,
+resource ownership and failure behaviour. The assessed implementation is Maelstrom
+[`60b9a767636428a26f39a1901e2cac4276c75c83`](https://github.com/Mahkrab/Maelstrom/tree/60b9a767636428a26f39a1901e2cac4276c75c83);
+all 82 source-file hashes in the retained collection match that commit.
 
 The [numerical contract](/docs/project/development/milestones/00/phases/phase-00-design-contract.md)
 and [comparison policy](/docs/project/development/milestones/00/reference-verification.md) are unchanged.
@@ -27,7 +28,7 @@ including signed zero. The parallel tolerance allowances were not needed or used
 
 ### Work distribution and barriers
 
-The [Jacobi implementation](/Maelstrom/src/fluid.rs) distributes three separate passes: current
+The [Jacobi implementation](https://github.com/Mahkrab/Maelstrom/blob/60b9a767636428a26f39a1901e2cac4276c75c83/src/fluid.rs) distributes three separate passes: current
 interaction filtering, density/constraint/multiplier calculation, and position correction. Indexed
 particle ranges are split by Rayon's scheduler; each particle retains its ascending reductions.
 Every pass finishes before the next reads its results. Positions and fixed membership remain
@@ -43,7 +44,7 @@ audits remain independent of that membership.
 
 ### Resource ownership and failure order
 
-[`Execution`](/Maelstrom/src/execution.rs) owns a private reusable Rayon pool. Rayon 1.12.0 was selected
+[`Execution`](https://github.com/Mahkrab/Maelstrom/blob/60b9a767636428a26f39a1901e2cac4276c75c83/src/execution.rs) owns a private reusable Rayon pool. Rayon 1.12.0 was selected
 to provide scoped, borrowed parallel work and reusable scheduling without a custom unsafe worker
 implementation. Default features are disabled; Cargo.lock retains Rayon, rayon-core, either and
 three Crossbeam packages. This adds scheduler dependencies and allocation/dispatch overhead; no
@@ -74,7 +75,7 @@ coverage is **194 integration tests, eight unit tests and two doctests** in each
 strict all-target/all-feature Clippy and warning-free Rustdoc passed. Nineteen existing parent baseline
 tests and five new report-verification tests passed.
 
-[Independent tests](/Maelstrom/tests/threaded_execution.rs) check equations, deliberate stale/in-place
+[Independent tests](https://github.com/Mahkrab/Maelstrom/blob/60b9a767636428a26f39a1901e2cac4276c75c83/tests/threaded_execution.rs) check equations, deliberate stale/in-place
 controls, concurrent workers, complete barriers, dense/sparse/boundary/extreme inputs, empty and uneven
 partitions, fewer particles than workers, repeated errors, every cancellation poll, rollback/retry,
 independent simultaneous solvers and pool lifecycle. Workflow tests compare audits, warnings, invalid
@@ -96,7 +97,7 @@ Dense membership and audit costs, pool overhead, cancellation latency and memory
 Dispatch, barriers and repeated allocations are inside solver timing; one-time pool setup/teardown
 are outside it. No PC scaling, speedup, memory or hosted-verification claim is made.
 
-The assessed implementation remains uncommitted above the full Maelstrom base identified here;
-per-file hashes, a source fingerprint and the release binary hash identify its retained evidence.
-Both indices and EPQ's gitlink remain unchanged. Intended `milestone-02/phase-00/complete` annotated
-tags in both repositories require separate checkpoint authorisation and have not been created.
+The parent gitlink records the assessed Maelstrom commit. Annotated
+`milestone-02/phase-00/complete` tags identify the local completion checkpoints in both histories.
+The original collection and results retain their working-tree provenance unchanged; all source
+and verifier hashes were checked before checkpointing. Publication and hosted verification remain separate.

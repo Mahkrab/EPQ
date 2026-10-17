@@ -106,8 +106,9 @@ Record implementation decisions, actual verification and limits before accepting
 
 Local implementation and verification satisfy G00. The
 [implementation record](/docs/project/development/milestones/02/phases/phase-00-threaded-cpu.md)
-records the execution contract, exact comparison evidence and limits. The work remains uncommitted;
-completion checkpointing and comparative PC measurements are separate.
+records the execution contract, exact comparison evidence and limits. Local annotated
+`milestone-02/phase-00/complete` checkpoints retain the committed work and exact parent/submodule
+pairing. Comparative PC measurements and remote publication remain separate.
 
 ## Phase 1: measure scaling and compare on the primary PC
 
