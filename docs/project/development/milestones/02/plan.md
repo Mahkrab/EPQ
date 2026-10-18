@@ -177,17 +177,17 @@ Explain what threading achieved, what it cost and what the CUDA implementation m
 
 ### Work
 
-- [ ] Assess numerical agreement, repeatability, transactional safety, public usability and performance
+- [x] Assess numerical agreement, repeatability, transactional safety, public usability and performance
       separately. Link conclusions to exact implementation revisions, tests and retained results.
-- [ ] Explain work distribution, barriers, reduction order, resource ownership and important diagnosed
+- [x] Explain work distribution, barriers, reduction order, resource ownership and important diagnosed
       defects. Record any contract revisions without rewriting the serial history as though they always
       applied. Distinguish actual measurements from explanations inferred from profiles.
-- [ ] Evaluate results across particle counts and workers, the useful tested range, overhead and saturation.
+- [x] Evaluate results across particle counts and workers, the useful tested range, overhead and saturation.
       Address relevant limits such as dense storage, load imbalance, shared-memory bandwidth, serial work,
       independent audit cost and host variability without claiming an unmeasured cause as established fact.
-- [ ] Document supported execution options, defaults, effective worker counts, replay and failure behaviour.
+- [x] Document supported execution options, defaults, effective worker counts, replay and failure behaviour.
       Keep the milestone summary concise and suitable for the final project synthesis.
-- [ ] Define the CUDA handoff: preserve serial and threaded controls, fixtures, comparison reports, physical
+- [x] Define the CUDA handoff: preserve serial and threaded controls, fixtures, comparison reports, physical
       identities, stage snapshots, membership rules, diagnostics and atomic acceptance. Identify CPU-specific
       choices that need not become GPU requirements. Do not implement GPU infrastructure early.
 - [ ] When separately authorised, complete the implementation-first checkpoint sequence in both repositories,
@@ -200,6 +200,12 @@ The evaluation states supported findings, accepted limits and a concrete CUDA ha
 can identify the assessed source and settings, reproduce the verification and interpret the measurements.
 The final checkpoint retains code, tests, documentation and the exact parent/submodule pairing; it does
 not imply completion of the wider project or the final cross-backend evaluation.
+
+The [threaded CPU evaluation](/docs/project/development/milestones/02/threaded-cpu.md) and
+[evaluation record](/docs/project/development/milestones/02/phases/phase-02-evaluation-handoff.md)
+complete the local assessment and CUDA handoff. Fresh local tests and retained-evidence audits pass;
+the assessed Maelstrom source and gitlink are unchanged. **G02 remains open for the separately
+authorised final checkpoint.** No completion tags or remote publication were created by this work.
 
 ## Records and checkpoints
 

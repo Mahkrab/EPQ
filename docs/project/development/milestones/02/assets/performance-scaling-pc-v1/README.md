@@ -16,6 +16,10 @@ one-worker scaling and requested-worker efficiency. The
 [phase record](/docs/project/development/milestones/02/phases/phase-01-performance-scaling.md)
 summarises the lowest observed medians and the gate decision.
 
+The [threaded CPU evaluation and CUDA handoff](/docs/project/development/milestones/02/threaded-cpu.md)
+assesses the combined correctness and performance findings, public execution contract and inherited
+requirements for a future GPU implementation.
+
 One-worker execution is slower than serial at all seven sizes. The best threaded median at 64
 particles is also slower: 0.561333 s with two workers against 0.327190 s serial. Two workers give a
 small median advantage at 216, but the sample ranges overlap. Four workers have the lowest medians
@@ -113,4 +117,5 @@ supply duration or overlap estimates.
 Fixed order, host activity, scheduling and thermals remain confounders; no affinity, priority or
 frequency control was applied. No larger-size campaign, memory-use measurement, practical maximum,
 physical-accuracy or universal scaling claim follows. The assessed source and parent gitlink are
-unchanged, and this evidence has no separately authorised completion commit, tag or publication yet.
+unchanged. Local `milestone-02/phase-01/complete` checkpoints now retain this measurement evidence;
+the final evaluation checkpoint and remote publication remain separate authorised actions.
