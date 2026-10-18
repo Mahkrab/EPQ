@@ -93,8 +93,10 @@ The real host/device boundary executes on the selected hardware with verified da
 and failure handling. A missing GPU may leave useful host-only work, but cannot satisfy this gate.
 
 The [implementation and verification record](/docs/project/development/milestones/03/phases/phase-00-cuda-integration.md)
-records G00 passing on the primary PC for the current uncommitted source, with retained evidence
-and explicit diagnostic limits. This is not a durable checkpoint or a GPU solver qualification.
+records G00 passing on the primary PC for the assessed implementation, with retained evidence
+and explicit diagnostic limits. Local annotated `milestone-03/phase-00/complete` checkpoints retain
+the implementation and exact parent/submodule pairing. The record discloses the documentation-only
+source-manifest difference. This is not a GPU solver qualification or remote publication.
 
 ## Phase 1: implement and independently verify the GPU solver
 

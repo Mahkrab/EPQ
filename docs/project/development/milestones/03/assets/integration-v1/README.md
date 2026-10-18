@@ -33,7 +33,12 @@ missing-symbol reporting. `incompatible-target` compiled compute_90 for the actu
 device, then `restore-target` restored compute_89. No system configuration was changed.
 
 The PC records include compiler/device details, binary and embedded PTX hashes. Source hashes identify
-the uncommitted assessed files, not a commit or archived source snapshot. No repository, binary,
+the originally uncommitted assessed files. The later Maelstrom commit
+[`facf789e349a3dbbc42126504e150befe67cb519`](https://github.com/Mahkrab/Maelstrom/tree/facf789e349a3dbbc42126504e150befe67cb519)
+matches 90 of 91 hashes, including all executable source, tests and build inputs. The only difference
+is `docs/usage.md`: its threaded-run example was replaced by an unrelated Go installation command.
+Restoring the previous example reproduces the collected hash exactly. The original evidence is unchanged.
+No repository, binary,
 build tree or toolkit is copied into these assets. Commands containing `/tmp/maelstrom-cuda-*` name
 the disposable verification directory, not a required installation path. Reproduction commands and
-prerequisites are in the working-tree [CUDA guide](/Maelstrom/docs/cuda.md).
+prerequisites are in the assessed [CUDA guide](https://github.com/Mahkrab/Maelstrom/blob/facf789e349a3dbbc42126504e150befe67cb519/docs/cuda.md).

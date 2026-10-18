@@ -16,11 +16,15 @@ Cargo now builds an optional Rust/CUDA C++ boundary. The library owns device res
 device transformation through that public boundary. CPU simulation, selection, defaults, records
 and replay retain their existing behaviour. No GPU fluid solver or performance comparison was added.
 
-The assessed implementation is an **uncommitted working tree** based on the full Maelstrom commit
-above. The [source manifest](/docs/project/development/milestones/03/assets/integration-v1/source-manifest.json)
-identifies all 91 assessed files, matched byte for byte to the isolated PC checkout. These hashes
-identify reviewed content; they do not create a historical checkpoint. The
-[build and ownership guide](/Maelstrom/docs/cuda.md) is a working-tree guide until separately committed.
+The assessed implementation is now committed as Maelstrom
+[`facf789e349a3dbbc42126504e150befe67cb519`](https://github.com/Mahkrab/Maelstrom/tree/facf789e349a3dbbc42126504e150befe67cb519).
+The [source manifest](/docs/project/development/milestones/03/assets/integration-v1/source-manifest.json)
+identifies all 91 files tested in the isolated PC checkout. Ninety hashes match the commit, including
+all executable source, tests and build inputs. Only `docs/usage.md` differs: the committed threaded-run
+example was replaced by an unrelated Go installation command. Restoring the previous example reproduces
+the collected hash exactly. This documentation-only difference is retained explicitly, not presented
+as tested content. The [build and ownership guide](https://github.com/Mahkrab/Maelstrom/blob/facf789e349a3dbbc42126504e150befe67cb519/docs/cuda.md)
+matches the collected version.
 
 ## Decisions and implementation
 
@@ -85,16 +89,16 @@ separates these results:
 
 ## Limitations and Gate G00
 
-**G00 is satisfied for the tested working tree and hardware.** Compute Sanitizer failed to initialise
+**G00 is satisfied for the assessed implementation and tested hardware.** Compute Sanitizer failed to initialise
 the WDDM debugger interface and exited 90; its apparent leak summary is not usable diagnostic evidence.
 No driver or Windows configuration was changed. Actual device loss, driver exhaustion and teardown
 failure were not induced. Other devices, toolkits and platforms remain unqualified. There is no
 fluid arithmetic or speedup claim.
 
-No commit, tag, branch, push or gitlink mutation was authorised or performed. The existing start
-tags remain in place; intended `milestone-03/phase-00/complete` tags remain uncreated in both histories.
-The parent still points to the inherited Maelstrom commit. Durable checkpointing and hosted
-verification remain separate actions.
+The subsequently authorised local `milestone-03/phase-00/complete` annotated tags retain the
+completion checkpoints in both histories. EPQ's gitlink pins the implementation above. The original
+PC records and manifest are unchanged, with the documentation-only mismatch disclosed here.
+The existing start tags are preserved; remote publication and hosted verification remain separate.
 
 ## References used
 
