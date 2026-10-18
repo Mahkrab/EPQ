@@ -15,7 +15,7 @@ The [milestone evaluation](/docs/project/development/milestones/02/threaded-cpu.
 agreement, repeatability, transactional safety, public usability and performance separately, linking
 the assessed source, independent tests and retained results. It explains work distribution and
 resources, evaluates overhead and saturation, and defines the CUDA handoff. The local documentation
-work is complete; the separately authorised completion checkpoint remains outstanding.
+work and the subsequently authorised local completion checkpoint are complete.
 
 The measured result is conditional: suitable worker counts improve the larger tested workloads,
 reaching 2.988× against fresh serial-grid controls at 8,000 particles with twelve workers. All 245
@@ -29,7 +29,7 @@ The existing public usage guide already documents explicit/default selection, ef
 private pools, replay, library APIs and failure behaviour. The evaluation links that exact revision
 and summarises its supported contract. Maelstrom documentation and all 82 hashed source files remain
 unchanged, preserving direct reproducibility of the retained campaign. The campaign README now links
-the evaluation and distinguishes its existing measurement checkpoint from the pending final boundary.
+the evaluation and distinguishes its measurement checkpoint from the final milestone boundary.
 
 Concurrency safeguards are explained through immutable snapshots, complete-pass barriers, ordered
 per-particle reductions and joined error collection. Deliberately incorrect test controls are
@@ -74,8 +74,8 @@ unmeasured memory and adversarial performance, independent audit cost, host vari
 causes of two backward UTC transitions. Monotonic durations remain the measurement basis. No new
 PC benchmark, GPU, cross-platform, hosted-rendering or physical-accuracy verification was performed.
 
-The evaluation and handoff are locally complete. **G02 remains open until the separately authorised
-completion checkpoint retains this documentation.** Intended annotated tags are
-`milestone-02/phase-02/complete` and `milestone-02/complete` in both repositories, following the
-implementation-first sequence in the owning plan. The existing gitlink already pins the assessed
-Maelstrom commit. No commit, tag, branch change, gitlink update or remote publication was performed.
+The evaluation, handoff and local completion checkpoint satisfy **G02**. Annotated
+`milestone-02/phase-02/complete` and `milestone-02/complete` tags identify the completion boundary
+in both repositories, following the implementation-first sequence in the owning plan. The existing
+gitlink already pins the assessed Maelstrom commit; no simulator change or new implementation commit
+was needed. Remote publication, hosted verification and completion of the wider project remain separate.

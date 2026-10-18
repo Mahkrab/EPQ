@@ -118,4 +118,5 @@ Fixed order, host activity, scheduling and thermals remain confounders; no affin
 frequency control was applied. No larger-size campaign, memory-use measurement, practical maximum,
 physical-accuracy or universal scaling claim follows. The assessed source and parent gitlink are
 unchanged. Local `milestone-02/phase-01/complete` checkpoints now retain this measurement evidence;
-the final evaluation checkpoint and remote publication remain separate authorised actions.
+local `milestone-02/complete` checkpoints retain the final evaluation separately. Remote publication
+remains a separate authorised action.

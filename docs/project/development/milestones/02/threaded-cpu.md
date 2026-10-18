@@ -140,8 +140,10 @@ it cannot be reported as acceleration of the unchanged experiment.
 
 ## Gate and checkpoint status
 
-G00 and G01 retain their local completion checkpoints. The evaluation and CUDA handoff are prepared
-and locally verified; **G02 remains open for the separately authorised completion checkpoint**.
+G00 and G01 retain their local completion checkpoints. The evaluation, CUDA handoff and local
+completion checkpoint satisfy **G02**.
 The [phase record](/docs/project/development/milestones/02/phases/phase-02-evaluation-handoff.md)
-names the assessed revision and intended annotated tags. The existing EPQ gitlink already identifies
-that revision. No commit, tag, gitlink change, publication or GPU infrastructure is included here.
+names the assessed revision. Annotated `milestone-02/phase-02/complete` and `milestone-02/complete`
+tags identify the local completion boundary in both repositories. The existing EPQ gitlink already
+identifies that revision. No simulator change or GPU infrastructure was needed; remote publication
+and hosted verification remain separate.

@@ -190,7 +190,7 @@ Explain what threading achieved, what it cost and what the CUDA implementation m
 - [x] Define the CUDA handoff: preserve serial and threaded controls, fixtures, comparison reports, physical
       identities, stage snapshots, membership rules, diagnostics and atomic acceptance. Identify CPU-specific
       choices that need not become GPU requirements. Do not implement GPU infrastructure early.
-- [ ] When separately authorised, complete the implementation-first checkpoint sequence in both repositories,
+- [x] Complete the authorised implementation-first checkpoint sequence in both repositories,
       pin the final Maelstrom commit through EPQ's gitlink and evidence, and create the annotated completion
       boundary. Treat remote publication as a separate authorised action.
 
@@ -204,8 +204,9 @@ not imply completion of the wider project or the final cross-backend evaluation.
 The [threaded CPU evaluation](/docs/project/development/milestones/02/threaded-cpu.md) and
 [evaluation record](/docs/project/development/milestones/02/phases/phase-02-evaluation-handoff.md)
 complete the local assessment and CUDA handoff. Fresh local tests and retained-evidence audits pass;
-the assessed Maelstrom source and gitlink are unchanged. **G02 remains open for the separately
-authorised final checkpoint.** No completion tags or remote publication were created by this work.
+the assessed Maelstrom source and gitlink are unchanged. **G02 is satisfied** by this evidence and
+the local annotated `milestone-02/phase-02/complete` and `milestone-02/complete` checkpoints.
+Remote publication and hosted verification remain separate.
 
 ## Records and checkpoints
 

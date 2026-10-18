@@ -39,6 +39,10 @@ The [Milestone 02 completion plan](/docs/project/development/milestones/02/plan.
 threaded implementation and verification, PC measurement and scaling, then evaluation and CUDA handoff.
 It reuses the existing infrastructure and retains explicit, evidence-led contract revision.
 
+The [threaded CPU evaluation and CUDA handoff](/docs/project/development/milestones/02/threaded-cpu.md)
+complete the local assessment. Annotated `milestone-02/complete` tags in both repositories retain
+the assessed implementation and evidence; remote publication remains separate.
+
 ## Milestone 03: CUDA GPU implementation
 
 Implement the uniform grid simulation for CUDA-capable GPUs and preserve comparability with the CPU reference implementations.
