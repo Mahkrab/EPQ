@@ -1,0 +1,2249 @@
+{
+  "schema_version": 1,
+  "reference": "Maelstrom/reference/falling-block-v1.json",
+  "reference_sha256": "acc3b5e91097f0870482de2deba1f2556599415b16d72c5e49ed0d15dbf7d389",
+  "verifier_sha256": "205ceb46f169eb5071b10c8036622b656b32f60ddee053c152a21a1a3891c31f",
+  "policy_sha256": "1f60b2a98fd68594adc4b64184bcedecbdff335392b6e0fbb51595a292120ce3",
+  "passed": true,
+  "comparisons": [
+    {
+      "series": "serial-grid",
+      "candidate_sha256": "4843f1ab5fb95a4838150fd7f0c056ca4514e5b181665cf81407e33769999b4a",
+      "policy": "reference-comparison-v1",
+      "acceptance": "exact binary32, including signed zero",
+      "context": {
+        "reference_metadata": {
+          "run_id": "sha256:28314f1441f500eb6177cd68dfcb5934b6f1e25dcb23b338a84daab5c2b98f4d",
+          "input_id": "sha256:f5e544b6df5b1e3f44811af3d0a36506683ed0eeb6379249889a0d099b7b1f54",
+          "configuration_id": "sha256:4a73d76fd2ac85476796c3f615cd3da7d340a15fee2a844b288a7d471e1e770e",
+          "backend": "serial-brute-force-pbf-binary32-8-jacobi-v2",
+          "application_version": "0.1.0",
+          "build_revision": "54c5176fe0475b39e53759f11aab355c4c815583",
+          "target_os": "linux",
+          "target_arch": "x86_64",
+          "debug_assertions": false
+        },
+        "candidate_metadata": {
+          "run_id": "sha256:28a5b13270cc446962bd3a0b68d2de87e3bbeeb36ced3e184d0fc01457a825d8",
+          "input_id": "sha256:f5e544b6df5b1e3f44811af3d0a36506683ed0eeb6379249889a0d099b7b1f54",
+          "configuration_id": "sha256:4a73d76fd2ac85476796c3f615cd3da7d340a15fee2a844b288a7d471e1e770e",
+          "backend": "serial-uniform-grid-pbf-binary32-8-jacobi-v2",
+          "application_version": "0.1.0",
+          "build_revision": "60b9a767636428a26f39a1901e2cac4276c75c83+worktree-sha256:e289fbe9e26d9c8e0905ddfb8996386dcaac1d46dcdda557953010e4c3fd4186",
+          "target_os": "linux",
+          "target_arch": "x86_64",
+          "debug_assertions": false
+        },
+        "request": {
+          "steps": "480",
+          "checkpoints": [
+            "0",
+            "1",
+            "120",
+            "240",
+            "480"
+          ]
+        },
+        "execution": {
+          "mode": "serial"
+        }
+      },
+      "passed": true,
+      "disagreements": [],
+      "first_divergent_checkpoint": null,
+      "first_divergent_cfl_step": null,
+      "checkpoints": [
+        {
+          "snapshot": {
+            "completed_steps": "0",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.26401517,
+              "maximum_error": 0.48484862
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.26401517,
+              "maximum_error": 0.48484862
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "1",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.24676108,
+              "maximum_error": 0.4580449
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.24676108,
+              "maximum_error": 0.4580449
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "120",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.107244276,
+              "maximum_error": 0.1749335
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.107244276,
+              "maximum_error": 0.1749335
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "240",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.09295937,
+              "maximum_error": 0.23792523
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.09295937,
+              "maximum_error": 0.23792523
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "480",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.09173302,
+              "maximum_error": 0.20032573
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.09173302,
+              "maximum_error": 0.20032573
+            },
+            "passed": true
+          }
+        }
+      ],
+      "final_snapshot": {
+        "completed_steps": "480",
+        "passed": true,
+        "disagreements": [],
+        "quantities": {
+          "position_m": {
+            "particles": 64,
+            "components": 192,
+            "maximum_absolute": 0.0,
+            "rms": 0.0,
+            "worst": {
+              "identity": "0",
+              "axis": "x"
+            },
+            "absolute_limit": 0.0,
+            "passed": true
+          },
+          "velocity_m_s": {
+            "particles": 64,
+            "components": 192,
+            "maximum_absolute": 0.0,
+            "rms": 0.0,
+            "worst": {
+              "identity": "0",
+              "axis": "x"
+            },
+            "absolute_limit": 0.0,
+            "passed": true
+          }
+        }
+      },
+      "cfl_disagreements": [],
+      "completion": {
+        "expected": "completed",
+        "actual": "completed"
+      },
+      "failures": {
+        "expected": [],
+        "actual": []
+      }
+    },
+    {
+      "series": "workers-1",
+      "candidate_sha256": "cffe81b681e6f7637ff646c28972f833d1a037fdbb3b3f94a309ba3bb242a73f",
+      "policy": "reference-comparison-v1",
+      "acceptance": "exact binary32, including signed zero",
+      "context": {
+        "reference_metadata": {
+          "run_id": "sha256:28314f1441f500eb6177cd68dfcb5934b6f1e25dcb23b338a84daab5c2b98f4d",
+          "input_id": "sha256:f5e544b6df5b1e3f44811af3d0a36506683ed0eeb6379249889a0d099b7b1f54",
+          "configuration_id": "sha256:4a73d76fd2ac85476796c3f615cd3da7d340a15fee2a844b288a7d471e1e770e",
+          "backend": "serial-brute-force-pbf-binary32-8-jacobi-v2",
+          "application_version": "0.1.0",
+          "build_revision": "54c5176fe0475b39e53759f11aab355c4c815583",
+          "target_os": "linux",
+          "target_arch": "x86_64",
+          "debug_assertions": false
+        },
+        "candidate_metadata": {
+          "run_id": "sha256:0cf41a5d6f94559438921cba81d945d585e839b896c05dc9109d601985192d42",
+          "input_id": "sha256:f5e544b6df5b1e3f44811af3d0a36506683ed0eeb6379249889a0d099b7b1f54",
+          "configuration_id": "sha256:4a73d76fd2ac85476796c3f615cd3da7d340a15fee2a844b288a7d471e1e770e",
+          "backend": "threaded-uniform-grid-pbf-binary32-8-jacobi-v2",
+          "application_version": "0.1.0",
+          "build_revision": "60b9a767636428a26f39a1901e2cac4276c75c83+worktree-sha256:e289fbe9e26d9c8e0905ddfb8996386dcaac1d46dcdda557953010e4c3fd4186",
+          "target_os": "linux",
+          "target_arch": "x86_64",
+          "debug_assertions": false
+        },
+        "request": {
+          "steps": "480",
+          "checkpoints": [
+            "0",
+            "1",
+            "120",
+            "240",
+            "480"
+          ]
+        },
+        "execution": {
+          "mode": "threaded",
+          "workers": 1
+        }
+      },
+      "passed": true,
+      "disagreements": [],
+      "first_divergent_checkpoint": null,
+      "first_divergent_cfl_step": null,
+      "checkpoints": [
+        {
+          "snapshot": {
+            "completed_steps": "0",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.26401517,
+              "maximum_error": 0.48484862
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.26401517,
+              "maximum_error": 0.48484862
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "1",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.24676108,
+              "maximum_error": 0.4580449
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.24676108,
+              "maximum_error": 0.4580449
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "120",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.107244276,
+              "maximum_error": 0.1749335
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.107244276,
+              "maximum_error": 0.1749335
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "240",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.09295937,
+              "maximum_error": 0.23792523
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.09295937,
+              "maximum_error": 0.23792523
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "480",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.09173302,
+              "maximum_error": 0.20032573
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.09173302,
+              "maximum_error": 0.20032573
+            },
+            "passed": true
+          }
+        }
+      ],
+      "final_snapshot": {
+        "completed_steps": "480",
+        "passed": true,
+        "disagreements": [],
+        "quantities": {
+          "position_m": {
+            "particles": 64,
+            "components": 192,
+            "maximum_absolute": 0.0,
+            "rms": 0.0,
+            "worst": {
+              "identity": "0",
+              "axis": "x"
+            },
+            "absolute_limit": 0.0,
+            "passed": true
+          },
+          "velocity_m_s": {
+            "particles": 64,
+            "components": 192,
+            "maximum_absolute": 0.0,
+            "rms": 0.0,
+            "worst": {
+              "identity": "0",
+              "axis": "x"
+            },
+            "absolute_limit": 0.0,
+            "passed": true
+          }
+        }
+      },
+      "cfl_disagreements": [],
+      "completion": {
+        "expected": "completed",
+        "actual": "completed"
+      },
+      "failures": {
+        "expected": [],
+        "actual": []
+      }
+    },
+    {
+      "series": "workers-2",
+      "candidate_sha256": "f3024bf64d826c4c867c878c94b3a60b393c4cbf90b8c7c943edb606ad0d4d6b",
+      "policy": "reference-comparison-v1",
+      "acceptance": "exact binary32, including signed zero",
+      "context": {
+        "reference_metadata": {
+          "run_id": "sha256:28314f1441f500eb6177cd68dfcb5934b6f1e25dcb23b338a84daab5c2b98f4d",
+          "input_id": "sha256:f5e544b6df5b1e3f44811af3d0a36506683ed0eeb6379249889a0d099b7b1f54",
+          "configuration_id": "sha256:4a73d76fd2ac85476796c3f615cd3da7d340a15fee2a844b288a7d471e1e770e",
+          "backend": "serial-brute-force-pbf-binary32-8-jacobi-v2",
+          "application_version": "0.1.0",
+          "build_revision": "54c5176fe0475b39e53759f11aab355c4c815583",
+          "target_os": "linux",
+          "target_arch": "x86_64",
+          "debug_assertions": false
+        },
+        "candidate_metadata": {
+          "run_id": "sha256:ce8406016f857c71f1dea6984865e1fef1339924c4fe1ee6d2e2c619f7b52657",
+          "input_id": "sha256:f5e544b6df5b1e3f44811af3d0a36506683ed0eeb6379249889a0d099b7b1f54",
+          "configuration_id": "sha256:4a73d76fd2ac85476796c3f615cd3da7d340a15fee2a844b288a7d471e1e770e",
+          "backend": "threaded-uniform-grid-pbf-binary32-8-jacobi-v2",
+          "application_version": "0.1.0",
+          "build_revision": "60b9a767636428a26f39a1901e2cac4276c75c83+worktree-sha256:e289fbe9e26d9c8e0905ddfb8996386dcaac1d46dcdda557953010e4c3fd4186",
+          "target_os": "linux",
+          "target_arch": "x86_64",
+          "debug_assertions": false
+        },
+        "request": {
+          "steps": "480",
+          "checkpoints": [
+            "0",
+            "1",
+            "120",
+            "240",
+            "480"
+          ]
+        },
+        "execution": {
+          "mode": "threaded",
+          "workers": 2
+        }
+      },
+      "passed": true,
+      "disagreements": [],
+      "first_divergent_checkpoint": null,
+      "first_divergent_cfl_step": null,
+      "checkpoints": [
+        {
+          "snapshot": {
+            "completed_steps": "0",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.26401517,
+              "maximum_error": 0.48484862
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.26401517,
+              "maximum_error": 0.48484862
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "1",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.24676108,
+              "maximum_error": 0.4580449
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.24676108,
+              "maximum_error": 0.4580449
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "120",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.107244276,
+              "maximum_error": 0.1749335
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.107244276,
+              "maximum_error": 0.1749335
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "240",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.09295937,
+              "maximum_error": 0.23792523
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.09295937,
+              "maximum_error": 0.23792523
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "480",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.09173302,
+              "maximum_error": 0.20032573
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.09173302,
+              "maximum_error": 0.20032573
+            },
+            "passed": true
+          }
+        }
+      ],
+      "final_snapshot": {
+        "completed_steps": "480",
+        "passed": true,
+        "disagreements": [],
+        "quantities": {
+          "position_m": {
+            "particles": 64,
+            "components": 192,
+            "maximum_absolute": 0.0,
+            "rms": 0.0,
+            "worst": {
+              "identity": "0",
+              "axis": "x"
+            },
+            "absolute_limit": 0.0,
+            "passed": true
+          },
+          "velocity_m_s": {
+            "particles": 64,
+            "components": 192,
+            "maximum_absolute": 0.0,
+            "rms": 0.0,
+            "worst": {
+              "identity": "0",
+              "axis": "x"
+            },
+            "absolute_limit": 0.0,
+            "passed": true
+          }
+        }
+      },
+      "cfl_disagreements": [],
+      "completion": {
+        "expected": "completed",
+        "actual": "completed"
+      },
+      "failures": {
+        "expected": [],
+        "actual": []
+      }
+    },
+    {
+      "series": "workers-4",
+      "candidate_sha256": "b29b4904d2ed9d04386a99a3f61e0563ab285f5ed952b795a273167aa2ff7a76",
+      "policy": "reference-comparison-v1",
+      "acceptance": "exact binary32, including signed zero",
+      "context": {
+        "reference_metadata": {
+          "run_id": "sha256:28314f1441f500eb6177cd68dfcb5934b6f1e25dcb23b338a84daab5c2b98f4d",
+          "input_id": "sha256:f5e544b6df5b1e3f44811af3d0a36506683ed0eeb6379249889a0d099b7b1f54",
+          "configuration_id": "sha256:4a73d76fd2ac85476796c3f615cd3da7d340a15fee2a844b288a7d471e1e770e",
+          "backend": "serial-brute-force-pbf-binary32-8-jacobi-v2",
+          "application_version": "0.1.0",
+          "build_revision": "54c5176fe0475b39e53759f11aab355c4c815583",
+          "target_os": "linux",
+          "target_arch": "x86_64",
+          "debug_assertions": false
+        },
+        "candidate_metadata": {
+          "run_id": "sha256:8c395274723cfc59056185448dcb05b38b02ccf952f8922910210709a7c66533",
+          "input_id": "sha256:f5e544b6df5b1e3f44811af3d0a36506683ed0eeb6379249889a0d099b7b1f54",
+          "configuration_id": "sha256:4a73d76fd2ac85476796c3f615cd3da7d340a15fee2a844b288a7d471e1e770e",
+          "backend": "threaded-uniform-grid-pbf-binary32-8-jacobi-v2",
+          "application_version": "0.1.0",
+          "build_revision": "60b9a767636428a26f39a1901e2cac4276c75c83+worktree-sha256:e289fbe9e26d9c8e0905ddfb8996386dcaac1d46dcdda557953010e4c3fd4186",
+          "target_os": "linux",
+          "target_arch": "x86_64",
+          "debug_assertions": false
+        },
+        "request": {
+          "steps": "480",
+          "checkpoints": [
+            "0",
+            "1",
+            "120",
+            "240",
+            "480"
+          ]
+        },
+        "execution": {
+          "mode": "threaded",
+          "workers": 4
+        }
+      },
+      "passed": true,
+      "disagreements": [],
+      "first_divergent_checkpoint": null,
+      "first_divergent_cfl_step": null,
+      "checkpoints": [
+        {
+          "snapshot": {
+            "completed_steps": "0",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.26401517,
+              "maximum_error": 0.48484862
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.26401517,
+              "maximum_error": 0.48484862
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "1",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.24676108,
+              "maximum_error": 0.4580449
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.24676108,
+              "maximum_error": 0.4580449
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "120",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.107244276,
+              "maximum_error": 0.1749335
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.107244276,
+              "maximum_error": 0.1749335
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "240",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.09295937,
+              "maximum_error": 0.23792523
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.09295937,
+              "maximum_error": 0.23792523
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "480",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.09173302,
+              "maximum_error": 0.20032573
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.09173302,
+              "maximum_error": 0.20032573
+            },
+            "passed": true
+          }
+        }
+      ],
+      "final_snapshot": {
+        "completed_steps": "480",
+        "passed": true,
+        "disagreements": [],
+        "quantities": {
+          "position_m": {
+            "particles": 64,
+            "components": 192,
+            "maximum_absolute": 0.0,
+            "rms": 0.0,
+            "worst": {
+              "identity": "0",
+              "axis": "x"
+            },
+            "absolute_limit": 0.0,
+            "passed": true
+          },
+          "velocity_m_s": {
+            "particles": 64,
+            "components": 192,
+            "maximum_absolute": 0.0,
+            "rms": 0.0,
+            "worst": {
+              "identity": "0",
+              "axis": "x"
+            },
+            "absolute_limit": 0.0,
+            "passed": true
+          }
+        }
+      },
+      "cfl_disagreements": [],
+      "completion": {
+        "expected": "completed",
+        "actual": "completed"
+      },
+      "failures": {
+        "expected": [],
+        "actual": []
+      }
+    },
+    {
+      "series": "workers-8",
+      "candidate_sha256": "76262843d7d7959f2e6bf91678ee7cdacbf2687c05d175b039ce8fc24cfffbd3",
+      "policy": "reference-comparison-v1",
+      "acceptance": "exact binary32, including signed zero",
+      "context": {
+        "reference_metadata": {
+          "run_id": "sha256:28314f1441f500eb6177cd68dfcb5934b6f1e25dcb23b338a84daab5c2b98f4d",
+          "input_id": "sha256:f5e544b6df5b1e3f44811af3d0a36506683ed0eeb6379249889a0d099b7b1f54",
+          "configuration_id": "sha256:4a73d76fd2ac85476796c3f615cd3da7d340a15fee2a844b288a7d471e1e770e",
+          "backend": "serial-brute-force-pbf-binary32-8-jacobi-v2",
+          "application_version": "0.1.0",
+          "build_revision": "54c5176fe0475b39e53759f11aab355c4c815583",
+          "target_os": "linux",
+          "target_arch": "x86_64",
+          "debug_assertions": false
+        },
+        "candidate_metadata": {
+          "run_id": "sha256:bbc59fcf95e1104eecaf04f41cee2c6567faef871f3de674501dc38ca9e97742",
+          "input_id": "sha256:f5e544b6df5b1e3f44811af3d0a36506683ed0eeb6379249889a0d099b7b1f54",
+          "configuration_id": "sha256:4a73d76fd2ac85476796c3f615cd3da7d340a15fee2a844b288a7d471e1e770e",
+          "backend": "threaded-uniform-grid-pbf-binary32-8-jacobi-v2",
+          "application_version": "0.1.0",
+          "build_revision": "60b9a767636428a26f39a1901e2cac4276c75c83+worktree-sha256:e289fbe9e26d9c8e0905ddfb8996386dcaac1d46dcdda557953010e4c3fd4186",
+          "target_os": "linux",
+          "target_arch": "x86_64",
+          "debug_assertions": false
+        },
+        "request": {
+          "steps": "480",
+          "checkpoints": [
+            "0",
+            "1",
+            "120",
+            "240",
+            "480"
+          ]
+        },
+        "execution": {
+          "mode": "threaded",
+          "workers": 8
+        }
+      },
+      "passed": true,
+      "disagreements": [],
+      "first_divergent_checkpoint": null,
+      "first_divergent_cfl_step": null,
+      "checkpoints": [
+        {
+          "snapshot": {
+            "completed_steps": "0",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.26401517,
+              "maximum_error": 0.48484862
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.26401517,
+              "maximum_error": 0.48484862
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "1",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.24676108,
+              "maximum_error": 0.4580449
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.24676108,
+              "maximum_error": 0.4580449
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "120",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.107244276,
+              "maximum_error": 0.1749335
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.107244276,
+              "maximum_error": 0.1749335
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "240",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.09295937,
+              "maximum_error": 0.23792523
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.09295937,
+              "maximum_error": 0.23792523
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "480",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.09173302,
+              "maximum_error": 0.20032573
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.09173302,
+              "maximum_error": 0.20032573
+            },
+            "passed": true
+          }
+        }
+      ],
+      "final_snapshot": {
+        "completed_steps": "480",
+        "passed": true,
+        "disagreements": [],
+        "quantities": {
+          "position_m": {
+            "particles": 64,
+            "components": 192,
+            "maximum_absolute": 0.0,
+            "rms": 0.0,
+            "worst": {
+              "identity": "0",
+              "axis": "x"
+            },
+            "absolute_limit": 0.0,
+            "passed": true
+          },
+          "velocity_m_s": {
+            "particles": 64,
+            "components": 192,
+            "maximum_absolute": 0.0,
+            "rms": 0.0,
+            "worst": {
+              "identity": "0",
+              "axis": "x"
+            },
+            "absolute_limit": 0.0,
+            "passed": true
+          }
+        }
+      },
+      "cfl_disagreements": [],
+      "completion": {
+        "expected": "completed",
+        "actual": "completed"
+      },
+      "failures": {
+        "expected": [],
+        "actual": []
+      }
+    },
+    {
+      "series": "workers-12",
+      "candidate_sha256": "a1d84b755d3fed93ba9b1d125eb74dd20d6295d64319e772a86d47414226d4b3",
+      "policy": "reference-comparison-v1",
+      "acceptance": "exact binary32, including signed zero",
+      "context": {
+        "reference_metadata": {
+          "run_id": "sha256:28314f1441f500eb6177cd68dfcb5934b6f1e25dcb23b338a84daab5c2b98f4d",
+          "input_id": "sha256:f5e544b6df5b1e3f44811af3d0a36506683ed0eeb6379249889a0d099b7b1f54",
+          "configuration_id": "sha256:4a73d76fd2ac85476796c3f615cd3da7d340a15fee2a844b288a7d471e1e770e",
+          "backend": "serial-brute-force-pbf-binary32-8-jacobi-v2",
+          "application_version": "0.1.0",
+          "build_revision": "54c5176fe0475b39e53759f11aab355c4c815583",
+          "target_os": "linux",
+          "target_arch": "x86_64",
+          "debug_assertions": false
+        },
+        "candidate_metadata": {
+          "run_id": "sha256:2091ed03e01d52ec1d20ce6939fab51cae2c0f1b60f27d2c944119767ec44f4b",
+          "input_id": "sha256:f5e544b6df5b1e3f44811af3d0a36506683ed0eeb6379249889a0d099b7b1f54",
+          "configuration_id": "sha256:4a73d76fd2ac85476796c3f615cd3da7d340a15fee2a844b288a7d471e1e770e",
+          "backend": "threaded-uniform-grid-pbf-binary32-8-jacobi-v2",
+          "application_version": "0.1.0",
+          "build_revision": "60b9a767636428a26f39a1901e2cac4276c75c83+worktree-sha256:e289fbe9e26d9c8e0905ddfb8996386dcaac1d46dcdda557953010e4c3fd4186",
+          "target_os": "linux",
+          "target_arch": "x86_64",
+          "debug_assertions": false
+        },
+        "request": {
+          "steps": "480",
+          "checkpoints": [
+            "0",
+            "1",
+            "120",
+            "240",
+            "480"
+          ]
+        },
+        "execution": {
+          "mode": "threaded",
+          "workers": 12
+        }
+      },
+      "passed": true,
+      "disagreements": [],
+      "first_divergent_checkpoint": null,
+      "first_divergent_cfl_step": null,
+      "checkpoints": [
+        {
+          "snapshot": {
+            "completed_steps": "0",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.26401517,
+              "maximum_error": 0.48484862
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.26401517,
+              "maximum_error": 0.48484862
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "1",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.24676108,
+              "maximum_error": 0.4580449
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.24676108,
+              "maximum_error": 0.4580449
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "120",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.107244276,
+              "maximum_error": 0.1749335
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.107244276,
+              "maximum_error": 0.1749335
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "240",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.09295937,
+              "maximum_error": 0.23792523
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.09295937,
+              "maximum_error": 0.23792523
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "480",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.09173302,
+              "maximum_error": 0.20032573
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.09173302,
+              "maximum_error": 0.20032573
+            },
+            "passed": true
+          }
+        }
+      ],
+      "final_snapshot": {
+        "completed_steps": "480",
+        "passed": true,
+        "disagreements": [],
+        "quantities": {
+          "position_m": {
+            "particles": 64,
+            "components": 192,
+            "maximum_absolute": 0.0,
+            "rms": 0.0,
+            "worst": {
+              "identity": "0",
+              "axis": "x"
+            },
+            "absolute_limit": 0.0,
+            "passed": true
+          },
+          "velocity_m_s": {
+            "particles": 64,
+            "components": 192,
+            "maximum_absolute": 0.0,
+            "rms": 0.0,
+            "worst": {
+              "identity": "0",
+              "axis": "x"
+            },
+            "absolute_limit": 0.0,
+            "passed": true
+          }
+        }
+      },
+      "cfl_disagreements": [],
+      "completion": {
+        "expected": "completed",
+        "actual": "completed"
+      },
+      "failures": {
+        "expected": [],
+        "actual": []
+      }
+    },
+    {
+      "series": "workers-24",
+      "candidate_sha256": "fd364fe3f8d07f9c66a99504b275b3f1ca0859c3649dbc3155ea4a362a186db6",
+      "policy": "reference-comparison-v1",
+      "acceptance": "exact binary32, including signed zero",
+      "context": {
+        "reference_metadata": {
+          "run_id": "sha256:28314f1441f500eb6177cd68dfcb5934b6f1e25dcb23b338a84daab5c2b98f4d",
+          "input_id": "sha256:f5e544b6df5b1e3f44811af3d0a36506683ed0eeb6379249889a0d099b7b1f54",
+          "configuration_id": "sha256:4a73d76fd2ac85476796c3f615cd3da7d340a15fee2a844b288a7d471e1e770e",
+          "backend": "serial-brute-force-pbf-binary32-8-jacobi-v2",
+          "application_version": "0.1.0",
+          "build_revision": "54c5176fe0475b39e53759f11aab355c4c815583",
+          "target_os": "linux",
+          "target_arch": "x86_64",
+          "debug_assertions": false
+        },
+        "candidate_metadata": {
+          "run_id": "sha256:8073ffb47e1e828befa2806b3a12baa44a381c8a20f0e3acb1aaea93651c376b",
+          "input_id": "sha256:f5e544b6df5b1e3f44811af3d0a36506683ed0eeb6379249889a0d099b7b1f54",
+          "configuration_id": "sha256:4a73d76fd2ac85476796c3f615cd3da7d340a15fee2a844b288a7d471e1e770e",
+          "backend": "threaded-uniform-grid-pbf-binary32-8-jacobi-v2",
+          "application_version": "0.1.0",
+          "build_revision": "60b9a767636428a26f39a1901e2cac4276c75c83+worktree-sha256:e289fbe9e26d9c8e0905ddfb8996386dcaac1d46dcdda557953010e4c3fd4186",
+          "target_os": "linux",
+          "target_arch": "x86_64",
+          "debug_assertions": false
+        },
+        "request": {
+          "steps": "480",
+          "checkpoints": [
+            "0",
+            "1",
+            "120",
+            "240",
+            "480"
+          ]
+        },
+        "execution": {
+          "mode": "threaded",
+          "workers": 24
+        }
+      },
+      "passed": true,
+      "disagreements": [],
+      "first_divergent_checkpoint": null,
+      "first_divergent_cfl_step": null,
+      "checkpoints": [
+        {
+          "snapshot": {
+            "completed_steps": "0",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.26401517,
+              "maximum_error": 0.48484862
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.26401517,
+              "maximum_error": 0.48484862
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "1",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.24676108,
+              "maximum_error": 0.4580449
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.24676108,
+              "maximum_error": 0.4580449
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "120",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.107244276,
+              "maximum_error": 0.1749335
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.107244276,
+              "maximum_error": 0.1749335
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "240",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.09295937,
+              "maximum_error": 0.23792523
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.09295937,
+              "maximum_error": 0.23792523
+            },
+            "passed": true
+          }
+        },
+        {
+          "snapshot": {
+            "completed_steps": "480",
+            "passed": true,
+            "disagreements": [],
+            "quantities": {
+              "position_m": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              },
+              "velocity_m_s": {
+                "particles": 64,
+                "components": 192,
+                "maximum_absolute": 0.0,
+                "rms": 0.0,
+                "worst": {
+                  "identity": "0",
+                  "axis": "x"
+                },
+                "absolute_limit": 0.0,
+                "passed": true
+              }
+            }
+          },
+          "audit": {
+            "expected": {
+              "sample_count": 64,
+              "mean_error": 0.09173302,
+              "maximum_error": 0.20032573
+            },
+            "actual": {
+              "sample_count": 64,
+              "mean_error": 0.09173302,
+              "maximum_error": 0.20032573
+            },
+            "passed": true
+          }
+        }
+      ],
+      "final_snapshot": {
+        "completed_steps": "480",
+        "passed": true,
+        "disagreements": [],
+        "quantities": {
+          "position_m": {
+            "particles": 64,
+            "components": 192,
+            "maximum_absolute": 0.0,
+            "rms": 0.0,
+            "worst": {
+              "identity": "0",
+              "axis": "x"
+            },
+            "absolute_limit": 0.0,
+            "passed": true
+          },
+          "velocity_m_s": {
+            "particles": 64,
+            "components": 192,
+            "maximum_absolute": 0.0,
+            "rms": 0.0,
+            "worst": {
+              "identity": "0",
+              "axis": "x"
+            },
+            "absolute_limit": 0.0,
+            "passed": true
+          }
+        }
+      },
+      "cfl_disagreements": [],
+      "completion": {
+        "expected": "completed",
+        "actual": "completed"
+      },
+      "failures": {
+        "expected": [],
+        "actual": []
+      }
+    }
+  ]
+}

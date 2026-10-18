@@ -1,0 +1,4447 @@
+{
+  "started_utc": "2026-10-18T15:04:58.173631+00:00",
+  "finished_utc": "2026-10-18T15:05:11.950527+00:00",
+  "wall_s": 13.776902925979812,
+  "exit_code": 0,
+  "timed_out": false,
+  "interrupted": false,
+  "stderr": "",
+  "parse_error": null,
+  "stdout_sha256": "10dd909f8cb2f54a421d97f1ee37eac5576dc176f617aeb4a82f4f14f5dd1842",
+  "result": {
+    "schema_version": 1,
+    "application_version": "0.1.0",
+    "backend": "threaded-uniform-grid-pbf-binary32-8-jacobi-v2",
+    "execution": {
+      "mode": "threaded",
+      "workers": 1
+    },
+    "request": {
+      "steps": "480",
+      "checkpoints": [
+        "0",
+        "1",
+        "120",
+        "240",
+        "480"
+      ]
+    },
+    "completed_steps": "480",
+    "metadata": {
+      "run_id": "sha256:c96921b4173810750b8ea77d5c8cbd89e0ab82ad454c742653146bf023b69b1b",
+      "input_id": "sha256:676997348046d8b2702d4bc4a0b83526bccfe5f0f70006fda0cc2c050471bd04",
+      "configuration_id": "sha256:4a73d76fd2ac85476796c3f615cd3da7d340a15fee2a844b288a7d471e1e770e",
+      "backend": "threaded-uniform-grid-pbf-binary32-8-jacobi-v2",
+      "application_version": "0.1.0",
+      "build_revision": "60b9a767636428a26f39a1901e2cac4276c75c83+worktree-sha256:e289fbe9e26d9c8e0905ddfb8996386dcaac1d46dcdda557953010e4c3fd4186",
+      "target_os": "linux",
+      "target_arch": "x86_64",
+      "debug_assertions": false
+    },
+    "steps": [
+      {
+        "completed_steps": "1",
+        "maximum_speed_m_s": 0.020437501,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.9785933
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "2",
+        "maximum_speed_m_s": 0.9019821,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.022173388
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "3",
+        "maximum_speed_m_s": 1.6886338,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011843895
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "4",
+        "maximum_speed_m_s": 2.2211268,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009004439
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "5",
+        "maximum_speed_m_s": 2.3456755,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008526329
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "6",
+        "maximum_speed_m_s": 2.0946825,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009547987
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "7",
+        "maximum_speed_m_s": 1.7040462,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011736771
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "8",
+        "maximum_speed_m_s": 1.3975427,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014310832
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "9",
+        "maximum_speed_m_s": 1.3131564,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.015230479
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "10",
+        "maximum_speed_m_s": 1.4436699,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013853583
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "11",
+        "maximum_speed_m_s": 1.5062503,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013278007
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "12",
+        "maximum_speed_m_s": 1.5152042,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013199541
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "13",
+        "maximum_speed_m_s": 1.5428033,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.012963416
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "14",
+        "maximum_speed_m_s": 1.5000058,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013333282
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "15",
+        "maximum_speed_m_s": 1.4133606,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014150671
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "16",
+        "maximum_speed_m_s": 1.3757277,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014537761
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "17",
+        "maximum_speed_m_s": 1.4422716,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013867015
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "18",
+        "maximum_speed_m_s": 1.4693463,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0136114955
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "19",
+        "maximum_speed_m_s": 1.4606087,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013692922
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "20",
+        "maximum_speed_m_s": 1.4303964,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013982139
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "21",
+        "maximum_speed_m_s": 1.4961827,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013367352
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "22",
+        "maximum_speed_m_s": 1.5366395,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013015415
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "23",
+        "maximum_speed_m_s": 1.5332878,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013043866
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "24",
+        "maximum_speed_m_s": 1.5030106,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013306627
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "25",
+        "maximum_speed_m_s": 1.5094798,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013249598
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "26",
+        "maximum_speed_m_s": 1.5630348,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0127956215
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "27",
+        "maximum_speed_m_s": 1.5568153,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01284674
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "28",
+        "maximum_speed_m_s": 1.5010214,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013324261
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "29",
+        "maximum_speed_m_s": 1.4077904,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01420666
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "30",
+        "maximum_speed_m_s": 1.2903813,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.015499296
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "31",
+        "maximum_speed_m_s": 1.3423029,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014899767
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "32",
+        "maximum_speed_m_s": 1.3881909,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014407242
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "33",
+        "maximum_speed_m_s": 1.4314717,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013971636
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "34",
+        "maximum_speed_m_s": 1.4746987,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013562093
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "35",
+        "maximum_speed_m_s": 1.5174333,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013180152
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "36",
+        "maximum_speed_m_s": 1.5550573,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.012861262
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "37",
+        "maximum_speed_m_s": 1.5784136,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.012670951
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "38",
+        "maximum_speed_m_s": 1.5751096,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01269753
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "39",
+        "maximum_speed_m_s": 1.5351886,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0130277155
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "40",
+        "maximum_speed_m_s": 1.4581761,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013715765
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "41",
+        "maximum_speed_m_s": 1.3703665,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014594637
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "42",
+        "maximum_speed_m_s": 1.3833022,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014458157
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "43",
+        "maximum_speed_m_s": 1.4196069,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014088407
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "44",
+        "maximum_speed_m_s": 1.4418669,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013870907
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "45",
+        "maximum_speed_m_s": 1.4778464,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013533207
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "46",
+        "maximum_speed_m_s": 1.5075078,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01326693
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "47",
+        "maximum_speed_m_s": 1.5873446,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.012599659
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "48",
+        "maximum_speed_m_s": 1.6620619,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.012033246
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "49",
+        "maximum_speed_m_s": 1.7267869,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011582206
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "50",
+        "maximum_speed_m_s": 1.7755454,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011264144
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "51",
+        "maximum_speed_m_s": 1.8151996,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011018072
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "52",
+        "maximum_speed_m_s": 1.8849962,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010610102
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "53",
+        "maximum_speed_m_s": 1.9295026,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010365366
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "54",
+        "maximum_speed_m_s": 1.9639438,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01018359
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "55",
+        "maximum_speed_m_s": 2.0035362,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.00998235
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "56",
+        "maximum_speed_m_s": 2.0090961,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009954725
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "57",
+        "maximum_speed_m_s": 1.9747777,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010127722
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "58",
+        "maximum_speed_m_s": 1.9053719,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010496639
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "59",
+        "maximum_speed_m_s": 1.8580856,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010763767
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "60",
+        "maximum_speed_m_s": 1.8504778,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01080802
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "61",
+        "maximum_speed_m_s": 1.8184563,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01099834
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "62",
+        "maximum_speed_m_s": 1.8297058,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01093072
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "63",
+        "maximum_speed_m_s": 1.8943729,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0105575835
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "64",
+        "maximum_speed_m_s": 1.9526572,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010242454
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "65",
+        "maximum_speed_m_s": 2.0051982,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009974076
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "66",
+        "maximum_speed_m_s": 2.0543988,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009735209
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "67",
+        "maximum_speed_m_s": 2.103693,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009507091
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "68",
+        "maximum_speed_m_s": 2.1563313,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009275013
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "69",
+        "maximum_speed_m_s": 2.2143106,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009032156
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "70",
+        "maximum_speed_m_s": 2.27688,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0087839505
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "71",
+        "maximum_speed_m_s": 2.3393576,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008549356
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "72",
+        "maximum_speed_m_s": 2.3927531,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008358573
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "73",
+        "maximum_speed_m_s": 2.424907,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.00824774
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "74",
+        "maximum_speed_m_s": 2.4239862,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008250873
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "75",
+        "maximum_speed_m_s": 2.3830478,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008392614
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "76",
+        "maximum_speed_m_s": 2.3414412,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008541748
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "77",
+        "maximum_speed_m_s": 2.3388774,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008551111
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "78",
+        "maximum_speed_m_s": 2.3260632,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008598219
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "79",
+        "maximum_speed_m_s": 2.305969,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008673144
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "80",
+        "maximum_speed_m_s": 2.280338,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.00877063
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "81",
+        "maximum_speed_m_s": 2.249618,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008890398
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "82",
+        "maximum_speed_m_s": 2.2131162,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009037032
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "83",
+        "maximum_speed_m_s": 2.1714573,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009210405
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "84",
+        "maximum_speed_m_s": 2.1747632,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009196403
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "85",
+        "maximum_speed_m_s": 2.186654,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009146394
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "86",
+        "maximum_speed_m_s": 2.1869805,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009145029
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "87",
+        "maximum_speed_m_s": 2.2205486,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009006783
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "88",
+        "maximum_speed_m_s": 2.2703445,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008809236
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "89",
+        "maximum_speed_m_s": 2.3154297,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008637706
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "90",
+        "maximum_speed_m_s": 2.3788652,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.00840737
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "91",
+        "maximum_speed_m_s": 2.4309292,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008227306
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "92",
+        "maximum_speed_m_s": 2.4674115,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008105661
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "93",
+        "maximum_speed_m_s": 2.491425,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008027534
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "94",
+        "maximum_speed_m_s": 2.5049264,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.007984267
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "95",
+        "maximum_speed_m_s": 2.5091598,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.007970796
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "96",
+        "maximum_speed_m_s": 2.5049305,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.007984254
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "97",
+        "maximum_speed_m_s": 2.528473,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.007909913
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "98",
+        "maximum_speed_m_s": 2.615121,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0076478305
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "99",
+        "maximum_speed_m_s": 2.704449,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0073952223
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "100",
+        "maximum_speed_m_s": 2.7874815,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.007174935
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "101",
+        "maximum_speed_m_s": 2.8601294,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006992691
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "102",
+        "maximum_speed_m_s": 2.9178994,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006854246
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "103",
+        "maximum_speed_m_s": 2.958477,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0067602354
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "104",
+        "maximum_speed_m_s": 2.983947,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006702532
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "105",
+        "maximum_speed_m_s": 3.0001245,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0066663898
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "106",
+        "maximum_speed_m_s": 3.0089698,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0066467933
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "107",
+        "maximum_speed_m_s": 3.0120099,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006640085
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "108",
+        "maximum_speed_m_s": 3.0253873,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0066107246
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "109",
+        "maximum_speed_m_s": 3.0865028,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006479826
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "110",
+        "maximum_speed_m_s": 3.136057,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0063774358
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "111",
+        "maximum_speed_m_s": 3.1712213,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006306719
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "112",
+        "maximum_speed_m_s": 3.1898448,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006269898
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "113",
+        "maximum_speed_m_s": 3.1908033,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006268014
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "114",
+        "maximum_speed_m_s": 3.1742632,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006300675
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "115",
+        "maximum_speed_m_s": 3.1416745,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0063660317
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "116",
+        "maximum_speed_m_s": 3.0956223,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006460737
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "117",
+        "maximum_speed_m_s": 3.0677364,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0065194652
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "118",
+        "maximum_speed_m_s": 3.1070073,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0064370628
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "119",
+        "maximum_speed_m_s": 3.1449184,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0063594654
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "120",
+        "maximum_speed_m_s": 3.174405,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0063003935
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "121",
+        "maximum_speed_m_s": 3.195858,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0062581003
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "122",
+        "maximum_speed_m_s": 3.210037,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006230458
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "123",
+        "maximum_speed_m_s": 3.2180462,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0062149516
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "124",
+        "maximum_speed_m_s": 3.2211096,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0062090405
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "125",
+        "maximum_speed_m_s": 3.2206094,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006210005
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "126",
+        "maximum_speed_m_s": 3.2179592,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0062151193
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "127",
+        "maximum_speed_m_s": 3.2270055,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0061976966
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "128",
+        "maximum_speed_m_s": 3.2652378,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0061251284
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "129",
+        "maximum_speed_m_s": 3.3002105,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.00606022
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "130",
+        "maximum_speed_m_s": 3.3316371,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006003055
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "131",
+        "maximum_speed_m_s": 3.35945,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0059533557
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "132",
+        "maximum_speed_m_s": 3.3837097,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0059106727
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "133",
+        "maximum_speed_m_s": 3.4042122,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.005875075
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "134",
+        "maximum_speed_m_s": 3.420106,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.005847772
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "135",
+        "maximum_speed_m_s": 3.429535,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0058316947
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "136",
+        "maximum_speed_m_s": 3.429638,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0058315196
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "137",
+        "maximum_speed_m_s": 3.4516625,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0057943095
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "138",
+        "maximum_speed_m_s": 3.4565618,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0057860967
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "139",
+        "maximum_speed_m_s": 3.4417531,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0058109923
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "140",
+        "maximum_speed_m_s": 3.4916563,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0057279407
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "141",
+        "maximum_speed_m_s": 3.4117503,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.005862094
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "142",
+        "maximum_speed_m_s": 3.4875886,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0057346215
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "143",
+        "maximum_speed_m_s": 3.4552133,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0057883547
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "144",
+        "maximum_speed_m_s": 3.7146852,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.005384037
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "145",
+        "maximum_speed_m_s": 4.240695,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.004716208
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "146",
+        "maximum_speed_m_s": 4.866529,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0041097053
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "147",
+        "maximum_speed_m_s": 4.498266,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0044461577
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "148",
+        "maximum_speed_m_s": 4.692903,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0042617545
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "149",
+        "maximum_speed_m_s": 5.056471,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.003955328
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "150",
+        "maximum_speed_m_s": 5.3102865,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0037662752
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "151",
+        "maximum_speed_m_s": 5.6900973,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0035148785
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "152",
+        "maximum_speed_m_s": 5.959544,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0033559613
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "153",
+        "maximum_speed_m_s": 6.0706253,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0032945536
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "154",
+        "maximum_speed_m_s": 5.9762964,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0033465542
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "155",
+        "maximum_speed_m_s": 5.700549,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0035084342
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "156",
+        "maximum_speed_m_s": 5.4525747,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.003667992
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "157",
+        "maximum_speed_m_s": 5.3360806,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0037480693
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "158",
+        "maximum_speed_m_s": 5.5773363,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0035859414
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "159",
+        "maximum_speed_m_s": 6.186163,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0032330218
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "160",
+        "maximum_speed_m_s": 6.2701645,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.003189709
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "161",
+        "maximum_speed_m_s": 5.8163877,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0034385603
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "162",
+        "maximum_speed_m_s": 5.728269,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0034914562
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "163",
+        "maximum_speed_m_s": 5.5080676,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0036310374
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "164",
+        "maximum_speed_m_s": 5.6132145,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0035630208
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "165",
+        "maximum_speed_m_s": 5.6674805,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0035289049
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "166",
+        "maximum_speed_m_s": 5.225014,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0038277411
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "167",
+        "maximum_speed_m_s": 5.4156694,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0036929876
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "168",
+        "maximum_speed_m_s": 5.761195,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0034715019
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "169",
+        "maximum_speed_m_s": 5.936259,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0033691253
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "170",
+        "maximum_speed_m_s": 5.8934093,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0033936214
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "171",
+        "maximum_speed_m_s": 5.714598,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0034998085
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "172",
+        "maximum_speed_m_s": 5.4908414,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0036424291
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "173",
+        "maximum_speed_m_s": 5.6028376,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0035696197
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "174",
+        "maximum_speed_m_s": 5.644653,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0035431765
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "175",
+        "maximum_speed_m_s": 5.600146,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0035713357
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "176",
+        "maximum_speed_m_s": 5.078926,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0039378405
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "177",
+        "maximum_speed_m_s": 5.184825,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0038574112
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "178",
+        "maximum_speed_m_s": 5.054117,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.00395717
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "179",
+        "maximum_speed_m_s": 5.1281447,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.003900046
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "180",
+        "maximum_speed_m_s": 5.4645348,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.003659964
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "181",
+        "maximum_speed_m_s": 5.589507,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0035781332
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "182",
+        "maximum_speed_m_s": 5.6039615,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0035689042
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "183",
+        "maximum_speed_m_s": 5.553535,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.00360131
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "184",
+        "maximum_speed_m_s": 5.3683953,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0037255082
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "185",
+        "maximum_speed_m_s": 5.451033,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0036690296
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "186",
+        "maximum_speed_m_s": 5.442824,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.003674563
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "187",
+        "maximum_speed_m_s": 5.3810534,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0037167445
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "188",
+        "maximum_speed_m_s": 5.3602877,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0037311432
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "189",
+        "maximum_speed_m_s": 5.444764,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0036732536
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "190",
+        "maximum_speed_m_s": 5.5794945,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0035845542
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "191",
+        "maximum_speed_m_s": 5.709777,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0035027638
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "192",
+        "maximum_speed_m_s": 5.7492323,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0034787252
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "193",
+        "maximum_speed_m_s": 5.621713,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0035576343
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "194",
+        "maximum_speed_m_s": 5.3292856,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0037528481
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "195",
+        "maximum_speed_m_s": 4.9692574,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0040247464
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "196",
+        "maximum_speed_m_s": 4.8118906,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0041563706
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "197",
+        "maximum_speed_m_s": 4.805523,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.004161878
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "198",
+        "maximum_speed_m_s": 4.847208,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.004126087
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "199",
+        "maximum_speed_m_s": 4.921182,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.004064064
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "200",
+        "maximum_speed_m_s": 5.2465453,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0038120323
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "201",
+        "maximum_speed_m_s": 5.4596157,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0036632617
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "202",
+        "maximum_speed_m_s": 5.3394194,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0037457258
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "203",
+        "maximum_speed_m_s": 5.020052,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0039840224
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "204",
+        "maximum_speed_m_s": 5.3166595,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0037617607
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "205",
+        "maximum_speed_m_s": 5.7051983,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.003505575
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "206",
+        "maximum_speed_m_s": 6.0442915,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0033089072
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "207",
+        "maximum_speed_m_s": 6.2398257,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.003205218
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "208",
+        "maximum_speed_m_s": 6.179425,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.003236547
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "209",
+        "maximum_speed_m_s": 5.894001,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.003393281
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "210",
+        "maximum_speed_m_s": 5.477825,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0036510841
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "211",
+        "maximum_speed_m_s": 5.190173,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0038534363
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "212",
+        "maximum_speed_m_s": 5.4506717,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0036692729
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "213",
+        "maximum_speed_m_s": 5.724589,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0034937006
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "214",
+        "maximum_speed_m_s": 5.3355384,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0037484504
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "215",
+        "maximum_speed_m_s": 4.4487686,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.004495626
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "216",
+        "maximum_speed_m_s": 4.5668473,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.004379389
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "217",
+        "maximum_speed_m_s": 4.712528,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0042440067
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "218",
+        "maximum_speed_m_s": 4.725376,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0042324676
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "219",
+        "maximum_speed_m_s": 4.5819755,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0043649296
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "220",
+        "maximum_speed_m_s": 4.3495584,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.004598168
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "221",
+        "maximum_speed_m_s": 4.079171,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.004902957
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "222",
+        "maximum_speed_m_s": 4.140396,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.004830456
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "223",
+        "maximum_speed_m_s": 4.1331677,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.004838904
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "224",
+        "maximum_speed_m_s": 4.0616517,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.004924105
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "225",
+        "maximum_speed_m_s": 4.0626364,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.004922912
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "226",
+        "maximum_speed_m_s": 4.052796,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.004934865
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "227",
+        "maximum_speed_m_s": 3.9479134,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0050659673
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "228",
+        "maximum_speed_m_s": 3.8580043,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.005184028
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "229",
+        "maximum_speed_m_s": 3.857497,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0051847096
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "230",
+        "maximum_speed_m_s": 3.819117,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.005236813
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "231",
+        "maximum_speed_m_s": 3.779421,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.005291816
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "232",
+        "maximum_speed_m_s": 3.7493966,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.005334192
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "233",
+        "maximum_speed_m_s": 3.6607666,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.005463337
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "234",
+        "maximum_speed_m_s": 3.655903,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0054706046
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "235",
+        "maximum_speed_m_s": 3.7077131,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0053941607
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "236",
+        "maximum_speed_m_s": 3.7362652,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0053529395
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "237",
+        "maximum_speed_m_s": 3.700893,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.005404101
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "238",
+        "maximum_speed_m_s": 3.6070936,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0055446303
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "239",
+        "maximum_speed_m_s": 3.5540457,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0056273895
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "240",
+        "maximum_speed_m_s": 3.538046,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0056528384
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "241",
+        "maximum_speed_m_s": 3.4799395,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0057472265
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "242",
+        "maximum_speed_m_s": 3.4992223,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.005715556
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "243",
+        "maximum_speed_m_s": 3.4896543,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.005731227
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "244",
+        "maximum_speed_m_s": 3.407263,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.005869814
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "245",
+        "maximum_speed_m_s": 3.223881,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006203703
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "246",
+        "maximum_speed_m_s": 3.0457673,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0065664905
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "247",
+        "maximum_speed_m_s": 3.0327299,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006594719
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "248",
+        "maximum_speed_m_s": 3.0096326,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0066453293
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "249",
+        "maximum_speed_m_s": 2.981616,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006707772
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "250",
+        "maximum_speed_m_s": 2.9485688,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006782952
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "251",
+        "maximum_speed_m_s": 2.9830465,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0067045554
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "252",
+        "maximum_speed_m_s": 2.981902,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006707129
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "253",
+        "maximum_speed_m_s": 2.8576112,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.006998853
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "254",
+        "maximum_speed_m_s": 2.811008,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.007114886
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "255",
+        "maximum_speed_m_s": 2.7734723,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.007211177
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "256",
+        "maximum_speed_m_s": 2.71613,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0073634177
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "257",
+        "maximum_speed_m_s": 2.63972,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.007576562
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "258",
+        "maximum_speed_m_s": 2.646965,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.007555824
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "259",
+        "maximum_speed_m_s": 2.6753058,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.007475781
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "260",
+        "maximum_speed_m_s": 2.7214286,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0073490813
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "261",
+        "maximum_speed_m_s": 2.7264063,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.007335664
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "262",
+        "maximum_speed_m_s": 2.68581,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0074465433
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "263",
+        "maximum_speed_m_s": 2.604181,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.007679958
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "264",
+        "maximum_speed_m_s": 2.4966989,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008010577
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "265",
+        "maximum_speed_m_s": 2.4901068,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008031785
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "266",
+        "maximum_speed_m_s": 2.4551165,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008146253
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "267",
+        "maximum_speed_m_s": 2.5167723,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.007946687
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "268",
+        "maximum_speed_m_s": 2.5558321,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0078252405
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "269",
+        "maximum_speed_m_s": 2.5647957,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0077978927
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "270",
+        "maximum_speed_m_s": 2.5487428,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.007847006
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "271",
+        "maximum_speed_m_s": 2.514019,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.00795539
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "272",
+        "maximum_speed_m_s": 2.4662275,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008109552
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "273",
+        "maximum_speed_m_s": 2.4091585,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008301655
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "274",
+        "maximum_speed_m_s": 2.3449423,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008528995
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "275",
+        "maximum_speed_m_s": 2.2744007,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008793525
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "276",
+        "maximum_speed_m_s": 2.2993453,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008698128
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "277",
+        "maximum_speed_m_s": 2.350605,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008508448
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "278",
+        "maximum_speed_m_s": 2.3901122,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008367809
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "279",
+        "maximum_speed_m_s": 2.4050136,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008315962
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "280",
+        "maximum_speed_m_s": 2.3631,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008463459
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "281",
+        "maximum_speed_m_s": 2.2548451,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008869789
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "282",
+        "maximum_speed_m_s": 2.0961697,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009541213
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "283",
+        "maximum_speed_m_s": 1.915334,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010442044
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "284",
+        "maximum_speed_m_s": 1.7720965,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011286068
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "285",
+        "maximum_speed_m_s": 1.7730893,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011279748
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "286",
+        "maximum_speed_m_s": 1.7702807,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011297643
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "287",
+        "maximum_speed_m_s": 1.7542001,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011401208
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "288",
+        "maximum_speed_m_s": 1.7877241,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011187409
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "289",
+        "maximum_speed_m_s": 1.7819337,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011223762
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "290",
+        "maximum_speed_m_s": 1.7398562,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011495203
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "291",
+        "maximum_speed_m_s": 1.8313999,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010920608
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "292",
+        "maximum_speed_m_s": 1.891259,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010574967
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "293",
+        "maximum_speed_m_s": 1.9134319,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010452423
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "294",
+        "maximum_speed_m_s": 1.8461581,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010833308
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "295",
+        "maximum_speed_m_s": 1.6929541,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011813669
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "296",
+        "maximum_speed_m_s": 1.6164395,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.012372873
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "297",
+        "maximum_speed_m_s": 1.5454769,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01294099
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "298",
+        "maximum_speed_m_s": 1.511129,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013235137
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "299",
+        "maximum_speed_m_s": 1.5017579,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013317727
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "300",
+        "maximum_speed_m_s": 1.4987411,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013344533
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "301",
+        "maximum_speed_m_s": 1.4659765,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013642783
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "302",
+        "maximum_speed_m_s": 1.4294686,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013991213
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "303",
+        "maximum_speed_m_s": 1.3987417,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014298566
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "304",
+        "maximum_speed_m_s": 1.3507845,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014806211
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "305",
+        "maximum_speed_m_s": 1.292766,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.015470705
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "306",
+        "maximum_speed_m_s": 1.2308937,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.016248358
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "307",
+        "maximum_speed_m_s": 1.1952221,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.016733292
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "308",
+        "maximum_speed_m_s": 1.2394907,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.016135661
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "309",
+        "maximum_speed_m_s": 1.2709498,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.015736263
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "310",
+        "maximum_speed_m_s": 1.2891854,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0155136725
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "311",
+        "maximum_speed_m_s": 1.2960781,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0154311685
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "312",
+        "maximum_speed_m_s": 1.2947687,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.015446775
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "313",
+        "maximum_speed_m_s": 1.2881039,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.015526697
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "314",
+        "maximum_speed_m_s": 1.2773855,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.015656982
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "315",
+        "maximum_speed_m_s": 1.289082,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.015514917
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "316",
+        "maximum_speed_m_s": 1.2934766,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.015462205
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "317",
+        "maximum_speed_m_s": 1.2777463,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01565256
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "318",
+        "maximum_speed_m_s": 1.2693824,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.015755694
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "319",
+        "maximum_speed_m_s": 1.2770172,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.015661497
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "320",
+        "maximum_speed_m_s": 1.2655448,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.015803471
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "321",
+        "maximum_speed_m_s": 1.2312492,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.016243665
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "322",
+        "maximum_speed_m_s": 1.233279,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.016216932
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "323",
+        "maximum_speed_m_s": 1.2687306,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.015763788
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "324",
+        "maximum_speed_m_s": 1.3238635,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.015107298
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "325",
+        "maximum_speed_m_s": 1.3937947,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014349316
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "326",
+        "maximum_speed_m_s": 1.4691985,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0136128655
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "327",
+        "maximum_speed_m_s": 1.5380875,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013003162
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "328",
+        "maximum_speed_m_s": 1.5870911,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.012601671
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "329",
+        "maximum_speed_m_s": 1.606634,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.012448386
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "330",
+        "maximum_speed_m_s": 1.5975811,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0125189265
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "331",
+        "maximum_speed_m_s": 1.570735,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.012732893
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "332",
+        "maximum_speed_m_s": 1.5369083,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013013138
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "333",
+        "maximum_speed_m_s": 1.4980869,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01335036
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "334",
+        "maximum_speed_m_s": 1.5371816,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013010825
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "335",
+        "maximum_speed_m_s": 1.5691622,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.012745655
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "336",
+        "maximum_speed_m_s": 1.5539334,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.012870565
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "337",
+        "maximum_speed_m_s": 1.484236,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013474946
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "338",
+        "maximum_speed_m_s": 1.3746948,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014548684
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "339",
+        "maximum_speed_m_s": 1.3144661,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.015215303
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "340",
+        "maximum_speed_m_s": 1.3054911,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.015319906
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "341",
+        "maximum_speed_m_s": 1.3253871,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.015089931
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "342",
+        "maximum_speed_m_s": 1.330563,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0150312325
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "343",
+        "maximum_speed_m_s": 1.3369309,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014959636
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "344",
+        "maximum_speed_m_s": 1.3564581,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014744282
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "345",
+        "maximum_speed_m_s": 1.3602563,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014703112
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "346",
+        "maximum_speed_m_s": 1.3975918,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01431033
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "347",
+        "maximum_speed_m_s": 1.4155527,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014128757
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "348",
+        "maximum_speed_m_s": 1.4195386,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014089085
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "349",
+        "maximum_speed_m_s": 1.4148482,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014135793
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "350",
+        "maximum_speed_m_s": 1.4051071,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01423379
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "351",
+        "maximum_speed_m_s": 1.4071983,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014212638
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "352",
+        "maximum_speed_m_s": 1.4049186,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0142357005
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "353",
+        "maximum_speed_m_s": 1.3777058,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014516887
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "354",
+        "maximum_speed_m_s": 1.3696487,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014602284
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "355",
+        "maximum_speed_m_s": 1.398017,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.014305978
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "356",
+        "maximum_speed_m_s": 1.4534652,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013760219
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "357",
+        "maximum_speed_m_s": 1.5234038,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.013128497
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "358",
+        "maximum_speed_m_s": 1.5896862,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0125811
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "359",
+        "maximum_speed_m_s": 1.6404107,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01219207
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "360",
+        "maximum_speed_m_s": 1.6730995,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011953862
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "361",
+        "maximum_speed_m_s": 1.6912036,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011825898
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "362",
+        "maximum_speed_m_s": 1.6990662,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011771172
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "363",
+        "maximum_speed_m_s": 1.6999105,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011765325
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "364",
+        "maximum_speed_m_s": 1.6947299,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01180129
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "365",
+        "maximum_speed_m_s": 1.6826177,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011886242
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "366",
+        "maximum_speed_m_s": 1.6614642,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.012037575
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "367",
+        "maximum_speed_m_s": 1.63027,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.012267907
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "368",
+        "maximum_speed_m_s": 1.5925275,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.012558653
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "369",
+        "maximum_speed_m_s": 1.6107916,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.012416257
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "370",
+        "maximum_speed_m_s": 1.652858,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.012100253
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "371",
+        "maximum_speed_m_s": 1.6860934,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011861739
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "372",
+        "maximum_speed_m_s": 1.7107906,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011690501
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "373",
+        "maximum_speed_m_s": 1.728519,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011570599
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "374",
+        "maximum_speed_m_s": 1.7415563,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011483981
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "375",
+        "maximum_speed_m_s": 1.7524388,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011412667
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "376",
+        "maximum_speed_m_s": 1.7632321,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011342807
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "377",
+        "maximum_speed_m_s": 1.7749779,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011267747
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "378",
+        "maximum_speed_m_s": 1.7874317,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011189239
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "379",
+        "maximum_speed_m_s": 1.7991511,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011116355
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "380",
+        "maximum_speed_m_s": 1.8079411,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011062308
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "381",
+        "maximum_speed_m_s": 1.8229865,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010971009
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "382",
+        "maximum_speed_m_s": 1.8436333,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010848145
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "383",
+        "maximum_speed_m_s": 1.8616943,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010742902
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "384",
+        "maximum_speed_m_s": 1.8751333,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010665908
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "385",
+        "maximum_speed_m_s": 1.8815486,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010629542
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "386",
+        "maximum_speed_m_s": 1.8786064,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01064619
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "387",
+        "maximum_speed_m_s": 1.8644652,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010726937
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "388",
+        "maximum_speed_m_s": 1.838487,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010878511
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "389",
+        "maximum_speed_m_s": 1.8378686,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010882172
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "390",
+        "maximum_speed_m_s": 1.8564454,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010773277
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "391",
+        "maximum_speed_m_s": 1.8886098,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0105898
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "392",
+        "maximum_speed_m_s": 1.9215676,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01040817
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "393",
+        "maximum_speed_m_s": 1.952513,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01024321
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "394",
+        "maximum_speed_m_s": 1.981177,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01009501
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "395",
+        "maximum_speed_m_s": 2.0072246,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009964007
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "396",
+        "maximum_speed_m_s": 2.0303717,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009850414
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "397",
+        "maximum_speed_m_s": 2.050397,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.00975421
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "398",
+        "maximum_speed_m_s": 2.0669606,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009676044
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "399",
+        "maximum_speed_m_s": 2.0794802,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009617789
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "400",
+        "maximum_speed_m_s": 2.087114,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.00958261
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "401",
+        "maximum_speed_m_s": 2.0890014,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009573952
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "402",
+        "maximum_speed_m_s": 2.1477497,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009312073
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "403",
+        "maximum_speed_m_s": 2.2026181,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009080104
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "404",
+        "maximum_speed_m_s": 2.2406383,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008926028
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "405",
+        "maximum_speed_m_s": 2.2488317,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0088935075
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "406",
+        "maximum_speed_m_s": 2.2106502,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009047112
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "407",
+        "maximum_speed_m_s": 2.11409,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009460336
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "408",
+        "maximum_speed_m_s": 2.059362,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009711746
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "409",
+        "maximum_speed_m_s": 2.0895524,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009571428
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "410",
+        "maximum_speed_m_s": 2.1126504,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009466781
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "411",
+        "maximum_speed_m_s": 2.1252563,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.00941063
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "412",
+        "maximum_speed_m_s": 2.1225903,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.00942245
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "413",
+        "maximum_speed_m_s": 2.098364,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009531234
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "414",
+        "maximum_speed_m_s": 2.1222696,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009423873
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "415",
+        "maximum_speed_m_s": 2.1496584,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009303804
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "416",
+        "maximum_speed_m_s": 2.1735344,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009201603
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "417",
+        "maximum_speed_m_s": 2.191555,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0091259405
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "418",
+        "maximum_speed_m_s": 2.2013125,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009085489
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "419",
+        "maximum_speed_m_s": 2.2012398,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009085788
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "420",
+        "maximum_speed_m_s": 2.1908727,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009128783
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "421",
+        "maximum_speed_m_s": 2.2096226,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009051319
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "422",
+        "maximum_speed_m_s": 2.2225854,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.00899853
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "423",
+        "maximum_speed_m_s": 2.2082708,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009056861
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "424",
+        "maximum_speed_m_s": 2.2023194,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009081336
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "425",
+        "maximum_speed_m_s": 2.2209642,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009005099
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "426",
+        "maximum_speed_m_s": 2.2377825,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008937419
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "427",
+        "maximum_speed_m_s": 2.2501268,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008888388
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "428",
+        "maximum_speed_m_s": 2.2557454,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.00886625
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "429",
+        "maximum_speed_m_s": 2.280675,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008769334
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "430",
+        "maximum_speed_m_s": 2.3207216,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008618009
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "431",
+        "maximum_speed_m_s": 2.3625293,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008465504
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "432",
+        "maximum_speed_m_s": 2.407194,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008308429
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "433",
+        "maximum_speed_m_s": 2.4573987,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008138688
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "434",
+        "maximum_speed_m_s": 2.5157456,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.00794993
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "435",
+        "maximum_speed_m_s": 2.5819461,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0077460953
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "436",
+        "maximum_speed_m_s": 2.6509295,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0075445236
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "437",
+        "maximum_speed_m_s": 2.712893,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.007372204
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "438",
+        "maximum_speed_m_s": 2.7555988,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.007257951
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "439",
+        "maximum_speed_m_s": 2.7673283,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0072271875
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "440",
+        "maximum_speed_m_s": 2.738529,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.007303191
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "441",
+        "maximum_speed_m_s": 2.6620653,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.007512964
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "442",
+        "maximum_speed_m_s": 2.5359113,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0078867115
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "443",
+        "maximum_speed_m_s": 2.3775232,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008412116
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "444",
+        "maximum_speed_m_s": 2.3104575,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008656295
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "445",
+        "maximum_speed_m_s": 2.2627296,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008838883
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "446",
+        "maximum_speed_m_s": 2.2388625,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008933107
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "447",
+        "maximum_speed_m_s": 2.23523,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008947625
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "448",
+        "maximum_speed_m_s": 2.2246976,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008989986
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "449",
+        "maximum_speed_m_s": 2.2179756,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009017232
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "450",
+        "maximum_speed_m_s": 2.2619143,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008842069
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "451",
+        "maximum_speed_m_s": 2.2895625,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008735294
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "452",
+        "maximum_speed_m_s": 2.289168,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0087367995
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "453",
+        "maximum_speed_m_s": 2.2499459,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.008889103
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "454",
+        "maximum_speed_m_s": 2.2031898,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009077747
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "455",
+        "maximum_speed_m_s": 2.191524,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.00912607
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "456",
+        "maximum_speed_m_s": 2.1529684,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.0092895
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "457",
+        "maximum_speed_m_s": 2.03349,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009835308
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "458",
+        "maximum_speed_m_s": 1.9814645,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010093545
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "459",
+        "maximum_speed_m_s": 2.0138674,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009931141
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "460",
+        "maximum_speed_m_s": 2.0436387,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009786466
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "461",
+        "maximum_speed_m_s": 2.0702722,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009660566
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "462",
+        "maximum_speed_m_s": 2.0900753,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009569033
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "463",
+        "maximum_speed_m_s": 2.0905862,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.009566695
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "464",
+        "maximum_speed_m_s": 2.048895,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.00976136
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "465",
+        "maximum_speed_m_s": 1.9405351,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010306436
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "466",
+        "maximum_speed_m_s": 1.930706,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010358905
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "467",
+        "maximum_speed_m_s": 1.9386561,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010316425
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "468",
+        "maximum_speed_m_s": 1.9406801,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010305665
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "469",
+        "maximum_speed_m_s": 1.9388028,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010315645
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "470",
+        "maximum_speed_m_s": 1.9352287,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010334696
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "471",
+        "maximum_speed_m_s": 1.9296861,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010364381
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "472",
+        "maximum_speed_m_s": 1.9178494,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010428348
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "473",
+        "maximum_speed_m_s": 1.8927813,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010566462
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "474",
+        "maximum_speed_m_s": 1.8485441,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010819326
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "475",
+        "maximum_speed_m_s": 1.7831976,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011215807
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "476",
+        "maximum_speed_m_s": 1.8091575,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01105487
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "477",
+        "maximum_speed_m_s": 1.8119783,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01103766
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "478",
+        "maximum_speed_m_s": 1.7876514,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011187864
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "479",
+        "maximum_speed_m_s": 1.7416362,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.011483455
+        },
+        "warning": false
+      },
+      {
+        "completed_steps": "480",
+        "maximum_speed_m_s": 1.6839823,
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.01187661
+        },
+        "warning": false
+      }
+    ],
+    "checkpoints": [
+      {
+        "snapshot": {
+          "completed_steps": "0",
+          "sha256": "e73c180aca033d8eca1962dbe318d8a09bdb259b13836952080173e62f8ce274"
+        },
+        "density": {
+          "sample_count": 1728,
+          "mean_error": 0.09294329,
+          "maximum_error": 0.48484898
+        }
+      },
+      {
+        "snapshot": {
+          "completed_steps": "1",
+          "sha256": "d0b9cbbc153f246ec2c671c636b8949bb821e41a5c53bf6a1e1d3bfa92c45d01"
+        },
+        "density": {
+          "sample_count": 1728,
+          "mean_error": 0.09042212,
+          "maximum_error": 0.45822114
+        }
+      },
+      {
+        "snapshot": {
+          "completed_steps": "120",
+          "sha256": "33fb824ae81247f0a26495d502de4d655d417d0e281d5d5394d68677c9fb1b71"
+        },
+        "density": {
+          "sample_count": 1728,
+          "mean_error": 0.057076726,
+          "maximum_error": 0.21100575
+        }
+      },
+      {
+        "snapshot": {
+          "completed_steps": "240",
+          "sha256": "11d19549e37654b4f7fe0efc33fc1709d7bbcf8515973f547c911574682c692d"
+        },
+        "density": {
+          "sample_count": 1728,
+          "mean_error": 0.08728171,
+          "maximum_error": 0.3126316
+        }
+      },
+      {
+        "snapshot": {
+          "completed_steps": "480",
+          "sha256": "f09d99f57fd345bb5cea37db4b0ec25553cab8ece8f374d974ffd822354d82fd"
+        },
+        "density": {
+          "sample_count": 1728,
+          "mean_error": 0.05333802,
+          "maximum_error": 0.27090317
+        }
+      }
+    ],
+    "failures": [],
+    "status": "completed",
+    "input_sha256": "58ffb6876d75e9c6b402df02c5c3c0f63d4351b144d63de59f4189539d3b65d9",
+    "final_snapshot_sha256": "f09d99f57fd345bb5cea37db4b0ec25553cab8ece8f374d974ffd822354d82fd"
+  },
+  "particles": 1728,
+  "kind": "warmup",
+  "index": 1,
+  "arguments": [
+    "run",
+    "scenes/falling-block-12.toml",
+    "--backend",
+    "uniform-grid",
+    "--steps",
+    "480",
+    "--refine-timestep",
+    "4",
+    "--checkpoints",
+    "0,1,120,240,480",
+    "--format",
+    "json",
+    "--quiet",
+    "--execution",
+    "threaded",
+    "--threads",
+    "1"
+  ]
+}

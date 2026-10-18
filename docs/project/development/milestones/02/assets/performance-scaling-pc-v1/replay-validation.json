@@ -1,0 +1,75 @@
+{
+  "passed": true,
+  "binary_sha256": "1f737d1dfd2c0d6bfe58ef2f39873287b2722f1737dbcdd75ba41fafc7320c29",
+  "comparisons": [
+    {
+      "series": "serial-grid",
+      "correctness_sha256": "4843f1ab5fb95a4838150fd7f0c056ca4514e5b181665cf81407e33769999b4a",
+      "replay_stdout_sha256": "d445f2e399bc7c933324aedb6c1b2fd9b34f0490b8cfb866531e045cb45296db",
+      "execution": {
+        "mode": "serial"
+      },
+      "passed": true
+    },
+    {
+      "series": "workers-1",
+      "correctness_sha256": "cffe81b681e6f7637ff646c28972f833d1a037fdbb3b3f94a309ba3bb242a73f",
+      "replay_stdout_sha256": "71bced67606dc16750929127c1c787515ddf7f755873ef3fc25d7cfb88b861f7",
+      "execution": {
+        "mode": "threaded",
+        "workers": 1
+      },
+      "passed": true
+    },
+    {
+      "series": "workers-2",
+      "correctness_sha256": "f3024bf64d826c4c867c878c94b3a60b393c4cbf90b8c7c943edb606ad0d4d6b",
+      "replay_stdout_sha256": "f5a0fb67aac1dd4451f68faf8dd6ec550cd547de5fa87270563247d119516c5f",
+      "execution": {
+        "mode": "threaded",
+        "workers": 2
+      },
+      "passed": true
+    },
+    {
+      "series": "workers-4",
+      "correctness_sha256": "b29b4904d2ed9d04386a99a3f61e0563ab285f5ed952b795a273167aa2ff7a76",
+      "replay_stdout_sha256": "809a909df6ec4b2d4cba085cf7e61c5032ea07e77b9b877db34113423b816afd",
+      "execution": {
+        "mode": "threaded",
+        "workers": 4
+      },
+      "passed": true
+    },
+    {
+      "series": "workers-8",
+      "correctness_sha256": "76262843d7d7959f2e6bf91678ee7cdacbf2687c05d175b039ce8fc24cfffbd3",
+      "replay_stdout_sha256": "23a822ac111bb972caa45b6cf256ebb76ddaed57cbd254a1149cc2b8c4818a14",
+      "execution": {
+        "mode": "threaded",
+        "workers": 8
+      },
+      "passed": true
+    },
+    {
+      "series": "workers-12",
+      "correctness_sha256": "a1d84b755d3fed93ba9b1d125eb74dd20d6295d64319e772a86d47414226d4b3",
+      "replay_stdout_sha256": "0390ac8479539258e02254b98751174b3eb3273b34a2788860a03fe71399f15a",
+      "execution": {
+        "mode": "threaded",
+        "workers": 12
+      },
+      "passed": true
+    },
+    {
+      "series": "workers-24",
+      "correctness_sha256": "fd364fe3f8d07f9c66a99504b275b3f1ca0859c3649dbc3155ea4a362a186db6",
+      "replay_stdout_sha256": "bf4d4cb74aab85d9575aa23b7a1a54a5a3255f0e3f10dbfca5ebfe30643e15c4",
+      "execution": {
+        "mode": "threaded",
+        "workers": 24
+      },
+      "passed": true
+    }
+  ]
+}

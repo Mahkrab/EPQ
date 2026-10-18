@@ -57,9 +57,11 @@ def numerical_document(document: dict) -> dict:
     return value
 
 
-def physical_document(document: dict) -> dict:
+def physical_document(document: dict, *, ignore_execution: bool = False) -> dict:
     """Compare either search while retaining physical identity and every observation."""
     value = numerical_document(document)
+    if ignore_execution:
+        value.pop("execution", None)
     value.pop("backend")
     for key in ("backend", "run_id"):
         value["metadata"].pop(key)
@@ -238,7 +240,10 @@ def correctness_observations(result: dict) -> dict:
 def markdown(dataset: dict, rows: list[dict]) -> str:
     env = dataset["environment"]
     backend = dataset.get("backend", "brute-force")
-    text = [f"# Serial {backend} performance baseline", "",
+    execution = dataset.get("execution", {"mode": "serial"})
+    title = (f"Threaded {backend}, {execution['workers']} workers"
+             if execution["mode"] == "threaded" else f"Serial {backend}")
+    text = [f"# {title} performance baseline", "",
             f"Policy: `{POLICY['id']}`. Collection: {dataset['started_utc']} to {dataset['finished_utc']}.", "",
             f"Environment: {env['cpu_model']}; {env['os_release']}; kernel `{env['kernel']}`; {env['architecture']}.",
             "Standard Cargo release build; sequential processes; no affinity, priority or frequency changes.",

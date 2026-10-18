@@ -119,38 +119,38 @@ setup costs. Establish which workloads and worker counts benefit, including over
 
 ### Work
 
-- [ ] Identify the correctness-qualified source, inputs, policies and execution settings before collection.
+- [x] Identify the correctness-qualified source, inputs, policies and execution settings before collection.
       Extend the existing collector and reports only where thread-count selection, provenance or acceptance
       needs it; keep existing serial datasets and exact comparison behaviour reproducible.
-- [ ] Implement the declared parallel comparison policy where required. Compact snapshot hashes establish
+- [x] Implement the declared parallel comparison policy where required. Compact snapshot hashes establish
       exact equality, not numerical tolerance: retain or independently compare the component-level evidence
       needed for every required observation. Do not accept unequal hashes without checking the underlying
       values, and do not drop exact identity, membership, warning or failure requirements.
-- [ ] Use the primary PC through `ssh pc`. Record toolchain, build flags, CPU topology visible to the
+- [x] Use the primary PC through `ssh pc`. Record toolchain, build flags, CPU topology visible to the
       process, available parallelism, affinity and controls actually applied. Select and record a practical
       worker-count sequence including one worker, intermediate counts and the intended default. Distinguish
       physical cores, logical processors and guest-visible capacity; do not infer unavailable host details.
-- [ ] Begin with the existing seven sizes through 8,000 particles, 480-step requests and checkpoint sequence.
+- [x] Begin with the existing seven sizes through 8,000 particles, 480-step requests and checkpoint sequence.
       Keep matched numerical work, one warm-up, three primary samples, separate profiles and timeout/grace
       rules common to all execution settings. Record collection order and run campaigns sequentially without
       concurrent project checks; any deliberate protocol revision must precede the affected collection.
-- [ ] Collect fresh serial-grid controls using the same source, binary and PC conditions. Use these as the
+- [x] Collect fresh serial-grid controls using the same source, binary and PC conditions. Use these as the
       denominator for threading benefit. Retain a fresh brute-force series where claiming an overall gain
       from the original method; historical campaign ratios are context, not interchangeable denominators.
-- [ ] Include dispatch, barriers, required synchronisation, allocation, validation and repeated setup in
+- [x] Include dispatch, barriers, required synchronisation, allocation, validation and repeated setup in
       the existing timestep boundary. Declare one-time worker-pool setup and teardown outside that boundary
       where applicable, and retain invocation wall time so solver gains are not whole-application claims.
-- [ ] Measure stage intervals as coordinated elapsed wall time, not the sum of overlapping worker clocks.
+- [x] Measure stage intervals as coordinated elapsed wall time, not the sum of overlapping worker clocks.
       Preserve stage partitioning and residuals, and keep extra profiling overhead out of primary ratios.
-- [ ] Qualify each execution setting before accepting timings. Retain raw attempts, warnings, failures,
+- [x] Qualify each execution setting before accepting timings. Retain raw attempts, warnings, failures,
       timeouts and partial runs; missing or incomplete controls cannot supply a speedup ratio.
-- [ ] Report time, spread, throughput, stage costs, speedup against the serial grid, and scaling relative
+- [x] Report time, spread, throughput, stage costs, speedup against the serial grid, and scaling relative
       to the same threaded implementation at one worker. Define any efficiency calculation and distinguish
       requested workers from effective capacity. Investigate overhead, crossover and saturation honestly.
-- [ ] Profile representative bottlenecks before tuning. Retain before/after evidence for useful neutral
+- [x] Profile representative bottlenecks before tuning. Retain before/after evidence for useful neutral
       changes and repeat correctness checks; never remove validation or solver work to improve a result.
       Label any larger-size series separately, with no ratio against an absent serial result.
-- [ ] If the PC is unavailable, continue routine verification or explicitly provisional exploration locally.
+- [x] If the PC is unavailable, continue routine verification or explicitly provisional exploration locally.
       Do not pool devices or substitute laptop measurements for the primary comparison without a recorded
       revision. Make no memory-use claim without a declared measurement method and actual results.
 
@@ -160,6 +160,12 @@ Raw PC results, component-level acceptance evidence where needed and independent
 support same-device comparisons and a worker-count scaling assessment. All required execution costs
 are accounted for. Explain overhead and incomplete sizes as well as improvements; no universal speedup,
 physical accuracy or statistical significance follows from three samples.
+
+G01 is satisfied by the [primary-PC scaling record](/docs/project/development/milestones/02/phases/phase-01-performance-scaling.md)
+and its retained raw campaign. All 245 benchmark attempts agree exactly; twelve workers achieve
+the fastest observed 8,000-particle median, with a 2.988× gain against fresh serial-grid controls.
+Small-input overhead, diminishing returns and the slower twenty-four-worker result remain visible.
+No solver tuning, larger-size series, memory measurement or new Git checkpoint is included.
 
 ## Phase 2: evaluate, document and hand off
 

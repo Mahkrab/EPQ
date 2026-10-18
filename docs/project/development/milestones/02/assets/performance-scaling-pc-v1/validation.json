@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "method": "independent raw JSON, binary32 bits, hashlib, math.fsum and statistics; no collector imports",
+  "checker_sha256": "483f5d22256674484f4ad656379741d311cda228b26afa8219199e8e42f8c897",
+  "datasets_sha256": {
+    "serial-grid": "920499d733ea03c6878adc6c5d5d8d7cf65e750bb67578daa32a1ae93ea07421",
+    "workers-1": "d8fddd9a10519fc3c73de702fbbb78d5c9ed9253df96487d4709bfe350e0e007",
+    "workers-2": "344793e7c754db63ba9a583cbb01e7b5d17e980833d0e0a143b051dcc4de033c",
+    "workers-4": "2f640fda8fa1cce27f851b07d5cca22cdcdb50c4515de7e0efa2158ee9a4ca1d",
+    "workers-8": "f19d4ae1cca8a5bbce786c1535e6e35d9af2809d34f844fdab8cca9fe2b66c6c",
+    "workers-12": "3b84bbfe945862d818363646f77094115dd47a4c0d3d826116ea7313afd6df66",
+    "workers-24": "b8a7ef939cac6158c0fc3855c1668a8ba0a0c5b9a63e56f1bf402db768ac583b"
+  },
+  "checks": {
+    "attempts": 245,
+    "exact_complete_attempts": 245,
+    "timeouts": 0,
+    "incomplete_or_unclean": 0,
+    "correctness_results": 7,
+    "source_hashes": 82,
+    "collector_hashes": 5,
+    "profiles": 49
+  },
+  "clock_observations": [
+    {
+      "series": "workers-24",
+      "previous_file": "raw/01000-sample-3.json",
+      "next_file": "raw/01000-profile-1.json",
+      "backward_utc_s": 0.546788
+    },
+    {
+      "series": "workers-24",
+      "previous_file": "raw/04096-profile-1.json",
+      "next_file": "raw/08000-warmup-1.json",
+      "backward_utc_s": 0.408254
+    }
+  ]
+}

@@ -135,10 +135,25 @@ def invoke(args: list[str], timeout_s: float = POLICY["timeout_s"], grace_s: flo
     }
 
 
-def solver_args(binary: Path, case: dict, kind: str, backend: str = "brute-force") -> list[str]:
+def execution_settings(backend: str, workers: int | None) -> tuple[dict, str]:
+    """Resolve explicit resources without changing historical serial identities."""
+    if backend not in BACKENDS:
+        raise ValueError("unsupported search backend")
+    if workers is None:
+        return {"mode": "serial"}, BACKENDS[backend]
+    if backend != "uniform-grid" or type(workers) is not int or not 1 <= workers <= 256:
+        raise ValueError("threaded uniform-grid workers must be in 1..=256")
+    return {"mode": "threaded", "workers": workers}, "threaded-uniform-grid-pbf-binary32-8-jacobi-v2"
+
+
+def solver_args(binary: Path, case: dict, kind: str, backend: str = "brute-force",
+                workers: int | None = None) -> list[str]:
+    execution_settings(backend, workers)
     args = [str(binary), "run", case["scene"], "--backend", backend, "--steps", str(case["steps"]),
             "--refine-timestep", str(case["refine_timestep"]), "--checkpoints",
             ",".join(str(s) for s in case["checkpoints"]), "--format", "json", "--quiet"]
+    if workers is not None:
+        args += ["--execution", "threaded", "--threads", str(workers)]
     if kind != "warmup":
         args.append("--measure")
     if kind == "profile":
@@ -173,9 +188,8 @@ def report(directory: Path) -> str:
     return markdown(dataset, rows)
 
 
-def collect(directory: Path, backend: str = "brute-force") -> None:
-    if backend not in BACKENDS:
-        raise ValueError("unsupported search backend")
+def prepare_build() -> dict:
+    """Build once so all execution settings can use identical source and binary bytes."""
     if sys.platform != "linux":
         raise ValueError("environment collection currently requires Linux /proc and lscpu")
     prohibited = [key for key, value in os.environ.items() if value and (
@@ -183,15 +197,28 @@ def collect(directory: Path, backend: str = "brute-force") -> None:
         or key.startswith(("CARGO_PROFILE_", "CARGO_TARGET_")))]
     if prohibited:
         raise ValueError("baseline requires default build settings; unset " + ", ".join(sorted(prohibited)))
-    manifest = checked_manifest()
     source = source_identity()
-    directory.mkdir(parents=True, exist_ok=False)
-    (directory / "raw").mkdir()
     binary = SIMULATOR / "target/release/maelstrom"
     label = source["base_commit"] + "+worktree-sha256:" + source["tree_sha256"]
     build_env = dict(os.environ, MAELSTROM_BUILD_REVISION=label)
     subprocess.run(["cargo", "build", "--release", "--locked", "--offline"], cwd=SIMULATOR,
                    env=build_env, check=True, timeout=300)
+    return {"source": source, "label": label, "binary_sha256": sha256(binary.read_bytes())}
+
+
+def collect(directory: Path, backend: str = "brute-force", workers: int | None = None,
+            *, build: dict | None = None) -> None:
+    execution, identity = execution_settings(backend, workers)
+    manifest = checked_manifest()
+    if directory.exists():
+        raise FileExistsError(directory)
+    build = prepare_build() if build is None else build
+    source, label = build["source"], build["label"]
+    binary = SIMULATOR / "target/release/maelstrom"
+    if source_identity() != source or sha256(binary.read_bytes()) != build["binary_sha256"]:
+        raise ValueError("prepared source or binary changed before collection")
+    directory.mkdir(parents=True, exist_ok=False)
+    (directory / "raw").mkdir()
     tool_hashes = {path.relative_to(ROOT).as_posix(): sha256(path.read_bytes())
                    for path in [PROTOCOL, *sorted(Path(__file__).parent.glob("*.py"))]}
     dataset = {
@@ -202,20 +229,23 @@ def collect(directory: Path, backend: str = "brute-force") -> None:
         "manifest": manifest, "manifest_sha256": sha256((SIMULATOR / "reference/manifest.json").read_bytes()),
         "raw": [], "correctness": {}, "interrupted": False,
     }
+    if workers is not None:
+        dataset["execution"] = execution
     write_json(directory / "collection.json", dataset)
     attempts = []
     # Preserve a full replayable correctness result before compacting performance samples.
-    correctness = invoke(solver_args(binary, manifest["cases"][1], "warmup", backend))
+    correctness = invoke(solver_args(binary, manifest["cases"][1], "warmup", backend, workers))
     result = correctness["result"]
     if correctness["exit_code"] != 0 or correctness["timed_out"] or result is None:
         write_json(directory / "correctness-failure.json", correctness)
         raise ValueError("correctness request failed; retained correctness-failure.json")
     golden = read_json(SIMULATOR / manifest["cases"][1]["golden"])
-    if result["backend"] != BACKENDS[backend] or result["metadata"]["backend"] != BACKENDS[backend]:
+    if (result["backend"] != identity or result["metadata"]["backend"] != identity
+            or result.get("execution", {"mode": "serial"}) != execution):
         write_json(directory / "correctness-failure.json", correctness)
         raise ValueError("correctness request returned the wrong backend")
     try:
-        require_exact(physical_document(result), physical_document(golden))
+        require_exact(physical_document(result, ignore_execution=True), physical_document(golden, ignore_execution=True))
     except ValueError:
         write_json(directory / "correctness-failure.json", correctness)
         raise
@@ -223,23 +253,27 @@ def collect(directory: Path, backend: str = "brute-force") -> None:
     dataset["correctness"] = {
         "golden_exact": True, "result_sha256": sha256((directory / "correctness.json").read_bytes()),
         "observations": correctness_observations(result),
+        "invocation": {key: value for key, value in correctness.items() if key != "result"},
     }
     identities = {}
     warmup_documents = {}
     for case in manifest["cases"][1:]:
         def attempt(kind: str, index: int) -> dict:
             print(f"{case['particles']} particles: {kind} {index}", file=sys.stderr, flush=True)
-            args = solver_args(binary, case, kind, backend)
+            args = solver_args(binary, case, kind, backend, workers)
             value = invoke(args)
             value.update(particles=case["particles"], kind=kind, index=index,
                          arguments=args[1:])
             if value["result"] is not None:
                 metadata = value["result"]["metadata"]
                 if (metadata["debug_assertions"] or metadata["build_revision"] != label
-                        or metadata["backend"] != BACKENDS[backend] or value["result"]["backend"] != BACKENDS[backend]):
+                        or metadata["backend"] != identity or value["result"]["backend"] != identity
+                        or value["result"].get("execution", {"mode": "serial"}) != execution):
+                    write_json(directory / f"raw/{case['particles']:05}-{kind}-{index}-rejected.json", value)
                     raise ValueError("solver result does not identify the expected release build")
                 input_id = metadata["input_id"]
                 if identities.setdefault(case["particles"], input_id) != input_id:
+                    write_json(directory / f"raw/{case['particles']:05}-{kind}-{index}-rejected.json", value)
                     raise ValueError("sample input identity changed")
                 value["result"] = compact_result(value["result"])
             if kind == "warmup" and clean(value):
@@ -294,10 +328,11 @@ def main() -> int:
     parser.add_argument("directory", type=Path)
     parser.add_argument("--backend", choices=BACKENDS, default="brute-force",
                         help="discovery method to collect (default: brute-force)")
+    parser.add_argument("--threads", type=int, help="explicit threaded uniform-grid worker count")
     args = parser.parse_args()
     try:
         if args.operation == "collect":
-            collect(args.directory.resolve(), args.backend)
+            collect(args.directory.resolve(), args.backend, args.threads)
         else:
             print(report(args.directory.resolve()), end="")
     except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:
