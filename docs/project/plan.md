@@ -47,6 +47,10 @@ the assessed implementation and evidence; remote publication remains separate.
 
 Implement the uniform grid simulation for CUDA-capable GPUs and preserve comparability with the CPU reference implementations.
 
+The [Milestone 03 completion plan](/docs/project/development/milestones/03/plan.md) separates device
+integration, solver implementation and verification, PC measurement, then evaluation and application
+handoff. It reuses the existing contracts and infrastructure while qualifying the new device boundary.
+
 ## Milestone 04: application and visualisation integration
 
 Integrate the verified simulation backends into the interactive application, renderer and reproducible offline-output workflow without coupling rendering to simulation correctness or benchmark timing.
