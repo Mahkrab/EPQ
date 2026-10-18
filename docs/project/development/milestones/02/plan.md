@@ -165,7 +165,9 @@ G01 is satisfied by the [primary-PC scaling record](/docs/project/development/mi
 and its retained raw campaign. All 245 benchmark attempts agree exactly; twelve workers achieve
 the fastest observed 8,000-particle median, with a 2.988× gain against fresh serial-grid controls.
 Small-input overhead, diminishing returns and the slower twenty-four-worker result remain visible.
-No solver tuning, larger-size series, memory measurement or new Git checkpoint is included.
+No solver tuning, larger-size series or memory measurement is included. Local annotated
+`milestone-02/phase-01/complete` checkpoints retain the campaign, collector and exact assessed
+parent/submodule pairing; remote publication remains separate.
 
 ## Phase 2: evaluate, document and hand off
 

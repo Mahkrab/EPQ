@@ -93,7 +93,8 @@ backwards by 0.547 s and 0.408 s between two successive invocation pairs; the ca
 Elapsed measurements use monotonic clocks and the collector waits synchronously for each process.
 No physical-accuracy, significance or universal scaling claim follows.
 
-The assessed Maelstrom source and parent gitlink remain unchanged. Intended annotated
-`milestone-02/phase-01/complete` tags in both repositories are not created: completion commits, tags
-and publication require separate authorisation. This record establishes local implementation and
-PC measurement evidence, not a new Git checkpoint or hosted verification.
+The assessed Maelstrom source and parent gitlink remain unchanged. The collector, tests and retained
+campaign are committed in EPQ `ecedd30e1148b820b2f0db905f047ab37f36fb50`. Annotated
+`milestone-02/phase-01/complete` tags identify the subsequently authorised local completion checkpoints
+in both repositories. The retained PC files are unchanged; remote publication and hosted verification
+remain separate from this checkpoint.
