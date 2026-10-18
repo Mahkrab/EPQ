@@ -1,0 +1,161 @@
+[
+  {
+    "name": "cpu-build",
+    "command": [
+      "cargo",
+      "build",
+      "--locked",
+      "--offline",
+      "--no-default-features"
+    ],
+    "environment": {
+      "CUDA_HOME": "/missing-toolkit",
+      "MAELSTROM_CUDA_ARCH": "invalid",
+      "CXX": "/missing-cxx",
+      "AR": "/missing-ar"
+    },
+    "expected_exit": 0,
+    "actual_exit": 0,
+    "stdout": "",
+    "stderr": "   Compiling maelstrom v0.1.0 (/home/mahkrab/documents/programs/EPQ/Maelstrom)\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.06s\n"
+  },
+  {
+    "name": "cpu-boundary",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "--test",
+      "cuda_boundary",
+      "--lib"
+    ],
+    "environment": {},
+    "expected_exit": 0,
+    "actual_exit": 0,
+    "stdout": "\nrunning 9 tests\ntest cuda::tests::capacity_checks_do_not_allocate_or_need_a_device ... ok\ntest execution::tests::unavailable_workers_are_a_typed_setup_failure ... ok\ntest neighbours::grid::tests::mapping_uses_floor_at_faces_edges_and_corners ... ok\ntest neighbours::grid::tests::invalid_index_and_capacity_operations_are_errors ... ok\ntest simulation::tests::exhausted_step_counter_cannot_wrap_or_accept_another_step ... ok\ntest workflow::output::tests::a_partial_write_failure_never_publishes_a_destination ... ok\ntest workflow::tests::identity_digest_matches_the_standard_sha256_abc_vector ... ok\ntest execution::tests::workers_are_reused_and_terminate_after_the_resource_is_dropped ... ok\ntest execution::tests::joined_work_uses_distinct_workers_and_reports_lowest_index_failure ... ok\n\ntest result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 2 tests\ntest cpu_builds_report_disabled_cuda_without_falling_back ... ok\ntest invalid_probe_requests_are_rejected_by_the_application ... ok\n\ntest result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s\n\n",
+    "stderr": "   Compiling maelstrom v0.1.0 (/home/mahkrab/documents/programs/EPQ/Maelstrom)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.23s\n     Running unittests src/lib.rs (target/debug/deps/maelstrom-ab07e2e76ddc5a53)\n     Running tests/cuda_boundary.rs (target/debug/deps/cuda_boundary-270a4580f9fa283d)\n"
+  },
+  {
+    "name": "missing-toolkit",
+    "command": [
+      "cargo",
+      "check",
+      "--locked",
+      "--offline",
+      "--features",
+      "cuda"
+    ],
+    "environment": {
+      "CUDA_HOME": "/missing-toolkit"
+    },
+    "expected_exit": 101,
+    "actual_exit": 101,
+    "stdout": "",
+    "stderr": "   Compiling maelstrom v0.1.0 (/home/mahkrab/documents/programs/EPQ/Maelstrom)\nerror: failed to run custom build command for `maelstrom v0.1.0 (/home/mahkrab/documents/programs/EPQ/Maelstrom)`\n\nCaused by:\n  process didn't exit successfully: `/home/mahkrab/documents/programs/EPQ/Maelstrom/target/debug/build/maelstrom-d76edbfdf1efe832/build-script-build` (exit status: 101)\n  --- stdout\n  cargo:rerun-if-env-changed=CARGO_FEATURE_CUDA\n  cargo:rerun-if-env-changed=CUDA_HOME\n  cargo:rerun-if-env-changed=MAELSTROM_CUDA_ARCH\n  cargo:rerun-if-env-changed=CXX\n  cargo:rerun-if-env-changed=AR\n  cargo:rerun-if-changed=native/bridge.cpp\n  cargo:rerun-if-changed=native/probe.h\n  cargo:rerun-if-changed=native/roundtrip.cu\n\n  --- stderr\n\n  thread 'main' (24407) panicked at build.rs:50:5:\n  CUDA feature requires nvcc and cuda.h in CUDA_HOME (default /usr/local/cuda); see docs/cuda.md\n  note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n"
+  },
+  {
+    "name": "format",
+    "command": [
+      "cargo",
+      "fmt",
+      "--check"
+    ],
+    "environment": {},
+    "expected_exit": 0,
+    "actual_exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "cpu-clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--locked",
+      "--offline",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "environment": {},
+    "expected_exit": 0,
+    "actual_exit": 0,
+    "stdout": "",
+    "stderr": "    Checking maelstrom v0.1.0 (/home/mahkrab/documents/programs/EPQ/Maelstrom)\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.45s\n"
+  },
+  {
+    "name": "rust",
+    "command": [
+      "rustc",
+      "-Vv"
+    ],
+    "environment": {},
+    "expected_exit": 0,
+    "actual_exit": 0,
+    "stdout": "rustc 1.98.1 (48a229cea 2026-09-01)\nbinary: rustc\ncommit-hash: 48a229ceaefd4985c50990b14116b6d856af0985\ncommit-date: 2026-09-01\nhost: x86_64-unknown-linux-gnu\nrelease: 1.98.1\nLLVM version: 22.1.8\n",
+    "stderr": ""
+  },
+  {
+    "name": "cargo",
+    "command": [
+      "cargo",
+      "-V"
+    ],
+    "environment": {},
+    "expected_exit": 0,
+    "actual_exit": 0,
+    "stdout": "cargo 1.98.1 (797e8a9bc 2026-08-05)\n",
+    "stderr": ""
+  },
+  {
+    "name": "missing-driver",
+    "command": [
+      "/tmp/maelstrom-cuda-enabled",
+      "cuda-check",
+      "--format",
+      "json"
+    ],
+    "environment": {},
+    "expected_exit": 3,
+    "actual_exit": 3,
+    "stdout": "",
+    "stderr": "maelstrom: CUDA DriverLoad failed (driver code -1; resource invalidated: false); a CUDA 13-compatible system libcuda.so.1 is required (see docs/cuda.md)\n"
+  },
+  {
+    "name": "enabled-cpu-discovery",
+    "command": [
+      "/tmp/maelstrom-cuda-enabled",
+      "scenes"
+    ],
+    "environment": {},
+    "expected_exit": 0,
+    "actual_exit": 0,
+    "stdout": "Bundled scenes (configuration: defaults-v4; no randomness):\n  falling-block-04: Four-by-four-by-four fluid lattice inside a static six-plane box\n  falling-block-06: Six-by-six-by-six fluid lattice inside a static six-plane box\n  falling-block-08: Eight-by-eight-by-eight fluid lattice inside a static six-plane box\n  falling-block-10: Ten-by-ten-by-ten fluid lattice inside a static six-plane box\n  falling-block-12: Twelve-by-twelve-by-twelve fluid lattice inside a static six-plane box\n  falling-block-16: Sixteen-by-sixteen-by-sixteen fluid lattice inside a static six-plane box\n  falling-block-20: Twenty-by-twenty-by-twenty fluid lattice inside a static six-plane box\n",
+    "stderr": ""
+  },
+  {
+    "name": "enabled-cpu-simulation",
+    "command": [
+      "/tmp/maelstrom-cuda-enabled",
+      "run",
+      "falling-block-04",
+      "--backend",
+      "uniform-grid",
+      "--execution",
+      "threaded",
+      "--threads",
+      "2",
+      "--refine-timestep",
+      "4",
+      "--steps",
+      "1"
+    ],
+    "environment": {},
+    "expected_exit": 0,
+    "actual_exit": 0,
+    "stdout": "Maelstrom result schema 1: Completed\nSteps: 1/1 accepted; CFL warning steps: 0\nApplication: 0.1.0; backend: threaded-uniform-grid-pbf-binary32-8-jacobi-v2\nCPU execution: threaded; requested workers: 2; effective workers: 2\nScene: \"falling-block-04\"; configuration: \"maelstrom-defaults-v4\"\nRun: sha256:b36430121723ca76151b8cf48c36213308ea48358117c8206f18e90e04917ead\nInput: sha256:f5e544b6df5b1e3f44811af3d0a36506683ed0eeb6379249889a0d099b7b1f54\nConfiguration: sha256:4a73d76fd2ac85476796c3f615cd3da7d340a15fee2a844b288a7d471e1e770e\nTarget: linux/x86_64; debug assertions: false; build revision: \"unavailable\"\nPost-acceleration maximum speed: 0.020437501 m/s; tightest CFL limit: 0.9785933 s\nCheckpoints observed: 0/0\n",
+    "stderr": ""
+  }
+]

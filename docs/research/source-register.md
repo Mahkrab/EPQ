@@ -43,6 +43,7 @@
 | [S047](sources/047-microsoft-vscode-cpp-intellisense.md) | Microsoft (n.d.) | Official software documentation | Configuration reference for compiler and header discovery in VS Code C/C++ IntelliSense. | [Official documentation](https://code.visualstudio.com/docs/cpp/configure-intellisense) |
 | [S048](sources/048-nvidia-cuda-linux-installation.md) | NVIDIA (2026) | Official technical documentation | Installation reference for CUDA Toolkit paths, symbolic links and environment configuration on Linux. | [Official documentation](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/) |
 | [S049](sources/049-nvidia-cuda-runtime-api.md) | NVIDIA (2026) | Official API reference | Runtime reference for device discovery, kernel execution, synchronisation and GPU memory transfers. | [Official documentation](https://docs.nvidia.com/cuda/cuda-runtime-api/) |
+| [S053](sources/053-nvidia-cuda-driver-api.md) | NVIDIA (2026) | Official API reference | Versioned reference for owned contexts, modules, streams, transfers and completion at the Rust/CUDA boundary. | [CUDA 13.3 archive](https://docs.nvidia.com/cuda/archive/13.3.0/cuda-driver-api/index.html) |
 
 ## Documentation standards
 

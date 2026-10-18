@@ -67,22 +67,22 @@ Make device execution reproducible and safe to own without coupling ordinary CPU
 
 ### Work
 
-- [ ] Recheck the primary PC through `ssh pc`: device availability, driver/toolkit/compiler, supported
+- [x] Recheck the primary PC through `ssh pc`: device availability, driver/toolkit/compiler, supported
       target, memory and WSL environment. The [CUDA infrastructure record](/docs/project/infastructure/CUDA/README.md)
       is historical smoke-test evidence, not proof of the current environment or simulator readiness.
-- [ ] Decide the host/kernel interface and reproducible Cargo build path, using the recorded Rust-host
+- [x] Decide the host/kernel interface and reproducible Cargo build path, using the recorded Rust-host
       and CUDA C++ approach as the starting design. Explain any justified alternative. Record dependencies,
       enabled capability, target and compiler flags; avoid undocumented local downloads or machine paths.
-- [ ] Keep CUDA optional. Ordinary CPU builds and tests must work without the toolkit or device. Define
+- [x] Keep CUDA optional. Ordinary CPU builds and tests must work without the toolkit or device. Define
       clear build-time and runtime errors for unavailable or incompatible CUDA, with no silent CPU fallback
       for an explicitly selected GPU run. Do not install drivers or alter the PC's system setup implicitly.
-- [ ] Define device selection, context and stream ownership, allocation lifetime, transfer layouts and
+- [x] Define device selection, context and stream ownership, allocation lifetime, transfer layouts and
       synchronisation. Check sizes, alignment, indices and capacity at the Rust/native/device boundaries.
       Keep any unsafe or foreign-function interface small, documented and covered by a safe public boundary.
-- [ ] Establish typed error translation and cleanup for allocation, transfer, launch and completion failures.
+- [x] Establish typed error translation and cleanup for allocation, transfer, launch and completion failures.
       Separate immediate submission errors from failures found when work completes. Define which failures
       permit retry and which invalidate the device execution resource; never reuse unknown partial state.
-- [ ] Verify a small round trip from the real Rust application boundary, including independent expected
+- [x] Verify a small round trip from the real Rust application boundary, including independent expected
       values, repeated construction/destruction and meaningful rejection paths. Record actual hardware
       results separately from host-only tests and injected failures. Do not introduce the full solver yet.
 
@@ -91,6 +91,10 @@ Make device execution reproducible and safe to own without coupling ordinary CPU
 Another checkout can build CPU-only operation and the optional CUDA path using recorded prerequisites.
 The real host/device boundary executes on the selected hardware with verified data layout, ownership
 and failure handling. A missing GPU may leave useful host-only work, but cannot satisfy this gate.
+
+The [implementation and verification record](/docs/project/development/milestones/03/phases/phase-00-cuda-integration.md)
+records G00 passing on the primary PC for the current uncommitted source, with retained evidence
+and explicit diagnostic limits. This is not a durable checkpoint or a GPU solver qualification.
 
 ## Phase 1: implement and independently verify the GPU solver
 
