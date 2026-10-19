@@ -1,0 +1,581 @@
+{
+  "policy": "reference-comparison-v1",
+  "exact_required": true,
+  "reference": {
+    "backend": "serial-uniform-grid-pbf-binary32-8-jacobi-v2",
+    "execution": {
+      "mode": "serial"
+    },
+    "metadata": {
+      "run_id": "sha256:3badfec3da0cf728ee7fd4bd6502641b6680aa5ad900d85542ed5dca619c65e2",
+      "input_id": "sha256:3d9bcf4a023d39803cbaadef97a94ce454493c575f1d56c356241e55bb026a34",
+      "configuration_id": "sha256:6a917a477430c0557b0371a08362389d31ba29470a740a2d623cd74d90134621",
+      "backend": "serial-uniform-grid-pbf-binary32-8-jacobi-v2",
+      "application_version": "0.1.0",
+      "build_revision": null,
+      "target_os": "linux",
+      "target_arch": "x86_64",
+      "debug_assertions": false
+    },
+    "measurements_present": false
+  },
+  "candidate": {
+    "backend": "threaded-uniform-grid-pbf-binary32-8-jacobi-v2",
+    "execution": {
+      "mode": "threaded",
+      "workers": 4
+    },
+    "metadata": {
+      "run_id": "sha256:768aca82c9b6a3b30a103cf448d298f1278741ac3420d18ba361876b9adcd756",
+      "input_id": "sha256:3d9bcf4a023d39803cbaadef97a94ce454493c575f1d56c356241e55bb026a34",
+      "configuration_id": "sha256:6a917a477430c0557b0371a08362389d31ba29470a740a2d623cd74d90134621",
+      "backend": "threaded-uniform-grid-pbf-binary32-8-jacobi-v2",
+      "application_version": "0.1.0",
+      "build_revision": null,
+      "target_os": "linux",
+      "target_arch": "x86_64",
+      "debug_assertions": false
+    },
+    "measurements_present": false
+  },
+  "structural_mismatches": [],
+  "snapshots": [
+    {
+      "checkpoint": "0",
+      "particles": 27,
+      "passed": true,
+      "position_m": {
+        "components": 81,
+        "maximum_absolute_error": 0.0,
+        "rms_error": 0.0,
+        "worst_identity": "0",
+        "worst_axis": "x",
+        "worst_values": {
+          "expected": 0.20000000298023224,
+          "actual": 0.20000000298023224,
+          "absolute_error": 0.0,
+          "limit": 0.0,
+          "exact": true,
+          "passed": true
+        },
+        "limit": 0.0,
+        "exact_components": 81,
+        "passed": true
+      },
+      "velocity_m_s": {
+        "components": 81,
+        "maximum_absolute_error": 0.0,
+        "rms_error": 0.0,
+        "worst_identity": "0",
+        "worst_axis": "x",
+        "worst_values": {
+          "expected": 0.0,
+          "actual": 0.0,
+          "absolute_error": 0.0,
+          "limit": 0.0,
+          "exact": true,
+          "passed": true
+        },
+        "limit": 0.0,
+        "exact_components": 81,
+        "passed": true
+      }
+    },
+    {
+      "checkpoint": "1",
+      "particles": 27,
+      "passed": true,
+      "position_m": {
+        "components": 81,
+        "maximum_absolute_error": 0.0,
+        "rms_error": 0.0,
+        "worst_identity": "0",
+        "worst_axis": "x",
+        "worst_values": {
+          "expected": 0.20925474166870117,
+          "actual": 0.20925474166870117,
+          "absolute_error": 0.0,
+          "limit": 0.0,
+          "exact": true,
+          "passed": true
+        },
+        "limit": 0.0,
+        "exact_components": 81,
+        "passed": true
+      },
+      "velocity_m_s": {
+        "components": 81,
+        "maximum_absolute_error": 0.0,
+        "rms_error": 0.0,
+        "worst_identity": "0",
+        "worst_axis": "x",
+        "worst_values": {
+          "expected": 1.1105685234069824,
+          "actual": 1.1105685234069824,
+          "absolute_error": 0.0,
+          "limit": 0.0,
+          "exact": true,
+          "passed": true
+        },
+        "limit": 0.0,
+        "exact_components": 81,
+        "passed": true
+      }
+    },
+    {
+      "checkpoint": "4",
+      "particles": 27,
+      "passed": true,
+      "position_m": {
+        "components": 81,
+        "maximum_absolute_error": 0.0,
+        "rms_error": 0.0,
+        "worst_identity": "0",
+        "worst_axis": "x",
+        "worst_values": {
+          "expected": 0.2149571180343628,
+          "actual": 0.2149571180343628,
+          "absolute_error": 0.0,
+          "limit": 0.0,
+          "exact": true,
+          "passed": true
+        },
+        "limit": 0.0,
+        "exact_components": 81,
+        "passed": true
+      },
+      "velocity_m_s": {
+        "components": 81,
+        "maximum_absolute_error": 0.0,
+        "rms_error": 0.0,
+        "worst_identity": "0",
+        "worst_axis": "x",
+        "worst_values": {
+          "expected": 0.06055891141295433,
+          "actual": 0.06055891141295433,
+          "absolute_error": 0.0,
+          "limit": 0.0,
+          "exact": true,
+          "passed": true
+        },
+        "limit": 0.0,
+        "exact_components": 81,
+        "passed": true
+      }
+    },
+    {
+      "checkpoint": "12",
+      "particles": 27,
+      "passed": true,
+      "position_m": {
+        "components": 81,
+        "maximum_absolute_error": 0.0,
+        "rms_error": 0.0,
+        "worst_identity": "0",
+        "worst_axis": "x",
+        "worst_values": {
+          "expected": 0.21091847121715546,
+          "actual": 0.21091847121715546,
+          "absolute_error": 0.0,
+          "limit": 0.0,
+          "exact": true,
+          "passed": true
+        },
+        "limit": 0.0,
+        "exact_components": 81,
+        "passed": true
+      },
+      "velocity_m_s": {
+        "components": 81,
+        "maximum_absolute_error": 0.0,
+        "rms_error": 0.0,
+        "worst_identity": "0",
+        "worst_axis": "x",
+        "worst_values": {
+          "expected": 0.027732251212000847,
+          "actual": 0.027732251212000847,
+          "absolute_error": 0.0,
+          "limit": 0.0,
+          "exact": true,
+          "passed": true
+        },
+        "limit": 0.0,
+        "exact_components": 81,
+        "passed": true
+      }
+    },
+    {
+      "checkpoint": "final",
+      "particles": 27,
+      "passed": true,
+      "position_m": {
+        "components": 81,
+        "maximum_absolute_error": 0.0,
+        "rms_error": 0.0,
+        "worst_identity": "0",
+        "worst_axis": "x",
+        "worst_values": {
+          "expected": 0.21091847121715546,
+          "actual": 0.21091847121715546,
+          "absolute_error": 0.0,
+          "limit": 0.0,
+          "exact": true,
+          "passed": true
+        },
+        "limit": 0.0,
+        "exact_components": 81,
+        "passed": true
+      },
+      "velocity_m_s": {
+        "components": 81,
+        "maximum_absolute_error": 0.0,
+        "rms_error": 0.0,
+        "worst_identity": "0",
+        "worst_axis": "x",
+        "worst_values": {
+          "expected": 0.027732251212000847,
+          "actual": 0.027732251212000847,
+          "absolute_error": 0.0,
+          "limit": 0.0,
+          "exact": true,
+          "passed": true
+        },
+        "limit": 0.0,
+        "exact_components": 81,
+        "passed": true
+      }
+    }
+  ],
+  "audits": [
+    {
+      "checkpoint": "0",
+      "sample_count": 27,
+      "metrics": {
+        "mean_error": {
+          "expected": 0.34231188893318176,
+          "actual": 0.34231188893318176,
+          "absolute_error": 0.0,
+          "limit": 0.0,
+          "exact": true,
+          "passed": true
+        },
+        "maximum_error": {
+          "expected": 0.48484861850738525,
+          "actual": 0.48484861850738525,
+          "absolute_error": 0.0,
+          "limit": 0.0,
+          "exact": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "checkpoint": "1",
+      "sample_count": 27,
+      "metrics": {
+        "mean_error": {
+          "expected": 0.15731678903102875,
+          "actual": 0.15731678903102875,
+          "absolute_error": 0.0,
+          "limit": 0.0,
+          "exact": true,
+          "passed": true
+        },
+        "maximum_error": {
+          "expected": 0.36948955059051514,
+          "actual": 0.36948955059051514,
+          "absolute_error": 0.0,
+          "limit": 0.0,
+          "exact": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "checkpoint": "4",
+      "sample_count": 27,
+      "metrics": {
+        "mean_error": {
+          "expected": 0.14620155096054077,
+          "actual": 0.14620155096054077,
+          "absolute_error": 0.0,
+          "limit": 0.0,
+          "exact": true,
+          "passed": true
+        },
+        "maximum_error": {
+          "expected": 0.37557804584503174,
+          "actual": 0.37557804584503174,
+          "absolute_error": 0.0,
+          "limit": 0.0,
+          "exact": true,
+          "passed": true
+        }
+      }
+    },
+    {
+      "checkpoint": "12",
+      "sample_count": 27,
+      "metrics": {
+        "mean_error": {
+          "expected": 0.14573855698108673,
+          "actual": 0.14573855698108673,
+          "absolute_error": 0.0,
+          "limit": 0.0,
+          "exact": true,
+          "passed": true
+        },
+        "maximum_error": {
+          "expected": 0.3790353536605835,
+          "actual": 0.3790353536605835,
+          "absolute_error": 0.0,
+          "limit": 0.0,
+          "exact": true,
+          "passed": true
+        }
+      }
+    }
+  ],
+  "cfl": [
+    {
+      "step": "1",
+      "warning": false,
+      "speed": {
+        "expected": 0.0,
+        "actual": 0.0,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "limit": null
+    },
+    {
+      "step": "2",
+      "warning": false,
+      "speed": {
+        "expected": 1.9554543495178223,
+        "actual": 1.9554543495178223,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "limit": {
+        "expected": 0.010227802209556103,
+        "actual": 0.010227802209556103,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      }
+    },
+    {
+      "step": "3",
+      "warning": false,
+      "speed": {
+        "expected": 0.7389199137687683,
+        "actual": 0.7389199137687683,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "limit": {
+        "expected": 0.027066532522439957,
+        "actual": 0.027066532522439957,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      }
+    },
+    {
+      "step": "4",
+      "warning": false,
+      "speed": {
+        "expected": 0.3438364565372467,
+        "actual": 0.3438364565372467,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "limit": {
+        "expected": 0.05816718935966492,
+        "actual": 0.05816718935966492,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      }
+    },
+    {
+      "step": "5",
+      "warning": false,
+      "speed": {
+        "expected": 0.17879246175289154,
+        "actual": 0.17879246175289154,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "limit": {
+        "expected": 0.11186154186725616,
+        "actual": 0.11186154186725616,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      }
+    },
+    {
+      "step": "6",
+      "warning": false,
+      "speed": {
+        "expected": 0.1523798555135727,
+        "actual": 0.1523798555135727,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "limit": {
+        "expected": 0.13125094771385193,
+        "actual": 0.13125094771385193,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      }
+    },
+    {
+      "step": "7",
+      "warning": false,
+      "speed": {
+        "expected": 0.2133217453956604,
+        "actual": 0.2133217453956604,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "limit": {
+        "expected": 0.0937550961971283,
+        "actual": 0.0937550961971283,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      }
+    },
+    {
+      "step": "8",
+      "warning": false,
+      "speed": {
+        "expected": 0.28225117921829224,
+        "actual": 0.28225117921829224,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "limit": {
+        "expected": 0.07085887342691422,
+        "actual": 0.07085887342691422,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      }
+    },
+    {
+      "step": "9",
+      "warning": false,
+      "speed": {
+        "expected": 0.23639927804470062,
+        "actual": 0.23639927804470062,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "limit": {
+        "expected": 0.08460263162851334,
+        "actual": 0.08460263162851334,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      }
+    },
+    {
+      "step": "10",
+      "warning": false,
+      "speed": {
+        "expected": 0.15413618087768555,
+        "actual": 0.15413618087768555,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "limit": {
+        "expected": 0.1297553926706314,
+        "actual": 0.1297553926706314,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      }
+    },
+    {
+      "step": "11",
+      "warning": false,
+      "speed": {
+        "expected": 0.09260813146829605,
+        "actual": 0.09260813146829605,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "limit": {
+        "expected": 0.21596376597881317,
+        "actual": 0.21596376597881317,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      }
+    },
+    {
+      "step": "12",
+      "warning": false,
+      "speed": {
+        "expected": 0.09119582921266556,
+        "actual": 0.09119582921266556,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      },
+      "limit": {
+        "expected": 0.2193082869052887,
+        "actual": 0.2193082869052887,
+        "absolute_error": 0.0,
+        "limit": 0.0,
+        "exact": true,
+        "passed": true
+      }
+    }
+  ],
+  "first_divergent_checkpoint": null,
+  "first_divergent_step": null,
+  "passed": true,
+  "record_sha256": {
+    "reference": "b83729f30f6b63dc9cef9c1b95cb87ef0717236bf98d0888bf17ad1f98aff547",
+    "candidate": "211273f150d755a97ce76cffb04defbefd64b0990c006110461eac71fa615afd"
+  }
+}

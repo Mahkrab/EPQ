@@ -106,39 +106,39 @@ Run the agreed timestep on the GPU while preserving observable numerical and tra
 
 ### Work
 
-- [ ] Decide device data layout, persistent buffers, cell construction, neighbour storage, launch geometry
+- [x] Decide device data layout, persistent buffers, cell construction, neighbour storage, launch geometry
       and stage dependencies. Keep state resident where the workflow permits, but account for every
       required transfer. Explain important choices from concrete responsibilities rather than theoretical speed.
-- [ ] Implement uniform-grid discovery with complete coverage of the supported rounded-arithmetic domain.
+- [x] Implement uniform-grid discovery with complete coverage of the supported rounded-arithmetic domain.
       Preserve negative/cell/support boundaries, overflow validation, strict membership, stable identity,
       self exclusion and duplicate prevention. Define ordering independently of concurrent insertion order.
-- [ ] Handle dense occupancy and interaction capacity explicitly. No fixed cell/row limit may silently
+- [x] Handle dense occupancy and interaction capacity explicitly. No fixed cell/row limit may silently
       discard neighbours. Check count/offset arithmetic, allocation limits and failure paths before using
       buffers; resource failure must not publish truncated or partially accepted output.
-- [ ] Implement acceleration and CFL checks, prediction, fixed membership, every configured Jacobi pass,
+- [x] Implement acceleration and CFL checks, prediction, fixed membership, every configured Jacobi pass,
       ordered projection, velocity reconstruction and acceptance. Complete position and multiplier snapshots
       must precede dependent work; local block coordination alone must not stand in for a whole-stage barrier.
-- [ ] Record floating-point choices, reduction order, contraction, denormal and device-math behaviour.
+- [x] Record floating-point choices, reduction order, contraction, denormal and device-math behaviour.
       Do not use unlabelled fast-math, altered support or approximate physics as a transparent optimisation.
       Preserve exact CPU controls and qualify every declared device arithmetic difference independently.
-- [ ] Retain whole-step acceptance across host and device state. Define how snapshots expose the last
+- [x] Retain whole-step acceptance across host and device state. Define how snapshots expose the last
       accepted step and how cancellation, delayed device errors, device loss and retry are represented.
       Pending work must finish or be safely abandoned before its storage is reused or released. Preserve
       numerical error precedence/classification rather than reporting whichever thread wins a race.
-- [ ] Integrate explicit GPU selection into the library, CLI, execution metadata and replay. Separate
+- [x] Integrate explicit GPU selection into the library, CLI, execution metadata and replay. Separate
       physical identity from device/build/launch settings. Keep historical CPU records working and reject
       incompatible worker or device options. Rendering must not determine solver correctness.
-- [ ] Retain fresh independent density audits outside solver timing and independently owned CPU controls.
+- [x] Retain fresh independent density audits outside solver timing and independently owned CPU controls.
       Extend component comparison only where needed: compact hashes prove equality, not tolerance acceptance.
       Check every required component, checkpoint, audit, CFL value and status under the declared policy.
-- [ ] Test kernels and complete stages against independent small geometry/equation cases and CPU oracles.
+- [x] Test kernels and complete stages against independent small geometry/equation cases and CPU oracles.
       Cover empty/single/coincident particles, dense/sparse distributions, negative and extreme coordinates,
       exact boundaries, uneven launches and fewer particles than execution lanes. Deliberate incorrect controls
       should expose missing barriers, ordering changes, lost neighbours and stale buffers.
-- [ ] Exercise invalid requests, capacity/transfer/launch/completion failures, cancellation, rollback,
+- [x] Exercise invalid requests, capacity/transfer/launch/completion failures, cancellation, rollback,
       retry and independent solver lifetimes. Use available device memory/race diagnostics and retain their
       observed results; injected failure tests do not establish recovery from actual hardware loss.
-- [ ] Verify both complete goldens, repeated ordinary/measured/profiled execution and public replay on
+- [x] Verify both complete goldens, repeated ordinary/measured/profiled execution and public replay on
       hardware. Check the larger family against fresh CPU controls and state the tested duration at each
       size. Test supported launch settings for repeatability and numerical sensitivity, with full disagreement
       reports and worst components. Passing means every required value passes, not just an average error.
@@ -149,6 +149,10 @@ The public application executes and replays a complete CUDA simulation on hardwa
 qualify membership, stages, numerical acceptance, diagnostics and rollback, while CPU regression checks
 still pass. Retained results name device, source, build flags, request and comparison policy. Unavailable
 hardware tests and unsupported recovery paths remain explicit limits, not passes or silent skips.
+
+The [implementation and verification record](/docs/project/development/milestones/03/phases/phase-01-cuda-solver.md)
+records G01 passing locally on the primary PC, with exact full-family and replay evidence, explicit
+device-diagnostic limits and an uncommitted source manifest. Checkpointing remains separately authorised.
 
 ## Phase 2: measure GPU performance on the primary PC
 
