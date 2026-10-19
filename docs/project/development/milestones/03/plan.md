@@ -152,7 +152,9 @@ hardware tests and unsupported recovery paths remain explicit limits, not passes
 
 The [implementation and verification record](/docs/project/development/milestones/03/phases/phase-01-cuda-solver.md)
 records G01 passing locally on the primary PC, with exact full-family and replay evidence, explicit
-device-diagnostic limits and an uncommitted source manifest. Checkpointing remains separately authorised.
+device-diagnostic limits and a source manifest matching all 99 committed implementation files.
+Local annotated `milestone-03/phase-01/complete` checkpoints retain the exact implementation and
+parent/submodule pairing. GPU performance measurement and remote publication remain separate.
 
 ## Phase 2: measure GPU performance on the primary PC
 

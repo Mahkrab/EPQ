@@ -17,10 +17,12 @@ uniform-grid discovery, acceleration, prediction, every configured Jacobi pass, 
 and velocity reconstruction. Host work coordinates completion, diagnostics and atomic acceptance.
 CPU implementations and historical records retain their existing numerical meaning.
 
-The assessed implementation is an **uncommitted working tree** based on the full Maelstrom commit
-above. The [source manifest](/docs/project/development/milestones/03/assets/solver-v1/source-manifest.json)
-identifies all 99 source, fixture, test and documentation files by SHA-256. This identifies tested
-bytes, not a new historical commit or completion checkpoint.
+The assessed implementation is now committed as Maelstrom
+[`80cce8a8b8bb604ed988b176298211c6fed491f0`](https://github.com/Mahkrab/Maelstrom/tree/80cce8a8b8bb604ed988b176298211c6fed491f0).
+All 99 source, fixture, test and documentation hashes in the retained
+[source manifest](/docs/project/development/milestones/03/assets/solver-v1/source-manifest.json)
+match that commit. The original collection retains its working-tree provenance unchanged;
+the local completion tags provide the subsequently authorised historical boundary.
 
 ## Decisions and implementation
 
@@ -63,7 +65,8 @@ exhaustion permits retry. No CPU fallback or device reset is attempted.
 `--execution cuda` requires the grid and records device ordinal and block size. It rejects CPU worker
 options. Runtime metadata identifies the GPU, driver and embedded target separately from physical
 input identity. Replay restores execution settings; historical CPU replay remains supported.
-The CUDA guide in the assessed source explains transfers, synchronisation and supported requests.
+The [CUDA guide](https://github.com/Mahkrab/Maelstrom/blob/80cce8a8b8bb604ed988b176298211c6fed491f0/docs/cuda.md)
+in the assessed source explains transfers, synchronisation and supported requests.
 Required transfers and validation remain inside completed-step timing; independent fresh density
 audits remain outside. These are instrumentation boundaries, not performance findings.
 
@@ -94,7 +97,8 @@ recovery remains unqualified; injected faults establish ownership policy only. E
 bounded to the recorded environment, requests and launch settings, not every libm, compiler or GPU.
 
 **G01 passes locally on the recorded primary PC**, with the diagnostic and portability limits above.
-The final source manifest and retained-data audit passed. Intended completion tags are
-`milestone-03/phase-01/complete` in both repositories; none has been created. Commits, tags, publication
-and the parent's gitlink remain unchanged pending separate authority. No GPU performance campaign
-or later implementation work is included.
+The final source manifest and retained-data audit passed. Annotated
+`milestone-03/phase-01/complete` tags identify the local completion checkpoints in both repositories,
+and the parent gitlink pins the assessed implementation. Original raw results and integrity records
+are unchanged. Remote publication and hosted verification remain separate; no GPU performance
+campaign or later implementation work is included.
