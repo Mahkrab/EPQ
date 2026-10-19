@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "heads_unchanged": [
+    "abc441e2c278eb48c4828c2536bfea2a6b36f2b4",
+    "80cce8a8b8bb604ed988b176298211c6fed491f0"
+  ],
+  "gitlink_unchanged": true,
+  "staging_unchanged": true,
+  "other_phases_unchanged": true,
+  "phase_checklist_items": 9,
+  "protocol_matches_frozen_bytes": true,
+  "attempts": {
+    "warmup": 21,
+    "sample": 63,
+    "profile": 21
+  },
+  "exact_comparisons": 108,
+  "source_hashes_verified": 99,
+  "simulator_changed_files": [
+    "docs/cuda.md",
+    "src/workflow/measurement.rs",
+    "src/workflow/mod.rs",
+    "tests/headless_workflow.rs"
+  ],
+  "internal_document_links": 34,
+  "checks": [
+    {
+      "arguments": [
+        "python3",
+        "-B",
+        "tests/evidence/checks/assets.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS milestone assets contain no copied repos or generated trees, no seeds watering allowed\n",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "python3",
+        "-m",
+        "unittest",
+        "tests.markdown.test"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nOK\n"
+    }
+  ]
+}

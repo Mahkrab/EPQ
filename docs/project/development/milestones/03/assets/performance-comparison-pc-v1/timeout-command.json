@@ -1,0 +1,11 @@
+{
+  "arguments": [
+    "python3",
+    "-c",
+    "from pathlib import Path\nimport gzip, json\nfrom tools.baseline import main as b\nfrom tools.baseline.data import require_exact, sha256\nfrom tools.cuda.compare import compare\nroot=Path.cwd();out=root.parent/'cancellation';out.mkdir()\nmanifest=b.checked_manifest();binary=b.SIMULATOR/'target/release/maelstrom'\ncase=manifest['cases'][-1]\nargs=b.solver_args(binary,case,'sample','uniform-grid',cuda=(0,128))\na=b.invoke(args,timeout_s=1.5,grace_s=30)\na['arguments']=args\nassert a['timed_out'] and a['exit_code']==130, a\nr=a['result'];assert r['status']=='cancelled' and int(r['completed_steps'])<480\nassert r['measurements']['failed_attempt_s'] is not None\nsteps=int(r['completed_steps'])\ncontrol=dict(case,steps=steps,checkpoints=[s for s in case['checkpoints'] if s<=steps])\nargs=b.solver_args(binary,control,'warmup','uniform-grid')\nc=b.invoke(args);c['arguments']=args\nassert c['exit_code']==0 and c['result']['status']=='completed'\nfor key in ['final_snapshot','checkpoints','steps']:\n require_exact(r[key],c['result'][key],key)\nf=b.invoke(b.solver_args(binary,manifest['cases'][1],'warmup','uniform-grid',cuda=(0,128)))\nassert f['exit_code']==0\ncomparison=compare(b.read_json(b.SIMULATOR/manifest['cases'][1]['golden']),f['result'],exact=True)\nassert comparison['passed']\nfiles={}\nfor name,value in [('timeout',a),('cpu-prefix',c),('fresh-cuda',f)]:\n payload=gzip.compress(json.dumps(value,allow_nan=False).encode(),mtime=0)\n (out/(name+'.json.gz')).write_bytes(payload);files[name]=sha256(payload)\nb.write_json(out/'checks.json',{'passed':True,'timeout_s':1.5,'grace_s':30,'accepted_steps':steps,'exit_code':a['exit_code'],'failed_attempt_s':r['measurements']['failed_attempt_s'],'wall_s':a['wall_s'],'prefix_exact':True,'fresh_cuda_comparison':comparison,'files_sha256':files})\nprint(json.dumps({'passed':True,'accepted_steps':steps,'exit_code':a['exit_code'],'wall_s':a['wall_s']}))\n"
+  ],
+  "exit_code": 0,
+  "wall_s": 14.145826836999959,
+  "stdout": "{\"passed\": true, \"accepted_steps\": 76, \"exit_code\": 130, \"wall_s\": 1.6568098450002253}\n",
+  "stderr": ""
+}

@@ -62,6 +62,7 @@ def physical_document(document: dict, *, ignore_execution: bool = False) -> dict
     value = numerical_document(document)
     if ignore_execution:
         value.pop("execution", None)
+        value["metadata"].pop("device", None)
     value.pop("backend")
     for key in ("backend", "run_id"):
         value["metadata"].pop(key)
@@ -241,7 +242,8 @@ def markdown(dataset: dict, rows: list[dict]) -> str:
     env = dataset["environment"]
     backend = dataset.get("backend", "brute-force")
     execution = dataset.get("execution", {"mode": "serial"})
-    title = (f"Threaded {backend}, {execution['workers']} workers"
+    title = (f"CUDA {backend}, device {execution['device']}, {execution['threads']} lanes"
+             if execution["mode"] == "cuda" else f"Threaded {backend}, {execution['workers']} workers"
              if execution["mode"] == "threaded" else f"Serial {backend}")
     text = [f"# {title} performance baseline", "",
             f"Policy: `{POLICY['id']}`. Collection: {dataset['started_utc']} to {dataset['finished_utc']}.", "",

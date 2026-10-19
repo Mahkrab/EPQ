@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "source_unchanged": true,
+  "binary_sha256": "06c1448b0aa4e9e6e4308cd36a3d9428de3e930df4637bbc78eee88a0ee5f9c3",
+  "ptx_sha256": {
+    "target/release/build/maelstrom-d494a2a79e9dc435/out/roundtrip.ptx": "6ebdce3c832f421be6a2fe103e44ffe300df695a118af3ad79933e9086e83a5d"
+  },
+  "collector_hashes_match": true,
+  "simulator_process_query": {
+    "arguments": [
+      "pgrep",
+      "-ax",
+      "maelstrom"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": ""
+  }
+}

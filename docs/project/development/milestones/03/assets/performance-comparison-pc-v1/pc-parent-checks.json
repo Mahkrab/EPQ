@@ -1,0 +1,34 @@
+[
+  {
+    "arguments": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/baseline",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "wall_s": 3.4976249329999973,
+    "stdout": "",
+    "stderr": "......................Series: serial-grid\n....\n----------------------------------------------------------------------\nRan 26 tests in 3.442s\n\nOK\n"
+  },
+  {
+    "arguments": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/cuda",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "wall_s": 5.857449921999887,
+    "stdout": "",
+    "stderr": "...............\n----------------------------------------------------------------------\nRan 15 tests in 5.791s\n\nOK\n"
+  }
+]

@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "policy": "cuda-comparison-v1",
+  "started_utc": "2026-10-19T09:49:53.531649+00:00",
+  "collection_order": [
+    "serial-grid",
+    "threaded-grid",
+    "cuda-grid"
+  ],
+  "device": {
+    "compute_major": 8,
+    "compute_minor": 9,
+    "driver_version": 13030,
+    "memory_bytes": 12878086144,
+    "name": "NVIDIA GeForce RTX 4070",
+    "ordinal": 0,
+    "target": "compute_89"
+  },
+  "protocol_sha256": "16c0cf43a316fbfa2662f63dacb62e404b34ec019a7c2f8cbf0f952f14b85f87",
+  "context": {
+    "nvcc": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2026 NVIDIA Corporation\nBuilt on Tue_Jun_09_02:43:40_PM_PDT_2026\nCuda compilation tools, release 13.3, V13.3.73\nBuild cuda_13.3.r13.3/compiler.38244171_0",
+    "cxx": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+    "ar": "GNU ar (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) any later version.\nThis program has absolutely no warranty.",
+    "gpu": "NVIDIA GeForce RTX 4070, 610.88, 12282 MiB, 8.9",
+    "build": "cargo build --release --locked --offline --features cuda",
+    "cuda_home": "/usr/local/cuda",
+    "target": "89",
+    "native_flags": {
+      "nvcc": "--ptx --std=c++17 --gpu-architecture=compute_89 -O3 --fmad=false --ftz=false --prec-div=true --prec-sqrt=true",
+      "bridge": "-std=c++17 -O2 -fPIC -Wall -Wextra -Werror"
+    },
+    "cuda_environment": {
+      "CUDA_VISIBLE_DEVICES": null,
+      "CUDA_CACHE_DISABLE": null,
+      "CUDA_CACHE_PATH": null,
+      "CUDA_FORCE_PTX_JIT": null,
+      "CUDA_MODULE_LOADING": null,
+      "CXX": null,
+      "AR": null
+    },
+    "ptx_sha256": {
+      "target/release/build/maelstrom-d494a2a79e9dc435/out/roundtrip.ptx": "6ebdce3c832f421be6a2fe103e44ffe300df695a118af3ad79933e9086e83a5d"
+    }
+  },
+  "collector_files_sha256": {
+    "docs/project/development/milestones/03/measurement-protocol.md": "16c0cf43a316fbfa2662f63dacb62e404b34ec019a7c2f8cbf0f952f14b85f87",
+    "tools/cuda/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tools/cuda/compare.py": "7f1d4c3a20d614bc16bb136ed80617140c4a02887f910be53d664542622b86d5",
+    "tools/cuda/performance.py": "0b01ac150c4a35daefa7264497f52e61d96b7c615c79dcc213f2ffc8f0120b45",
+    "tools/cuda/qualify.py": "f5d74087d729f4f9212168b12e095bb936f34fecc8e7514befd8e84638d0b077",
+    "tools/baseline/compare.py": "30babfb438e98410423a139653ba92843fa6ad59588eb1cb745933bc03923295",
+    "tools/baseline/data.py": "4e7d0b9f03965ce89f96b231550740ca536e73a8fbf7cfb49593b2e0fd624b60",
+    "tools/baseline/main.py": "fe1e565eeb87390ebc5cb2d9e19cca21e0f082a69f59374b80befa3a86a40a6e",
+    "tools/baseline/scaling.py": "c5b518f6a2f0554e6a31a2dbf45379fa081ab84a5b786d89c009ec89776fb644"
+  }
+}

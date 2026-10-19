@@ -164,35 +164,35 @@ Measure completed GPU solver work and its host costs under a declared comparison
 
 ### Work
 
-- [ ] Write the GPU measurement extension before collection. Retain the current seven sizes through
+- [x] Write the GPU measurement extension before collection. Retain the current seven sizes through
       8,000 particles, 480 steps, refinement, checkpoints, warm-up, three primary samples, separate profiles
       and timeout/grace rules unless an explicit evidence-led revision is agreed and recorded first.
-- [ ] Define the primary completed-step elapsed boundary, including required transfers, validation,
+- [x] Define the primary completed-step elapsed boundary, including required transfers, validation,
       allocation, launch, synchronisation and atomic acceptance. Align CPU denominators with equivalent
       work. Account for work deferred beyond a return and any cross-step batching; do not omit completion
       or alter acceptance solely to improve timings. Keep invocation wall time separately.
-- [ ] Declare one-time context, module/kernel compilation, device-buffer setup and teardown costs separately
+- [x] Declare one-time context, module/kernel compilation, device-buffer setup and teardown costs separately
       where outside solver timing. Report synchronised device-stage timings only as profiles, not substitutes
       for comparable solver totals. Overlapping work must not be double-counted or turned into fictitious stages.
-- [ ] Run the important campaign through `ssh pc`. Record CPU and GPU identities, visible memory, driver,
+- [x] Run the important campaign through `ssh pc`. Record CPU and GPU identities, visible memory, driver,
       toolkit, target, build flags, launch settings and controls actually applied. Retain source/kernel/binary
       hashes and collection order. Do not run concurrent project checks on the measurement device.
-- [ ] Collect fresh serial-grid and explicitly selected threaded-grid controls under matching conditions.
+- [x] Collect fresh serial-grid and explicitly selected threaded-grid controls under matching conditions.
       Declare worker/launch settings before collection; do not select the most favourable result afterwards
       and present it as a fixed comparison. Retain brute-force controls if claiming original-method speedup.
       Historical ratios cannot supply current denominators or be multiplied into an overall speedup.
-- [ ] Extend the existing collectors and acceptance reports without weakening serial exact checks.
+- [x] Extend the existing collectors and acceptance reports without weakening serial exact checks.
       Qualify each required GPU observation against the appropriate CPU reference before admitting timings;
       retain component-level evidence where tolerances are used. Backend/build/device metadata are context,
       not permission to omit physical identity, warning, membership or failure checks.
-- [ ] Preserve raw samples, spreads, throughput, profiles, invocation times, failed attempts and timeouts.
+- [x] Preserve raw samples, spreads, throughput, profiles, invocation times, failed attempts and timeouts.
       Define cancellation behaviour for outstanding device work and ensure no orphaned GPU work contaminates
       later samples. Missing or incomplete controls yield no ratio; preserve warnings and partial accepted state.
-- [ ] Explain small-input overhead, crossover, remaining serial work and tested scaling. Profile before
+- [x] Explain small-input overhead, crossover, remaining serial work and tested scaling. Profile before
       neutral tuning, retain before/after evidence and repeat correctness checks. Additional sizes or launch
       studies must be labelled separately. Do not infer memory use, bandwidth limits or utilisation from timings
       alone; make such claims only with a declared measurement method and actual observations.
-- [ ] If the PC or GPU is unavailable, continue host-only verification or clearly provisional exploration.
+- [x] If the PC or GPU is unavailable, continue host-only verification or clearly provisional exploration.
       Do not replace primary results with laptop/device-mixed samples or mark the hardware campaign complete.
 
 ### Gate G02 evidence
@@ -201,6 +201,13 @@ Retained primary-PC results, independently checked summaries and numerical quali
 honest same-device comparison. Timers measure completed work, setup and transfer costs are visible,
 and isolated kernel gains are not described as whole-solver or whole-application speedups. Mixed or
 negative performance is acceptable when the experiment and its limitations are reproducible.
+
+The [measurement and verification record](/docs/project/development/milestones/03/phases/phase-02-performance-comparison.md)
+records G02 passing locally on the primary PC: 105 clean full-workload benchmark attempts,
+108 exact component comparisons, independently checked raw-data summaries and completed-work
+CPU/GPU ratios. Setup, teardown, invocation costs and synchronised host profiles are retained
+separately. The measurement work is committed for publication and PC synchronisation, without
+moving the existing start tags or creating a phase-completion tag.
 
 ## Phase 3: evaluate, document and hand off
 

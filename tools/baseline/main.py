@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import gzip
 import json
 import os
 import platform
@@ -135,10 +136,17 @@ def invoke(args: list[str], timeout_s: float = POLICY["timeout_s"], grace_s: flo
     }
 
 
-def execution_settings(backend: str, workers: int | None) -> tuple[dict, str]:
+def execution_settings(backend: str, workers: int | None, cuda: tuple[int, int] | None = None) -> tuple[dict, str]:
     """Resolve explicit resources without changing historical serial identities."""
     if backend not in BACKENDS:
         raise ValueError("unsupported search backend")
+    if cuda is not None:
+        device, threads = cuda
+        if (backend != "uniform-grid" or workers is not None or type(device) is not int
+                or device < 0 or device > 0xffffffff or type(threads) is not int
+                or threads not in (32, 64, 128, 256)):
+            raise ValueError("CUDA requires uniform-grid, a u32 device, 32/64/128/256 lanes and no workers")
+        return {"mode": "cuda", "device": device, "threads": threads}, "cuda-uniform-grid-pbf-binary32-8-jacobi-v1"
     if workers is None:
         return {"mode": "serial"}, BACKENDS[backend]
     if backend != "uniform-grid" or type(workers) is not int or not 1 <= workers <= 256:
@@ -147,13 +155,15 @@ def execution_settings(backend: str, workers: int | None) -> tuple[dict, str]:
 
 
 def solver_args(binary: Path, case: dict, kind: str, backend: str = "brute-force",
-                workers: int | None = None) -> list[str]:
-    execution_settings(backend, workers)
+                workers: int | None = None, cuda: tuple[int, int] | None = None) -> list[str]:
+    execution_settings(backend, workers, cuda)
     args = [str(binary), "run", case["scene"], "--backend", backend, "--steps", str(case["steps"]),
             "--refine-timestep", str(case["refine_timestep"]), "--checkpoints",
             ",".join(str(s) for s in case["checkpoints"]), "--format", "json", "--quiet"]
     if workers is not None:
         args += ["--execution", "threaded", "--threads", str(workers)]
+    if cuda is not None:
+        args += ["--execution", "cuda", "--device", str(cuda[0]), "--block-size", str(cuda[1])]
     if kind != "warmup":
         args.append("--measure")
     if kind == "profile":
@@ -188,7 +198,7 @@ def report(directory: Path) -> str:
     return markdown(dataset, rows)
 
 
-def prepare_build() -> dict:
+def prepare_build(*, cuda: bool = False) -> dict:
     """Build once so all execution settings can use identical source and binary bytes."""
     if sys.platform != "linux":
         raise ValueError("environment collection currently requires Linux /proc and lscpu")
@@ -201,18 +211,23 @@ def prepare_build() -> dict:
     binary = SIMULATOR / "target/release/maelstrom"
     label = source["base_commit"] + "+worktree-sha256:" + source["tree_sha256"]
     build_env = dict(os.environ, MAELSTROM_BUILD_REVISION=label)
-    subprocess.run(["cargo", "build", "--release", "--locked", "--offline"], cwd=SIMULATOR,
+    arguments = ["cargo", "build", "--release", "--locked", "--offline"]
+    if cuda:
+        arguments += ["--features", "cuda"]
+    subprocess.run(arguments, cwd=SIMULATOR,
                    env=build_env, check=True, timeout=300)
     return {"source": source, "label": label, "binary_sha256": sha256(binary.read_bytes())}
 
 
 def collect(directory: Path, backend: str = "brute-force", workers: int | None = None,
-            *, build: dict | None = None) -> None:
-    execution, identity = execution_settings(backend, workers)
+            *, build: dict | None = None, cuda: tuple[int, int] | None = None,
+            retain_full_results: bool = False) -> None:
+    execution, identity = execution_settings(backend, workers, cuda)
     manifest = checked_manifest()
     if directory.exists():
         raise FileExistsError(directory)
-    build = prepare_build() if build is None else build
+    if build is None:
+        build = prepare_build(cuda=True) if cuda is not None else prepare_build()
     source, label = build["source"], build["label"]
     binary = SIMULATOR / "target/release/maelstrom"
     if source_identity() != source or sha256(binary.read_bytes()) != build["binary_sha256"]:
@@ -229,12 +244,12 @@ def collect(directory: Path, backend: str = "brute-force", workers: int | None =
         "manifest": manifest, "manifest_sha256": sha256((SIMULATOR / "reference/manifest.json").read_bytes()),
         "raw": [], "correctness": {}, "interrupted": False,
     }
-    if workers is not None:
+    if workers is not None or cuda is not None:
         dataset["execution"] = execution
     write_json(directory / "collection.json", dataset)
     attempts = []
     # Preserve a full replayable correctness result before compacting performance samples.
-    correctness = invoke(solver_args(binary, manifest["cases"][1], "warmup", backend, workers))
+    correctness = invoke(solver_args(binary, manifest["cases"][1], "warmup", backend, workers, cuda))
     result = correctness["result"]
     if correctness["exit_code"] != 0 or correctness["timed_out"] or result is None:
         write_json(directory / "correctness-failure.json", correctness)
@@ -260,7 +275,7 @@ def collect(directory: Path, backend: str = "brute-force", workers: int | None =
     for case in manifest["cases"][1:]:
         def attempt(kind: str, index: int) -> dict:
             print(f"{case['particles']} particles: {kind} {index}", file=sys.stderr, flush=True)
-            args = solver_args(binary, case, kind, backend, workers)
+            args = solver_args(binary, case, kind, backend, workers, cuda)
             value = invoke(args)
             value.update(particles=case["particles"], kind=kind, index=index,
                          arguments=args[1:])
@@ -275,6 +290,12 @@ def collect(directory: Path, backend: str = "brute-force", workers: int | None =
                 if identities.setdefault(case["particles"], input_id) != input_id:
                     write_json(directory / f"raw/{case['particles']:05}-{kind}-{index}-rejected.json", value)
                     raise ValueError("sample input identity changed")
+                if retain_full_results:
+                    name = f"raw/{case['particles']:05}-{kind}-{index}-full.json.gz"
+                    payload = gzip.compress(json.dumps(value["result"], allow_nan=False).encode(), mtime=0)
+                    with (directory / name).open("xb") as stream:
+                        stream.write(payload)
+                    value["full_result"] = {"file": name, "sha256": sha256(payload)}
                 value["result"] = compact_result(value["result"])
             if kind == "warmup" and clean(value):
                 warmup_documents[case["particles"]] = numerical_document(value["result"])
