@@ -67,35 +67,35 @@ testable behaviour before graphics integration.
 
 ### Work
 
-- [ ] Review the definition, backend interfaces and CUDA handoff. Decide a focused user journey:
+- [x] Review the definition, backend interfaces and CUDA handoff. Decide a focused user journey:
       select/validate inputs and execution, start a run, inspect/control it, and produce offline frames.
       Define the minimum controls and visible diagnostics rather than building a general editor.
-- [ ] Choose the intended windowing/rendering and offscreen-output approach, supported platform and
+- [x] Choose the intended windowing/rendering and offscreen-output approach, supported platform and
       dependency/feature boundaries. Justify maintenance, portability, build and licence costs. Verify
       actual display/offscreen availability where necessary; prior CUDA access does not qualify graphics.
-- [ ] Specify construction, running, pause, single-step, reset/restart, completion, cancellation and failure
+- [x] Specify construction, running, pause, single-step, reset/restart, completion, cancellation and failure
       states, including invalid transitions. Decide when scene/backend changes take effect and how queued
       commands or observations are discarded on restart so an old run cannot overwrite a new one.
-- [ ] Implement the non-visual controller and observation boundary using existing solver responsibilities.
+- [x] Implement the non-visual controller and observation boundary using existing solver responsibilities.
       If simulation uses a worker thread, construct, use and destroy its CUDA solver there. Pass owned
       accepted snapshots to presentation; never introduce unsafe thread sharing to bypass context ownership.
-- [ ] Define bounded command/snapshot transport, backpressure and shutdown. Decide which intermediate
+- [x] Define bounded command/snapshot transport, backpressure and shutdown. Decide which intermediate
       display observations may be dropped or coalesced while retaining final accepted state and failures.
       Keep cancellation latched and allow synchronous stages to finish; do not promise an untested deadline.
-- [ ] Define simulation pacing independently of display cadence: fixed timesteps, pause semantics,
+- [x] Define simulation pacing independently of display cadence: fixed timesteps, pause semantics,
       catch-up/lag policy and interpolation, if any. Dropping a displayed frame must not drop numerical work,
       change timestep size or conceal an incomplete run. Label interpolated display state as presentation.
-- [ ] Specify coordinate/length conventions, particle size/colour interpretation, camera/projection,
+- [x] Specify coordinate/length conventions, particle size/colour interpretation, camera/projection,
       boundary depiction and frame-to-step mapping. Choose a clear particle representation first; visual
       smoothing must not be presented as a new physical surface or numerical validation.
-- [ ] Specify versioned render/export settings and precedence using existing configuration conventions.
+- [x] Specify versioned render/export settings and precedence using existing configuration conventions.
       Resolve paths deliberately. Define authoritative frame count, first/last frame, simulation-step
       sampling, image format, dimensions, camera state, filenames and metadata without relying on wall time.
       Distinguish rendering saved observations from rerunning recorded inputs; replay is not resumption.
-- [ ] Define what reproducibility means for simulation inputs, accepted snapshots, frame schedule and
+- [x] Define what reproducibility means for simulation inputs, accepted snapshots, frame schedule and
       renderer settings. Decide the supported image-comparison guarantee and record any environment
       dependence; do not promise cross-device pixel equality without evidence.
-- [ ] Independently test control transitions, exact single-step counts, pause, reset generation, cancellation,
+- [x] Independently test control transitions, exact single-step counts, pause, reset generation, cancellation,
       failure retention, bounded transport and teardown without a renderer. Compare accepted results with
       direct headless execution, using controlled clocks and deliberate stale/delayed consumer cases.
 
@@ -104,6 +104,13 @@ testable behaviour before graphics integration.
 The controller can be exercised without a window. Tests establish state transitions, owned observations,
 fixed solver work, restart isolation and failure/shutdown behaviour. The interaction and offline frame
 contracts are complete enough to implement without guessing; no full viewer or exporter is implied yet.
+
+The [implementation and verification record](/docs/project/development/milestones/04/phases/phase-00-application-lifecycle.md)
+records the satisfied gate and its hardware limitations. The
+[application contract](/docs/project/development/milestones/04/application-contract.md) owns the agreed
+interaction, lifecycle and frame/output behaviour. Local annotated `milestone-04/phase-00/complete`
+checkpoints retain the assessed implementation and exact parent/submodule pairing. Fresh CUDA-worker
+and graphics qualification remain explicit limits; remote publication is separate.
 
 ## Phase 1: integrate the interactive 3D viewer
 

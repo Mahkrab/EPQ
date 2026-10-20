@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "started_utc": "2026-10-20T21:09:56.473791+00:00",
+  "environment": {
+    "system": "Linux",
+    "release": "6.6.87.2-microsoft-standard-WSL2",
+    "machine": "x86_64",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)\nbinary: rustc\ncommit-hash: 48a229ceaefd4985c50990b14116b6d856af0985\ncommit-date: 2026-09-01\nhost: x86_64-unknown-linux-gnu\nrelease: 1.98.1\nLLVM version: 22.1.8",
+    "cargo": "cargo 1.98.1 (797e8a9bc 2026-08-05)"
+  },
+  "source_manifest": "source-manifest.json",
+  "checks": [
+    {
+      "name": "format",
+      "command": [
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "environment_overrides": {},
+      "exit_code": 0,
+      "transcript": "format.txt"
+    },
+    {
+      "name": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--offline",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "environment_overrides": {},
+      "exit_code": 0,
+      "transcript": "clippy.txt"
+    },
+    {
+      "name": "headless-release",
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "environment_overrides": {
+        "DISPLAY": null,
+        "WAYLAND_DISPLAY": null,
+        "XDG_RUNTIME_DIR": null,
+        "CUDA_HOME": "/unavailable-cuda-toolkit",
+        "CXX": "/unavailable-cxx",
+        "AR": "/unavailable-ar",
+        "MAELSTROM_CUDA_ARCH": "invalid"
+      },
+      "exit_code": 0,
+      "transcript": "headless-release.txt"
+    },
+    {
+      "name": "rustdoc",
+      "command": [
+        "cargo",
+        "doc",
+        "--locked",
+        "--offline",
+        "--no-deps"
+      ],
+      "environment_overrides": {
+        "RUSTDOCFLAGS": "-D warnings"
+      },
+      "exit_code": 0,
+      "transcript": "rustdoc.txt"
+    },
+    {
+      "name": "guide-example",
+      "command": [
+        "rustc",
+        "--edition=2024",
+        "--crate-name",
+        "application_guide",
+        "--emit=metadata",
+        "--extern",
+        "maelstrom=target/release/deps/libmaelstrom-3248262ccad80cee.rlib",
+        "-L",
+        "dependency=target/release/deps",
+        "/tmp/epq-application-guide.rs",
+        "-o",
+        "/tmp/epq-application-guide.rmeta",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "transcript": "guide-example.txt"
+    }
+  ],
+  "earlier_observations": [
+    "Focused debug lifecycle tests passed. Strict Clippy initially rejected a needless borrow; it was corrected and rechecked.",
+    "An earlier complete debug regression passed 222 checks before final admission synchronisation and the additional motion test. The final release suite below assesses the manifest tree.",
+    "Two read-only primary-PC SSH probes timed out (exit 255). Fresh CUDA worker hardware checks were not run.",
+    "Local display socket paths and /dev/dxg exist; vulkaninfo, eglinfo and glxinfo were unavailable. No graphics qualification was attempted."
+  ],
+  "source_hashes_rechecked_after_checks": true,
+  "finished_utc": "2026-10-20T21:11:48.283798+00:00",
+  "documentation_adjustment": "After the release checks, standalone guide code was formatted and Rustdoc-only hidden-line markers removed. The resulting example compiled against the assessed release library with warnings denied. Runtime source is unchanged."
+}

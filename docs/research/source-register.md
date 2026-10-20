@@ -44,6 +44,9 @@
 | [S048](sources/048-nvidia-cuda-linux-installation.md) | NVIDIA (2026) | Official technical documentation | Installation reference for CUDA Toolkit paths, symbolic links and environment configuration on Linux. | [Official documentation](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/) |
 | [S049](sources/049-nvidia-cuda-runtime-api.md) | NVIDIA (2026) | Official API reference | Runtime reference for device discovery, kernel execution, synchronisation and GPU memory transfers. | [Official documentation](https://docs.nvidia.com/cuda/cuda-runtime-api/) |
 | [S053](sources/053-nvidia-cuda-driver-api.md) | NVIDIA (2026) | Official API reference | Versioned reference for owned contexts, modules, streams, transfers and completion at the Rust/CUDA boundary. | [CUDA 13.3 archive](https://docs.nvidia.com/cuda/archive/13.3.0/cuda-driver-api/index.html) |
+| [S054](sources/054-wgpu-rendering-boundary.md) | gfx-rs developers (n.d.) | Official repository documentation | Intended optional native renderer, selective features and licence review. | [Upstream repository](https://github.com/gfx-rs/wgpu) |
+| [S055](sources/055-winit-window-events.md) | winit contributors (n.d.) | Official repository documentation | Intended window/event boundary separate from drawing and solver execution. | [v0.30.12 repository](https://github.com/rust-windowing/winit/tree/v0.30.12) |
+| [S056](sources/056-image-rs-png-encoding.md) | image-rs contributors (n.d.) | Official repository documentation | Single-format encoder choice for the intended offline frame workflow. | [Upstream repository](https://github.com/image-rs/image-png) |
 
 ## Documentation standards
 
