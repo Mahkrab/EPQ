@@ -51,6 +51,12 @@ The [Milestone 03 completion plan](/docs/project/development/milestones/03/plan.
 integration, solver implementation and verification, PC measurement, then evaluation and application
 handoff. It reuses the existing contracts and infrastructure while qualifying the new device boundary.
 
+The [CUDA evaluation and application handoff](/docs/project/development/milestones/03/cuda-gpu.md)
+assesses exact numerical agreement, measured gains and small-input slowdowns, device/failure limits,
+and the accepted-snapshot boundary for future application work. Local evaluation is complete;
+the final milestone checkpoint still requires separate authorisation. Application integration and
+the final cross-backend evaluation remain future work.
+
 ## Milestone 04: application and visualisation integration
 
 Integrate the verified simulation backends into the interactive application, renderer and reproducible offline-output workflow without coupling rendering to simulation correctness or benchmark timing.
