@@ -179,10 +179,10 @@ does not implement the application or complete the final cross-backend project e
 
 ## Gate and checkpoint status
 
-The evaluation and handoff are implemented locally. **G03 remains pending its separately authorised
-completion checkpoint.** Existing annotated `milestone-03/phase-02/complete` and
+The evaluation, handoff and local completion checkpoint satisfy **G03**. Existing annotated
+`milestone-03/phase-02/complete` and
 `milestone-03/phase-03/start` tags identify the starting boundary in both repositories. The current
-EPQ gitlink already pins the assessed Maelstrom commit; this work changes no simulator bytes or Git
-metadata. Intended final tags are `milestone-03/phase-03/complete` and `milestone-03/complete` in both
-histories, following implementation-first verification and checkpointing when authorised. Remote
+EPQ gitlink already pins the assessed Maelstrom commit; this work changes no simulator bytes.
+Annotated `milestone-03/phase-03/complete` and `milestone-03/complete` tags identify the local
+completion boundary in both histories, following implementation-first checkpointing. Remote
 publication and hosted validation remain separate.

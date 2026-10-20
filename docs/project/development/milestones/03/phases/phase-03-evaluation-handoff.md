@@ -72,11 +72,11 @@ links and structure were checked. Raw historical evidence was preserved.
 
 ## Limitations and Gate G03
 
-Local evaluation and handoff work is complete. **G03 remains pending its separately authorised
-completion checkpoint.** The existing EPQ gitlink already pins the assessed Maelstrom revision;
-neither repository was committed, tagged, switched, pushed or otherwise checkpointed during this
-work. Intended completion tags are `milestone-03/phase-03/complete` and `milestone-03/complete` in
-both histories, following implementation-first verification and checkpointing when authorised.
+Local evaluation, handoff and the subsequently authorised completion checkpoint satisfy **G03**.
+Annotated `milestone-03/phase-03/complete` and `milestone-03/complete` tags identify the local
+completion boundary in both histories. The existing EPQ gitlink already pins the assessed
+Maelstrom revision; no simulator change or new implementation commit was needed. Original retained
+checks remain unchanged. Remote publication and hosted verification remain separate.
 
 No fresh PC benchmark or hardware test, alternate-device/platform qualification, physical-accuracy
 study or hosted rendering check was performed. Previously unavailable Compute Sanitizer memcheck

@@ -53,8 +53,8 @@ handoff. It reuses the existing contracts and infrastructure while qualifying th
 
 The [CUDA evaluation and application handoff](/docs/project/development/milestones/03/cuda-gpu.md)
 assesses exact numerical agreement, measured gains and small-input slowdowns, device/failure limits,
-and the accepted-snapshot boundary for future application work. Local evaluation is complete;
-the final milestone checkpoint still requires separate authorisation. Application integration and
+and the accepted-snapshot boundary for future application work. Local annotated `milestone-03/complete`
+tags retain the final implementation and evaluation; remote publication remains separate. Application integration and
 the final cross-backend evaluation remain future work.
 
 ## Milestone 04: application and visualisation integration

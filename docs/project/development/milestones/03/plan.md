@@ -229,7 +229,7 @@ Explain GPU correctness and measured benefit, then prepare application integrati
 - [x] Define the application-integration handoff: read-only accepted snapshots, ownership and synchronisation
       obligations, independent rendering, CPU/GPU controls, fixtures, comparison evidence and measurement
       boundaries. Describe any future graphics interoperability as future work, not an implemented guarantee.
-- [ ] When separately authorised, complete the implementation-first checkpoint sequence, pin the final
+- [x] Complete the authorised implementation-first checkpoint sequence, pin the final
       Maelstrom commit through EPQ's gitlink and evidence, and establish annotated completion tags in both
       repositories. Remote publication remains a separate authorised action.
 
@@ -243,8 +243,8 @@ pairing; it does not imply completion of rendering or the final cross-backend pr
 The [CUDA evaluation and application handoff](/docs/project/development/milestones/03/cuda-gpu.md)
 and [evaluation record](/docs/project/development/milestones/03/phases/phase-03-evaluation-handoff.md)
 complete the local evaluation and documentation work. Fresh local checks re-audit the retained PC
-evidence without collecting new timings. **G03 remains pending the separately authorised final
-checkpoint**: no completion commit, tag or gitlink change is authorised by this implementation task.
+evidence without collecting new timings. **G03 is satisfied** by this evidence and the local annotated
+`milestone-03/phase-03/complete` and `milestone-03/complete` checkpoints.
 The existing gitlink already identifies assessed Maelstrom
 `afb8ffbf6482d7d70fe01d03d6c32ce2277ad96b`; application implementation and remote publication remain separate.
 
