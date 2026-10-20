@@ -206,8 +206,9 @@ The [measurement and verification record](/docs/project/development/milestones/0
 records G02 passing locally on the primary PC: 105 clean full-workload benchmark attempts,
 108 exact component comparisons, independently checked raw-data summaries and completed-work
 CPU/GPU ratios. Setup, teardown, invocation costs and synchronised host profiles are retained
-separately. The measurement work is committed for publication and PC synchronisation, without
-moving the existing start tags or creating a phase-completion tag.
+separately. Local annotated `milestone-03/phase-02/complete` checkpoints retain the measurement
+work and exact parent/submodule pairing without moving existing start tags. Publication of these
+new checkpoints remains separate.
 
 ## Phase 3: evaluate, document and hand off
 

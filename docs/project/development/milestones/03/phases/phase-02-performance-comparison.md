@@ -101,5 +101,6 @@ The assessed simulator is now committed as Maelstrom
 [`afb8ffbf6482d7d70fe01d03d6c32ce2277ad96b`](https://github.com/Mahkrab/Maelstrom/tree/afb8ffbf6482d7d70fe01d03d6c32ce2277ad96b),
 with the parent gitlink advanced to that exact instrumentation revision for publication and PC
 synchronisation. Original source hashes and raw evidence retain their collection-time provenance.
-The existing `milestone-03/phase-02/start` tags are unchanged; publishing this work does not create
-`milestone-03/phase-02/complete` tags or begin evaluation.
+The existing `milestone-03/phase-02/start` tags are unchanged. Subsequently authorised annotated
+`milestone-03/phase-02/complete` tags identify the local completion checkpoints in both histories.
+The original campaign is unchanged; publication of these new checkpoints remains separate.
