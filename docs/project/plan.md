@@ -61,6 +61,10 @@ the final cross-backend evaluation remain future work.
 
 Integrate the verified simulation backends into the interactive application, renderer and reproducible offline-output workflow without coupling rendering to simulation correctness or benchmark timing.
 
+The [Milestone 04 completion plan](/docs/project/development/milestones/04/plan.md) separates application
+contracts and lifecycle, interactive viewing, reproducible offline rendering, then evaluation and
+handoff to the final project comparison. Presentation consumes accepted state without owning the physics.
+
 ## Milestone 05: comparative evaluation
 
 Complete the controlled correctness, performance and scalability comparison across brute-force search, uniform-grid partitioning, CPU multithreading and CUDA acceleration, then evaluate the results against the research question.
