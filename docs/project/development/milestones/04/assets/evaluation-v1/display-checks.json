@@ -1,0 +1,78 @@
+[
+  {
+    "argv": [
+      "python3",
+      "-m",
+      "tests.verification.viewer_display",
+      "--binary",
+      "Maelstrom/target/release/maelstrom",
+      "--output",
+      "docs/project/development/milestones/04/assets/evaluation-v1/live-display",
+      "--runtime-lib-dir",
+      "/tmp/epq-application-runtime/root/usr/lib/x86_64-linux-gnu"
+    ],
+    "exit": 1,
+    "elapsed_s": 31.327182558999993,
+    "log": "live-display.log"
+  },
+  {
+    "argv": [
+      "python3",
+      "-m",
+      "tests.verification.playback_display",
+      "--binary",
+      "Maelstrom/target/release/maelstrom",
+      "--output",
+      "docs/project/development/milestones/04/assets/evaluation-v1/saved-display",
+      "--runtime-lib-dir",
+      "/tmp/epq-application-runtime/root/usr/lib/x86_64-linux-gnu",
+      "--sequence",
+      "docs/project/development/milestones/04/assets/offline-v1/falling-wide"
+    ],
+    "exit": 0,
+    "elapsed_s": 3.175517052000032,
+    "log": "saved-display.log"
+  },
+  {
+    "argv": [
+      "python3",
+      "-m",
+      "tests.verification.viewer_display",
+      "--binary",
+      "Maelstrom/target/release/maelstrom",
+      "--output",
+      "docs/project/development/milestones/04/assets/evaluation-v1/live-display-focused",
+      "--runtime-lib-dir",
+      "/tmp/epq-application-runtime/root/usr/lib/x86_64-linux-gnu"
+    ],
+    "exit": 0,
+    "elapsed_s": 6.235430513999745,
+    "log": "live-display-focused.log",
+    "harness_sha256": {
+      "tests/verification/viewer_display.py": "cff0bbe99c9d97d0cde38cffd0868f968343d9f0b50f8a0d4f18f733f4694616",
+      "tests/verification/playback_display.py": "1a1738aeb14a6c44416cae8d7bbdebb61dc01e385b6c16295a527b751e95768e"
+    }
+  },
+  {
+    "argv": [
+      "python3",
+      "-m",
+      "tests.verification.playback_display",
+      "--binary",
+      "Maelstrom/target/release/maelstrom",
+      "--output",
+      "docs/project/development/milestones/04/assets/evaluation-v1/saved-display-focused",
+      "--runtime-lib-dir",
+      "/tmp/epq-application-runtime/root/usr/lib/x86_64-linux-gnu",
+      "--sequence",
+      "docs/project/development/milestones/04/assets/offline-v1/falling-wide"
+    ],
+    "exit": 0,
+    "elapsed_s": 3.119731103999584,
+    "log": "saved-display-focused.log",
+    "harness_sha256": {
+      "tests/verification/viewer_display.py": "cff0bbe99c9d97d0cde38cffd0868f968343d9f0b50f8a0d4f18f733f4694616",
+      "tests/verification/playback_display.py": "1a1738aeb14a6c44416cae8d7bbdebb61dc01e385b6c16295a527b751e95768e"
+    }
+  }
+]

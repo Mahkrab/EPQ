@@ -1,0 +1,18 @@
+{
+  "packages": [
+    {
+      "file": "libxcb-xkb1_1.15-1ubuntu2_amd64.deb",
+      "sha256": "53bc0a58834c981fa8ce5c3ab6195387e5c8a417039d82cc7a8b49724fa53228"
+    },
+    {
+      "file": "libxkbcommon-x11-0_1.6.0-1build1_amd64.deb",
+      "sha256": "3befe840ce612ddfc0998d8610c6eed295726722a78e75cd08520bbd75065a23"
+    }
+  ],
+  "commands": [
+    "apt download libxkbcommon-x11-0 libxcb-xkb1",
+    "dpkg-deb -x EACH_PACKAGE TEMP_RUNTIME/root"
+  ],
+  "installation": "temporary extracted runtime; no global installation",
+  "display": "WSLg Xwayland; native events sent only to test-owned windows"
+}

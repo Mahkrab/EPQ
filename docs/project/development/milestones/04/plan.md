@@ -220,23 +220,23 @@ Establish that the application is usable and reproducible without invalidating t
 
 ### Work
 
-- [ ] Review the implementation against the interaction, lifecycle, frame and publication contracts.
+- [x] Review the implementation against the interaction, lifecycle, frame and publication contracts.
       Assess usability, numerical independence, failure safety and offline reproducibility separately.
       Record important decisions and actual defects without inventing retrospective alternatives.
-- [ ] Run the appropriate CPU/headless regression and renderer/controller checks. Exercise CUDA integration
+- [x] Run the appropriate CPU/headless regression and renderer/controller checks. Exercise CUDA integration
       and real display/offscreen paths on supported hardware, retaining commands or manual actions,
       observed outcomes, source/build context and limitations. Missing hardware checks remain unverified.
-- [ ] Keep solver, snapshot transport/copies, audits, graphics, encoding and total application costs
+- [x] Keep solver, snapshot transport/copies, audits, graphics, encoding and total application costs
       distinct. Use `ssh pc` for important measurements or performance claims; declare the workload and
       timing boundary before collection. Do not reinterpret existing solver speedups as interactive FPS.
-- [ ] Document supported launch/build paths, controls, settings, output/replay semantics and recovery.
+- [x] Document supported launch/build paths, controls, settings, output/replay semantics and recovery.
       State unsupported environments, visual/model limitations and any unverified graphics interoperability.
       Keep the summary useful for the final project document rather than duplicating implementation detail.
-- [ ] Define the final comparative-evaluation handoff: retain all CPU/CUDA controls, exact scene families,
+- [x] Define the final comparative-evaluation handoff: retain all CPU/CUDA controls, exact scene families,
       numerical policies, raw campaigns, accepted-state and output contracts, device provenance and
       known threats to validity. Identify any genuine remaining evidence gap without starting a new
       unrestricted optimisation or comparative campaign here.
-- [ ] When separately authorised, checkpoint implementation first, then EPQ's exact gitlink and evidence,
+- [x] When separately authorised, checkpoint implementation first, then EPQ's exact gitlink and evidence,
       and establish annotated completion tags in both histories. Treat publication as a separate action.
 
 ### Gate G03 evidence
@@ -244,6 +244,15 @@ Establish that the application is usable and reproducible without invalidating t
 The application and offline workflow have an evidence-backed evaluation, reproducible usage guidance
 and an explicit final-comparison handoff. The completion checkpoint retains assessed code, tests,
 records and exact parent/submodule pairing. It does not itself complete the final research evaluation.
+
+The [application evaluation and final-comparison handoff](/docs/project/development/milestones/04/application-visualisation.md)
+and [phase record](/docs/project/development/milestones/04/phases/phase-03-evaluation-handoff.md)
+record the local assessment. The [fresh evidence](/docs/project/development/milestones/04/assets/evaluation-v1/README.md)
+includes headless/controller/renderer regression, real WSLg windows, primary-PC CUDA integration,
+usage reconstruction and historical-input integrity. The substantive verification and handoff work
+is complete. **G03 is satisfied within the recorded qualification limits**, with local annotated
+`milestone-04/phase-03/complete` and `milestone-04/complete` checkpoints in both histories.
+The EPQ gitlink identifies the reviewed Maelstrom completion commit; publication remains separate.
 
 ## Records and checkpoints
 

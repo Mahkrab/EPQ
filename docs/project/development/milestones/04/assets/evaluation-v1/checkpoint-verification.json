@@ -1,0 +1,25 @@
+{
+  "purpose": "Local checkpoint review; supplements rather than replaces collection-time inventories",
+  "date": "2026-10-21",
+  "epq_start_commit": "47f5d2c3f0d24c3edc4057f18b8849a83bfa3b13",
+  "maelstrom_collection_commit": "9336ee42104badb1b5e439edc1df5e8488c32987",
+  "maelstrom_completion_commit": "a881145a373fe2a4c9a25b0ca10f3b89c2b1db9e",
+  "maelstrom_changes_since_collection": ["docs/application.md", "docs/export.md", "docs/viewer.md"],
+  "original_integrity_inventory": {"files_checked": 59, "sha256_mismatches": 0},
+  "collection_end_changed_file_inventory": {"files_checked": 10, "sha256_mismatches_before_checkpoint_edits": 0},
+  "fresh_checks": [
+    {"command": "python3 -m unittest discover -s tests -p 'test*.py'", "tests": 16, "exit": 0},
+    {"command": "python3 -m unittest discover -s tests/baseline -p 'test*.py'", "tests": 26, "exit": 0},
+    {"command": "python3 -m unittest discover -s tests/verification -p 'test*.py'", "tests": 7, "exit": 0}
+  ],
+  "unsuccessful_check": {
+    "command": "python3 -m unittest discover -s tests -t .",
+    "outcome": "ImportError: Start directory is not importable; reran using the repository's established discovery commands above"
+  },
+  "rust_cuda_and_display_checks": "Retained collection runs only; not rerun during checkpoint preparation",
+  "raw_evidence": "Original bytes and inventories preserved, including any log whitespace and pre-authorisation status statements",
+  "completion_tags_in_both_histories": ["milestone-04/phase-03/complete", "milestone-04/complete"],
+  "publication": false,
+  "hosted_verification": false,
+  "new_performance_campaign": false
+}

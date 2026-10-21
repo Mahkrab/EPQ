@@ -1,0 +1,74 @@
+[
+  {
+    "argv": [
+      "/home/mahkrab/documents/programs/EPQ/Maelstrom/target/release/maelstrom",
+      "export",
+      "saved",
+      "Maelstrom/reference/falling-block-v1.json",
+      "--step-stride",
+      "120",
+      "--render-config",
+      "docs/project/development/milestones/04/assets/offline-v1/wide-camera.toml",
+      "--software",
+      "--output",
+      "/tmp/epq-application-usage-z33egotp/frames-saved"
+    ],
+    "exit": 5,
+    "elapsed_s": 0.009726266999678046,
+    "stdout": "",
+    "stderr": "maelstrom: saved observations missing scheduled indices: [360]\n"
+  },
+  {
+    "argv": [
+      "/home/mahkrab/documents/programs/EPQ/Maelstrom/target/release/maelstrom",
+      "export",
+      "saved",
+      "Maelstrom/reference/falling-block-v1.json",
+      "--step-stride",
+      "240",
+      "--render-config",
+      "docs/project/development/milestones/04/assets/offline-v1/wide-camera.toml",
+      "--software",
+      "--output",
+      "/tmp/epq-application-usage-t6249we0/frames-saved"
+    ],
+    "exit": 0,
+    "elapsed_s": 0.22648164200018073,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/home/mahkrab/documents/programs/EPQ/Maelstrom/target/release/maelstrom",
+      "replay",
+      "/tmp/epq-application-usage-t6249we0/frames-saved/manifest.json",
+      "--format",
+      "json",
+      "--output",
+      "/tmp/epq-application-usage-t6249we0/reconstructed.json"
+    ],
+    "exit": 0,
+    "elapsed_s": 0.6792637869993996,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/home/mahkrab/documents/programs/EPQ/Maelstrom/target/release/maelstrom",
+      "export",
+      "saved",
+      "/tmp/epq-application-usage-t6249we0/reconstructed.json",
+      "--step-stride",
+      "240",
+      "--render-config",
+      "docs/project/development/milestones/04/assets/offline-v1/wide-camera.toml",
+      "--software",
+      "--output",
+      "/tmp/epq-application-usage-t6249we0/frames-reconstructed"
+    ],
+    "exit": 0,
+    "elapsed_s": 0.209109241999613,
+    "stdout": "",
+    "stderr": ""
+  }
+]

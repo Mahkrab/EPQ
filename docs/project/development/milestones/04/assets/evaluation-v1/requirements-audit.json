@@ -1,0 +1,67 @@
+{
+  "objective": "Implement phase 03 of milestone 04",
+  "owning_plan": "docs/project/development/milestones/04/plan.md",
+  "gate": "G03 pending separately authorised checkpoint",
+  "requirements": [
+    {
+      "requirement": "contract_review",
+      "status": "verified",
+      "evidence_relative_to_milestone_04": [
+        "application-visualisation.md#contract-assessment",
+        "assets/evaluation-v1/display-checks.json",
+        "assets/evaluation-v1/checks.json",
+        "assets/evaluation-v1/pc-checks.json"
+      ],
+      "assessment": "Interaction, lifecycle, frame/publication, numerical independence and failure safety assessed separately; actual guide and harness defects retained."
+    },
+    {
+      "requirement": "regression_and_real_paths",
+      "status": "verified",
+      "evidence_relative_to_milestone_04": [
+        "assets/evaluation-v1/source-context.json",
+        "assets/evaluation-v1/checks.json",
+        "assets/evaluation-v1/pc-context.json",
+        "assets/evaluation-v1/pc-checks.json",
+        "assets/evaluation-v1/display-checks.json"
+      ],
+      "assessment": "224 headless; 257 viewer plus 8 explicit Vulkan; 257 PC CUDA/viewer plus 20 explicit hardware checks; 49 Python checks; focused native journeys pass. Initial timeout remains a failure."
+    },
+    {
+      "requirement": "cost_boundaries",
+      "status": "verified",
+      "evidence_relative_to_milestone_04": [
+        "application-visualisation.md#costs-and-evidence-limits"
+      ],
+      "assessment": "Solver steps, construction, copies/transport, audits, graphics/readback, encoding and unmeasured publication/total costs distinguished. No new benchmark or interactive-FPS claim."
+    },
+    {
+      "requirement": "supported_usage_and_recovery",
+      "status": "verified",
+      "evidence_relative_to_milestone_04": [
+        "application-visualisation.md#supported-use-and-recovery",
+        "assets/evaluation-v1/usage-checks.json",
+        "assets/evaluation-v1/usage-roundtrip.json",
+        "assets/evaluation-v1/document-checks.json"
+      ],
+      "assessment": "Build/launch paths, controls/settings, saved/replay semantics, recovery and unsupported environments documented. Corrected sparse saved usage verified end to end."
+    },
+    {
+      "requirement": "final_evaluation_handoff",
+      "status": "verified",
+      "evidence_relative_to_milestone_04": [
+        "application-visualisation.md#final-comparative-evaluation-handoff",
+        "assets/evaluation-v1/handoff-integrity.json"
+      ],
+      "assessment": "All four CPU/CUDA controls, exact two fixture families, numerical policies, campaign sources, accepted/output contracts, device provenance and threats retained. No new comparison campaign started."
+    },
+    {
+      "requirement": "completion_checkpoint",
+      "status": "awaiting_separate_authority",
+      "evidence_relative_to_milestone_04": [
+        "plan.md#phase-3-verify-evaluate-and-prepare-final-project-comparison",
+        "phases/phase-03-evaluation-handoff.md#limitations-and-gate-g03"
+      ],
+      "assessment": "No new commits, tag or gitlink change. Both phase-03/start tags and current EPQ gitlink verified. Intended completion tags require express authority under AGENTS.md."
+    }
+  ]
+}

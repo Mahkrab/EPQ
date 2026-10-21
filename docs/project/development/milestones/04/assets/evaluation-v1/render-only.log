@@ -1,0 +1,45 @@
+   Compiling spirv v0.4.0+sdk-1.4.341.0
+   Compiling once_cell v1.21.4
+   Compiling smallvec v1.16.3
+   Compiling wgpu-types v30.0.1
+   Compiling maelstrom v0.1.0 (/home/mahkrab/documents/programs/EPQ/Maelstrom)
+   Compiling png v0.18.1
+   Compiling parking_lot_core v0.9.12
+   Compiling parking_lot v0.12.5
+   Compiling naga v30.0.1
+   Compiling wgpu-naga-bridge v30.0.1
+   Compiling wgpu-hal v30.0.1
+   Compiling wgpu-core-deps-windows-linux-android v30.0.1
+   Compiling wgpu-core v30.0.1
+   Compiling wgpu v30.0.1
+    Finished `release` profile [optimized] target(s) in 58.05s
+     Running unittests src/lib.rs (target/release/deps/maelstrom-303aff697f1d196a)
+
+running 24 tests
+test cuda::tests::capacity_checks_do_not_allocate_or_need_a_device ... ok
+test application::tests::full_queue_rejects_restart_atomically_and_cancellation_bypasses_backpressure ... ok
+test execution::tests::unavailable_workers_are_a_typed_setup_failure ... ok
+test export::offscreen::tests::destroyed_device_rejects_offscreen_readback ... ignored, requires explicitly available software Vulkan
+test export::tests::stage_failures_retain_closed_frames_and_incomplete_progress ... ignored, requires explicitly available software Vulkan
+test application::tests::queued_old_steps_are_discarded_and_new_generation_stays_paused_at_zero ... ok
+test application::tests::shutdown_with_full_queue_resolves_unconstructed_handles_and_receipts ... ok
+test export::offscreen::tests::invalid_rgba_lengths_fail_encoding ... ok
+test neighbours::grid::tests::invalid_index_and_capacity_operations_are_errors ... ok
+test playback::tests::looping_holds_the_final_image_for_the_previous_interval ... ok
+test application::tests::panic_retains_active_snapshot_marks_queued_runs_and_join_reports_failure ... ok
+test neighbours::grid::tests::mapping_uses_floor_at_faces_edges_and_corners ... ok
+test playback::tests::clock_uses_recorded_intervals_speed_pause_seek_and_final_hold ... ok
+test execution::tests::joined_work_uses_distinct_workers_and_reports_lowest_index_failure ... ok
+test simulation::tests::exhausted_step_counter_cannot_wrap_or_accept_another_step ... ok
+test execution::tests::workers_are_reused_and_terminate_after_the_resource_is_dropped ... ok
+test workflow::tests::identity_digest_matches_the_standard_sha256_abc_vector ... ok
+test workflow::output::tests::a_partial_write_failure_never_publishes_a_destination ... ok
+test playback::tests::symlinks_are_not_followed ... ok
+test playback::tests::pixels_load_without_physical_inputs_or_the_recorded_cuda_device ... ok
+test playback::tests::zero_step_export_is_one_static_frame ... ok
+test playback::tests::missing_changed_invalid_and_wrong_sized_images_fail_without_regeneration ... ok
+test playback::tests::malformed_or_incomplete_manifests_do_not_become_playback_requests ... ok
+test playback::tests::unsafe_paths_order_steps_timestamps_hashes_and_dimensions_are_rejected ... ok
+
+test result: ok. 22 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.02s
+

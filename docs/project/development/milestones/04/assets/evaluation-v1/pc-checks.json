@@ -1,0 +1,36 @@
+[
+  {
+    "name": "pc-regression",
+    "argv": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "--features",
+      "cuda,viewer"
+    ],
+    "exit": 0,
+    "elapsed_s": 55.273820398011594,
+    "log": "pc-regression.log"
+  },
+  {
+    "name": "pc-hardware",
+    "argv": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "--features",
+      "cuda,viewer",
+      "--",
+      "--ignored",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit": 0,
+    "elapsed_s": 23.756457775001763,
+    "log": "pc-hardware.log"
+  }
+]

@@ -65,6 +65,13 @@ The [Milestone 04 completion plan](/docs/project/development/milestones/04/plan.
 contracts and lifecycle, interactive viewing, reproducible offline rendering, then evaluation and
 handoff to the final project comparison. Presentation consumes accepted state without owning the physics.
 
+The [application evaluation and final-comparison handoff](/docs/project/development/milestones/04/application-visualisation.md)
+assesses interaction, numerical independence, failure retention and saved-output reproducibility
+separately. It identifies supported environments, cost boundaries and retained CPU/CUDA controls.
+Local annotated `milestone-04/complete` checkpoints retain the assessed implementation, verification
+and exact parent/submodule pairing. Remote publication remains separate, and the final research
+comparison has not begun.
+
 ## Milestone 05: comparative evaluation
 
 Complete the controlled correctness, performance and scalability comparison across brute-force search, uniform-grid partitioning, CPU multithreading and CUDA acceleration, then evaluate the results against the research question.

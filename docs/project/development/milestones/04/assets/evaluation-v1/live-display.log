@@ -1,0 +1,19 @@
+Maelstrom | gen 1 Paused | 0/100000 steps | warnings 0
+Captured x11-01-initial.png: 1280x720
+Native key: n
+Native key: Escape
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/mahkrab/documents/programs/EPQ/tests/verification/viewer_display.py", line 254, in <module>
+    main()
+  File "/home/mahkrab/documents/programs/EPQ/tests/verification/viewer_display.py", line 236, in main
+    journey(x, window, args.output)
+  File "/home/mahkrab/documents/programs/EPQ/tests/verification/viewer_display.py", line 157, in journey
+    wait(r"gen 1 Paused.*1/100000 steps.*warnings 1")
+  File "/home/mahkrab/documents/programs/EPQ/tests/verification/viewer_display.py", line 148, in wait
+    return x.wait(window, pattern)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mahkrab/documents/programs/EPQ/tests/verification/viewer_display.py", line 94, in wait
+    raise RuntimeError(f"no title matching {pattern!r}; observed {title!r}")
+RuntimeError: no title matching 'gen 1 Paused.*1/100000 steps.*warnings 1'; observed 'Maelstrom | gen 1 Paused | 0/100000 steps | warnings 0'

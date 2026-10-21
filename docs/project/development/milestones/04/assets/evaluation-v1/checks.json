@@ -1,0 +1,239 @@
+[
+  {
+    "name": "fmt",
+    "argv": [
+      "cargo",
+      "fmt",
+      "--all",
+      "--",
+      "--check"
+    ],
+    "cwd": "Maelstrom",
+    "environment_overrides": {},
+    "environment_removed": [],
+    "exit": 0,
+    "elapsed_s": 0.7511324189999868,
+    "log": "fmt.log"
+  },
+  {
+    "name": "headless",
+    "argv": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "--no-default-features"
+    ],
+    "cwd": "Maelstrom",
+    "environment_overrides": {
+      "CUDA_HOME": "/nonexistent/toolkit",
+      "CXX": "/nonexistent/compiler"
+    },
+    "environment_removed": [
+      "DISPLAY",
+      "WAYLAND_DISPLAY",
+      "WAYLAND_SOCKET"
+    ],
+    "exit": 0,
+    "elapsed_s": 104.45680645300035,
+    "log": "headless.log"
+  },
+  {
+    "name": "headless-tree",
+    "argv": [
+      "cargo",
+      "tree",
+      "--locked",
+      "--offline",
+      "--no-default-features"
+    ],
+    "cwd": "Maelstrom",
+    "environment_overrides": {},
+    "environment_removed": [],
+    "exit": 0,
+    "elapsed_s": 0.13793650000025082,
+    "log": "headless-tree.log"
+  },
+  {
+    "name": "render-only",
+    "argv": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "--features",
+      "render",
+      "--lib"
+    ],
+    "cwd": "Maelstrom",
+    "environment_overrides": {},
+    "environment_removed": [],
+    "exit": 0,
+    "elapsed_s": 58.11051003400007,
+    "log": "render-only.log"
+  },
+  {
+    "name": "viewer",
+    "argv": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "--features",
+      "viewer"
+    ],
+    "cwd": "Maelstrom",
+    "environment_overrides": {},
+    "environment_removed": [],
+    "exit": 0,
+    "elapsed_s": 142.36430191199997,
+    "log": "viewer.log"
+  },
+  {
+    "name": "software-vulkan",
+    "argv": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "--features",
+      "viewer",
+      "--",
+      "--ignored",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "cwd": "Maelstrom",
+    "environment_overrides": {},
+    "environment_removed": [
+      "DISPLAY",
+      "WAYLAND_DISPLAY",
+      "WAYLAND_SOCKET"
+    ],
+    "exit": 0,
+    "elapsed_s": 8.48392806100037,
+    "log": "software-vulkan.log"
+  },
+  {
+    "name": "clippy",
+    "argv": [
+      "cargo",
+      "clippy",
+      "--release",
+      "--locked",
+      "--offline",
+      "--features",
+      "viewer",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "cwd": "Maelstrom",
+    "environment_overrides": {},
+    "environment_removed": [],
+    "exit": 0,
+    "elapsed_s": 43.201047663999816,
+    "log": "clippy.log"
+  },
+  {
+    "name": "rustdoc",
+    "argv": [
+      "cargo",
+      "doc",
+      "--release",
+      "--locked",
+      "--offline",
+      "--features",
+      "viewer",
+      "--no-deps"
+    ],
+    "cwd": "Maelstrom",
+    "environment_overrides": {
+      "RUSTDOCFLAGS": "-D warnings"
+    },
+    "environment_removed": [],
+    "exit": 0,
+    "elapsed_s": 5.70560371099964,
+    "log": "rustdoc.log"
+  },
+  {
+    "name": "parent",
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test*.py"
+    ],
+    "cwd": ".",
+    "environment_overrides": {},
+    "environment_removed": [],
+    "exit": 0,
+    "elapsed_s": 20.307438740999714,
+    "log": "parent.log"
+  },
+  {
+    "name": "baseline",
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/baseline",
+      "-p",
+      "test*.py"
+    ],
+    "cwd": ".",
+    "environment_overrides": {},
+    "environment_removed": [],
+    "exit": 0,
+    "elapsed_s": 7.307047808999414,
+    "log": "baseline.log"
+  },
+  {
+    "name": "verification",
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/verification",
+      "-p",
+      "test*.py"
+    ],
+    "cwd": ".",
+    "environment_overrides": {},
+    "environment_removed": [],
+    "exit": 0,
+    "elapsed_s": 0.30897791300048993,
+    "log": "verification.log"
+  },
+  {
+    "name": "viewer-build",
+    "argv": [
+      "cargo",
+      "build",
+      "--release",
+      "--locked",
+      "--offline",
+      "--features",
+      "viewer"
+    ],
+    "cwd": "Maelstrom",
+    "environment_overrides": {},
+    "environment_removed": [],
+    "exit": 0,
+    "elapsed_s": 0.3250821210003778,
+    "log": "viewer-build.log"
+  }
+]

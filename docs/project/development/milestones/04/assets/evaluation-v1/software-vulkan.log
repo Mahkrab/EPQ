@@ -1,0 +1,177 @@
+    Finished `release` profile [optimized] target(s) in 0.35s
+     Running unittests src/lib.rs (target/release/deps/maelstrom-7d90faafa0f90312)
+
+running 3 tests
+test export::offscreen::tests::destroyed_device_rejects_offscreen_readback ... ok
+test export::tests::stage_failures_retain_closed_frames_and_incomplete_progress ... device failure: graphics device unavailable: Destroyed: 
+encoding failure: wrong data size, expected 1292 got 1291
+ok
+test playback::tests::saved_pixels_keep_orientation_and_colour_through_the_graphics_pass ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 32 filtered out; finished in 0.52s
+
+     Running unittests src/main.rs (target/release/deps/maelstrom-96ee000111c2a857)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+
+     Running tests/application_lifecycle.rs (target/release/deps/application_lifecycle-c9b6fb1c41770040)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.00s
+
+     Running tests/application_motion.rs (target/release/deps/application_motion-0c74e5dc88d9848a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/cli_workflow.rs (target/release/deps/cli_workflow-bea560b74e534a2c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 33 filtered out; finished in 0.00s
+
+     Running tests/configuration_contract.rs (target/release/deps/configuration_contract-418cc7a124512d5a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 16 filtered out; finished in 0.00s
+
+     Running tests/cuda_boundary.rs (target/release/deps/cuda_boundary-344d528bbe240e66)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/cuda_execution.rs (target/release/deps/cuda_execution-06c15723a231fef6)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/export_contract.rs (target/release/deps/export_contract-9187e446a29039f9)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/export_device.rs (target/release/deps/export_device-c85a822e5c67bf35)
+
+running 4 tests
+test explicit_saved_prefix_and_process_interruption_cannot_claim_original_completion ... ok
+test exported_pngs_preserve_orientation_scale_depth_and_explicit_camera ... ok
+test exports_match_direct_observations_and_repeat_decoded_pixels ... export graphics: {"backend":"Vulkan","device":0,"device_type":"Cpu","driver":"llvmpipe","driver_info":"Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)","name":"llvmpipe (LLVM 20.1.2, 256 bits)","selection_index":0,"software_requested":true,"vendor":65541}
+export graphics: {"backend":"Vulkan","device":0,"device_type":"Cpu","driver":"llvmpipe","driver_info":"Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)","name":"llvmpipe (LLVM 20.1.2, 256 bits)","selection_index":0,"software_requested":true,"vendor":65541}
+export graphics: {"backend":"Vulkan","device":0,"device_type":"Cpu","driver":"llvmpipe","driver_info":"Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)","name":"llvmpipe (LLVM 20.1.2, 256 bits)","selection_index":0,"software_requested":true,"vendor":65541}
+export graphics: {"backend":"Vulkan","device":0,"device_type":"Cpu","driver":"llvmpipe","driver_info":"Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)","name":"llvmpipe (LLVM 20.1.2, 256 bits)","selection_index":0,"software_requested":true,"vendor":65541}
+export graphics: {"backend":"Vulkan","device":0,"device_type":"Cpu","driver":"llvmpipe","driver_info":"Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)","name":"llvmpipe (LLVM 20.1.2, 256 bits)","selection_index":0,"software_requested":true,"vendor":65541}
+ok
+test failures_and_cancellation_retain_incomplete_sequences_and_prior_files ... fault 0: export cancelled; cancellation polls 2
+fault 1: frame 1 publication: entity already exists; cancellation polls 23
+fault 2: progress staging: entity already exists; recording incomplete outcome also failed: progress staging: entity already exists; cancellation polls 23
+fault 3: manifest publication: entity already exists; cancellation polls 68
+ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.87s
+
+     Running tests/external_scenes.rs (target/release/deps/external_scenes-0e46cf30ff3830f4)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+
+     Running tests/fluid_foundations.rs (target/release/deps/fluid_foundations-8d3f139ea5aa9107)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 0.00s
+
+     Running tests/fluid_stability.rs (target/release/deps/fluid_stability-84b05aa09365eced)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 12 filtered out; finished in 0.00s
+
+     Running tests/headless_workflow.rs (target/release/deps/headless_workflow-4955220626f85195)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 20 filtered out; finished in 0.00s
+
+     Running tests/kernels_and_math.rs (target/release/deps/kernels_and_math-5a4085a27c09adf1)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.00s
+
+     Running tests/motion_boundaries_diagnostics.rs (target/release/deps/motion_boundaries_diagnostics-c3bc6ca22ddfcec1)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 12 filtered out; finished in 0.00s
+
+     Running tests/reference_lattice.rs (target/release/deps/reference_lattice-fe6c033dcc3cdde7)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+
+     Running tests/reference_verification.rs (target/release/deps/reference_verification-cde026dfb675dcd1)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+     Running tests/render_contract.rs (target/release/deps/render_contract-d904104dd9147012)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/render_device.rs (target/release/deps/render_device-712feffd3eff66ed)
+
+running 1 test
+test software_vulkan_draws_known_geometry_depth_and_retains_input_bits ... Vulkan integration: AdapterInfo { name: "llvmpipe (LLVM 20.1.2, 256 bits)", vendor: 65541, device: 0, device_type: Cpu, device_pci_bus_id: "", driver: "llvmpipe", driver_info: "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)", backend: Vulkan, subgroup_min_size: 8, subgroup_max_size: 8, transient_saves_memory: Some(false), limit_bucket: None }
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/scene_contract.rs (target/release/deps/scene_contract-4d2186e07564710e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+     Running tests/serial_simulation.rs (target/release/deps/serial_simulation-d6c0907c9cb9c169)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 24 filtered out; finished in 0.00s
+
+     Running tests/solver_regularisation.rs (target/release/deps/solver_regularisation-002c2d250d3ec6b2)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/threaded_execution.rs (target/release/deps/threaded_execution-ec05d6f333e9ac82)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.00s
+
+     Running tests/uniform_grid.rs (target/release/deps/uniform_grid-9715ecdfd24235bd)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.00s
+
+   Doc-tests maelstrom
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+

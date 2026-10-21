@@ -44,6 +44,9 @@ class X11:
             "XKeysymToKeycode": (c.c_uint, [c.c_void_p, c.c_ulong]),
             "XSendEvent": (c.c_int, [c.c_void_p, c.c_ulong, c.c_int, c.c_long, c.c_void_p]),
             "XFlush": (c.c_int, [c.c_void_p]),
+            "XSync": (c.c_int, [c.c_void_p, c.c_int]),
+            "XSetInputFocus": (c.c_int, [c.c_void_p, c.c_ulong, c.c_int, c.c_ulong]),
+            "XGetInputFocus": (c.c_int, [c.c_void_p, c.POINTER(c.c_ulong), c.POINTER(c.c_int)]),
             "XFetchName": (c.c_int, [c.c_void_p, c.c_ulong, c.POINTER(c.c_void_p)]),
             "XFree": (c.c_int, [c.c_void_p]),
             "XResizeWindow": (c.c_int, [c.c_void_p, c.c_ulong, c.c_uint, c.c_uint]),
@@ -94,6 +97,16 @@ class X11:
         raise RuntimeError(f"no title matching {pattern!r}; observed {title!r}")
 
     def key(self, window: int, name: str) -> None:
+        # winit routes core key events through its focused window. Addressing an
+        # XSendEvent to our drawable alone does not establish that focus, so an
+        # otherwise valid first key can be discarded. This also models the
+        # documented click-to-focus step before using controls.
+        self.lib.XSetInputFocus(self.display, window, 2, 0)  # RevertToParent, CurrentTime
+        self.lib.XSync(self.display, False)
+        focused, revert = c.c_ulong(), c.c_int()
+        self.lib.XGetInputFocus(self.display, c.byref(focused), c.byref(revert))
+        if focused.value != window:
+            raise RuntimeError("own test window did not acquire keyboard focus")
         symbol = ord(name) if len(name) == 1 else self.lib.XStringToKeysym(name.encode())
         code = self.lib.XKeysymToKeycode(self.display, symbol)
         if not code:

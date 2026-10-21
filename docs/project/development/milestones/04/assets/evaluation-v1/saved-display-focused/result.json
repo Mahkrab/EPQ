@@ -1,0 +1,34 @@
+{
+  "command": [
+    "MAELSTROM_BINARY",
+    "play",
+    "EXPORTED_SEQUENCE",
+    "--software",
+    "--paused"
+  ],
+  "exit": 0,
+  "sequence_files_unchanged": true,
+  "frames": 5,
+  "checks": [
+    "initial",
+    "seek",
+    "endpoints",
+    "resize",
+    "speed",
+    "restart",
+    "pause",
+    "resume",
+    "completion",
+    "close"
+  ],
+  "binary_sha256": "16a3f4af4e07d41a45e616b8c1a63b0837a2d7dbbcc72aae5c5b3613ec58dab2",
+  "sequence_sha256": {
+    "frame-00000000.png": "6eb704b08701083d5a10752f91fddacf31739dc5c78f4d31e589ad4bc5d2fb2a",
+    "frame-00000001.png": "6ef630c6fd9497d009a796ea7903a7aa852be9508271d4f6f2af7afb0be7c424",
+    "frame-00000002.png": "f090965f355af9634edd055ab074dab12e26d073f903275f64f87e3b1cb39b65",
+    "frame-00000003.png": "52ba962e586a762e33177e50829465b69ecfdeb75e018c610388307f0ddbd51a",
+    "frame-00000004.png": "81e969377ae969ae386b76400f5eb77497d6d4989c655c13d045021a62c3810e",
+    "manifest.json": "bab35be532a6bdfffea4ed4d0c1ba89f35435174c062f77fc323401d9ee5df91",
+    "progress.json": "2fca8c0b7cc7bc047834a587620d20290b16091493d4f4cffa42ce6923842a3c"
+  }
+}
