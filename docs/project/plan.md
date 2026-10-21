@@ -76,3 +76,8 @@ comparison has not begun.
 
 Complete the controlled correctness, performance and scalability comparison across brute-force search, uniform-grid partitioning, CPU multithreading and CUDA acceleration, then evaluate the results against the research question.
 
+The [Milestone 05 completion plan](/docs/project/development/milestones/05/plan.md) separates the
+evidence audit and evaluation protocol, verified comparison evidence, then synthesis and final-project
+handoff. The first decision is whether retained campaigns suffice or a matched new comparison is
+needed; preparing the plan does not begin collection or establish an evaluation result.
+
