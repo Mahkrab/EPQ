@@ -1,0 +1,219 @@
+maelstrom v0.1.0 (/home/mahkrab/documents/programs/EPQ/Maelstrom)
+├── clap v4.6.7
+│   ├── clap_builder v4.6.7
+│   │   ├── anstyle v1.0.14
+│   │   ├── clap_lex v1.1.1
+│   │   └── strsim v0.11.1
+│   └── clap_derive v4.6.7 (proc-macro)
+│       ├── heck v0.5.0
+│       ├── proc-macro2 v1.0.107
+│       │   └── unicode-ident v1.0.24
+│       ├── quote v1.0.47
+│       │   └── proc-macro2 v1.0.107 (*)
+│       └── syn v3.0.3
+│           ├── proc-macro2 v1.0.107 (*)
+│           ├── quote v1.0.47 (*)
+│           └── unicode-ident v1.0.24
+├── ctrlc v3.5.2
+│   └── nix v0.31.3
+│       ├── bitflags v2.13.2
+│       ├── cfg-if v1.0.5
+│       └── libc v0.2.190
+│       [build-dependencies]
+│       └── cfg_aliases v0.2.2
+├── png v0.18.1
+│   ├── bitflags v2.13.2
+│   ├── crc32fast v1.5.3
+│   │   └── cfg-if v1.0.5
+│   ├── fdeflate v0.3.7
+│   │   └── simd-adler32 v0.3.10
+│   ├── flate2 v1.1.10
+│   │   ├── crc32fast v1.5.3 (*)
+│   │   └── miniz_oxide v0.9.1
+│   │       ├── adler2 v2.0.1
+│   │       └── simd-adler32 v0.3.10
+│   └── miniz_oxide v0.8.9
+│       ├── adler2 v2.0.1
+│       └── simd-adler32 v0.3.10
+├── pollster v0.4.0
+├── rayon v1.12.0
+│   ├── either v1.19.0
+│   └── rayon-core v1.13.0
+│       ├── crossbeam-deque v0.8.8
+│       │   ├── crossbeam-epoch v0.9.21
+│       │   │   └── crossbeam-utils v0.8.23
+│       │   └── crossbeam-utils v0.8.23
+│       └── crossbeam-utils v0.8.23
+├── serde v1.0.229
+│   ├── serde_core v1.0.229
+│   └── serde_derive v1.0.229 (proc-macro)
+│       ├── proc-macro2 v1.0.107 (*)
+│       ├── quote v1.0.47 (*)
+│       └── syn v3.0.3 (*)
+├── serde_json v1.0.154
+│   ├── itoa v1.0.18
+│   ├── memchr v2.8.3
+│   ├── serde_core v1.0.229
+│   └── zmij v1.0.23
+├── sha2 v0.11.1
+│   ├── cfg-if v1.0.5
+│   ├── cpufeatures v0.3.1
+│   └── digest v0.11.3
+│       ├── block-buffer v0.12.1
+│       │   └── hybrid-array v0.4.15
+│       │       └── typenum v1.20.1
+│       └── crypto-common v0.2.2
+│           └── hybrid-array v0.4.15 (*)
+├── toml v1.1.4+spec-1.1.0
+│   ├── serde_core v1.0.229
+│   ├── serde_spanned v1.1.1
+│   │   └── serde_core v1.0.229
+│   ├── toml_datetime v1.1.1+spec-1.1.0
+│   │   └── serde_core v1.0.229
+│   ├── toml_parser v1.1.3+spec-1.1.0
+│   │   └── winnow v1.0.4
+│   └── winnow v1.0.4
+└── wgpu v30.0.1
+    ├── arrayvec v0.7.8
+    ├── bitflags v2.13.2
+    ├── bytemuck v1.25.2
+    │   └── bytemuck_derive v1.12.1 (proc-macro)
+    │       ├── proc-macro2 v1.0.107 (*)
+    │       ├── quote v1.0.47 (*)
+    │       └── syn v3.0.3 (*)
+    ├── cfg-if v1.0.5
+    ├── document-features v0.2.12 (proc-macro)
+    │   └── litrs v1.0.1
+    ├── hashbrown v0.17.1
+    │   └── foldhash v0.2.0
+    ├── log v0.4.34
+    ├── profiling v1.0.18
+    ├── raw-window-handle v0.6.2
+    ├── smallvec v1.16.3
+    ├── static_assertions v1.1.0
+    ├── wgpu-core v30.0.1
+    │   ├── arrayvec v0.7.8
+    │   ├── bit-set v0.10.0
+    │   │   └── bit-vec v0.9.1
+    │   ├── bit-vec v0.9.1
+    │   ├── bitflags v2.13.2
+    │   ├── bytemuck v1.25.2 (*)
+    │   ├── document-features v0.2.12 (proc-macro) (*)
+    │   ├── hashbrown v0.17.1 (*)
+    │   ├── indexmap v2.14.2
+    │   │   ├── equivalent v1.0.3
+    │   │   └── hashbrown v0.17.1 (*)
+    │   ├── log v0.4.34
+    │   ├── naga v30.0.1
+    │   │   ├── arrayvec v0.7.8
+    │   │   ├── bit-set v0.10.0 (*)
+    │   │   ├── bitflags v2.13.2
+    │   │   ├── cfg-if v1.0.5
+    │   │   ├── codespan-reporting v0.13.1
+    │   │   │   └── unicode-width v0.2.2
+    │   │   ├── half v2.7.1
+    │   │   │   ├── cfg-if v1.0.5
+    │   │   │   ├── num-traits v0.2.19
+    │   │   │   │   └── libm v0.2.16
+    │   │   │   │   [build-dependencies]
+    │   │   │   │   └── autocfg v1.5.1
+    │   │   │   └── zerocopy v0.8.63
+    │   │   │       └── zerocopy-derive v0.8.63 (proc-macro)
+    │   │   │           ├── proc-macro2 v1.0.107 (*)
+    │   │   │           ├── quote v1.0.47 (*)
+    │   │   │           └── syn v2.0.119
+    │   │   │               ├── proc-macro2 v1.0.107 (*)
+    │   │   │               ├── quote v1.0.47 (*)
+    │   │   │               └── unicode-ident v1.0.24
+    │   │   ├── hashbrown v0.17.1 (*)
+    │   │   ├── indexmap v2.14.2 (*)
+    │   │   ├── libm v0.2.16
+    │   │   ├── log v0.4.34
+    │   │   ├── naga-types v30.0.1
+    │   │   │   ├── hashbrown v0.17.1 (*)
+    │   │   │   ├── indexmap v2.14.2 (*)
+    │   │   │   ├── rustc-hash v1.1.0
+    │   │   │   └── thiserror v2.0.21
+    │   │   │       └── thiserror-impl v2.0.21 (proc-macro)
+    │   │   │           ├── proc-macro2 v1.0.107 (*)
+    │   │   │           ├── quote v1.0.47 (*)
+    │   │   │           └── syn v3.0.3 (*)
+    │   │   ├── num-traits v0.2.19 (*)
+    │   │   ├── once_cell v1.21.4
+    │   │   ├── rustc-hash v1.1.0
+    │   │   ├── spirv v0.4.0+sdk-1.4.341.0
+    │   │   │   └── bitflags v2.13.2
+    │   │   ├── thiserror v2.0.21 (*)
+    │   │   └── unicode-ident v1.0.24
+    │   │   [build-dependencies]
+    │   │   └── cfg_aliases v0.2.2
+    │   ├── naga-types v30.0.1 (*)
+    │   ├── once_cell v1.21.4
+    │   ├── parking_lot v0.12.5
+    │   │   ├── lock_api v0.4.14
+    │   │   │   └── scopeguard v1.2.0
+    │   │   └── parking_lot_core v0.9.12
+    │   │       ├── cfg-if v1.0.5
+    │   │       ├── libc v0.2.190
+    │   │       └── smallvec v1.16.3
+    │   ├── profiling v1.0.18
+    │   ├── raw-window-handle v0.6.2
+    │   ├── rustc-hash v1.1.0
+    │   ├── smallvec v1.16.3
+    │   ├── thiserror v2.0.21 (*)
+    │   ├── wgpu-core-deps-windows-linux-android v30.0.1
+    │   │   └── wgpu-hal v30.0.1
+    │   │       ├── arrayvec v0.7.8
+    │   │       ├── ash v0.38.0+1.3.281
+    │   │       │   └── libloading v0.8.9
+    │   │       │       └── cfg-if v1.0.5
+    │   │       ├── bitflags v2.13.2
+    │   │       ├── bytemuck v1.25.2 (*)
+    │   │       ├── cfg-if v1.0.5
+    │   │       ├── gpu-allocator v0.28.0
+    │   │       │   ├── ash v0.38.0+1.3.281 (*)
+    │   │       │   ├── hashbrown v0.16.1
+    │   │       │   │   ├── allocator-api2 v0.2.21
+    │   │       │   │   ├── equivalent v1.0.3
+    │   │       │   │   └── foldhash v0.2.0
+    │   │       │   ├── log v0.4.34
+    │   │       │   ├── presser v0.3.1
+    │   │       │   └── thiserror v2.0.21 (*)
+    │   │       ├── hashbrown v0.17.1 (*)
+    │   │       ├── libc v0.2.190
+    │   │       ├── libloading v0.8.9 (*)
+    │   │       ├── log v0.4.34
+    │   │       ├── naga v30.0.1 (*)
+    │   │       ├── naga-types v30.0.1 (*)
+    │   │       ├── ordered-float v5.5.0
+    │   │       │   └── num-traits v0.2.19 (*)
+    │   │       ├── parking_lot v0.12.5 (*)
+    │   │       ├── profiling v1.0.18
+    │   │       ├── raw-window-handle v0.6.2
+    │   │       ├── renderdoc-sys v1.1.0
+    │   │       ├── smallvec v1.16.3
+    │   │       ├── static_assertions v1.1.0
+    │   │       ├── thiserror v2.0.21 (*)
+    │   │       ├── wgpu-naga-bridge v30.0.1
+    │   │       │   ├── naga v30.0.1 (*)
+    │   │       │   └── wgpu-types v30.0.1
+    │   │       │       ├── bitflags v2.13.2
+    │   │       │       ├── bytemuck v1.25.2 (*)
+    │   │       │       ├── log v0.4.34
+    │   │       │       ├── naga-types v30.0.1 (*)
+    │   │       │       ├── raw-window-handle v0.6.2
+    │   │       │       └── static_assertions v1.1.0
+    │   │       └── wgpu-types v30.0.1 (*)
+    │   │       [build-dependencies]
+    │   │       └── cfg_aliases v0.2.2
+    │   ├── wgpu-hal v30.0.1 (*)
+    │   ├── wgpu-naga-bridge v30.0.1 (*)
+    │   └── wgpu-types v30.0.1 (*)
+    │   [build-dependencies]
+    │   └── cfg_aliases v0.2.2
+    ├── wgpu-hal v30.0.1 (*)
+    └── wgpu-types v30.0.1 (*)
+    [build-dependencies]
+    └── cfg_aliases v0.2.2
+[build-dependencies]
+└── sha2 v0.11.1 (*)

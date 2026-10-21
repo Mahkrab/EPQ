@@ -1,0 +1,2324 @@
+{
+  "schema_version": 1,
+  "application_version": "0.1.0",
+  "backend": "serial-uniform-grid-pbf-binary32-8-jacobi-v2",
+  "request": {
+    "steps": "5",
+    "checkpoints": [
+      "0",
+      "2",
+      "4",
+      "5"
+    ]
+  },
+  "completed_steps": "5",
+  "metadata": {
+    "run_id": "sha256:b551c112166a2d417b3a3d865a6ce4dcaff1e362697d54f886abfffb1d688185",
+    "input_id": "sha256:3d9bcf4a023d39803cbaadef97a94ce454493c575f1d56c356241e55bb026a34",
+    "configuration_id": "sha256:6a917a477430c0557b0371a08362389d31ba29470a740a2d623cd74d90134621",
+    "backend": "serial-uniform-grid-pbf-binary32-8-jacobi-v2",
+    "application_version": "0.1.0",
+    "build_revision": null,
+    "target_os": "linux",
+    "target_arch": "x86_64",
+    "debug_assertions": true
+  },
+  "input": {
+    "schema_version": 1,
+    "scene_schema_version": 1,
+    "name": "small-lattice-reference-v1",
+    "description": "Unforced three-by-three-by-three lattice for independent multi-step verification",
+    "randomness": "none",
+    "configuration": {
+      "schema_version": 1,
+      "name": "maelstrom-defaults-v4",
+      "description": "Position-Based Fluids numerical defaults",
+      "numerical": {
+        "scalar_precision": "binary32",
+        "coordinate_system": "right_handed_y_up_metres_seconds_kilograms",
+        "timestep_policy": "fixed",
+        "density_kernel": "poly6",
+        "correction_kernel": "spiky",
+        "solver_update_policy": "jacobi_immutable_snapshot",
+        "external_acceleration_m_s2": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "fixed_timestep_s": 0.008333334,
+        "cfl_factor": 0.4,
+        "particle_spacing_m": 0.05,
+        "support_radius_ratio": 2.0,
+        "physical_rest_density_kg_m3": 1000.0,
+        "solver_iterations": 8,
+        "relaxation_scale": 20.0,
+        "artificial_pressure_enabled": true,
+        "artificial_pressure_strength_scale": 0.1,
+        "artificial_pressure_reference_separation_ratio": 0.2,
+        "artificial_pressure_exponent": 4.0,
+        "support_policy": "strict_less_than",
+        "boundary_model": "static_plane_projection",
+        "neighbour_rebuild_policy": "once_after_prediction",
+        "particle_order_policy": "ascending_particle_identity",
+        "xsph_viscosity_enabled": false,
+        "vorticity_confinement_enabled": false
+      },
+      "derived": {
+        "particle_diameter_m": 0.05,
+        "support_radius_m": 0.1,
+        "normalised_rest_density_per_m3": 8078.199,
+        "particle_mass_kg": 0.123789966,
+        "relaxation_per_m2": 1999.9999,
+        "artificial_pressure_strength_m2": 0.001,
+        "artificial_pressure_reference_separation_m": 0.020000001,
+        "lattice_offset_count": 27
+      },
+      "provenance": {
+        "artificial_pressure_enabled": "configuration_file",
+        "artificial_pressure_exponent": "configuration_file",
+        "artificial_pressure_reference_separation_ratio": "configuration_file",
+        "artificial_pressure_strength_scale": "configuration_file",
+        "boundary_model": "configuration_file",
+        "cfl_factor": "configuration_file",
+        "coordinate_system": "configuration_file",
+        "correction_kernel": "configuration_file",
+        "correction_scale": "configuration_file",
+        "density_kernel": "configuration_file",
+        "external_acceleration_m_s2": "scene",
+        "fixed_timestep_s": "configuration_file",
+        "neighbour_rebuild_policy": "configuration_file",
+        "particle_order_policy": "configuration_file",
+        "particle_spacing_m": "configuration_file",
+        "physical_rest_density_kg_m3": "configuration_file",
+        "relaxation_scale": "configuration_file",
+        "scalar_precision": "configuration_file",
+        "solver_iterations": "configuration_file",
+        "solver_update_policy": "configuration_file",
+        "support_policy": "configuration_file",
+        "support_radius_ratio": "configuration_file",
+        "timestep_policy": "configuration_file",
+        "vorticity_confinement_enabled": "configuration_file",
+        "xsph_viscosity_enabled": "configuration_file"
+      },
+      "comparison_key": "configuration-comparison-v1|binary32|right_handed_y_up_metres_seconds_kilograms|fixed|poly6|spiky|jacobi_immutable_snapshot|00000000,00000000,00000000|3c088889|3ecccccd|3d4ccccd|40000000|447a0000|8|41a00000|true|3dcccccd|3e4ccccd|40800000|strict_less_than|static_plane_projection|once_after_prediction|ascending_particle_identity|false|false|3d4ccccd|3dcccccd|45fc7198|3dfd8598|44f9ffff|3a83126f|3ca3d70b|27"
+    },
+    "planes": [],
+    "particles": [
+      {
+        "identity": "0",
+        "position_m": {
+          "x": 0.2,
+          "y": 0.4,
+          "z": 0.2
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "1",
+        "position_m": {
+          "x": 0.2,
+          "y": 0.4,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "2",
+        "position_m": {
+          "x": 0.2,
+          "y": 0.4,
+          "z": 0.3
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "3",
+        "position_m": {
+          "x": 0.2,
+          "y": 0.45000002,
+          "z": 0.2
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "4",
+        "position_m": {
+          "x": 0.2,
+          "y": 0.45000002,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "5",
+        "position_m": {
+          "x": 0.2,
+          "y": 0.45000002,
+          "z": 0.3
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "6",
+        "position_m": {
+          "x": 0.2,
+          "y": 0.5,
+          "z": 0.2
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "7",
+        "position_m": {
+          "x": 0.2,
+          "y": 0.5,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "8",
+        "position_m": {
+          "x": 0.2,
+          "y": 0.5,
+          "z": 0.3
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "9",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.4,
+          "z": 0.2
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "10",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.4,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "11",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.4,
+          "z": 0.3
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "12",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.45000002,
+          "z": 0.2
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "13",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.45000002,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "14",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.45000002,
+          "z": 0.3
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "15",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.5,
+          "z": 0.2
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "16",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.5,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "17",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.5,
+          "z": 0.3
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "18",
+        "position_m": {
+          "x": 0.3,
+          "y": 0.4,
+          "z": 0.2
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "19",
+        "position_m": {
+          "x": 0.3,
+          "y": 0.4,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "20",
+        "position_m": {
+          "x": 0.3,
+          "y": 0.4,
+          "z": 0.3
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "21",
+        "position_m": {
+          "x": 0.3,
+          "y": 0.45000002,
+          "z": 0.2
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "22",
+        "position_m": {
+          "x": 0.3,
+          "y": 0.45000002,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "23",
+        "position_m": {
+          "x": 0.3,
+          "y": 0.45000002,
+          "z": 0.3
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "24",
+        "position_m": {
+          "x": 0.3,
+          "y": 0.5,
+          "z": 0.2
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "25",
+        "position_m": {
+          "x": 0.3,
+          "y": 0.5,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "26",
+        "position_m": {
+          "x": 0.3,
+          "y": 0.5,
+          "z": 0.3
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    ],
+    "comparison_key": "scene-comparison-v1|randomness=none|configuration-comparison-v1|binary32|right_handed_y_up_metres_seconds_kilograms|fixed|poly6|spiky|jacobi_immutable_snapshot|00000000,00000000,00000000|3c088889|3ecccccd|3d4ccccd|40000000|447a0000|8|41a00000|true|3dcccccd|3e4ccccd|40800000|strict_less_than|static_plane_projection|once_after_prediction|ascending_particle_identity|false|false|3d4ccccd|3dcccccd|45fc7198|3dfd8598|44f9ffff|3a83126f|3ca3d70b|27|planes|particles:0:3e4ccccd,3ecccccd,3e4ccccd,00000000,00000000,00000000:1:3e4ccccd,3ecccccd,3e800000,00000000,00000000,00000000:2:3e4ccccd,3ecccccd,3e99999a,00000000,00000000,00000000:3:3e4ccccd,3ee66667,3e4ccccd,00000000,00000000,00000000:4:3e4ccccd,3ee66667,3e800000,00000000,00000000,00000000:5:3e4ccccd,3ee66667,3e99999a,00000000,00000000,00000000:6:3e4ccccd,3f000000,3e4ccccd,00000000,00000000,00000000:7:3e4ccccd,3f000000,3e800000,00000000,00000000,00000000:8:3e4ccccd,3f000000,3e99999a,00000000,00000000,00000000:9:3e800000,3ecccccd,3e4ccccd,00000000,00000000,00000000:10:3e800000,3ecccccd,3e800000,00000000,00000000,00000000:11:3e800000,3ecccccd,3e99999a,00000000,00000000,00000000:12:3e800000,3ee66667,3e4ccccd,00000000,00000000,00000000:13:3e800000,3ee66667,3e800000,00000000,00000000,00000000:14:3e800000,3ee66667,3e99999a,00000000,00000000,00000000:15:3e800000,3f000000,3e4ccccd,00000000,00000000,00000000:16:3e800000,3f000000,3e800000,00000000,00000000,00000000:17:3e800000,3f000000,3e99999a,00000000,00000000,00000000:18:3e99999a,3ecccccd,3e4ccccd,00000000,00000000,00000000:19:3e99999a,3ecccccd,3e800000,00000000,00000000,00000000:20:3e99999a,3ecccccd,3e99999a,00000000,00000000,00000000:21:3e99999a,3ee66667,3e4ccccd,00000000,00000000,00000000:22:3e99999a,3ee66667,3e800000,00000000,00000000,00000000:23:3e99999a,3ee66667,3e99999a,00000000,00000000,00000000:24:3e99999a,3f000000,3e4ccccd,00000000,00000000,00000000:25:3e99999a,3f000000,3e800000,00000000,00000000,00000000:26:3e99999a,3f000000,3e99999a,00000000,00000000,00000000"
+  },
+  "steps": [
+    {
+      "completed_steps": "1",
+      "maximum_speed_m_s": 0.0,
+      "cfl_limit": {
+        "kind": "unbounded"
+      },
+      "warning": false
+    },
+    {
+      "completed_steps": "2",
+      "maximum_speed_m_s": 1.9554543,
+      "cfl_limit": {
+        "kind": "finite",
+        "seconds": 0.010227802
+      },
+      "warning": false
+    },
+    {
+      "completed_steps": "3",
+      "maximum_speed_m_s": 0.7389199,
+      "cfl_limit": {
+        "kind": "finite",
+        "seconds": 0.027066533
+      },
+      "warning": false
+    },
+    {
+      "completed_steps": "4",
+      "maximum_speed_m_s": 0.34383646,
+      "cfl_limit": {
+        "kind": "finite",
+        "seconds": 0.05816719
+      },
+      "warning": false
+    },
+    {
+      "completed_steps": "5",
+      "maximum_speed_m_s": 0.17879246,
+      "cfl_limit": {
+        "kind": "finite",
+        "seconds": 0.11186154
+      },
+      "warning": false
+    }
+  ],
+  "checkpoints": [
+    {
+      "snapshot": {
+        "schema_version": 1,
+        "completed_steps": "0",
+        "particles": [
+          {
+            "identity": "0",
+            "position_m": {
+              "x": 0.2,
+              "y": 0.4,
+              "z": 0.2
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "1",
+            "position_m": {
+              "x": 0.2,
+              "y": 0.4,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "2",
+            "position_m": {
+              "x": 0.2,
+              "y": 0.4,
+              "z": 0.3
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "3",
+            "position_m": {
+              "x": 0.2,
+              "y": 0.45000002,
+              "z": 0.2
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "4",
+            "position_m": {
+              "x": 0.2,
+              "y": 0.45000002,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "5",
+            "position_m": {
+              "x": 0.2,
+              "y": 0.45000002,
+              "z": 0.3
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "6",
+            "position_m": {
+              "x": 0.2,
+              "y": 0.5,
+              "z": 0.2
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "7",
+            "position_m": {
+              "x": 0.2,
+              "y": 0.5,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "8",
+            "position_m": {
+              "x": 0.2,
+              "y": 0.5,
+              "z": 0.3
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "9",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.4,
+              "z": 0.2
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "10",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.4,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "11",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.4,
+              "z": 0.3
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "12",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.45000002,
+              "z": 0.2
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "13",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.45000002,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "14",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.45000002,
+              "z": 0.3
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "15",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.5,
+              "z": 0.2
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "16",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.5,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "17",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.5,
+              "z": 0.3
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "18",
+            "position_m": {
+              "x": 0.3,
+              "y": 0.4,
+              "z": 0.2
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "19",
+            "position_m": {
+              "x": 0.3,
+              "y": 0.4,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "20",
+            "position_m": {
+              "x": 0.3,
+              "y": 0.4,
+              "z": 0.3
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "21",
+            "position_m": {
+              "x": 0.3,
+              "y": 0.45000002,
+              "z": 0.2
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "22",
+            "position_m": {
+              "x": 0.3,
+              "y": 0.45000002,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "23",
+            "position_m": {
+              "x": 0.3,
+              "y": 0.45000002,
+              "z": 0.3
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "24",
+            "position_m": {
+              "x": 0.3,
+              "y": 0.5,
+              "z": 0.2
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "25",
+            "position_m": {
+              "x": 0.3,
+              "y": 0.5,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "26",
+            "position_m": {
+              "x": 0.3,
+              "y": 0.5,
+              "z": 0.3
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          }
+        ]
+      },
+      "density": {
+        "sample_count": 27,
+        "mean_error": 0.3423119,
+        "maximum_error": 0.48484862
+      }
+    },
+    {
+      "snapshot": {
+        "schema_version": 1,
+        "completed_steps": "2",
+        "particles": [
+          {
+            "identity": "0",
+            "position_m": {
+              "x": 0.21282484,
+              "y": 0.41308308,
+              "z": 0.21282482
+            },
+            "velocity_m_s": {
+              "x": 0.42841133,
+              "y": 0.40504214,
+              "z": 0.42840955
+            }
+          },
+          {
+            "identity": "1",
+            "position_m": {
+              "x": 0.20586632,
+              "y": 0.40579766,
+              "z": 0.24999997
+            },
+            "velocity_m_s": {
+              "x": 0.0244081,
+              "y": 0.003350973,
+              "z": -0.0000035762785
+            }
+          },
+          {
+            "identity": "2",
+            "position_m": {
+              "x": 0.21282485,
+              "y": 0.4130831,
+              "z": 0.28717512
+            },
+            "velocity_m_s": {
+              "x": 0.42841133,
+              "y": 0.40504572,
+              "z": -0.42841312
+            }
+          },
+          {
+            "identity": "3",
+            "position_m": {
+              "x": 0.20550105,
+              "y": 0.45000002,
+              "z": 0.20550106
+            },
+            "velocity_m_s": {
+              "x": -0.016386507,
+              "y": 0.0,
+              "z": -0.016384719
+            }
+          },
+          {
+            "identity": "4",
+            "position_m": {
+              "x": 0.19190758,
+              "y": 0.45000002,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": -0.7389199,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "5",
+            "position_m": {
+              "x": 0.20550108,
+              "y": 0.45000005,
+              "z": 0.29449898
+            },
+            "velocity_m_s": {
+              "x": -0.016384719,
+              "y": 0.0000035762785,
+              "z": 0.016390083
+            }
+          },
+          {
+            "identity": "6",
+            "position_m": {
+              "x": 0.21282487,
+              "y": 0.48691696,
+              "z": 0.21282485
+            },
+            "velocity_m_s": {
+              "x": 0.4284149,
+              "y": -0.40504214,
+              "z": 0.42841312
+            }
+          },
+          {
+            "identity": "7",
+            "position_m": {
+              "x": 0.20586629,
+              "y": 0.4942024,
+              "z": 0.24999997
+            },
+            "velocity_m_s": {
+              "x": 0.024406312,
+              "y": -0.0033473966,
+              "z": -0.0000035762785
+            }
+          },
+          {
+            "identity": "8",
+            "position_m": {
+              "x": 0.21282487,
+              "y": 0.48691696,
+              "z": 0.28717512
+            },
+            "velocity_m_s": {
+              "x": 0.42841312,
+              "y": -0.40504214,
+              "z": -0.42841312
+            }
+          },
+          {
+            "identity": "9",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.40579766,
+              "z": 0.20586634
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.003350973,
+              "z": 0.024409888
+            }
+          },
+          {
+            "identity": "10",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.3920061,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": -0.7359659,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "11",
+            "position_m": {
+              "x": 0.24999999,
+              "y": 0.40579766,
+              "z": 0.29413372
+            },
+            "velocity_m_s": {
+              "x": -0.0000017881392,
+              "y": 0.003350973,
+              "z": -0.024404524
+            }
+          },
+          {
+            "identity": "12",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.45000002,
+              "z": 0.1919076
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": -0.7389181
+            }
+          },
+          {
+            "identity": "13",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.45000002,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "14",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.45000002,
+              "z": 0.30809242
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.73891634
+            }
+          },
+          {
+            "identity": "15",
+            "position_m": {
+              "x": 0.24999999,
+              "y": 0.4942024,
+              "z": 0.20586629
+            },
+            "velocity_m_s": {
+              "x": -0.0000017881392,
+              "y": -0.0033473966,
+              "z": 0.024406312
+            }
+          },
+          {
+            "identity": "16",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.50799394,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.7359695,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "17",
+            "position_m": {
+              "x": 0.24999999,
+              "y": 0.4942024,
+              "z": 0.2941337
+            },
+            "velocity_m_s": {
+              "x": -0.0000017881392,
+              "y": -0.0033473966,
+              "z": -0.0244081
+            }
+          },
+          {
+            "identity": "18",
+            "position_m": {
+              "x": 0.28717515,
+              "y": 0.4130831,
+              "z": 0.21282485
+            },
+            "velocity_m_s": {
+              "x": -0.42841312,
+              "y": 0.40504572,
+              "z": 0.42841133
+            }
+          },
+          {
+            "identity": "19",
+            "position_m": {
+              "x": 0.29413372,
+              "y": 0.40579766,
+              "z": 0.24999999
+            },
+            "velocity_m_s": {
+              "x": -0.024404524,
+              "y": 0.003350973,
+              "z": -0.0000017881392
+            }
+          },
+          {
+            "identity": "20",
+            "position_m": {
+              "x": 0.28717512,
+              "y": 0.4130831,
+              "z": 0.28717512
+            },
+            "velocity_m_s": {
+              "x": -0.42841312,
+              "y": 0.40504572,
+              "z": -0.42841312
+            }
+          },
+          {
+            "identity": "21",
+            "position_m": {
+              "x": 0.29449898,
+              "y": 0.45000005,
+              "z": 0.20550108
+            },
+            "velocity_m_s": {
+              "x": 0.016390083,
+              "y": 0.0000035762785,
+              "z": -0.016384719
+            }
+          },
+          {
+            "identity": "22",
+            "position_m": {
+              "x": 0.30809242,
+              "y": 0.45000002,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.73891634,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "23",
+            "position_m": {
+              "x": 0.29449895,
+              "y": 0.45000002,
+              "z": 0.29449895
+            },
+            "velocity_m_s": {
+              "x": 0.016386507,
+              "y": 0.0,
+              "z": 0.016386507
+            }
+          },
+          {
+            "identity": "24",
+            "position_m": {
+              "x": 0.28717512,
+              "y": 0.48691696,
+              "z": 0.21282487
+            },
+            "velocity_m_s": {
+              "x": -0.42841312,
+              "y": -0.40504214,
+              "z": 0.42841312
+            }
+          },
+          {
+            "identity": "25",
+            "position_m": {
+              "x": 0.2941337,
+              "y": 0.4942024,
+              "z": 0.24999999
+            },
+            "velocity_m_s": {
+              "x": -0.0244081,
+              "y": -0.0033473966,
+              "z": -0.0000017881392
+            }
+          },
+          {
+            "identity": "26",
+            "position_m": {
+              "x": 0.28717512,
+              "y": 0.48691693,
+              "z": 0.28717512
+            },
+            "velocity_m_s": {
+              "x": -0.42841312,
+              "y": -0.40504572,
+              "z": -0.42841312
+            }
+          }
+        ]
+      },
+      "density": {
+        "sample_count": 27,
+        "mean_error": 0.14464206,
+        "maximum_error": 0.37003505
+      }
+    },
+    {
+      "snapshot": {
+        "schema_version": 1,
+        "completed_steps": "4",
+        "particles": [
+          {
+            "identity": "0",
+            "position_m": {
+              "x": 0.21495712,
+              "y": 0.4154052,
+              "z": 0.21495701
+            },
+            "velocity_m_s": {
+              "x": 0.06055891,
+              "y": 0.07391452,
+              "z": 0.06055176
+            }
+          },
+          {
+            "identity": "1",
+            "position_m": {
+              "x": 0.20432195,
+              "y": 0.40350172,
+              "z": 0.2499999
+            },
+            "velocity_m_s": {
+              "x": -0.08019089,
+              "y": -0.13914941,
+              "z": -0.0000053644176
+            }
+          },
+          {
+            "identity": "2",
+            "position_m": {
+              "x": 0.2149571,
+              "y": 0.41540533,
+              "z": 0.28504273
+            },
+            "velocity_m_s": {
+              "x": 0.060555335,
+              "y": 0.0739181,
+              "z": -0.060564276
+            }
+          },
+          {
+            "identity": "3",
+            "position_m": {
+              "x": 0.20345406,
+              "y": 0.45000002,
+              "z": 0.2034542
+            },
+            "velocity_m_s": {
+              "x": -0.11544942,
+              "y": 0.0,
+              "z": -0.11544048
+            }
+          },
+          {
+            "identity": "4",
+            "position_m": {
+              "x": 0.19261466,
+              "y": 0.45000002,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.17879067,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "5",
+            "position_m": {
+              "x": 0.2034543,
+              "y": 0.4500001,
+              "z": 0.296546
+            },
+            "velocity_m_s": {
+              "x": -0.11543154,
+              "y": 0.0000035762785,
+              "z": 0.11545657
+            }
+          },
+          {
+            "identity": "6",
+            "position_m": {
+              "x": 0.21495725,
+              "y": 0.48459473,
+              "z": 0.21495715
+            },
+            "velocity_m_s": {
+              "x": 0.060566064,
+              "y": -0.0739181,
+              "z": 0.06055891
+            }
+          },
+          {
+            "identity": "7",
+            "position_m": {
+              "x": 0.20432188,
+              "y": 0.49649838,
+              "z": 0.24999988
+            },
+            "velocity_m_s": {
+              "x": -0.080194466,
+              "y": 0.13914941,
+              "z": -0.000008940696
+            }
+          },
+          {
+            "identity": "8",
+            "position_m": {
+              "x": 0.21495718,
+              "y": 0.48459485,
+              "z": 0.2850427
+            },
+            "velocity_m_s": {
+              "x": 0.06055891,
+              "y": -0.073910944,
+              "z": -0.060564276
+            }
+          },
+          {
+            "identity": "9",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.40350166,
+              "z": 0.20432201
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": -0.13915657,
+              "z": -0.08018731
+            }
+          },
+          {
+            "identity": "10",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.39219353,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.14445661,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "11",
+            "position_m": {
+              "x": 0.24999993,
+              "y": 0.4035019,
+              "z": 0.29567826
+            },
+            "velocity_m_s": {
+              "x": -0.0000053644176,
+              "y": -0.1391351,
+              "z": 0.080205195
+            }
+          },
+          {
+            "identity": "12",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.45000002,
+              "z": 0.19261469
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.17879246
+            }
+          },
+          {
+            "identity": "13",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.45000002,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "14",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.45000002,
+              "z": 0.3073854
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": -0.17878531
+            }
+          },
+          {
+            "identity": "15",
+            "position_m": {
+              "x": 0.24999999,
+              "y": 0.49649844,
+              "z": 0.20432185
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.13915657,
+              "z": -0.080196254
+            }
+          },
+          {
+            "identity": "16",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.5078066,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": -0.14445303,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "17",
+            "position_m": {
+              "x": 0.24999999,
+              "y": 0.4964983,
+              "z": 0.2956782
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.13914226,
+              "z": 0.08020162
+            }
+          },
+          {
+            "identity": "18",
+            "position_m": {
+              "x": 0.28504282,
+              "y": 0.41540533,
+              "z": 0.2149571
+            },
+            "velocity_m_s": {
+              "x": -0.060564276,
+              "y": 0.0739181,
+              "z": 0.060555335
+            }
+          },
+          {
+            "identity": "19",
+            "position_m": {
+              "x": 0.29567823,
+              "y": 0.40350178,
+              "z": 0.24999988
+            },
+            "velocity_m_s": {
+              "x": 0.08020162,
+              "y": -0.13914584,
+              "z": -0.000008940696
+            }
+          },
+          {
+            "identity": "20",
+            "position_m": {
+              "x": 0.28504276,
+              "y": 0.41540527,
+              "z": 0.28504267
+            },
+            "velocity_m_s": {
+              "x": -0.0605607,
+              "y": 0.07391452,
+              "z": -0.060567852
+            }
+          },
+          {
+            "identity": "21",
+            "position_m": {
+              "x": 0.29654595,
+              "y": 0.4500001,
+              "z": 0.20345421
+            },
+            "velocity_m_s": {
+              "x": 0.11544942,
+              "y": 0.0000035762785,
+              "z": -0.11543869
+            }
+          },
+          {
+            "identity": "22",
+            "position_m": {
+              "x": 0.30738539,
+              "y": 0.45000002,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": -0.17878889,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "23",
+            "position_m": {
+              "x": 0.29654577,
+              "y": 0.45000002,
+              "z": 0.29654595
+            },
+            "velocity_m_s": {
+              "x": 0.115435116,
+              "y": 0.0,
+              "z": 0.11544942
+            }
+          },
+          {
+            "identity": "24",
+            "position_m": {
+              "x": 0.28504276,
+              "y": 0.48459485,
+              "z": 0.21495718
+            },
+            "velocity_m_s": {
+              "x": -0.0605607,
+              "y": -0.073910944,
+              "z": 0.06055891
+            }
+          },
+          {
+            "identity": "25",
+            "position_m": {
+              "x": 0.2956782,
+              "y": 0.49649832,
+              "z": 0.24999997
+            },
+            "velocity_m_s": {
+              "x": 0.08020162,
+              "y": 0.13914584,
+              "z": -0.0000017881392
+            }
+          },
+          {
+            "identity": "26",
+            "position_m": {
+              "x": 0.28504276,
+              "y": 0.48459473,
+              "z": 0.28504273
+            },
+            "velocity_m_s": {
+              "x": -0.0605607,
+              "y": -0.0739181,
+              "z": -0.060564276
+            }
+          }
+        ]
+      },
+      "density": {
+        "sample_count": 27,
+        "mean_error": 0.14620155,
+        "maximum_error": 0.37557805
+      }
+    },
+    {
+      "snapshot": {
+        "schema_version": 1,
+        "completed_steps": "5",
+        "particles": [
+          {
+            "identity": "0",
+            "position_m": {
+              "x": 0.21455522,
+              "y": 0.41509742,
+              "z": 0.214555
+            },
+            "velocity_m_s": {
+              "x": -0.048227903,
+              "y": -0.036935803,
+              "z": -0.048242208
+            }
+          },
+          {
+            "identity": "1",
+            "position_m": {
+              "x": 0.20452085,
+              "y": 0.40303442,
+              "z": 0.24999975
+            },
+            "velocity_m_s": {
+              "x": 0.023868082,
+              "y": -0.056076046,
+              "z": -0.000017881392
+            }
+          },
+          {
+            "identity": "2",
+            "position_m": {
+              "x": 0.2145551,
+              "y": 0.4150975,
+              "z": 0.28544453
+            },
+            "velocity_m_s": {
+              "x": -0.04824042,
+              "y": -0.03693938,
+              "z": 0.048215386
+            }
+          },
+          {
+            "identity": "3",
+            "position_m": {
+              "x": 0.20329553,
+              "y": 0.45000002,
+              "z": 0.20329586
+            },
+            "velocity_m_s": {
+              "x": -0.019024013,
+              "y": 0.0,
+              "z": -0.019000767
+            }
+          },
+          {
+            "identity": "4",
+            "position_m": {
+              "x": 0.19388448,
+              "y": 0.45000002,
+              "z": 0.25000003
+            },
+            "velocity_m_s": {
+              "x": 0.15237807,
+              "y": 0.0,
+              "z": 0.0000035762785
+            }
+          },
+          {
+            "identity": "5",
+            "position_m": {
+              "x": 0.20329607,
+              "y": 0.45000014,
+              "z": 0.29670462
+            },
+            "velocity_m_s": {
+              "x": -0.01898825,
+              "y": 0.0000035762785,
+              "z": 0.019032953
+            }
+          },
+          {
+            "identity": "6",
+            "position_m": {
+              "x": 0.21455537,
+              "y": 0.48490253,
+              "z": 0.21455516
+            },
+            "velocity_m_s": {
+              "x": -0.048226114,
+              "y": 0.036935803,
+              "z": -0.04823863
+            }
+          },
+          {
+            "identity": "7",
+            "position_m": {
+              "x": 0.20452073,
+              "y": 0.49696565,
+              "z": 0.24999979
+            },
+            "velocity_m_s": {
+              "x": 0.023862718,
+              "y": 0.05607247,
+              "z": -0.000010728835
+            }
+          },
+          {
+            "identity": "8",
+            "position_m": {
+              "x": 0.21455522,
+              "y": 0.4849027,
+              "z": 0.28544453
+            },
+            "velocity_m_s": {
+              "x": -0.048235055,
+              "y": 0.036942955,
+              "z": 0.04821896
+            }
+          },
+          {
+            "identity": "9",
+            "position_m": {
+              "x": 0.24999999,
+              "y": 0.40303427,
+              "z": 0.20452097
+            },
+            "velocity_m_s": {
+              "x": -0.0000017881392,
+              "y": -0.056086775,
+              "z": 0.023875235
+            }
+          },
+          {
+            "identity": "10",
+            "position_m": {
+              "x": 0.25000003,
+              "y": 0.39306137,
+              "z": 0.2500001
+            },
+            "velocity_m_s": {
+              "x": 0.0000035762785,
+              "y": 0.10414123,
+              "z": 0.000010728835
+            }
+          },
+          {
+            "identity": "11",
+            "position_m": {
+              "x": 0.24999988,
+              "y": 0.40303478,
+              "z": 0.29547948
+            },
+            "velocity_m_s": {
+              "x": -0.0000053644176,
+              "y": -0.05605459,
+              "z": -0.023853777
+            }
+          },
+          {
+            "identity": "12",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.45000002,
+              "z": 0.19388452
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.15237986
+            }
+          },
+          {
+            "identity": "13",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.45000002,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "14",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.45000002,
+              "z": 0.3061157
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": -0.15236734
+            }
+          },
+          {
+            "identity": "15",
+            "position_m": {
+              "x": 0.24999999,
+              "y": 0.49696577,
+              "z": 0.20452076
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": 0.056079622,
+              "z": 0.02386987
+            }
+          },
+          {
+            "identity": "16",
+            "position_m": {
+              "x": 0.25,
+              "y": 0.50693876,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": 0.0,
+              "y": -0.10414123,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "17",
+            "position_m": {
+              "x": 0.24999997,
+              "y": 0.49696547,
+              "z": 0.2954794
+            },
+            "velocity_m_s": {
+              "x": -0.0000017881392,
+              "y": 0.05606174,
+              "z": -0.023857353
+            }
+          },
+          {
+            "identity": "18",
+            "position_m": {
+              "x": 0.2854447,
+              "y": 0.41509756,
+              "z": 0.2145551
+            },
+            "velocity_m_s": {
+              "x": 0.048226114,
+              "y": -0.036932226,
+              "z": -0.04824042
+            }
+          },
+          {
+            "identity": "19",
+            "position_m": {
+              "x": 0.29547942,
+              "y": 0.40303457,
+              "z": 0.24999975
+            },
+            "velocity_m_s": {
+              "x": -0.023857353,
+              "y": -0.056065317,
+              "z": -0.000016093252
+            }
+          },
+          {
+            "identity": "20",
+            "position_m": {
+              "x": 0.28544468,
+              "y": 0.41509742,
+              "z": 0.2854445
+            },
+            "velocity_m_s": {
+              "x": 0.04822969,
+              "y": -0.036942955,
+              "z": 0.04821896
+            }
+          },
+          {
+            "identity": "21",
+            "position_m": {
+              "x": 0.29670453,
+              "y": 0.45000014,
+              "z": 0.20329589
+            },
+            "velocity_m_s": {
+              "x": 0.019029377,
+              "y": 0.0000035762785,
+              "z": -0.018998979
+            }
+          },
+          {
+            "identity": "22",
+            "position_m": {
+              "x": 0.3061156,
+              "y": 0.45000002,
+              "z": 0.25
+            },
+            "velocity_m_s": {
+              "x": -0.15237449,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "identity": "23",
+            "position_m": {
+              "x": 0.2967041,
+              "y": 0.45000002,
+              "z": 0.29670444
+            },
+            "velocity_m_s": {
+              "x": 0.019000767,
+              "y": 0.0,
+              "z": 0.019018648
+            }
+          },
+          {
+            "identity": "24",
+            "position_m": {
+              "x": 0.28544465,
+              "y": 0.48490268,
+              "z": 0.21455522
+            },
+            "velocity_m_s": {
+              "x": 0.048226114,
+              "y": 0.03693938,
+              "z": -0.048235055
+            }
+          },
+          {
+            "identity": "25",
+            "position_m": {
+              "x": 0.2954794,
+              "y": 0.49696556,
+              "z": 0.24999991
+            },
+            "velocity_m_s": {
+              "x": -0.023857353,
+              "y": 0.056068894,
+              "z": -0.000007152557
+            }
+          },
+          {
+            "identity": "26",
+            "position_m": {
+              "x": 0.28544468,
+              "y": 0.4849026,
+              "z": 0.2854446
+            },
+            "velocity_m_s": {
+              "x": 0.04822969,
+              "y": 0.036942955,
+              "z": 0.048222538
+            }
+          }
+        ]
+      },
+      "density": {
+        "sample_count": 27,
+        "mean_error": 0.14672898,
+        "maximum_error": 0.3756374
+      }
+    }
+  ],
+  "final_snapshot": {
+    "schema_version": 1,
+    "completed_steps": "5",
+    "particles": [
+      {
+        "identity": "0",
+        "position_m": {
+          "x": 0.21455522,
+          "y": 0.41509742,
+          "z": 0.214555
+        },
+        "velocity_m_s": {
+          "x": -0.048227903,
+          "y": -0.036935803,
+          "z": -0.048242208
+        }
+      },
+      {
+        "identity": "1",
+        "position_m": {
+          "x": 0.20452085,
+          "y": 0.40303442,
+          "z": 0.24999975
+        },
+        "velocity_m_s": {
+          "x": 0.023868082,
+          "y": -0.056076046,
+          "z": -0.000017881392
+        }
+      },
+      {
+        "identity": "2",
+        "position_m": {
+          "x": 0.2145551,
+          "y": 0.4150975,
+          "z": 0.28544453
+        },
+        "velocity_m_s": {
+          "x": -0.04824042,
+          "y": -0.03693938,
+          "z": 0.048215386
+        }
+      },
+      {
+        "identity": "3",
+        "position_m": {
+          "x": 0.20329553,
+          "y": 0.45000002,
+          "z": 0.20329586
+        },
+        "velocity_m_s": {
+          "x": -0.019024013,
+          "y": 0.0,
+          "z": -0.019000767
+        }
+      },
+      {
+        "identity": "4",
+        "position_m": {
+          "x": 0.19388448,
+          "y": 0.45000002,
+          "z": 0.25000003
+        },
+        "velocity_m_s": {
+          "x": 0.15237807,
+          "y": 0.0,
+          "z": 0.0000035762785
+        }
+      },
+      {
+        "identity": "5",
+        "position_m": {
+          "x": 0.20329607,
+          "y": 0.45000014,
+          "z": 0.29670462
+        },
+        "velocity_m_s": {
+          "x": -0.01898825,
+          "y": 0.0000035762785,
+          "z": 0.019032953
+        }
+      },
+      {
+        "identity": "6",
+        "position_m": {
+          "x": 0.21455537,
+          "y": 0.48490253,
+          "z": 0.21455516
+        },
+        "velocity_m_s": {
+          "x": -0.048226114,
+          "y": 0.036935803,
+          "z": -0.04823863
+        }
+      },
+      {
+        "identity": "7",
+        "position_m": {
+          "x": 0.20452073,
+          "y": 0.49696565,
+          "z": 0.24999979
+        },
+        "velocity_m_s": {
+          "x": 0.023862718,
+          "y": 0.05607247,
+          "z": -0.000010728835
+        }
+      },
+      {
+        "identity": "8",
+        "position_m": {
+          "x": 0.21455522,
+          "y": 0.4849027,
+          "z": 0.28544453
+        },
+        "velocity_m_s": {
+          "x": -0.048235055,
+          "y": 0.036942955,
+          "z": 0.04821896
+        }
+      },
+      {
+        "identity": "9",
+        "position_m": {
+          "x": 0.24999999,
+          "y": 0.40303427,
+          "z": 0.20452097
+        },
+        "velocity_m_s": {
+          "x": -0.0000017881392,
+          "y": -0.056086775,
+          "z": 0.023875235
+        }
+      },
+      {
+        "identity": "10",
+        "position_m": {
+          "x": 0.25000003,
+          "y": 0.39306137,
+          "z": 0.2500001
+        },
+        "velocity_m_s": {
+          "x": 0.0000035762785,
+          "y": 0.10414123,
+          "z": 0.000010728835
+        }
+      },
+      {
+        "identity": "11",
+        "position_m": {
+          "x": 0.24999988,
+          "y": 0.40303478,
+          "z": 0.29547948
+        },
+        "velocity_m_s": {
+          "x": -0.0000053644176,
+          "y": -0.05605459,
+          "z": -0.023853777
+        }
+      },
+      {
+        "identity": "12",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.45000002,
+          "z": 0.19388452
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.15237986
+        }
+      },
+      {
+        "identity": "13",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.45000002,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "14",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.45000002,
+          "z": 0.3061157
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -0.15236734
+        }
+      },
+      {
+        "identity": "15",
+        "position_m": {
+          "x": 0.24999999,
+          "y": 0.49696577,
+          "z": 0.20452076
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.056079622,
+          "z": 0.02386987
+        }
+      },
+      {
+        "identity": "16",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.50693876,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": -0.10414123,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "17",
+        "position_m": {
+          "x": 0.24999997,
+          "y": 0.49696547,
+          "z": 0.2954794
+        },
+        "velocity_m_s": {
+          "x": -0.0000017881392,
+          "y": 0.05606174,
+          "z": -0.023857353
+        }
+      },
+      {
+        "identity": "18",
+        "position_m": {
+          "x": 0.2854447,
+          "y": 0.41509756,
+          "z": 0.2145551
+        },
+        "velocity_m_s": {
+          "x": 0.048226114,
+          "y": -0.036932226,
+          "z": -0.04824042
+        }
+      },
+      {
+        "identity": "19",
+        "position_m": {
+          "x": 0.29547942,
+          "y": 0.40303457,
+          "z": 0.24999975
+        },
+        "velocity_m_s": {
+          "x": -0.023857353,
+          "y": -0.056065317,
+          "z": -0.000016093252
+        }
+      },
+      {
+        "identity": "20",
+        "position_m": {
+          "x": 0.28544468,
+          "y": 0.41509742,
+          "z": 0.2854445
+        },
+        "velocity_m_s": {
+          "x": 0.04822969,
+          "y": -0.036942955,
+          "z": 0.04821896
+        }
+      },
+      {
+        "identity": "21",
+        "position_m": {
+          "x": 0.29670453,
+          "y": 0.45000014,
+          "z": 0.20329589
+        },
+        "velocity_m_s": {
+          "x": 0.019029377,
+          "y": 0.0000035762785,
+          "z": -0.018998979
+        }
+      },
+      {
+        "identity": "22",
+        "position_m": {
+          "x": 0.3061156,
+          "y": 0.45000002,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": -0.15237449,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "23",
+        "position_m": {
+          "x": 0.2967041,
+          "y": 0.45000002,
+          "z": 0.29670444
+        },
+        "velocity_m_s": {
+          "x": 0.019000767,
+          "y": 0.0,
+          "z": 0.019018648
+        }
+      },
+      {
+        "identity": "24",
+        "position_m": {
+          "x": 0.28544465,
+          "y": 0.48490268,
+          "z": 0.21455522
+        },
+        "velocity_m_s": {
+          "x": 0.048226114,
+          "y": 0.03693938,
+          "z": -0.048235055
+        }
+      },
+      {
+        "identity": "25",
+        "position_m": {
+          "x": 0.2954794,
+          "y": 0.49696556,
+          "z": 0.24999991
+        },
+        "velocity_m_s": {
+          "x": -0.023857353,
+          "y": 0.056068894,
+          "z": -0.000007152557
+        }
+      },
+      {
+        "identity": "26",
+        "position_m": {
+          "x": 0.28544468,
+          "y": 0.4849026,
+          "z": 0.2854446
+        },
+        "velocity_m_s": {
+          "x": 0.04822969,
+          "y": 0.036942955,
+          "z": 0.048222538
+        }
+      }
+    ]
+  },
+  "failures": [],
+  "status": "completed"
+}

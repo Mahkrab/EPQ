@@ -1,0 +1,14 @@
+   Compiling maelstrom v0.1.0 (<Maelstrom>)
+error: very complex type used. Consider factoring parts into `type` definitions
+   --> src/export/offscreen.rs:124:21
+    |
+124 |     pub encode_png: fn(u32, u32, &[u8]) -> Result<Vec<u8>, ExportError>,
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#type_complexity
+    = note: `-D clippy::type-complexity` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::type_complexity)]`
+
+error: could not compile `maelstrom` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `maelstrom` (lib test) due to 1 previous error

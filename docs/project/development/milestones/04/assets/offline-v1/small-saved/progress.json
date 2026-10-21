@@ -1,0 +1,163 @@
+{
+  "accepted_steps": "12",
+  "complete": false,
+  "expected_frames": 2,
+  "failures": [],
+  "frames": [
+    {
+      "file": "frame-00000000.png",
+      "index": 0,
+      "png_sha256": "sha256:8e146cb73cf3fe1fa1591cd9364df853406a744384dda0c9a235bdf2b65abb08",
+      "rgba_sha256": "sha256:d1dd5803c28f2efc89f463a215d43dadd83a9c21dcaf49e266ee707ffa5d6d9a",
+      "simulated_seconds": 0.0,
+      "snapshot_sha256": "sha256:dc0a66f6ae0426246f2edbe0bd625965eb87785a4862eac7206ef6025f1aa269",
+      "step": "0"
+    },
+    {
+      "file": "frame-00000001.png",
+      "index": 1,
+      "png_sha256": "sha256:77b1dfbec26152abd3b1af36ec5def457f3850dadb82b2ce6f23b30e828168c0",
+      "rgba_sha256": "sha256:25aafa8ff5736e94da1a95597719262b3139c813376c7726ddbee736caebb178",
+      "simulated_seconds": 0.10000000521540642,
+      "snapshot_sha256": "sha256:b3f0e5947d117e460116ef330093308851a43a66c4718a47d6da13674d658221",
+      "step": "12"
+    }
+  ],
+  "original": {
+    "completed_steps": "12",
+    "failures": [],
+    "metadata": {
+      "application_version": "0.1.0",
+      "backend": "serial-brute-force-pbf-binary32-8-jacobi-v2",
+      "build_revision": "54c5176fe0475b39e53759f11aab355c4c815583",
+      "configuration_id": "sha256:6a917a477430c0557b0371a08362389d31ba29470a740a2d623cd74d90134621",
+      "debug_assertions": false,
+      "input_id": "sha256:3d9bcf4a023d39803cbaadef97a94ce454493c575f1d56c356241e55bb026a34",
+      "run_id": "sha256:29dfa5cbb0de202f66a1b99cabff0f63a6128a35b3bf7227941f5070f9bd0bfc",
+      "target_arch": "x86_64",
+      "target_os": "linux"
+    },
+    "request": {
+      "checkpoints": [
+        "0",
+        "1",
+        "4",
+        "12"
+      ],
+      "steps": "12"
+    },
+    "source_result_sha256": "sha256:7f695eb73024eae0b745a483809760b815dba9757b72977581a9ee044d19ee7a",
+    "status": "completed",
+    "steps": [
+      {
+        "cfl_limit": {
+          "kind": "unbounded"
+        },
+        "completed_steps": "1",
+        "maximum_speed_m_s": 0.0,
+        "warning": false
+      },
+      {
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.010227802
+        },
+        "completed_steps": "2",
+        "maximum_speed_m_s": 1.9554543,
+        "warning": false
+      },
+      {
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.027066533
+        },
+        "completed_steps": "3",
+        "maximum_speed_m_s": 0.7389199,
+        "warning": false
+      },
+      {
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.05816719
+        },
+        "completed_steps": "4",
+        "maximum_speed_m_s": 0.34383646,
+        "warning": false
+      },
+      {
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.11186154
+        },
+        "completed_steps": "5",
+        "maximum_speed_m_s": 0.17879246,
+        "warning": false
+      },
+      {
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.13125095
+        },
+        "completed_steps": "6",
+        "maximum_speed_m_s": 0.15237986,
+        "warning": false
+      },
+      {
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.093755096
+        },
+        "completed_steps": "7",
+        "maximum_speed_m_s": 0.21332175,
+        "warning": false
+      },
+      {
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.07085887
+        },
+        "completed_steps": "8",
+        "maximum_speed_m_s": 0.28225118,
+        "warning": false
+      },
+      {
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.08460263
+        },
+        "completed_steps": "9",
+        "maximum_speed_m_s": 0.23639928,
+        "warning": false
+      },
+      {
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.1297554
+        },
+        "completed_steps": "10",
+        "maximum_speed_m_s": 0.15413618,
+        "warning": false
+      },
+      {
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.21596377
+        },
+        "completed_steps": "11",
+        "maximum_speed_m_s": 0.09260813,
+        "warning": false
+      },
+      {
+        "cfl_limit": {
+          "kind": "finite",
+          "seconds": 0.21930829
+        },
+        "completed_steps": "12",
+        "maximum_speed_m_s": 0.09119583,
+        "warning": false
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source_mode": "saved"
+}

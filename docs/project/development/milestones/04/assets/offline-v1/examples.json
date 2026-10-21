@@ -1,0 +1,140 @@
+[
+  {
+    "label": "small-direct",
+    "cwd": "Maelstrom",
+    "command": [
+      "target/debug/maelstrom",
+      "export",
+      "direct",
+      "reference/small-lattice.toml",
+      "--steps",
+      "5",
+      "--step-stride",
+      "2",
+      "--output",
+      "../docs/project/development/milestones/04/assets/offline-v1/small-direct",
+      "--software",
+      "--fit-camera",
+      "--width",
+      "320",
+      "--height",
+      "180"
+    ],
+    "exit": 0
+  },
+  {
+    "label": "falling-rerun",
+    "cwd": "Maelstrom",
+    "command": [
+      "target/debug/maelstrom",
+      "export",
+      "rerun",
+      "reference/falling-block-v1.json",
+      "--step-stride",
+      "120",
+      "--output",
+      "../docs/project/development/milestones/04/assets/offline-v1/falling-rerun",
+      "--software",
+      "--fit-camera",
+      "--width",
+      "320",
+      "--height",
+      "180"
+    ],
+    "exit": 0
+  },
+  {
+    "label": "small-saved",
+    "cwd": "Maelstrom",
+    "command": [
+      "target/debug/maelstrom",
+      "export",
+      "saved",
+      "reference/small-lattice-v1.json",
+      "--step-stride",
+      "12",
+      "--output",
+      "../docs/project/development/milestones/04/assets/offline-v1/small-saved",
+      "--software",
+      "--fit-camera",
+      "--width",
+      "320",
+      "--height",
+      "180"
+    ],
+    "exit": 0
+  },
+  {
+    "label": "cuda-saved",
+    "cwd": "Maelstrom",
+    "command": [
+      "target/debug/maelstrom",
+      "export",
+      "saved",
+      "<decompressed-cuda-result.json>",
+      "--step-stride",
+      "240",
+      "--output",
+      "../docs/project/development/milestones/04/assets/offline-v1/cuda-saved",
+      "--software",
+      "--fit-camera",
+      "--width",
+      "320",
+      "--height",
+      "180"
+    ],
+    "exit": 0,
+    "prepared_input": "cuda-saved-source.json"
+  },
+  {
+    "label": "reconstruct",
+    "cwd": "Maelstrom",
+    "command": [
+      "target/debug/maelstrom",
+      "replay",
+      "../docs/project/development/milestones/04/assets/offline-v1/small-direct/manifest.json",
+      "--format",
+      "json",
+      "--output",
+      "../docs/project/development/milestones/04/assets/offline-v1/small-reconstructed-result.json"
+    ],
+    "exit": 0
+  },
+  {
+    "label": "round-trip",
+    "cwd": "Maelstrom",
+    "command": [
+      "target/debug/maelstrom",
+      "export",
+      "saved",
+      "../docs/project/development/milestones/04/assets/offline-v1/small-reconstructed-result.json",
+      "--step-stride",
+      "2",
+      "--output",
+      "<new-temporary-repeat-directory>",
+      "--software",
+      "--fit-camera",
+      "--width",
+      "320",
+      "--height",
+      "180"
+    ],
+    "exit": 0
+  },
+  {
+    "label": "falling-wide",
+    "cwd": "Maelstrom",
+    "command": [
+      "target/debug/maelstrom",
+      "export",
+      "rerun",
+      "reference/falling-block-v1.json",
+      "--render-config",
+      "../docs/project/development/milestones/04/assets/offline-v1/wide-camera.toml",
+      "--output",
+      "../docs/project/development/milestones/04/assets/offline-v1/falling-wide",
+      "--software"
+    ],
+    "exit": 0
+  }
+]

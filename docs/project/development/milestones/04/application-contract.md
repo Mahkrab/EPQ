@@ -5,8 +5,8 @@ This record owns the application behaviour agreed before graphics integration. T
 [comparison policy](/docs/project/development/milestones/00/reference-verification.md) and
 [CUDA ownership handoff](/docs/project/development/milestones/03/cuda-gpu.md#application-integration-handoff)
 continue to own the simulation. The controller, optional viewer and render-settings parser are
-implemented. The offline image exporter and publication workflow below remain implementation
-contracts, not delivered commands. The
+implemented. The offline exporter, publication and saved-image playback workflows are retained by
+the [offline rendering checkpoint](/docs/project/development/milestones/04/phases/phase-02-offline-rendering.md). The
 [viewer record](/docs/project/development/milestones/04/phases/phase-01-interactive-viewer.md)
 separates assessed interaction, graphics and CUDA evidence.
 
@@ -56,8 +56,8 @@ Enable Vulkan/std/WGSL and the required window-handle/X11/Wayland support delibe
 web, other graphics backends and optional image formats. Offscreen builds must not pull in winit.
 The reviewed wgpu and PNG projects offer MIT/Apache-2.0 licensing; winit uses Apache-2.0. Retain
 applicable notices and inspect transitive licences when adding the actual dependencies.<sup><a href="#ref-s054">S054</a>, <a href="#ref-s055">S055</a>, <a href="#ref-s056">S056</a></sup>
-The implemented graph retains these feature boundaries; PNG encoding is deferred until its
-consumer is implemented. The viewer adds a bitmap diagnostic font and uses winit's safe keyboard
+The implemented graph retains these feature boundaries; windowless PNG export is included in
+`render`. The viewer adds a bitmap diagnostic font and uses winit's safe keyboard
 loader to report missing native libraries before window creation. The locked Linux graph and
 upstream notices were reviewed with the implementation; see the viewer evidence.
 
@@ -67,6 +67,11 @@ software Vulkan drawing, then CUDA observations and independent graphics drawing
 These are separate evidence boundaries: an RTX 4070 CUDA check does not qualify hardware Vulkan
 presentation. Current environments and negative results are retained in the
 [viewer evidence](/docs/project/development/milestones/04/assets/viewer-v1/README.md).
+The [offline output evidence](/docs/project/development/milestones/04/assets/offline-v1/README.md)
+records the separate export qualification and its same-environment pixel checks.
+The [primary-PC capture](/docs/project/development/milestones/04/assets/pc-export-v1/README.md)
+adds a completed 8,000-particle CUDA export with software Vulkan and verified transfer to laptop
+playback. It is not a hardware-graphics qualification or a new numerical reference comparison.
 
 ## Lifecycle and ownership
 
@@ -197,6 +202,30 @@ is zero-based, contiguous and independent of step value; filenames are `frame-00
 `frame-00999999.png`. For `S=5, K=2`, indices 0–3 map to steps `[0,2,4,5]`. Image sequences have no
 implicit playback FPS; simulated timestamps are `step * fixed_dt`. Fractional-step sampling,
 interpolated or duplicated frames and wall-time schedules are rejected in this schema.
+
+### Saved-image playback
+
+`maelstrom play DIRECTORY` (or its `manifest.json`) must open completed rendered images without
+resolving physical inputs, acquiring a solver or CUDA device, or drawing particles again. The
+optional `viewer` build supplies its window. A copied sequence remains playable independently of
+the original execution backend. Raw numerical results and incomplete progress files are not
+playback inputs; missing snapshots cannot be invented to turn sparse observations into animation.
+
+Default playback advances through recorded simulated timestamps at 1x, with an explicit finite
+speed of 0.01–100 simulated seconds per wall-clock second. Support play/pause, recorded-frame
+seeking, endpoints, restart, speed changes and optional repetition. Seeking pauses. The final image
+remains visible; repetition holds it for the preceding interval, then restarts. A single image is
+static. Late presentation may skip displayed images, never alter the saved sequence or interpolate
+new states. Show the selected frame, step, timestamp, speed and play/pause status.
+
+Preserve image aspect ratio on resize. The exported camera is fixed; orbiting requires a new
+render, not a numerical rerun when the required observations are available. Validate completion,
+schema, schedule, finite ordered timestamps and exact frame filenames before opening. Check PNG
+and decoded-pixel hashes and dimensions on image load; missing/corrupt images fail explicitly with
+no fallback computation or writes. Bound manifests to 64 MiB, encoded frames to 300 MiB and image
+dimensions to 8192 per side. Decode on demand into bounded frame storage and reuse one image texture.
+
+### Lossless export ownership
 
 The controller's coalesced slot is **not** the export source for a rerun. A dedicated synchronous
 driver owns a solver, advances every step, and submits each scheduled accepted snapshot through a

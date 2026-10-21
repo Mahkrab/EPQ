@@ -1,0 +1,143 @@
+{
+  "requirements": [
+    {
+      "requirement": "Accepted-index schedule and explicit direct/saved/rerun entry points",
+      "evidence": [
+        "final-export.log",
+        "device-final.log",
+        "examples.json"
+      ],
+      "satisfied": true
+    },
+    {
+      "requirement": "Shared drawing without a window, independent graphics selection",
+      "evidence": [
+        "cargo-tree-render.txt",
+        "device-final.log",
+        "artifact-audit.json"
+      ],
+      "satisfied": true
+    },
+    {
+      "requirement": "Existing result/replay behaviour and validated saved/rerun comparison",
+      "evidence": [
+        "headless.log",
+        "publication-regression.log",
+        "final-export.log",
+        "round-trip.json"
+      ],
+      "satisfied": true
+    },
+    {
+      "requirement": "Full input/source/build/render/device provenance and image hashes",
+      "evidence": [
+        "source-manifest.json",
+        "artifact-audit.json",
+        "*/manifest.json"
+      ],
+      "satisfied": true
+    },
+    {
+      "requirement": "Exclusive output, incomplete progress, cancellation and failure retention",
+      "evidence": [
+        "final-export.log",
+        "device-final.log",
+        "publication-regression.log"
+      ],
+      "satisfied": true
+    },
+    {
+      "requirement": "Independent counts/endpoints/names, zero/empty/sparse/partial cases and pixel/camera checks",
+      "evidence": [
+        "final-export.log",
+        "device-final.log",
+        "geometry.log",
+        "artifact-audit.json"
+      ],
+      "satisfied": true
+    },
+    {
+      "requirement": "Direct numerical comparisons for small fixture and existing falling-block request",
+      "evidence": [
+        "device-final.log",
+        "round-trip.json",
+        "artifact-audit.json"
+      ],
+      "satisfied": true
+    }
+  ],
+  "exports": [
+    {
+      "directory": "cuda-saved",
+      "complete": true,
+      "frames": 3,
+      "schedule": [
+        0,
+        240,
+        480
+      ],
+      "source_and_lock_match": true,
+      "shader_matches": true,
+      "names_times_and_png_hashes_match": true
+    },
+    {
+      "directory": "falling-rerun",
+      "complete": true,
+      "frames": 5,
+      "schedule": [
+        0,
+        120,
+        240,
+        360,
+        480
+      ],
+      "source_and_lock_match": true,
+      "shader_matches": true,
+      "names_times_and_png_hashes_match": true
+    },
+    {
+      "directory": "falling-wide",
+      "complete": true,
+      "frames": 5,
+      "schedule": [
+        0,
+        120,
+        240,
+        360,
+        480
+      ],
+      "source_and_lock_match": true,
+      "shader_matches": true,
+      "names_times_and_png_hashes_match": true
+    },
+    {
+      "directory": "small-direct",
+      "complete": true,
+      "frames": 4,
+      "schedule": [
+        0,
+        2,
+        4,
+        5
+      ],
+      "source_and_lock_match": true,
+      "shader_matches": true,
+      "names_times_and_png_hashes_match": true
+    },
+    {
+      "directory": "small-saved",
+      "complete": true,
+      "frames": 2,
+      "schedule": [
+        0,
+        12
+      ],
+      "source_and_lock_match": true,
+      "shader_matches": true,
+      "names_times_and_png_hashes_match": true
+    }
+  ],
+  "local_links_checked": 45,
+  "qualification": "Local WSL2 x86_64; software Vulkan llvmpipe. No fresh CUDA execution or hardware Vulkan export claim.",
+  "git_checkpoints": "Not authorised; no commit, tag, branch or gitlink advancement."
+}

@@ -1,0 +1,32 @@
+{
+  "command": [
+    "MAELSTROM_BINARY",
+    "play",
+    "EXPORTED_SEQUENCE",
+    "--software",
+    "--paused"
+  ],
+  "exit": 0,
+  "sequence_files_unchanged": true,
+  "frames": 3,
+  "checks": [
+    "initial",
+    "seek",
+    "endpoints",
+    "resize",
+    "speed",
+    "restart",
+    "pause",
+    "resume",
+    "completion",
+    "close"
+  ],
+  "binary_sha256": "8ddd2f5256bb0d298b5cdbbcec304a52680f287d4e6b0117f8f99f6fa86b227d",
+  "sequence_sha256": {
+    "frame-00000000.png": "55059136784bc54bececabc8a978f77f56239775f304ceb8cbde525456934ea3",
+    "frame-00000001.png": "f0d39108e183f384aedf53fb0a3bff4120c6612e2dd2c68dae42e8af875f9328",
+    "frame-00000002.png": "752f5c45dab90247db05e41841f4832a58948703bc6da185dd22b2a996583328",
+    "manifest.json": "7e922c2e2c846317a308bd0f0492833a13ed0a727234bf658381f3f9b85fcdc5",
+    "progress.json": "b4214e1db82d635d7ae9bf075cec72de1dd9b86dc32684d057683185e8600417"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "verified": true,
+  "status": "completed",
+  "particles": 8000,
+  "accepted_steps": 480,
+  "frames_checked": 481,
+  "cfl_warnings": 0,
+  "dimensions": [
+    1280,
+    720
+  ],
+  "simulated_seconds": 1.0000000521540642,
+  "png_bytes": 74628157,
+  "manifest_sha256": "49e565b8acdcd0f57c261c11ad3fe6080ae9ed677a84c6e1d4f0f4a8b7308526",
+  "source_sha256": "sha256:e31c765e070e47a070a424e08bae78abeddfebe6ff531e58a4fef394a7e55079",
+  "execution": {
+    "device": 0,
+    "mode": "cuda",
+    "threads": 128
+  },
+  "graphics": {
+    "backend": "Vulkan",
+    "device": 0,
+    "device_type": "Cpu",
+    "driver": "llvmpipe",
+    "driver_info": "Mesa 25.2.8-0ubuntu0.24.04.2 (LLVM 20.1.2)",
+    "name": "llvmpipe (LLVM 20.1.2, 256 bits)",
+    "selection_index": 0,
+    "software_requested": true,
+    "vendor": 65541
+  },
+  "device": {
+    "compute_major": 8,
+    "compute_minor": 9,
+    "driver_version": 13030,
+    "memory_bytes": 12878086144,
+    "name": "NVIDIA GeForce RTX 4070",
+    "ordinal": 0,
+    "target": "compute_89"
+  },
+  "verification": "Completed-manifest, schedule, device, warning and encoded-PNG integrity checks; no new numerical reference comparison or performance benchmark.",
+  "capture_exit": 0,
+  "copy_exit": 0,
+  "remote_manifest_sha256": "49e565b8acdcd0f57c261c11ad3fe6080ae9ed677a84c6e1d4f0f4a8b7308526",
+  "capture_kind": "One-time simulation and image capture; not a timing benchmark",
+  "git_checkpoint": "Uncommitted source copy; source-content hash is authoritative; no Git checkpoint was created.",
+  "maelstrom_completion_commit": "9336ee42104badb1b5e439edc1df5e8488c32987",
+  "retention": {
+    "manifest": "capture-manifest.json",
+    "images": {
+      "initial": "initial.png",
+      "final": "final.png"
+    },
+    "complete_sequence": "Retained on the primary PC and laptop outside Git; only the manifest and endpoint images are committed here."
+  },
+  "capture_command": "maelstrom export direct falling-block-20 --mode cuda-grid --device 0 --block-size 128 --refine-timestep 4 --steps 480 --step-stride 1 --render-config render.toml --software --output frames-8000"
+}

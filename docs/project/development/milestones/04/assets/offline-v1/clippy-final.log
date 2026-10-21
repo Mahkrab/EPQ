@@ -1,0 +1,21 @@
+   Compiling maelstrom v0.1.0 (<Maelstrom>)
+error: using `chunks_exact` with a constant chunk size
+   --> tests/export_device.rs:129:22
+    |
+129 |         assert!(rgba.chunks_exact(4).all(|p| p[3] == 255));
+    |                      ^^^^^^^^^^^^^^^ help: consider using `as_chunks` instead: `as_chunks::<4>().0.iter()`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#chunks_exact_to_as_chunks
+    = note: `-D clippy::chunks-exact-to-as-chunks` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::chunks_exact_to_as_chunks)]`
+
+error: using `chunks_exact` with a constant chunk size
+   --> tests/export_device.rs:360:26
+    |
+360 |     assert!(draw(&scene).chunks_exact(4).all(|p| p == [16, 24, 32, 255]));
+    |                          ^^^^^^^^^^^^^^^ help: consider using `as_chunks` instead: `as_chunks::<4>().0.iter()`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#chunks_exact_to_as_chunks
+
+error: could not compile `maelstrom` (test "export_device") due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...

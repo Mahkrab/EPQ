@@ -1,0 +1,52 @@
+[
+  {
+    "command": [
+      "cargo",
+      "clippy",
+      "--locked",
+      "--features",
+      "viewer",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "cwd": "Maelstrom",
+    "exit": 0,
+    "output": "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.24s\n"
+  },
+  {
+    "command": [
+      "cargo",
+      "fmt",
+      "--check"
+    ],
+    "cwd": "Maelstrom",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": "Maelstrom",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": "EPQ",
+    "exit": 0
+  },
+  {
+    "check": "All retained source/test/document hashes match current files",
+    "files": 123,
+    "passed": true
+  }
+]

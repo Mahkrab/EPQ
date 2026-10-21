@@ -52,7 +52,7 @@ evaluation remains distinct from verifying this application.
 | --- | --- |
 | G00 | Application ownership, control, observation and frame/output contracts are decided and their non-visual lifecycle is independently tested |
 | G01 | A usable interactive viewer controls supported backends without changing solver results or blocking reliable shutdown |
-| G02 | Offline rendering produces a reproducible frame sequence with explicit provenance, safe publication and verified numerical independence |
+| G02 | Offline rendering produces a reproducible, easily playable saved frame sequence with explicit provenance, safe publication and verified numerical independence |
 | G03 | Application verification, supported environments, limitations and final-evaluation handoff are documented and checkpointed |
 
 Gate labels belong to this milestone. A compiling window, screenshot or successful graphics probe
@@ -159,38 +159,58 @@ outside this gate.
 
 ### Objective
 
-Produce an explicit, repeatable image sequence independently of interactive display speed.
+Produce an explicit, repeatable image sequence independently of interactive display speed, then
+play it without recomputing the simulation or rendering the particles again.
 
 ### Work
 
-- [ ] Implement the agreed offline entry point and frame schedule. Drive observations by accepted step
+- [x] Implement the agreed offline entry point and frame schedule. Drive observations by accepted step
       indices, not the wall clock. Define initial/final frames, repeated observations, interpolation and
       unsupported sampling requests consistently with the contract; do not invent unstored intermediate state.
-- [ ] Reuse rendering responsibilities without requiring an interactive window where offscreen support is
+- [x] Reuse rendering responsibilities without requiring an interactive window where offscreen support is
       claimed. Identify the actual graphics device separately from the simulation backend. A CPU simulation
       may still require graphics capability to render; do not confuse that with headless solver portability.
-- [ ] Preserve ordinary result/replay behaviour. For saved-result rendering, validate available checkpoints
+- [x] Preserve ordinary result/replay behaviour. For saved-result rendering, validate available checkpoints
       and inputs; reject an impossible schedule or explicitly rerun identified inputs as a separate operation.
       Any rerun must retain its numerical comparison and execution provenance.
-- [ ] Record full input/source identities, effective backend, accepted-step/frame mapping, render schema,
+- [x] Record full input/source identities, effective backend, accepted-step/frame mapping, render schema,
       camera, dimensions, image format and relevant graphics/build context. Retain selected image hashes
       and a completion manifest so an incomplete sequence cannot masquerade as a complete export.
-- [ ] Extend existing non-clobbering publication deliberately for multi-file output. Validate destinations,
+- [x] Extend existing non-clobbering publication deliberately for multi-file output. Validate destinations,
       preserve prior files, report partial progress and write final completion metadata only after success.
       Exercise cancellation, disk/encoding/readback failure and interruption without deleting user data.
-- [ ] Independently check frame counts, endpoints, ordering, names and step mappings, including zero-step,
+- [x] Independently check frame counts, endpoints, ordering, names and step mappings, including zero-step,
       empty, sparse-checkpoint and partial-run cases. Repeated rendering must satisfy the declared image
       guarantee. Test orientation, scale and camera projection with simple known geometry, not visual guesswork.
-- [ ] Compare exported observations against direct headless execution under the same physical request.
+- [x] Compare exported observations against direct headless execution under the same physical request.
       Retain evidence from at least a small deterministic fixture and the existing falling-block request;
       do not replace the benchmark scene or goldens merely to make presentation easier.
+- [x] Open a completed image sequence through a saved-playback command without numerical execution
+      or particle rendering. Support pause, seeking, speed, endpoints and repetition, preserve aspect
+      ratio and report missing/corrupt images without recomputation or writes.
 
 ### Gate G02 evidence
+
+Saved-image playback is also required: independently check timing, pause, seeking, speed changes,
+endpoints, fixed-camera resizing and malformed/missing images, then exercise a real window. A
+completed export alone does not satisfy the complete viewing journey.
 
 Another agent can reconstruct the numerical observations and frame schedule from the manifest and
 identified inputs, and render under the documented environment. Image checks, publication failures
 and numerical comparisons establish reproducibility within the stated guarantee. Screenshots alone
 do not establish a complete offline-output workflow.
+
+The [offline rendering record](/docs/project/development/milestones/04/phases/phase-02-offline-rendering.md)
+records the local G02 decision and the
+[retained evidence](/docs/project/development/milestones/04/assets/offline-v1/README.md).
+[Saved-playback evidence](/docs/project/development/milestones/04/assets/playback-v1/README.md)
+extends that assessment to the completed viewing journey. Qualification covers windowless software
+Vulkan and WSLg playback on the recorded WSL2 environment, with exact CPU observation checks and
+saved CUDA observations. The [primary-PC capture](/docs/project/development/milestones/04/assets/pc-export-v1/README.md)
+adds 8,000 particles, 480 CUDA steps and 481 images transferred to laptop playback, with zero CFL
+warnings and matching image hashes. It does not add an independent numerical comparison or timing
+claim. Hardware Vulkan export remains unqualified. Local annotated `milestone-04/phase-02/complete`
+checkpoints retain the final implementation and exact EPQ gitlink; remote publication is separate.
 
 ## Phase 3: verify, evaluate and prepare final project comparison
 

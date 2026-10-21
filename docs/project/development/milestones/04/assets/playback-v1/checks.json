@@ -1,0 +1,103 @@
+{
+  "date": "2026-10-21",
+  "environment": "Local x86_64 Ubuntu 24.04.5 WSL2; Rust/Cargo 1.98.1; graphics explicitly llvmpipe software Vulkan",
+  "hosted_verification": "not performed",
+  "git_checkpoints_created": false,
+  "checks": [
+    {
+      "cwd": "Maelstrom",
+      "command": "cargo test --locked --features viewer",
+      "exit": 0,
+      "passed": 257,
+      "ignored": 8,
+      "log": "cargo-viewer.log",
+      "note": "Opt-in device checks remain separate; the saved-pixel graphics check was explicitly run below."
+    },
+    {
+      "cwd": "Maelstrom",
+      "command": "cargo test --locked --features render --lib --test cli_workflow --test export_contract",
+      "exit": 0,
+      "passed": 59,
+      "ignored": 2
+    },
+    {
+      "cwd": "Maelstrom",
+      "command": "cargo test --locked --no-default-features --test cli_workflow",
+      "exit": 0,
+      "passed": 32
+    },
+    {
+      "cwd": "Maelstrom",
+      "command": "cargo test --locked --features viewer --lib playback::tests::saved_pixels_keep_orientation_and_colour_through_the_graphics_pass -- --ignored --exact",
+      "exit": 0,
+      "passed": 1,
+      "note": "Independent RGBA pixels survive the complete saved-image upload, draw and readback path exactly."
+    },
+    {
+      "cwd": "Maelstrom",
+      "command": "cargo clippy --locked --features viewer --all-targets -- -D warnings",
+      "exit": 0
+    },
+    {
+      "cwd": "Maelstrom",
+      "command": "cargo check --locked --no-default-features",
+      "exit": 0
+    },
+    {
+      "cwd": "Maelstrom",
+      "command": "cargo fmt --all -- --check",
+      "exit": 0
+    },
+    {
+      "cwd": "Maelstrom",
+      "command": "cargo build --locked --features viewer",
+      "exit": 0,
+      "note": "Restored the checkout binary to the viewer feature after headless/render feature checks. The installed command was not replaced."
+    },
+    {
+      "cwd": "EPQ",
+      "command": "python3 -m unittest discover -s tests -p 'test*.py'",
+      "exit": 0,
+      "passed": 16
+    },
+    {
+      "cwd": "EPQ",
+      "command": "python3 -m compileall -q tests/verification/playback_display.py",
+      "exit": 0
+    },
+    {
+      "cwd": "EPQ",
+      "command": "python3 -m tests.verification.playback_display --binary Maelstrom/target/debug/maelstrom --sequence docs/project/development/milestones/04/assets/offline-v1/falling-wide --output docs/project/development/milestones/04/assets/playback-v1/display --runtime-lib-dir TEMP_RUNTIME/root/usr/lib/x86_64-linux-gnu",
+      "exit": 0,
+      "result": "display/result.json"
+    },
+    {
+      "cwd": "EPQ",
+      "command": "python3 -m tests.verification.playback_display --binary Maelstrom/target/debug/maelstrom --sequence docs/project/development/milestones/04/assets/offline-v1/cuda-saved --output docs/project/development/milestones/04/assets/playback-v1/cuda-display-verified --runtime-lib-dir TEMP_RUNTIME/root/usr/lib/x86_64-linux-gnu",
+      "exit": 0,
+      "result": "cuda-display-verified/result.json",
+      "note": "CPU-only viewer loads the existing saved CUDA images; no CUDA execution or numerical work."
+    }
+  ],
+  "earlier_attempts": [
+    {
+      "check": "initial native window journey",
+      "exit": 1,
+      "result": "first-window-attempt.txt",
+      "note": "First Right-key seek was not observed; cause unconfirmed. Escape cleanup closed the process. Subsequent diagnostic and uninstrumented journeys passed."
+    },
+    {
+      "check": "CUDA-provenance native journey before restoring viewer build",
+      "harness_exit": 1,
+      "player_exit": 2,
+      "log": "cuda-display/player.log",
+      "note": "A render-only feature check had replaced the shared debug binary. Its CLI correctly lacked play. The final binary was rebuilt with viewer before repeating the journey."
+    },
+    {
+      "check": "initial saved-pixel graphics invocation",
+      "exit": 0,
+      "passed": 0,
+      "note": "An unqualified exact filter selected no tests. It was not counted as verification; the fully qualified exact invocation above ran one test."
+    }
+  ]
+}

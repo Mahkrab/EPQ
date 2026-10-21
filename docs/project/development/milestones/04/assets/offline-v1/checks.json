@@ -1,0 +1,209 @@
+[
+  {
+    "label": "headless",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--no-default-features"
+    ],
+    "cwd": "Maelstrom",
+    "exit": 0
+  },
+  {
+    "label": "viewer-regression",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--features",
+      "viewer"
+    ],
+    "cwd": "Maelstrom",
+    "exit": 0
+  },
+  {
+    "label": "offscreen",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--features",
+      "render",
+      "--test",
+      "export_device",
+      "--",
+      "--ignored",
+      "--nocapture"
+    ],
+    "cwd": "Maelstrom",
+    "exit": 0
+  },
+  {
+    "label": "readback",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--features",
+      "render",
+      "--lib",
+      "export::offscreen",
+      "--",
+      "--include-ignored",
+      "--nocapture"
+    ],
+    "cwd": "Maelstrom",
+    "exit": 0
+  },
+  {
+    "label": "geometry",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--features",
+      "render",
+      "--test",
+      "render_device",
+      "--",
+      "--ignored",
+      "--nocapture"
+    ],
+    "cwd": "Maelstrom",
+    "exit": 0
+  },
+  {
+    "label": "clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--locked",
+      "--features",
+      "viewer",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "cwd": "Maelstrom",
+    "exit": 101
+  },
+  {
+    "label": "final-export",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--features",
+      "render",
+      "--lib",
+      "--test",
+      "export_contract",
+      "--test",
+      "export_device",
+      "--",
+      "--include-ignored",
+      "--nocapture"
+    ],
+    "cwd": "Maelstrom",
+    "exit": 0
+  },
+  {
+    "label": "publication-regression",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--no-default-features",
+      "--test",
+      "headless_workflow"
+    ],
+    "cwd": "Maelstrom",
+    "exit": 0
+  },
+  {
+    "label": "clippy-final",
+    "command": [
+      "cargo",
+      "clippy",
+      "--locked",
+      "--features",
+      "viewer",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "cwd": "Maelstrom",
+    "exit": 101
+  },
+  {
+    "label": "clippy-clean",
+    "command": [
+      "cargo",
+      "clippy",
+      "--locked",
+      "--features",
+      "viewer",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "cwd": "Maelstrom",
+    "exit": 0
+  },
+  {
+    "label": "format",
+    "command": [
+      "cargo",
+      "fmt",
+      "--check"
+    ],
+    "cwd": "Maelstrom",
+    "exit": 0
+  },
+  {
+    "label": "rustdoc",
+    "command": [
+      "cargo",
+      "doc",
+      "--locked",
+      "--features",
+      "viewer",
+      "--no-deps"
+    ],
+    "cwd": "Maelstrom",
+    "exit": 0
+  },
+  {
+    "label": "render-build",
+    "command": [
+      "cargo",
+      "build",
+      "--locked",
+      "--features",
+      "render"
+    ],
+    "cwd": "Maelstrom",
+    "exit": 0
+  },
+  {
+    "label": "device-final",
+    "cwd": "Maelstrom",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--features",
+      "render",
+      "--test",
+      "export_device",
+      "--",
+      "--ignored",
+      "--nocapture"
+    ],
+    "exit": 0
+  }
+]

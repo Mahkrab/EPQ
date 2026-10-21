@@ -1,0 +1,60 @@
+   Compiling maelstrom v0.1.0 (<Maelstrom>)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.56s
+     Running unittests src/lib.rs (target/debug/deps/maelstrom-b22d12cfd4010323)
+
+running 16 tests
+test cuda::tests::capacity_checks_do_not_allocate_or_need_a_device ... ok
+test export::offscreen::tests::invalid_rgba_lengths_fail_encoding ... ok
+test neighbours::grid::tests::invalid_index_and_capacity_operations_are_errors ... ok
+test neighbours::grid::tests::mapping_uses_floor_at_faces_edges_and_corners ... ok
+test simulation::tests::exhausted_step_counter_cannot_wrap_or_accept_another_step ... ok
+test workflow::tests::identity_digest_matches_the_standard_sha256_abc_vector ... ok
+
+thread 'maelstrom-simulation' (38595) panicked at src/application/worker.rs:269:37:
+injected worker panic
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test application::tests::queued_old_steps_are_discarded_and_new_generation_stays_paused_at_zero ... ok
+test execution::tests::unavailable_workers_are_a_typed_setup_failure ... ok
+test application::tests::full_queue_rejects_restart_atomically_and_cancellation_bypasses_backpressure ... ok
+test application::tests::shutdown_with_full_queue_resolves_unconstructed_handles_and_receipts ... ok
+test application::tests::panic_retains_active_snapshot_marks_queued_runs_and_join_reports_failure ... ok
+test execution::tests::workers_are_reused_and_terminate_after_the_resource_is_dropped ... ok
+test workflow::output::tests::a_partial_write_failure_never_publishes_a_destination ... ok
+test execution::tests::joined_work_uses_distinct_workers_and_reports_lowest_index_failure ... ok
+test export::offscreen::tests::destroyed_device_rejects_offscreen_readback ... ok
+device failure: graphics device unavailable: Destroyed: 
+encoding failure: wrong data size, expected 1292 got 1291
+test export::tests::stage_failures_retain_closed_frames_and_incomplete_progress ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+     Running tests/export_contract.rs (target/debug/deps/export_contract-421d0cf9cbba6d7c)
+
+running 5 tests
+test existing_files_directories_and_symlinks_are_rejected_before_graphics ... ok
+test export_cli_help_and_source_errors_are_usable_without_a_display ... ok
+test schedules_have_exact_endpoints_without_duplicates_or_overflow ... ok
+test saved_mode_never_invents_missing_initial_or_intermediate_observations ... ok
+test saved_records_reject_malformed_and_conflicting_accepted_history ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+     Running tests/export_device.rs (target/debug/deps/export_device-88ea2cfcdd528401)
+
+running 4 tests
+fault 0: export cancelled; cancellation polls 2
+fault 1: frame 1 publication: entity already exists; cancellation polls 23
+test exported_pngs_preserve_orientation_scale_depth_and_explicit_camera ... ok
+test explicit_saved_prefix_and_process_interruption_cannot_claim_original_completion ... ok
+fault 2: progress staging: entity already exists; recording incomplete outcome also failed: progress staging: entity already exists; cancellation polls 23
+fault 3: manifest publication: entity already exists; cancellation polls 68
+export graphics: {"backend":"Vulkan","device":0,"device_type":"Cpu","driver":"llvmpipe","driver_info":"Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)","name":"llvmpipe (LLVM 20.1.2, 256 bits)","selection_index":0,"software_requested":true,"vendor":65541}
+test failures_and_cancellation_retain_incomplete_sequences_and_prior_files ... ok
+export graphics: {"backend":"Vulkan","device":0,"device_type":"Cpu","driver":"llvmpipe","driver_info":"Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)","name":"llvmpipe (LLVM 20.1.2, 256 bits)","selection_index":0,"software_requested":true,"vendor":65541}
+export graphics: {"backend":"Vulkan","device":0,"device_type":"Cpu","driver":"llvmpipe","driver_info":"Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)","name":"llvmpipe (LLVM 20.1.2, 256 bits)","selection_index":0,"software_requested":true,"vendor":65541}
+export graphics: {"backend":"Vulkan","device":0,"device_type":"Cpu","driver":"llvmpipe","driver_info":"Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)","name":"llvmpipe (LLVM 20.1.2, 256 bits)","selection_index":0,"software_requested":true,"vendor":65541}
+export graphics: {"backend":"Vulkan","device":0,"device_type":"Cpu","driver":"llvmpipe","driver_info":"Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)","name":"llvmpipe (LLVM 20.1.2, 256 bits)","selection_index":0,"software_requested":true,"vendor":65541}
+test exports_match_direct_observations_and_repeat_decoded_pixels ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 20.35s
+

@@ -1,0 +1,28 @@
+   Compiling maelstrom v0.1.0 (<Maelstrom>)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.97s
+     Running tests/headless_workflow.rs (target/debug/deps/headless_workflow-ce8f0b89890268aa)
+
+running 20 tests
+test audit_strict_support_and_coincident_self_contribution_match_independent_values ... ok
+test checkpoint_audit_discovers_neighbours_absent_from_solver_membership ... ok
+test complete_set_audit_includes_self_and_uses_mean_of_absolute_errors ... ok
+test audit_failure_does_not_reject_or_corrupt_the_last_accepted_state ... ok
+test cancellation_retains_prior_work_and_poll_order_is_independent_of_observation ... ok
+test earlier_cfl_warning_survives_later_unbounded_steps_and_summary ... ok
+test input_and_checkpoint_validation_failures_are_distinct_from_execution_failure ... ok
+test numerical_failure_preserves_prior_steps_warnings_and_last_accepted_snapshot ... ok
+test empty_audits_and_unbounded_cfl_are_explicit_in_both_outputs ... ok
+test machine_records_preserve_signed_zero_subnormals_large_values_and_u64_identities ... ok
+test physical_identity_excludes_labels_provenance_and_observation_but_tracks_inputs ... ok
+test malformed_or_inconsistent_recorded_inputs_are_rejected_before_replay ... ok
+test replay_uses_all_recorded_numerical_values_and_canonical_identity_order ... ok
+test snapshot_publication_preserves_state_and_retains_publication_failures ... ok
+test publication_is_complete_no_clobber_and_failure_preserves_state_and_history ... ok
+test large_finite_density_error_is_only_diagnostic ... ok
+test full_record_replays_identical_bits_with_names_and_provenance_preserved ... ok
+test cpu_workflow_matches_empty_warning_audit_input_and_late_failure_outcomes ... ok
+test observation_and_output_selection_leave_every_accepted_checkpoint_bitwise_unchanged ... ok
+test cpu_workflow_cancellation_retains_its_own_prior_work_in_all_modes ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.50s
+

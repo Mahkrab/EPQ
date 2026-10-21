@@ -1,0 +1,645 @@
+{
+  "accepted_diagnostics": [
+    {
+      "cfl_limit": {
+        "kind": "unbounded"
+      },
+      "completed_steps": "1",
+      "maximum_speed_m_s": 0.0,
+      "warning": false
+    },
+    {
+      "cfl_limit": {
+        "kind": "finite",
+        "seconds": 0.010227802209556103
+      },
+      "completed_steps": "2",
+      "maximum_speed_m_s": 1.9554543495178223,
+      "warning": false
+    },
+    {
+      "cfl_limit": {
+        "kind": "finite",
+        "seconds": 0.027066532522439957
+      },
+      "completed_steps": "3",
+      "maximum_speed_m_s": 0.7389199137687683,
+      "warning": false
+    },
+    {
+      "cfl_limit": {
+        "kind": "finite",
+        "seconds": 0.05816718935966492
+      },
+      "completed_steps": "4",
+      "maximum_speed_m_s": 0.3438364565372467,
+      "warning": false
+    },
+    {
+      "cfl_limit": {
+        "kind": "finite",
+        "seconds": 0.11186154186725616
+      },
+      "completed_steps": "5",
+      "maximum_speed_m_s": 0.17879246175289154,
+      "warning": false
+    }
+  ],
+  "accepted_steps": "5",
+  "application_version": "0.1.0",
+  "backend": "serial-uniform-grid-pbf-binary32-8-jacobi-v2",
+  "boundary_display_box": {
+    "lower_m": [
+      0.10000000149011612,
+      0.30000000447034836,
+      0.10000000149011612
+    ],
+    "upper_m": [
+      0.4000000134110451,
+      0.6000000014901161,
+      0.4000000134110451
+    ]
+  },
+  "build": {
+    "commit": "52d7bffe3923e8d16477a7227c28245777fc4a34",
+    "debug_assertions": true,
+    "dirty": "true",
+    "features": {
+      "cuda": false,
+      "render": true,
+      "viewer": false
+    },
+    "lock_sha256": "sha256:222b1c7a912e7869eb3d74ea21023daff3642efc0abeb70c275a92595ec06820",
+    "opt_level": "0",
+    "profile": "debug",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+    "rustflags_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source_sha256": "sha256:7caca2ce412ef7b948fea3ac605e8fff7a9dd2167f095b8fb173385be4818d9c",
+    "target": "x86_64-unknown-linux-gnu"
+  },
+  "complete": true,
+  "destination_label": "small-direct",
+  "discovery": "UniformGrid",
+  "effective_execution": {
+    "mode": "serial"
+  },
+  "encoder": {
+    "colour": "RGBA8 sRGB",
+    "compression": "Balanced",
+    "crate": "png",
+    "filter": "Adaptive",
+    "version": "0.18.1"
+  },
+  "execution": {
+    "mode": "serial"
+  },
+  "frame_count": 4,
+  "frames": [
+    {
+      "file": "frame-00000000.png",
+      "index": 0,
+      "png_sha256": "sha256:8e146cb73cf3fe1fa1591cd9364df853406a744384dda0c9a235bdf2b65abb08",
+      "rgba_sha256": "sha256:d1dd5803c28f2efc89f463a215d43dadd83a9c21dcaf49e266ee707ffa5d6d9a",
+      "simulated_seconds": 0.0,
+      "snapshot_sha256": "sha256:dc0a66f6ae0426246f2edbe0bd625965eb87785a4862eac7206ef6025f1aa269",
+      "step": "0"
+    },
+    {
+      "file": "frame-00000001.png",
+      "index": 1,
+      "png_sha256": "sha256:edd720f9fb9e592ce6780945592ebfeac94d4e41f71a9e3d399218118a77e236",
+      "rgba_sha256": "sha256:35d5beabbab6df83caa30160d111b3ae6338803576f845469c809c547aee44b6",
+      "simulated_seconds": 0.01666666753590107,
+      "snapshot_sha256": "sha256:5bc9e99baadd79e5629569f8162cd8cf876f6dfc844fe83eb286c39a00688051",
+      "step": "2"
+    },
+    {
+      "file": "frame-00000002.png",
+      "index": 2,
+      "png_sha256": "sha256:20092bbd8a39f832dd52d062c3ab264e452632fe1c18edb87b097beebf8e083d",
+      "rgba_sha256": "sha256:608781bbca06c5aafbabeebe80bb9ef3891a15bb0e0c992c8bceceadbe8b68bc",
+      "simulated_seconds": 0.03333333507180214,
+      "snapshot_sha256": "sha256:acf13a931bae1e3f66a283c91bfada4889a717d0f5290d30e8f94817dfd6af43",
+      "step": "4"
+    },
+    {
+      "file": "frame-00000003.png",
+      "index": 3,
+      "png_sha256": "sha256:e4d553ff5cd7579b9a378bbd05d7f8badf2787e1adc71a36b41fd3f408b4265d",
+      "rgba_sha256": "sha256:7d2fe40651644db880a8b8babd9b9765687bc9010c2dc3d661ca9a0c8cb88770",
+      "simulated_seconds": 0.041666668839752674,
+      "snapshot_sha256": "sha256:5e3a933b8ddc5517830f1acbd0fdbe99e1a3c96c55228985512b21112be8ec1e",
+      "step": "5"
+    }
+  ],
+  "graphics": {
+    "backend": "Vulkan",
+    "device": 0,
+    "device_type": "Cpu",
+    "driver": "llvmpipe",
+    "driver_info": "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)",
+    "name": "llvmpipe (LLVM 20.1.2, 256 bits)",
+    "selection_index": 0,
+    "software_requested": true,
+    "vendor": 65541
+  },
+  "input": {
+    "comparison_key": "scene-comparison-v1|randomness=none|configuration-comparison-v1|binary32|right_handed_y_up_metres_seconds_kilograms|fixed|poly6|spiky|jacobi_immutable_snapshot|00000000,00000000,00000000|3c088889|3ecccccd|3d4ccccd|40000000|447a0000|8|41a00000|true|3dcccccd|3e4ccccd|40800000|strict_less_than|static_plane_projection|once_after_prediction|ascending_particle_identity|false|false|3d4ccccd|3dcccccd|45fc7198|3dfd8598|44f9ffff|3a83126f|3ca3d70b|27|planes|particles:0:3e4ccccd,3ecccccd,3e4ccccd,00000000,00000000,00000000:1:3e4ccccd,3ecccccd,3e800000,00000000,00000000,00000000:2:3e4ccccd,3ecccccd,3e99999a,00000000,00000000,00000000:3:3e4ccccd,3ee66667,3e4ccccd,00000000,00000000,00000000:4:3e4ccccd,3ee66667,3e800000,00000000,00000000,00000000:5:3e4ccccd,3ee66667,3e99999a,00000000,00000000,00000000:6:3e4ccccd,3f000000,3e4ccccd,00000000,00000000,00000000:7:3e4ccccd,3f000000,3e800000,00000000,00000000,00000000:8:3e4ccccd,3f000000,3e99999a,00000000,00000000,00000000:9:3e800000,3ecccccd,3e4ccccd,00000000,00000000,00000000:10:3e800000,3ecccccd,3e800000,00000000,00000000,00000000:11:3e800000,3ecccccd,3e99999a,00000000,00000000,00000000:12:3e800000,3ee66667,3e4ccccd,00000000,00000000,00000000:13:3e800000,3ee66667,3e800000,00000000,00000000,00000000:14:3e800000,3ee66667,3e99999a,00000000,00000000,00000000:15:3e800000,3f000000,3e4ccccd,00000000,00000000,00000000:16:3e800000,3f000000,3e800000,00000000,00000000,00000000:17:3e800000,3f000000,3e99999a,00000000,00000000,00000000:18:3e99999a,3ecccccd,3e4ccccd,00000000,00000000,00000000:19:3e99999a,3ecccccd,3e800000,00000000,00000000,00000000:20:3e99999a,3ecccccd,3e99999a,00000000,00000000,00000000:21:3e99999a,3ee66667,3e4ccccd,00000000,00000000,00000000:22:3e99999a,3ee66667,3e800000,00000000,00000000,00000000:23:3e99999a,3ee66667,3e99999a,00000000,00000000,00000000:24:3e99999a,3f000000,3e4ccccd,00000000,00000000,00000000:25:3e99999a,3f000000,3e800000,00000000,00000000,00000000:26:3e99999a,3f000000,3e99999a,00000000,00000000,00000000",
+    "configuration": {
+      "comparison_key": "configuration-comparison-v1|binary32|right_handed_y_up_metres_seconds_kilograms|fixed|poly6|spiky|jacobi_immutable_snapshot|00000000,00000000,00000000|3c088889|3ecccccd|3d4ccccd|40000000|447a0000|8|41a00000|true|3dcccccd|3e4ccccd|40800000|strict_less_than|static_plane_projection|once_after_prediction|ascending_particle_identity|false|false|3d4ccccd|3dcccccd|45fc7198|3dfd8598|44f9ffff|3a83126f|3ca3d70b|27",
+      "derived": {
+        "artificial_pressure_reference_separation_m": 0.020000001415610313,
+        "artificial_pressure_strength_m2": 0.0010000000474974513,
+        "lattice_offset_count": 27,
+        "normalised_rest_density_per_m3": 8078.19921875,
+        "particle_diameter_m": 0.05000000074505806,
+        "particle_mass_kg": 0.1237899661064148,
+        "relaxation_per_m2": 1999.9998779296875,
+        "support_radius_m": 0.10000000149011612
+      },
+      "description": "Position-Based Fluids numerical defaults",
+      "name": "maelstrom-defaults-v4",
+      "numerical": {
+        "artificial_pressure_enabled": true,
+        "artificial_pressure_exponent": 4.0,
+        "artificial_pressure_reference_separation_ratio": 0.20000000298023224,
+        "artificial_pressure_strength_scale": 0.10000000149011612,
+        "boundary_model": "static_plane_projection",
+        "cfl_factor": 0.4000000059604645,
+        "coordinate_system": "right_handed_y_up_metres_seconds_kilograms",
+        "correction_kernel": "spiky",
+        "density_kernel": "poly6",
+        "external_acceleration_m_s2": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "fixed_timestep_s": 0.008333333767950535,
+        "neighbour_rebuild_policy": "once_after_prediction",
+        "particle_order_policy": "ascending_particle_identity",
+        "particle_spacing_m": 0.05000000074505806,
+        "physical_rest_density_kg_m3": 1000.0,
+        "relaxation_scale": 20.0,
+        "scalar_precision": "binary32",
+        "solver_iterations": 8,
+        "solver_update_policy": "jacobi_immutable_snapshot",
+        "support_policy": "strict_less_than",
+        "support_radius_ratio": 2.0,
+        "timestep_policy": "fixed",
+        "vorticity_confinement_enabled": false,
+        "xsph_viscosity_enabled": false
+      },
+      "provenance": {
+        "artificial_pressure_enabled": "configuration_file",
+        "artificial_pressure_exponent": "configuration_file",
+        "artificial_pressure_reference_separation_ratio": "configuration_file",
+        "artificial_pressure_strength_scale": "configuration_file",
+        "boundary_model": "configuration_file",
+        "cfl_factor": "configuration_file",
+        "coordinate_system": "configuration_file",
+        "correction_kernel": "configuration_file",
+        "correction_scale": "configuration_file",
+        "density_kernel": "configuration_file",
+        "external_acceleration_m_s2": "scene",
+        "fixed_timestep_s": "configuration_file",
+        "neighbour_rebuild_policy": "configuration_file",
+        "particle_order_policy": "configuration_file",
+        "particle_spacing_m": "configuration_file",
+        "physical_rest_density_kg_m3": "configuration_file",
+        "relaxation_scale": "configuration_file",
+        "scalar_precision": "configuration_file",
+        "solver_iterations": "configuration_file",
+        "solver_update_policy": "configuration_file",
+        "support_policy": "configuration_file",
+        "support_radius_ratio": "configuration_file",
+        "timestep_policy": "configuration_file",
+        "vorticity_confinement_enabled": "configuration_file",
+        "xsph_viscosity_enabled": "configuration_file"
+      },
+      "schema_version": 1
+    },
+    "description": "Unforced three-by-three-by-three lattice for independent multi-step verification",
+    "name": "small-lattice-reference-v1",
+    "particles": [
+      {
+        "identity": "0",
+        "position_m": {
+          "x": 0.20000000298023224,
+          "y": 0.4000000059604645,
+          "z": 0.20000000298023224
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "1",
+        "position_m": {
+          "x": 0.20000000298023224,
+          "y": 0.4000000059604645,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "2",
+        "position_m": {
+          "x": 0.20000000298023224,
+          "y": 0.4000000059604645,
+          "z": 0.30000001192092896
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "3",
+        "position_m": {
+          "x": 0.20000000298023224,
+          "y": 0.45000001788139343,
+          "z": 0.20000000298023224
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "4",
+        "position_m": {
+          "x": 0.20000000298023224,
+          "y": 0.45000001788139343,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "5",
+        "position_m": {
+          "x": 0.20000000298023224,
+          "y": 0.45000001788139343,
+          "z": 0.30000001192092896
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "6",
+        "position_m": {
+          "x": 0.20000000298023224,
+          "y": 0.5,
+          "z": 0.20000000298023224
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "7",
+        "position_m": {
+          "x": 0.20000000298023224,
+          "y": 0.5,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "8",
+        "position_m": {
+          "x": 0.20000000298023224,
+          "y": 0.5,
+          "z": 0.30000001192092896
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "9",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.4000000059604645,
+          "z": 0.20000000298023224
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "10",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.4000000059604645,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "11",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.4000000059604645,
+          "z": 0.30000001192092896
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "12",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.45000001788139343,
+          "z": 0.20000000298023224
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "13",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.45000001788139343,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "14",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.45000001788139343,
+          "z": 0.30000001192092896
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "15",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.5,
+          "z": 0.20000000298023224
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "16",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.5,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "17",
+        "position_m": {
+          "x": 0.25,
+          "y": 0.5,
+          "z": 0.30000001192092896
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "18",
+        "position_m": {
+          "x": 0.30000001192092896,
+          "y": 0.4000000059604645,
+          "z": 0.20000000298023224
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "19",
+        "position_m": {
+          "x": 0.30000001192092896,
+          "y": 0.4000000059604645,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "20",
+        "position_m": {
+          "x": 0.30000001192092896,
+          "y": 0.4000000059604645,
+          "z": 0.30000001192092896
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "21",
+        "position_m": {
+          "x": 0.30000001192092896,
+          "y": 0.45000001788139343,
+          "z": 0.20000000298023224
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "22",
+        "position_m": {
+          "x": 0.30000001192092896,
+          "y": 0.45000001788139343,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "23",
+        "position_m": {
+          "x": 0.30000001192092896,
+          "y": 0.45000001788139343,
+          "z": 0.30000001192092896
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "24",
+        "position_m": {
+          "x": 0.30000001192092896,
+          "y": 0.5,
+          "z": 0.20000000298023224
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "25",
+        "position_m": {
+          "x": 0.30000001192092896,
+          "y": 0.5,
+          "z": 0.25
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "identity": "26",
+        "position_m": {
+          "x": 0.30000001192092896,
+          "y": 0.5,
+          "z": 0.30000001192092896
+        },
+        "velocity_m_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    ],
+    "planes": [],
+    "randomness": "none",
+    "scene_schema_version": 1,
+    "schema_version": 1
+  },
+  "original": null,
+  "render": {
+    "camera": {
+      "eye_m": [
+        0.48663297789440785,
+        0.6156430822909114,
+        0.48663297789440785
+      ],
+      "far_m": 1.6724386756331084,
+      "near_m": 0.0001299038146541809,
+      "target_m": [
+        0.2500000074505806,
+        0.45000000298023224,
+        0.2500000074505806
+      ],
+      "up": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "vertical_fov_deg": 45.0
+    },
+    "format": "png",
+    "height": 180,
+    "schema_version": 1,
+    "step_stride": 2,
+    "width": 320
+  },
+  "renderer": {
+    "format": "Rgba8UnormSrgb",
+    "overlays": false,
+    "revision": "opaque-spheres-lines-v1",
+    "samples": 1,
+    "shader_sha256": "sha256:2e373273950f8c28145b0f11e82c44ec73f2695d16970f2bb480ed0e58a241ca"
+  },
+  "request": {
+    "checkpoints": [
+      "0",
+      "2",
+      "4",
+      "5"
+    ],
+    "steps": "5"
+  },
+  "run_metadata": {
+    "application_version": "0.1.0",
+    "backend": "serial-uniform-grid-pbf-binary32-8-jacobi-v2",
+    "build_revision": null,
+    "configuration_id": "sha256:6a917a477430c0557b0371a08362389d31ba29470a740a2d623cd74d90134621",
+    "debug_assertions": true,
+    "input_id": "sha256:3d9bcf4a023d39803cbaadef97a94ce454493c575f1d56c356241e55bb026a34",
+    "run_id": "sha256:b551c112166a2d417b3a3d865a6ce4dcaff1e362697d54f886abfffb1d688185",
+    "target_arch": "x86_64",
+    "target_os": "linux"
+  },
+  "schema_version": 1,
+  "source_mode": "direct",
+  "status": "completed",
+  "step_stride": "2",
+  "timing_seconds": {
+    "encoding": 0.16825614000000003,
+    "graphics_readback": 0.044504542999999994,
+    "solver_steps": 0.025520832
+  }
+}

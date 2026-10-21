@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-21",
+  "maelstrom_commit": "9336ee42104badb1b5e439edc1df5e8488c32987",
+  "maelstrom_tree_clean": true,
+  "production_source_sha256": "sha256:e31c765e070e47a070a424e08bae78abeddfebe6ff531e58a4fef394a7e55079",
+  "source_inventory": "source-manifest.json",
+  "source_inventory_matches": true,
+  "environment": "Local x86_64 WSL2 Ubuntu 24.04.5; Rust/Cargo 1.98.1; explicit llvmpipe software Vulkan",
+  "checks": [
+    {
+      "cwd": "Maelstrom",
+      "command": "cargo test --locked --features viewer -- --include-ignored",
+      "exit": 0,
+      "passed": 265,
+      "failed": 0,
+      "ignored": 0,
+      "log": "checkpoint-tests.log",
+      "scope": "CPU-only viewer build, including all eight software-Vulkan device checks; no CUDA hardware tests are compiled into this build."
+    },
+    {
+      "cwd": "Maelstrom",
+      "command": "cargo clippy --locked --features viewer --all-targets -- -D warnings",
+      "exit": 0
+    },
+    {
+      "cwd": "Maelstrom",
+      "command": "CUDA_HOME=/unavailable CXX=/unavailable cargo check --locked --no-default-features",
+      "exit": 0
+    },
+    {
+      "cwd": "Maelstrom",
+      "command": "cargo fmt --all -- --check",
+      "exit": 0
+    },
+    {
+      "cwd": "Maelstrom",
+      "command": "cargo build --locked --features viewer",
+      "exit": 0,
+      "scope": "Checkout build only; no installed binary was replaced."
+    },
+    {
+      "cwd": "EPQ",
+      "command": "python3 -m unittest discover -s tests -p 'test*.py'",
+      "exit": 0,
+      "passed": 16
+    },
+    {
+      "cwd": "EPQ",
+      "command": "python3 -m compileall -q tests/verification/playback_display.py",
+      "exit": 0
+    }
+  ],
+  "primary_pc_capture": "../pc-export-v1/capture-verification.json",
+  "primary_pc_capture_limit": "A completed CUDA capture and verified image transfer, not a new independent numerical comparison or benchmark.",
+  "historical_provenance": "Original exporter-only, playback and PC-capture collection records retain their recorded dirty or unavailable Git context. The playback and PC-capture production hash matches this clean completion commit; the earlier exporter-only build was not separately committed.",
+  "completion_tag_both_repositories": "milestone-04/phase-02/complete",
+  "hosted_verification": "not performed",
+  "remote_publication": "not authorised or performed",
+  "diff_review": "Source and documentation whitespace checks pass. Original offline-v1 raw logs retain their blank final lines and one trailing space in a destroyed-device diagnostic; those collection-time bytes were not reformatted.",
+  "limits": [
+    "Hardware Vulkan and other native platforms remain unqualified.",
+    "Existing window-control evidence was collected before committing identical source; it was not rerun during checkpointing.",
+    "No cross-driver pixel equality or timing claim is established."
+  ]
+}

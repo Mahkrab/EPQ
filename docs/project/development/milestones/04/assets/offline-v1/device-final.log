@@ -1,0 +1,21 @@
+   Compiling maelstrom v0.1.0 (<Maelstrom>)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.27s
+     Running tests/export_device.rs (target/debug/deps/export_device-88ea2cfcdd528401)
+
+running 4 tests
+fault 0: export cancelled; cancellation polls 2
+test exported_pngs_preserve_orientation_scale_depth_and_explicit_camera ... ok
+test explicit_saved_prefix_and_process_interruption_cannot_claim_original_completion ... ok
+fault 1: frame 1 publication: entity already exists; cancellation polls 23
+fault 2: progress staging: entity already exists; recording incomplete outcome also failed: progress staging: entity already exists; cancellation polls 23
+export graphics: {"backend":"Vulkan","device":0,"device_type":"Cpu","driver":"llvmpipe","driver_info":"Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)","name":"llvmpipe (LLVM 20.1.2, 256 bits)","selection_index":0,"software_requested":true,"vendor":65541}
+fault 3: manifest publication: entity already exists; cancellation polls 68
+test failures_and_cancellation_retain_incomplete_sequences_and_prior_files ... ok
+export graphics: {"backend":"Vulkan","device":0,"device_type":"Cpu","driver":"llvmpipe","driver_info":"Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)","name":"llvmpipe (LLVM 20.1.2, 256 bits)","selection_index":0,"software_requested":true,"vendor":65541}
+export graphics: {"backend":"Vulkan","device":0,"device_type":"Cpu","driver":"llvmpipe","driver_info":"Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)","name":"llvmpipe (LLVM 20.1.2, 256 bits)","selection_index":0,"software_requested":true,"vendor":65541}
+export graphics: {"backend":"Vulkan","device":0,"device_type":"Cpu","driver":"llvmpipe","driver_info":"Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)","name":"llvmpipe (LLVM 20.1.2, 256 bits)","selection_index":0,"software_requested":true,"vendor":65541}
+export graphics: {"backend":"Vulkan","device":0,"device_type":"Cpu","driver":"llvmpipe","driver_info":"Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)","name":"llvmpipe (LLVM 20.1.2, 256 bits)","selection_index":0,"software_requested":true,"vendor":65541}
+test exports_match_direct_observations_and_repeat_decoded_pixels ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 19.79s
+
