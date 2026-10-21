@@ -110,7 +110,8 @@ records the satisfied gate and its hardware limitations. The
 [application contract](/docs/project/development/milestones/04/application-contract.md) owns the agreed
 interaction, lifecycle and frame/output behaviour. Local annotated `milestone-04/phase-00/complete`
 checkpoints retain the assessed implementation and exact parent/submodule pairing. Fresh CUDA-worker
-and graphics qualification remain explicit limits; remote publication is separate.
+and graphics checks were unverified at that checkpoint; the viewer record below owns subsequent
+evidence. Remote publication is separate.
 
 ## Phase 1: integrate the interactive 3D viewer
 
@@ -120,25 +121,25 @@ Provide a usable view of the simulation while keeping controls, rendering and nu
 
 ### Work
 
-- [ ] Integrate the selected optional graphics path through a thin application entry point. Keep the
+- [x] Integrate the selected optional graphics path through a thin application entry point. Keep the
       existing headless CLI and tests independent of display setup. Report unsupported graphics/device
       combinations clearly; an explicit CUDA request must not silently become CPU execution.
-- [ ] Render accepted particle positions and useful static boundaries with a clear camera and sensible
+- [x] Render accepted particle positions and useful static boundaries with a clear camera and sensible
       framing. Handle empty/single-particle scenes, large/small extents, occlusion and clipping deliberately.
       Keep display conversion from metres separate from the authoritative particle data.
-- [ ] Expose the agreed scene/configuration and backend settings, start/pause/resume/single-step/reset,
+- [x] Expose the agreed scene/configuration and backend settings, start/pause/resume/single-step/reset,
       camera controls and cancellation/close behaviour. Validate external inputs before replacing an
       accepted run. Failed setup or switching must not hide the old outcome or present stale frames as new.
-- [ ] Display completed steps/simulated time, effective backend/resources, completion/failure and meaningful
+- [x] Display completed steps/simulated time, effective backend/resources, completion/failure and meaningful
       warnings. Distinguish display frame rate, simulation throughput and solver timing; a fast redraw of
       unchanged state is not a fast simulation. Keep personal paths out of public diagnostics.
-- [ ] Keep interaction responsive during stepping and slow presentation. Exercise resize/minimise,
+- [x] Keep interaction responsive during stepping and slow presentation. Exercise resize/minimise,
       zero drawable extent, surface recreation, unavailable resources and window close during work.
       Graphics failure must not corrupt accepted solver state or strand a worker/context.
-- [ ] Test numerical independence under varied display cadence, camera movement, dropped observations,
+- [x] Test numerical independence under varied display cadence, camera movement, dropped observations,
       pause/step and reset. Retain exact serial checks and the applicable backend comparison policy.
       Verify all four execution choices where available, including CPU-only operation without CUDA.
-- [ ] Obtain real interactive evidence on the supported display environment: controls, warnings, failure,
+- [x] Obtain real interactive evidence on the supported display environment: controls, warnings, failure,
       resize and shutdown, with source/build/device context. Keep rendered/hardware evidence separate from
       mocked event tests; SSH access alone does not establish that an interactive journey was exercised.
 
@@ -147,6 +148,12 @@ Provide a usable view of the simulation while keeping controls, rendering and nu
 A person can select and control a run, understand its state and inspect its particles in 3D. Real
 display checks and deterministic integration tests support that judgement. Visual changes do not
 alter accepted numerical results, and resource or graphics failures have explicit, safe outcomes.
+
+The [interactive viewer record](/docs/project/development/milestones/04/phases/phase-01-interactive-viewer.md)
+records the local G01 decision, retained display checks, exact CPU/CUDA comparisons and graphics
+limits. Local annotated `milestone-04/phase-01/complete` checkpoints retain the assessed implementation
+and exact parent/submodule pairing. Remote publication is separate. Offline sequence export remains
+outside this gate.
 
 ## Phase 2: implement reproducible offline rendering and output
 

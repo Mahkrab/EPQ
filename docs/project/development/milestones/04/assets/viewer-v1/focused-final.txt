@@ -1,0 +1,49 @@
+
+running 22 tests
+test cuda::tests::capacity_checks_do_not_allocate_or_need_a_device ... ok
+test execution::tests::unavailable_workers_are_a_typed_setup_failure ... ok
+test neighbours::grid::tests::mapping_uses_floor_at_faces_edges_and_corners ... ok
+test simulation::tests::exhausted_step_counter_cannot_wrap_or_accept_another_step ... ok
+test neighbours::grid::tests::invalid_index_and_capacity_operations_are_errors ... ok
+test application::tests::queued_old_steps_are_discarded_and_new_generation_stays_paused_at_zero ... ok
+test application::tests::shutdown_with_full_queue_resolves_unconstructed_handles_and_receipts ... ok
+test application::tests::full_queue_rejects_restart_atomically_and_cancellation_bypasses_backpressure ... ok
+test execution::tests::joined_work_uses_distinct_workers_and_reports_lowest_index_failure ... ok
+test application::tests::panic_retains_active_snapshot_marks_queued_runs_and_join_reports_failure ... ok
+test viewer::tests::explicit_cuda_selection_fails_without_fallback ... ok
+test viewer::tests::zero_extent_and_occlusion_skip_graphics_configuration_and_drawing ... ok
+test workflow::tests::identity_digest_matches_the_standard_sha256_abc_vector ... ok
+test workflow::output::tests::a_partial_write_failure_never_publishes_a_destination ... ok
+test execution::tests::workers_are_reused_and_terminate_after_the_resource_is_dropped ... ok
+test viewer::tests::close_during_running_work_retains_terminal_accepted_state ... ok
+test viewer::tests::overlay_is_bounded_to_the_drawable_and_has_complete_triangles ... ok
+test viewer::tests::graphics_failure_requests_worker_teardown_and_preserves_accepted_state ... ok
+test viewer::tests::invalid_draft_preserves_selection_and_resource_failure_retains_prior ... ok
+test viewer::tests::requested_audit_is_labelled_by_snapshot_and_does_not_change_acceptance ... ok
+test viewer::tests::receipts_are_polled_and_removed_without_blocking ... ok
+test viewer::tests::presentation_cadence_camera_draft_and_reset_preserve_all_cpu_modes ... ok
+
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+
+
+running 2 tests
+test cli::viewer::tests::invalid_settings_and_selected_paths_have_explicit_redacted_feedback ... ok
+test cli::viewer::tests::external_and_bundled_selection_share_precedence_and_identity ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 5 tests
+test arbitrary_planes_are_clipped_to_frozen_initial_box ... ok
+test failed_camera_changes_preserve_the_previous_valid_view ... ok
+test camera_has_known_orientation_scale_and_depth ... ok
+test fitting_empty_single_small_and_large_geometry_is_finite ... ok
+test invalid_camera_and_strict_render_documents_are_rejected ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling maelstrom v0.1.0 (<maelstrom>)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.64s
+     Running unittests src/lib.rs (target/debug/deps/maelstrom-f7a9cbcdd121a4aa)
+     Running unittests src/main.rs (target/debug/deps/maelstrom-9f8177a6b4e9338b)
+     Running tests/render_contract.rs (target/debug/deps/render_contract-3654bb007063cf35)

@@ -1,0 +1,12 @@
+ Documenting maelstrom v0.1.0 (<maelstrom>)
+error: unresolved link to `0,1`
+   --> src/render/camera.rs:129:78
+    |
+129 |     /// Projects a world point to top-left-origin pixels and graphics depth [0,1].
+    |                                                                              ^^^ no item named `0,1` in scope
+    |
+    = help: to escape `[` and `]` characters, add '\' before them like `\[` or `\]`
+    = note: `-D rustdoc::broken-intra-doc-links` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(rustdoc::broken_intra_doc_links)]`
+
+error: could not document `maelstrom`

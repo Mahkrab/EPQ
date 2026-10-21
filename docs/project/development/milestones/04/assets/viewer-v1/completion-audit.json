@@ -1,0 +1,114 @@
+{
+  "scope": "Milestone 04 Phase 01, local G01 implementation and verification",
+  "requirements": [
+    {
+      "requirement": "optional_entry_and_headless_independence",
+      "status": "verified",
+      "conclusion": "Viewer-only command/module and optional Vulkan feature graph; original versions retained. Full CPU/headless regression passed without display and toolkit paths.",
+      "evidence": [
+        "Maelstrom/Cargo.toml",
+        "Maelstrom/src/cli/arguments.rs",
+        "Maelstrom/src/cli/viewer.rs",
+        "headless-tests.txt",
+        "negative-launches.json"
+      ]
+    },
+    {
+      "requirement": "accepted_positions_boundaries_camera",
+      "status": "verified",
+      "conclusion": "Read-only instanced spheres and frozen plane intersections. Independent projection, scale/depth, fit/extents and clipping tests; real readback verifies orientation, occlusion, empty pixels and repetition.",
+      "evidence": [
+        "Maelstrom/src/render",
+        "Maelstrom/tests/render_contract.rs",
+        "Maelstrom/tests/render_device.rs",
+        "focused-final.txt",
+        "render-device-final.txt"
+      ]
+    },
+    {
+      "requirement": "selection_validation_controls_and_prior_state",
+      "status": "verified",
+      "conclusion": "Draft resolution shares existing precedence; before-submit validation preserves selection; failed construction has no snapshot/device. Native controls and prior inspection passed; exact reset/selection tests passed.",
+      "evidence": [
+        "Maelstrom/src/viewer/model.rs",
+        "Maelstrom/src/cli/viewer.rs",
+        "Maelstrom/src/viewer/tests.rs",
+        "final-display/journey.txt",
+        "final-display/x11-06-cuda-unavailable.png",
+        "final-display/x11-07-prior.png"
+      ]
+    },
+    {
+      "requirement": "visible_progress_warnings_failures_and_boundaries",
+      "status": "verified",
+      "conclusion": "Status, accepted/requested counts, simulated seconds, effective resources and cumulative/latest CFL visible. Missing snapshots are labelled unavailable; density audit and redraw FPS have separate meanings.",
+      "evidence": [
+        "Maelstrom/src/viewer/mod.rs",
+        "final-display/x11-02-step-warning-camera-audit.png",
+        "final-display/x11-04-invalid-draft.png",
+        "final-display/x11-06-cuda-unavailable.png",
+        "private-feedback-final.txt",
+        "private-feedback-display/external-configuration-failure.png",
+        "pc-private-feedback.txt"
+      ]
+    },
+    {
+      "requirement": "responsive_lifecycle_and_graphics_failure",
+      "status": "verified",
+      "conclusion": "Non-blocking receipts and worker ownership retained. Native resize/minimise/restore/recreation and close while running passed. Zero extent guard and controlled close tests passed. Deliberate graphics destruction was reported and accepted CUDA state retained.",
+      "evidence": [
+        "Maelstrom/src/viewer/mod.rs",
+        "Maelstrom/src/viewer/tests.rs",
+        "final-display/journey.txt",
+        "render-device-final.txt",
+        "pc-final.txt"
+      ]
+    },
+    {
+      "requirement": "numerical_independence_all_execution_choices",
+      "status": "verified",
+      "conclusion": "Exact identities and six binary32 components checked against direct execution for all CPU modes, varied reads/camera, draft/step/reset. Existing absent-consumer lifecycle tests passed. PC CUDA results and renderer consumption agree exactly with serial reference.",
+      "evidence": [
+        "Maelstrom/src/viewer/tests.rs",
+        "Maelstrom/tests/application_lifecycle.rs",
+        "focused-final.txt",
+        "viewer-tests.txt",
+        "pc-final.txt",
+        "pc-context.json"
+      ]
+    },
+    {
+      "requirement": "real_display_and_reproducible_evidence",
+      "status": "verified",
+      "conclusion": "Complete native X11 journey passed on the identified display binary; window/renderer/controller sources match the current tree. Only CLI path redaction changed later, verified by focused CLI tests and a separate current-binary error window. Source/compiler-input/image identities and limits are retained.",
+      "evidence": [
+        "final-display/journey.txt",
+        "x11-native-context.json",
+        "source-manifest.json",
+        "image-hashes.json",
+        "pc-context.json",
+        "README.md",
+        "display-source-manifest.json"
+      ]
+    }
+  ],
+  "git": {
+    "EPQ_head": "5d145c265c6e3148476535f2da79a3e814e2a3c1",
+    "Maelstrom_head": "423ac5c6cd0a1939eea9225cad8d7dda2197c0c2",
+    "EPQ_gitlink": "423ac5c6cd0a1939eea9225cad8d7dda2197c0c2",
+    "implementation_state": "uncommitted",
+    "commits_tags_publication_authorised": false
+  },
+  "source_hashes_match": true,
+  "original_dependency_versions_removed": [],
+  "later_phases_started": false,
+  "qualification_limits": [
+    "Local interactive graphics is software Vulkan on WSLg, with native X11 prerequisites in a temporary runtime.",
+    "PC CUDA and independent software-Vulkan consumption were verified; no PC interactive display was available.",
+    "Hardware Vulkan presentation, physical device loss, hung drivers and other OS/API combinations are unqualified.",
+    "No benchmark, offline export, checkpoint or hosted result is claimed."
+  ],
+  "documentation_check": "passed: 7 Markdown files parsed and all 52 local links/anchors resolved",
+  "status": "G01 locally satisfied within the recorded qualification limits",
+  "final_cli_boundary": "Three updated CLI tests passed locally and on the PC; the current-binary error window was visually inspected."
+}

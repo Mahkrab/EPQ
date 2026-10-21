@@ -4,8 +4,11 @@ This record owns the application behaviour agreed before graphics integration. T
 [numerical contract](/docs/project/development/milestones/00/phases/phase-00-design-contract.md),
 [comparison policy](/docs/project/development/milestones/00/reference-verification.md) and
 [CUDA ownership handoff](/docs/project/development/milestones/03/cuda-gpu.md#application-integration-handoff)
-continue to own the simulation. The controller is implemented; the viewer, settings parser and
-image exporter described below are implementation contracts, not delivered commands.
+continue to own the simulation. The controller, optional viewer and render-settings parser are
+implemented. The offline image exporter and publication workflow below remain implementation
+contracts, not delivered commands. The
+[viewer record](/docs/project/development/milestones/04/phases/phase-01-interactive-viewer.md)
+separates assessed interaction, graphics and CUDA evidence.
 
 ## Journey and implementation boundary
 
@@ -53,12 +56,17 @@ Enable Vulkan/std/WGSL and the required window-handle/X11/Wayland support delibe
 web, other graphics backends and optional image formats. Offscreen builds must not pull in winit.
 The reviewed wgpu and PNG projects offer MIT/Apache-2.0 licensing; winit uses Apache-2.0. Retain
 applicable notices and inspect transitive licences when adding the actual dependencies.<sup><a href="#ref-s054">S054</a>, <a href="#ref-s055">S055</a>, <a href="#ref-s056">S056</a></sup>
-These are build/maintenance costs, not a claim that any graphics build has passed.
+The implemented graph retains these feature boundaries; PNG encoding is deferred until its
+consumer is implemented. The viewer adds a bitmap diagnostic font and uses winit's safe keyboard
+loader to report missing native libraries before window creation. The locked Linux graph and
+upstream notices were reviewed with the implementation; see the viewer evidence.
 
-On 20 October 2026 the local WSL environment exposed X11 and Wayland socket paths and `/dev/dxg`;
-`vulkaninfo`, `eglinfo` and `glxinfo` were absent. No surface, adapter or offscreen readback was tested.
-The PC SSH connection timed out. The implemented controller requires none of these facilities;
-graphics qualification must accompany the selected graphics implementation before support is claimed.
+The initial lifecycle assessment on 20 October 2026 established no graphics support and could
+not reach the PC. Subsequent viewer checks qualified local WSLg Wayland/X11 interaction and
+software Vulkan drawing, then CUDA observations and independent graphics drawing on the PC.
+These are separate evidence boundaries: an RTX 4070 CUDA check does not qualify hardware Vulkan
+presentation. Current environments and negative results are retained in the
+[viewer evidence](/docs/project/development/milestones/04/assets/viewer-v1/README.md).
 
 ## Lifecycle and ownership
 

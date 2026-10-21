@@ -1,0 +1,41 @@
+   Compiling maelstrom v0.1.0 (/tmp/maelstrom-viewer-EGhyOR)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.50s
+
+running 7 tests
+test viewer::tests::overlay_is_bounded_to_the_drawable_and_has_complete_triangles ... ok
+test viewer::tests::close_during_running_work_retains_terminal_accepted_state ... ok
+test viewer::tests::receipts_are_polled_and_removed_without_blocking ... ok
+     Running unittests src/lib.rs (target/debug/deps/maelstrom-d185fd70da51b023)
+test viewer::tests::invalid_draft_preserves_selection_and_resource_failure_retains_prior ... ok
+test viewer::tests::requested_audit_is_labelled_by_snapshot_and_does_not_change_acceptance ... ok
+test viewer::tests::presentation_cadence_camera_draft_and_reset_preserve_all_cpu_modes ... ok
+test viewer::tests::cuda_viewer_observations_preserve_exact_headless_results_and_teardown ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 18 filtered out; finished in 0.60s
+
+   Compiling maelstrom v0.1.0 (/tmp/maelstrom-viewer-EGhyOR)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.93s
+     Running tests/render_device.rs (target/debug/deps/render_device-4899ed5d47e82153)
+
+running 2 tests
+Vulkan integration: AdapterInfo { name: "llvmpipe (LLVM 20.1.2, 256 bits)", vendor: 65541, device: 0, device_type: Cpu, device_pci_bus_id: "", driver: "llvmpipe", driver_info: "Mesa 25.2.8-0ubuntu0.24.04.2 (LLVM 20.1.2)", backend: Vulkan, subgroup_min_size: 8, subgroup_max_size: 8, transient_saves_memory: Some(false), limit_bucket: None }
+
+thread 'software_vulkan_draws_known_geometry_depth_and_retains_input_bits' (5951) panicked at tests/render_device.rs:153:5:
+destroyed graphics resources must reject further work
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test software_vulkan_draws_known_geometry_depth_and_retains_input_bits ... FAILED
+CUDA/graphics transport: CUDA Some(DeviceInfo { ordinal: 0, name: "NVIDIA GeForce RTX 4070", memory_bytes: 12878086144, compute_major: 8, compute_minor: 9, driver_version: 13030, target: "compute_89" }); graphics AdapterInfo { name: "llvmpipe (LLVM 20.1.2, 256 bits)", vendor: 65541, device: 0, device_type: Cpu, device_pci_bus_id: "", driver: "llvmpipe", driver_info: "Mesa 25.2.8-0ubuntu0.24.04.2 (LLVM 20.1.2)", backend: Vulkan, subgroup_min_size: 8, subgroup_max_size: 8, transient_saves_memory: Some(false), limit_bucket: None }
+
+thread 'cuda_worker_snapshots_draw_on_an_independent_graphics_device' (5950) panicked at tests/render_device.rs:283:5:
+assertion failed: g.check().is_err()
+test cuda_worker_snapshots_draw_on_an_independent_graphics_device ... FAILED
+
+failures:
+
+failures:
+    cuda_worker_snapshots_draw_on_an_independent_graphics_device
+    software_vulkan_draws_known_geometry_depth_and_retains_input_bits
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.57s
+
+error: test failed, to rerun pass `--test render_device`

@@ -1,0 +1,73 @@
+[
+  {
+    "name": "no-display",
+    "arguments": [
+      "maelstrom",
+      "view",
+      "falling-block-04",
+      "--steps",
+      "0",
+      "--software"
+    ],
+    "removed_environment": [
+      "DISPLAY",
+      "WAYLAND_DISPLAY",
+      "WAYLAND_SOCKET"
+    ],
+    "exit": 3,
+    "expected_exit": 3,
+    "transcript": "no-display.txt"
+  },
+  {
+    "name": "missing-x11-keyboard",
+    "arguments": [
+      "maelstrom",
+      "view",
+      "falling-block-04",
+      "--steps",
+      "0",
+      "--software"
+    ],
+    "removed_environment": [
+      "WAYLAND_DISPLAY",
+      "WAYLAND_SOCKET"
+    ],
+    "exit": 3,
+    "expected_exit": 3,
+    "transcript": "missing-x11-keyboard.txt"
+  },
+  {
+    "name": "missing-graphics-adapter",
+    "arguments": [
+      "maelstrom",
+      "view",
+      "falling-block-04",
+      "--steps",
+      "0",
+      "--software",
+      "--graphics-adapter",
+      "999"
+    ],
+    "removed_environment": [],
+    "exit": 3,
+    "expected_exit": 3,
+    "transcript": "missing-graphics-adapter.txt"
+  },
+  {
+    "name": "invalid-render-dimensions",
+    "arguments": [
+      "maelstrom",
+      "view",
+      "falling-block-04",
+      "--steps",
+      "0",
+      "--software",
+      "--width",
+      "0"
+    ],
+    "removed_environment": [],
+    "exit": 3,
+    "expected_exit": 3,
+    "transcript": "invalid-render-dimensions.txt"
+  }
+]

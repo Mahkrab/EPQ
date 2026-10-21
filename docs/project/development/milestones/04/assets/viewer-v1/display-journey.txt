@@ -1,0 +1,13 @@
+Maelstrom | gen 1 Paused | 0/100000 steps | warnings 0 (Ubuntu)
+Captured: 01-initial (1280x720)
+Keys: n
+Timed out waiting for title pattern: gen 1 Paused.*1/100000 steps.*warnings 1; observed Maelstrom | gen 5 Paused | 
+48/100000 steps | warnings 48 (Ubuntu)
+At <EPQ>\docs\project\development\milestones\04\assets\viewer-v1\d
+isplay-journey.ps1:30 char:2
++  throw "Timed out waiting for title pattern: $Pattern; observed $($p. ...
++  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Timed out waiti...ngs 48 (Ubuntu):String) [], RuntimeException
+    + FullyQualifiedErrorId : Timed out waiting for title pattern: gen 1 Paused.*1/100000 steps.*warnings 1; observed  
+   Maelstrom | gen 5 Paused | 48/100000 steps | warnings 48 (Ubuntu)
+ 

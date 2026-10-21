@@ -1,0 +1,20 @@
+   Compiling maelstrom v0.1.0 (<maelstrom>)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.82s
+     Running tests/render_device.rs (target/debug/deps/render_device-8b81b126f767c81d)
+
+running 1 test
+Vulkan integration: AdapterInfo { name: "llvmpipe (LLVM 20.1.2, 256 bits)", vendor: 65541, device: 0, device_type: Cpu, device_pci_bus_id: "", driver: "llvmpipe", driver_info: "Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)", backend: Vulkan, subgroup_min_size: 8, subgroup_max_size: 8, transient_saves_memory: Some(false), limit_bucket: None }
+
+thread 'software_vulkan_draws_known_geometry_depth_and_retains_input_bits' (61231) panicked at tests/render_device.rs:153:5:
+destroyed graphics resources must reject further work
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test software_vulkan_draws_known_geometry_depth_and_retains_input_bits ... FAILED
+
+failures:
+
+failures:
+    software_vulkan_draws_known_geometry_depth_and_retains_input_bits
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+error: test failed, to rerun pass `--test render_device`

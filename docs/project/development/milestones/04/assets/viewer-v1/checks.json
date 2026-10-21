@@ -1,0 +1,277 @@
+{
+  "environment": {
+    "kernel": "Linux 6.6.87.2-microsoft-standard-WSL2",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)\nbinary: rustc\ncommit-hash: 48a229ceaefd4985c50990b14116b6d856af0985\ncommit-date: 2026-09-01\nhost: x86_64-unknown-linux-gnu\nrelease: 1.98.1\nLLVM version: 22.1.8",
+    "cargo": "cargo 1.98.1 (797e8a9bc 2026-08-05)"
+  },
+  "checks": [
+    {
+      "name": "headless-tests",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--no-default-features"
+      ],
+      "cwd": "Maelstrom",
+      "exit": 0,
+      "transcript": "headless-tests.txt",
+      "display_removed": true,
+      "cuda_paths_deliberately_unusable": true
+    },
+    {
+      "name": "viewer-tests",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--features",
+        "viewer"
+      ],
+      "cwd": "Maelstrom",
+      "exit": 0,
+      "transcript": "viewer-tests.txt",
+      "display_removed": true,
+      "cuda_paths_deliberately_unusable": true
+    },
+    {
+      "name": "render-device",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--features",
+        "viewer",
+        "--test",
+        "render_device",
+        "--",
+        "--ignored",
+        "--nocapture"
+      ],
+      "cwd": "Maelstrom",
+      "exit": 101,
+      "transcript": "render-device.txt",
+      "display_removed": false,
+      "cuda_paths_deliberately_unusable": false
+    },
+    {
+      "name": "focused-final",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--features",
+        "viewer",
+        "--lib",
+        "--bin",
+        "maelstrom",
+        "--test",
+        "render_contract"
+      ],
+      "cwd": "Maelstrom",
+      "exit": 0,
+      "transcript": "focused-final.txt",
+      "display_removed": true,
+      "cuda_paths_deliberately_unusable": true
+    },
+    {
+      "name": "render-device-final",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--features",
+        "viewer",
+        "--test",
+        "render_device",
+        "--",
+        "--ignored",
+        "--nocapture"
+      ],
+      "cwd": "Maelstrom",
+      "exit": 0,
+      "transcript": "render-device-final.txt",
+      "display_removed": true,
+      "cuda_paths_deliberately_unusable": true
+    },
+    {
+      "name": "clippy-headless",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--no-default-features",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "Maelstrom",
+      "exit": 0,
+      "transcript": "clippy-headless.txt",
+      "display_removed": true,
+      "cuda_paths_deliberately_unusable": true
+    },
+    {
+      "name": "clippy-viewer",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--features",
+        "viewer",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "Maelstrom",
+      "exit": 0,
+      "transcript": "clippy-viewer.txt",
+      "display_removed": true,
+      "cuda_paths_deliberately_unusable": true
+    },
+    {
+      "name": "rustdoc",
+      "command": [
+        "cargo",
+        "doc",
+        "--locked",
+        "--features",
+        "viewer",
+        "--no-deps"
+      ],
+      "cwd": "Maelstrom",
+      "exit": 101,
+      "transcript": "rustdoc.txt",
+      "display_removed": true,
+      "cuda_paths_deliberately_unusable": true
+    },
+    {
+      "name": "rustdoc-final",
+      "command": [
+        "cargo",
+        "doc",
+        "--locked",
+        "--features",
+        "viewer",
+        "--no-deps"
+      ],
+      "exit": 0,
+      "cwd": "Maelstrom",
+      "transcript": "rustdoc-final.txt",
+      "display_removed": true,
+      "cuda_paths_deliberately_unusable": true
+    },
+    {
+      "name": "format",
+      "command": [
+        "cargo",
+        "fmt",
+        "--",
+        "--check"
+      ],
+      "exit": 0,
+      "cwd": "Maelstrom",
+      "transcript": "format.txt",
+      "display_removed": true,
+      "cuda_paths_deliberately_unusable": true
+    },
+    {
+      "name": "render-without-window",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--no-default-features",
+        "--features",
+        "render"
+      ],
+      "exit": 0,
+      "cwd": "Maelstrom",
+      "transcript": "render-without-window.txt",
+      "display_removed": true,
+      "cuda_paths_deliberately_unusable": true
+    },
+    {
+      "name": "viewer-build",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--features",
+        "viewer"
+      ],
+      "exit": 0,
+      "cwd": "Maelstrom",
+      "transcript": "viewer-build.txt",
+      "display_removed": true,
+      "cuda_paths_deliberately_unusable": true
+    },
+    {
+      "name": "private-feedback-final",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--features",
+        "viewer",
+        "--bin",
+        "maelstrom"
+      ],
+      "cwd": "Maelstrom",
+      "exit": 0,
+      "transcript": "private-feedback-final.txt",
+      "display_removed": true,
+      "cuda_paths_deliberately_unusable": true
+    },
+    {
+      "name": "private-feedback-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--features",
+        "viewer",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "Maelstrom",
+      "exit": 0,
+      "transcript": "private-feedback-clippy.txt",
+      "display_removed": true,
+      "cuda_paths_deliberately_unusable": true
+    },
+    {
+      "name": "private-feedback-build",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--features",
+        "viewer"
+      ],
+      "cwd": "Maelstrom",
+      "exit": 0,
+      "transcript": "private-feedback-build.txt",
+      "display_removed": true,
+      "cuda_paths_deliberately_unusable": true
+    },
+    {
+      "name": "private-feedback-format",
+      "command": [
+        "cargo",
+        "fmt",
+        "--",
+        "--check"
+      ],
+      "cwd": "Maelstrom",
+      "exit": 0,
+      "transcript": "private-feedback-format.txt",
+      "display_removed": true,
+      "cuda_paths_deliberately_unusable": true
+    }
+  ]
+}
