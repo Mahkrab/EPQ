@@ -47,6 +47,9 @@
 | [S054](sources/054-wgpu-rendering-boundary.md) | gfx-rs developers (n.d.) | Official repository documentation | Intended optional native renderer, selective features and licence review. | [Upstream repository](https://github.com/gfx-rs/wgpu) |
 | [S055](sources/055-winit-window-events.md) | winit contributors (n.d.) | Official repository documentation | Intended window/event boundary separate from drawing and solver execution. | [v0.30.12 repository](https://github.com/rust-windowing/winit/tree/v0.30.12) |
 | [S056](sources/056-image-rs-png-encoding.md) | image-rs contributors (n.d.) | Official repository documentation | Single-format encoder choice for the intended offline frame workflow. | [Upstream repository](https://github.com/image-rs/image-png) |
+| [S057](sources/057-openai-agent-instruction-design.md) | Provencher / OpenAI (2026) | Official developer guidance | Concise, outcome-led agent planning with explicit completion and decision boundaries. | [Official article](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra) |
+| [S058](sources/058-xdg-base-directory-specification.md) | Bastian et al. (2021) | Official specification | User data and configuration roots for the proposed scene library and durable compiled runs. | [Version 0.8 specification](https://specifications.freedesktop.org/basedir/latest/) |
+| [S059](sources/059-clap-completion-generation.md) | clap contributors (n.d.) | Official crate API documentation | Generate shell completions from the application's actual command declarations. | [Version 4.6.11 documentation](https://docs.rs/clap_complete/4.6.11/clap_complete/) |
 
 ## Documentation standards
 

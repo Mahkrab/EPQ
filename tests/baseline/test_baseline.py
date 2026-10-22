@@ -120,6 +120,19 @@ class MetricsTests(unittest.TestCase):
 
 
 class ProcessAndFileTests(unittest.TestCase):
+    def test_all_solver_invocations_are_explicitly_unpaced(self):
+        case = {"scene": "falling-block-04", "steps": 480,
+                "refine_timestep": 4, "checkpoints": [0, 1, 120, 240, 480]}
+        for backend, workers, cuda in [
+            ("brute-force", None, None), ("uniform-grid", None, None),
+            ("uniform-grid", 2, None), ("uniform-grid", None, (0, 128)),
+        ]:
+            for kind in ("warmup", "sample", "profile"):
+                args = main.solver_args(Path("maelstrom"), case, kind, backend, workers, cuda)
+                self.assertEqual(args.count("--unpaced"), 1)
+                self.assertEqual(args[args.index("--backend") + 1], backend)
+                self.assertEqual("--measure" in args, kind != "warmup")
+
     def test_success_malformed_and_nonzero_process_outcomes_are_retained(self):
         good = main.invoke([sys.executable, "-c", 'print(\'{"status":"completed"}\')'])
         self.assertEqual(good["exit_code"], 0)

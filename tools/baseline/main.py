@@ -157,7 +157,7 @@ def execution_settings(backend: str, workers: int | None, cuda: tuple[int, int] 
 def solver_args(binary: Path, case: dict, kind: str, backend: str = "brute-force",
                 workers: int | None = None, cuda: tuple[int, int] | None = None) -> list[str]:
     execution_settings(backend, workers, cuda)
-    args = [str(binary), "run", case["scene"], "--backend", backend, "--steps", str(case["steps"]),
+    args = [str(binary), "run", case["scene"], "--unpaced", "--backend", backend, "--steps", str(case["steps"]),
             "--refine-timestep", str(case["refine_timestep"]), "--checkpoints",
             ",".join(str(s) for s in case["checkpoints"]), "--format", "json", "--quiet"]
     if workers is not None:

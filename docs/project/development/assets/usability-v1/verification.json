@@ -1,0 +1,235 @@
+{
+  "scope": "Local uncommitted usability implementation; not a historical checkpoint, benchmark or hosted check",
+  "recorded_utc": "2026-10-21T21:21:03.569845+00:00",
+  "epq_head": "068c0f5597636f8533a7de1e8ce1574d78080eb2",
+  "maelstrom_head": "a881145a373fe2a4c9a25b0ca10f3b89c2b1db9e",
+  "environment": {
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+    "cargo": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+    "python": "Python 3.12.3",
+    "kernel": "Linux 6.6.87.2-microsoft-standard-WSL2",
+    "graphics": "llvmpipe LLVM 20.1.2, Mesa 25.2.8-0ubuntu0.24.04.4; software Vulkan; native WSLg/Xwayland"
+  },
+  "maelstrom_working_files_sha256": {
+    "Cargo.lock": "47463d231aa365c4955de7e9ec7639a2ba9dfdbed5eb24bf3a43b2cf460a0e4c",
+    "Cargo.toml": "986edc48df4d903ad404035f0c002729a40a252e355fa4f4eaf3ad83bbbc088e",
+    "README.md": "5cdd3313c274c90519d479e34970e3481f90ed73158457878e846a257715d0f8",
+    "docs/application.md": "e994b0d1fbd0ce26ec2472ddc37b84fc829ec3c7abcb186958d0d89abcdee84c",
+    "docs/cuda.md": "e6f6f869c654e488451b67794692a3a65966b743bc589f3fc1d49424d9b4f413",
+    "docs/export.md": "a35239f2d08efc630935df993405230a9b9b6baa84776dfcd05feb16e53d4b42",
+    "docs/inputs.md": "4bf0158c0b642a3c9cc931e581cb55c4df26268f6d587631945d6584a13b1a78",
+    "docs/usage.md": "1b8d43f44a98316f7c83f5780d7d9ff7ff14e73f693c018794e895ff00d5affc",
+    "docs/viewer.md": "11fabd8b4a8b2f31244c5fa69eb57e6315d253d8851c2243c616b989b03de36a",
+    "reference/README.md": "3c5b932ecfbb680035c4944229c387d713481a3c7f2d84eb8bfa105a1d48fd6d",
+    "src/cli/arguments.rs": "789c59dc7fa83b55f26b3bef5c6c660816db9d7613f234c01e980eead092bb81",
+    "src/cli/bundle.rs": "03914123a44a99fdaf4c17e716ae0369a14fbf476c8731e9a9f9a26cf7202d9b",
+    "src/cli/export.rs": "473c25951e65d88d8d50332fac4e79409a54d3795dfc7f10cae883187b3ee933",
+    "src/cli/inputs.rs": "15ead57f3e7cb2e980b02a0a0e1ce9e4533316a3bdf6df3eaf821877d9bea241",
+    "src/cli/management.rs": "da920295f1c8a3f4e39a8fa19df506be2a8791f9bd291476d7bb99226deea04b",
+    "src/cli/mod.rs": "5d29892cd440694a84020618f4ba869d52fc608a2cf420980df6eae0c62962ad",
+    "src/cli/pacing.rs": "a75bbba2936adf985cdbe785ad3be599b895c3cea67cfc0bab6830211dce4df0",
+    "src/cli/play.rs": "da0d68fdc9e7b1149ef42a949188f2e9cc8ffd36e133272b8a7350d9a35eb8aa",
+    "src/cli/scenes.rs": "cd699cd302bf7fd49bd42277329f753f208e8591dca7c21958f4598f9d664735",
+    "src/cli/selection.rs": "0ff48c6fd6696e33a897fbeb766f6ad63ef07dda6a90c00ef22f2cd0b63bc46d",
+    "src/cli/storage.rs": "c7b066c6ea87c80dbf7f5f509ae47b037dabeee71f8c888c3df54c8bf4dea124",
+    "src/cli/viewer.rs": "3ff91cb24fadd8e969fa2bde3a2872b6f10f2fa6b8d76b1dfa007db2ea0288b9",
+    "src/workflow/mod.rs": "a9a9c1ec65986092b20cfc9755a6f7ce745e1707710b5c83056e12c9ac21e74c",
+    "tests/cli_usability.rs": "9a05c592e2288bf23d16034113a1e1a6f9767be9bc29b7f8b81193b54b785427",
+    "tests/cli_workflow.rs": "234549bae99fbf24b5fc6cc8ad5cfec810dffee69c174463f60c4e9a0618565e",
+    "tests/cuda_boundary.rs": "5671d02b8186f21acabc749413bfce3cedd896ad0febce91bd3b27de34941354",
+    "tests/export_contract.rs": "df4e0f89018a7a1e401d1c0f6ad9786323e600792f8ea2f9914cea20b0e10917",
+    "tests/headless_workflow.rs": "a59b3e51a74aba14ffeab6309f4bae074e4365777625537ad597301be4a4868a"
+  },
+  "parent_integration_files_sha256": {
+    "tools/baseline/main.py": "613c3dee9aee38ff283f580a98367b161e63b5d8daeeae7a63167f5ddc59a4a8",
+    "tests/baseline/test_baseline.py": "a7ee8f116fb9d28e526a36acb117201be5259ed5555473c51604beba5ebcdf2e",
+    "tests/verification/viewer_display.py": "1bfa8b8c799b3b10a8d679508c24cfbe449881f35ebf0416539188dc048458b6"
+  },
+  "checks": [
+    {
+      "command": "cargo test --release --locked --offline",
+      "exit": 0,
+      "passed": 233,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "cargo test --release --locked --offline --features viewer",
+      "exit": 0,
+      "passed": 265,
+      "failed": 0,
+      "ignored": 9
+    },
+    {
+      "command": "cargo test --release --locked --offline --features viewer -- --ignored --test-threads=1",
+      "exit": 0,
+      "passed": 9,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "command": "cargo fmt --all -- --check",
+      "exit": 0
+    },
+    {
+      "command": "cargo clippy --release --locked --offline --all-targets --features viewer -- -D warnings",
+      "exit": 0
+    },
+    {
+      "command": "RUSTDOCFLAGS=\"-D warnings\" cargo doc --release --locked --offline --features viewer --no-deps",
+      "exit": 0
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p test*.py",
+      "exit": 0,
+      "passed": 16
+    },
+    {
+      "command": "python3 -m unittest discover -s tests/baseline -p test*.py",
+      "exit": 0,
+      "passed": 27
+    },
+    {
+      "command": "python3 -m unittest discover -s tests/verification -p test*.py",
+      "exit": 0,
+      "passed": 7
+    },
+    {
+      "command": "cargo install --path . --locked --offline --features viewer --root ISOLATED_TEMP_INSTALL",
+      "exit": 0,
+      "global_installation_changed": false
+    },
+    {
+      "command": "CUDA_HOME=/nonexistent/toolkit CXX=/nonexistent/compiler cargo check --locked --offline --no-default-features",
+      "exit": 0
+    },
+    {
+      "command": "cargo test --release --locked --offline --features viewer --test cli_usability",
+      "scope": "Final preference-domain and contradiction hardening, after full suites",
+      "exit": 0,
+      "passed": 7,
+      "ignored": 1
+    },
+    {
+      "command": "cargo test --release --locked --offline --features viewer --test cli_usability -- --ignored --test-threads=1",
+      "exit": 0,
+      "passed": 1,
+      "failed": 0
+    }
+  ],
+  "installed_journey": {
+    "binary_sha256": "93158ef50cb34d4feb73454e4459e09c6dff670dc139db0fbac26f1dad5643b9",
+    "doctor": 0,
+    "scene_creation_validation_inspection": 0,
+    "explicit_serial_run": 0,
+    "rerun": 0,
+    "rerun_numerically_and_structurally_identical": true,
+    "compile": 0,
+    "runs_show_list_validate": 0,
+    "compile_request": {
+      "particles": 64,
+      "steps": 2,
+      "backend": "serial-grid",
+      "external_acceleration_m_s2": [
+        0,
+        0,
+        0
+      ],
+      "fixed_timestep_s": 0.5,
+      "width": 64,
+      "height": 64,
+      "frames": 3
+    },
+    "interpretation": "Synthetic short playback/control fixture; not a reference experiment or performance sample"
+  },
+  "native_viewer": {
+    "command": "python3 -m tests.verification.viewer_display --binary ISOLATED_INSTALL --output FRESH_EVIDENCE --runtime-lib-dir EXTRACTED_RUNTIME",
+    "exit": 0,
+    "checks": [
+      "paused_launch",
+      "step_warning",
+      "camera",
+      "audit",
+      "pause_resume",
+      "reset",
+      "draft_apply",
+      "invalid_scene",
+      "threaded_mode",
+      "unavailable_cuda",
+      "prior_outcome",
+      "brute_force",
+      "surface_recreate",
+      "resize",
+      "close_during_work"
+    ]
+  },
+  "native_playback": {
+    "command": [
+      "MAELSTROM_BINARY",
+      "play",
+      "EXPORTED_SEQUENCE",
+      "--software",
+      "--paused"
+    ],
+    "exit": 0,
+    "sequence_files_unchanged": true,
+    "frames": 3,
+    "checks": [
+      "initial",
+      "seek",
+      "endpoints",
+      "resize",
+      "speed",
+      "restart",
+      "pause",
+      "resume",
+      "completion",
+      "close"
+    ],
+    "binary_sha256": "93158ef50cb34d4feb73454e4459e09c6dff670dc139db0fbac26f1dad5643b9",
+    "sequence_sha256": {
+      "frame-00000000.png": "d24bbb34d80ddd37b39014b86aa2eae728d5a203d4eb8efd95e0a18739c5d6df",
+      "frame-00000001.png": "a2905ce1ae5a83ed4f1c6c0390562213ff33e947b73bad211a4eb54cc86746cc",
+      "frame-00000002.png": "237f6d823f4fea2bb20d3230452da30ac01340e742f0c0b1c28c3e1780e53714",
+      "manifest.json": "1bd49d14c4f11802af2ec3a9be8d0ad48b424a9dae16df744c6008536cd20fdd",
+      "progress.json": "cccf50a503ae98fc8fab70eb916a1a41e904fc4b705e0836346ced3d9d02dec4",
+      "run.json": "5fd49d0889094987c269b8c4f40232cf3af41ed49ce97eda903d3653de89568f"
+    }
+  },
+  "retained_setup_failure": {
+    "exit": 1,
+    "cause": "Shared target/release executable was replaced by a headless feature build; application exited 3 with actionable viewing-support error. Isolated installed viewer then passed.",
+    "application_stderr": "maelstrom: viewing support is not installed; reinstall with --features viewer\n"
+  },
+  "limitations": [
+    "No new CUDA hardware execution",
+    "No hardware Vulkan qualification",
+    "No other platform or hosted verification",
+    "No performance campaign",
+    "Changes are uncommitted; parent gitlink unchanged",
+    "Native runtime reused an existing temporary extracted library set; no system installation"
+  ],
+  "native_checked_source_sha256": {
+    "Cargo.lock": "47463d231aa365c4955de7e9ec7639a2ba9dfdbed5eb24bf3a43b2cf460a0e4c",
+    "Cargo.toml": "986edc48df4d903ad404035f0c002729a40a252e355fa4f4eaf3ad83bbbc088e",
+    "src/cli/arguments.rs": "789c59dc7fa83b55f26b3bef5c6c660816db9d7613f234c01e980eead092bb81",
+    "src/cli/bundle.rs": "03914123a44a99fdaf4c17e716ae0369a14fbf476c8731e9a9f9a26cf7202d9b",
+    "src/cli/export.rs": "473c25951e65d88d8d50332fac4e79409a54d3795dfc7f10cae883187b3ee933",
+    "src/cli/inputs.rs": "15ead57f3e7cb2e980b02a0a0e1ce9e4533316a3bdf6df3eaf821877d9bea241",
+    "src/cli/management.rs": "da920295f1c8a3f4e39a8fa19df506be2a8791f9bd291476d7bb99226deea04b",
+    "src/cli/mod.rs": "5d29892cd440694a84020618f4ba869d52fc608a2cf420980df6eae0c62962ad",
+    "src/cli/pacing.rs": "a75bbba2936adf985cdbe785ad3be599b895c3cea67cfc0bab6830211dce4df0",
+    "src/cli/play.rs": "da0d68fdc9e7b1149ef42a949188f2e9cc8ffd36e133272b8a7350d9a35eb8aa",
+    "src/cli/scenes.rs": "cd699cd302bf7fd49bd42277329f753f208e8591dca7c21958f4598f9d664735",
+    "src/cli/selection.rs": "0ff48c6fd6696e33a897fbeb766f6ad63ef07dda6a90c00ef22f2cd0b63bc46d",
+    "src/cli/storage.rs": "69ad7d6b93c783f47dd52abbe3bfc2e7a61fb4bc01d788262c25536c3fbc662a",
+    "src/cli/viewer.rs": "3ff91cb24fadd8e969fa2bde3a2872b6f10f2fa6b8d76b1dfa007db2ea0288b9",
+    "src/workflow/mod.rs": "a9a9c1ec65986092b20cfc9755a6f7ce745e1707710b5c83056e12c9ac21e74c"
+  },
+  "retained_images_sha256": {
+    "viewer-completed.png": "13fab75f7baf987b05a8d1b4306ad36647ad64d73d38990daea888b4f7c465b1",
+    "playback-resized.png": "9220d4384814f61a8a0871985fb0dc9eabdc6b9514e22e5a901787d1395424df"
+  },
+  "default_dependency_graph": "cargo tree --no-default-features contained no wgpu, winit, png or CUDA build requirement",
+  "native_verification_boundary": "Native journeys used the isolated viewer installation before final preference-validation hardening. The hardened boundary was checked by focused CLI tests and strict Clippy; numerical, viewer and playback implementations were unchanged. Native-source hashes and final working-file hashes are distinguished."
+}

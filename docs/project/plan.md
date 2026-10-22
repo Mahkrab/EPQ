@@ -72,6 +72,14 @@ Local annotated `milestone-04/complete` checkpoints retain the assessed implemen
 and exact parent/submodule pairing. Remote publication remains separate, and the final research
 comparison has not begun.
 
+## Pre-evaluation revision: usability and performance
+
+The [pre-evaluation review](/docs/project/development/pre-evaluation-review.md) records the usability,
+execution-default and scaling concerns identified after application integration. Follow the short
+[usability revision plan](/docs/project/development/usability-plan.md) first, then decide and complete
+the bounded performance investigation before final measurement. Keep completed milestones and their
+evidence intact; the existing evaluation start checkpoints do not imply these concerns are resolved.
+
 ## Milestone 05: comparative evaluation
 
 Complete the controlled correctness, performance and scalability comparison across brute-force search, uniform-grid partitioning, CPU multithreading and CUDA acceleration, then evaluate the results against the research question.
@@ -79,5 +87,6 @@ Complete the controlled correctness, performance and scalability comparison acro
 The [Milestone 05 completion plan](/docs/project/development/milestones/05/plan.md) separates the
 evidence audit and evaluation protocol, verified comparison evidence, then synthesis and final-project
 handoff. The first decision is whether retained campaigns suffice or a matched new comparison is
-needed; preparing the plan does not begin collection or establish an evaluation result.
+needed; preparing the plan does not begin collection or establish an evaluation result. Final
+evaluation follows the pre-evaluation revision above.
 

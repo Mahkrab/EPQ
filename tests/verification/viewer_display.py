@@ -244,7 +244,7 @@ def main() -> None:
     x = X11()
     try:
         with (args.output / "x11-viewer.txt").open("x") as log:
-            process = subprocess.Popen([str(args.binary.resolve()), "view", "falling-block-04", "--steps", "100000", "--software", "--set", "cfl_factor=0.000001"], env=env, stdout=log, stderr=subprocess.STDOUT)
+            process = subprocess.Popen([str(args.binary.resolve()), "view", "falling-block-04", "--backend", "serial-grid", "--paused", "--steps", "100000", "--software", "--set", "cfl_factor=0.000001"], env=env, stdout=log, stderr=subprocess.STDOUT)
             window = x.find_window(process)
             journey(x, window, args.output)
             code = process.wait(timeout=30)
