@@ -50,6 +50,11 @@
 | [S057](sources/057-openai-agent-instruction-design.md) | Provencher / OpenAI (2026) | Official developer guidance | Concise, outcome-led agent planning with explicit completion and decision boundaries. | [Official article](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra) |
 | [S058](sources/058-xdg-base-directory-specification.md) | Bastian et al. (2021) | Official specification | User data and configuration roots for the proposed scene library and durable compiled runs. | [Version 0.8 specification](https://specifications.freedesktop.org/basedir/latest/) |
 | [S059](sources/059-clap-completion-generation.md) | clap contributors (n.d.) | Official crate API documentation | Generate shell completions from the application's actual command declarations. | [Version 4.6.11 documentation](https://docs.rs/clap_complete/4.6.11/clap_complete/) |
+| [S060](sources/060-splishsplash-pbf-implementation.md) | Bender and contributors (n.d.) | Upstream software and documentation | Runnable PBF comparator and iteration, constraint and boundary implementation reference. | [Pinned repository](https://github.com/InteractiveComputerGraphics/SPlisHSPlasH/tree/7586ffa25948c6ce3bc6c238cda30ad8d35f60a0) |
+| [S061](sources/061-compactnsearch.md) | Koschier and contributors (n.d.) | Upstream library documentation | Compact hashing, local neighbour queries and optional spatial ordering. | [Pinned repository](https://github.com/InteractiveComputerGraphics/CompactNSearch/tree/b40afcf47fe1963b363eba2371f04b42720fcb1d) |
+| [S062](sources/062-gpusph-cuda-fluid-solver.md) | GPUSPH developers (n.d.) | Upstream software documentation | CUDA fluid architecture investigation; WCSPH context, not equivalent PBF timing. | [Pinned repository](https://github.com/GPUSPH/gpusph/tree/08ffd94ddc4a076361f0e5f6e2bfde7874ba087f) |
+| [S063](sources/063-nsight-systems-profiling.md) | NVIDIA (n.d.) | Official profiler documentation | Focused CPU/CUDA timeline collection and profiling-overhead limits. | [User guide](https://docs.nvidia.com/nsight-systems/UserGuide/index.html) |
+| [S064](sources/064-nsight-compute-profiling.md) | NVIDIA (n.d.) | Official profiler documentation | Targeted kernel metrics and collection overhead. | [Profiling guide](https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html) |
 
 ## Documentation standards
 

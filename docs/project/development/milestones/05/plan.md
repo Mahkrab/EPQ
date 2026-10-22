@@ -4,9 +4,10 @@
 
 The [pre-evaluation review](/docs/project/development/pre-evaluation-review.md) identified usability
 and performance concerns after this plan was prepared. Complete the
-[usability revision](/docs/project/development/usability-plan.md), then decide and complete the
-bounded performance investigation before final measurement and synthesis. This evaluation plan
-does not authorise that implementation work; existing start tags retain the original planning point.
+[usability revision](/docs/project/development/usability-plan.md), then follow the
+[performance investigation plan](/docs/project/development/performance-plan.md) before final
+measurement and synthesis. This evaluation plan does not authorise that implementation work;
+existing start tags retain the original planning point.
 
 ## Purpose and starting point
 

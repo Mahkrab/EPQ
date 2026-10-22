@@ -1,0 +1,38 @@
+{
+  "source_tree_matches_measured_candidate": false,
+  "candidate_tree_sha256": "975e6bb0b26e024314974a99b14e69bca35068eb079d35b0f64713fe631ece0e",
+  "control_changed_files_from_c17d8c5": [
+    "native/bridge.cpp"
+  ],
+  "local_cpu_release": {
+    "passed": 239,
+    "failed": 0
+  },
+  "pc_cuda_release": {
+    "passed": 250,
+    "failed": 3,
+    "baseline_reproduces_same_three_cli_failures": true
+  },
+  "parent_performance_tests": 18,
+  "strict_cuda_clippy": true,
+  "native_address_undefined_sanitizers": true,
+  "formatting": true,
+  "not_verified": [
+    "hosted checks",
+    "device-memory sanitizer",
+    "other hardware/platforms",
+    "large-scene density/physical qualification",
+    "real-time target"
+  ],
+  "git_actions_taken": false,
+  "post_measurement_change": {
+    "reviewed_tree_sha256": "c65cf1720cbb125f70528eed460f1f63f904dada8480369adf43080ef7fd6b4f",
+    "files": [
+      "src/cuda/mod.rs"
+    ],
+    "verified_scope": "one Rustdoc sentence corrected; all executable source and tests otherwise byte-identical to measured source",
+    "new_measurements_claimed": false
+  },
+  "post_vacuum_unchanged_analytical_tables": 215,
+  "warning_denied_local_rustdoc": true
+}

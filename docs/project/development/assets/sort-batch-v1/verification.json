@@ -1,0 +1,54 @@
+{
+  "candidate_source_tree_sha256": "90d5223aa255e904b95363afaf023b191cbfea1b01276841ad34bf5520fd2d90",
+  "worktree_matches_measured_source": true,
+  "pc_rust_suites": {
+    "cuda-tests": {
+      "exit_code": 101,
+      "passed": 251,
+      "failed": 3,
+      "failures": [
+        "configured_iteration_work_is_identified_and_replays_exactly",
+        "replay_rejects_the_previous_projection_contract_explicitly",
+        "threaded_selection_replay_and_environment_independence_are_public"
+      ]
+    },
+    "control-cli-tests": {
+      "exit_code": 101,
+      "passed": 29,
+      "failed": 3,
+      "failures": [
+        "configured_iteration_work_is_identified_and_replays_exactly",
+        "replay_rejects_the_previous_projection_contract_explicitly",
+        "threaded_selection_replay_and_environment_independence_are_public"
+      ]
+    }
+  },
+  "local_cpu_release_tests": {
+    "passed": 239,
+    "exit_code": 0
+  },
+  "local_parent_tests": {
+    "passed": 21,
+    "exit_code": 0
+  },
+  "pc_clippy_exit_code": 0,
+  "formatting_exit_code": 0,
+  "native_address_undefined_sanitizer_exit_code": 0,
+  "exact_source_file_changes": [
+    "docs/cuda.md",
+    "native/bridge.cpp",
+    "native/tests.cpp",
+    "src/cuda/solver.rs",
+    "src/cuda/solver_tests.rs"
+  ],
+  "byte_identical_ptx": true,
+  "unperformed": [
+    "device-memory sanitizer",
+    "actual device-loss recovery",
+    "hosted checks",
+    "other platforms",
+    "large-scene independent density qualification",
+    "final evaluation"
+  ],
+  "repository_changes": "no commit, branch, tag, push, installed executable or parent gitlink changes"
+}

@@ -1,0 +1,110 @@
+{
+  "particles": 8000,
+  "steps": 480,
+  "layout": "bitset",
+  "primary_timing": false,
+  "sqlite_sha256": "42adbd52deaf0eb5903597f30bd934d209af891697ee82dba87aa6c3e8169031",
+  "kernel_count": 69120,
+  "completion_count": 105120,
+  "window_s": 8.303758238,
+  "device_busy_union_s": 4.828854946,
+  "idle_gap_s": 3.474903292,
+  "tracked_allocation_peak_bytes": 8966752,
+  "memory_scope": "traced allocations including transient growth/module constants, not total driver/context memory",
+  "transfers": {
+    "host_to_device": {
+      "calls": 1440,
+      "bytes": 92206080
+    },
+    "device_to_host": {
+      "calls": 26880,
+      "bytes": 983040000
+    }
+  },
+  "operations": [
+    {
+      "operation": 0,
+      "name": "acceleration",
+      "calls": 480,
+      "device_s": 0.000646647,
+      "launch_to_next_s": 0.067397706
+    },
+    {
+      "operation": 1,
+      "name": "prediction",
+      "calls": 480,
+      "device_s": 0.000717736,
+      "launch_to_next_s": 0.0612992
+    },
+    {
+      "operation": 2,
+      "name": "cell-keys",
+      "calls": 480,
+      "device_s": 0.001572545,
+      "launch_to_next_s": 0.016367832
+    },
+    {
+      "operation": 3,
+      "name": "bitonic-sort",
+      "calls": 43680,
+      "device_s": 0.06678333,
+      "launch_to_next_s": 1.367814034
+    },
+    {
+      "operation": 4,
+      "name": "membership-build",
+      "calls": 480,
+      "device_s": 0.181445999,
+      "launch_to_next_s": 0.21678409
+    },
+    {
+      "operation": 5,
+      "name": "active-distance-validation",
+      "calls": 3840,
+      "device_s": 0.851094602,
+      "launch_to_next_s": 1.147032625
+    },
+    {
+      "operation": 6,
+      "name": "density-and-multipliers",
+      "calls": 3840,
+      "device_s": 2.635830063,
+      "launch_to_next_s": 2.952456251
+    },
+    {
+      "operation": 7,
+      "name": "correction",
+      "calls": 3840,
+      "device_s": 1.005112726,
+      "launch_to_next_s": 1.321161687
+    },
+    {
+      "operation": 8,
+      "name": "physical-density-validation",
+      "calls": 3840,
+      "device_s": 0.004876216,
+      "launch_to_next_s": 0.281580109
+    },
+    {
+      "operation": 9,
+      "name": "candidate-positions",
+      "calls": 3840,
+      "device_s": 0.005393872,
+      "launch_to_next_s": 0.261583388
+    },
+    {
+      "operation": 10,
+      "name": "plane-projection",
+      "calls": 3840,
+      "device_s": 0.007415396,
+      "launch_to_next_s": 0.26010319
+    },
+    {
+      "operation": 11,
+      "name": "velocity-reconstruction",
+      "calls": 480,
+      "device_s": 0.000706651,
+      "launch_to_next_s": 0.350178126
+    }
+  ]
+}

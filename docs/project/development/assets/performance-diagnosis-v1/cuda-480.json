@@ -1,0 +1,162 @@
+{
+  "steps": 480,
+  "primary_timing": false,
+  "kernel_count": 69120,
+  "completion_count": 105120,
+  "source_models_verified": true,
+  "model_correction": "initial derivation omitted three upload-internal reservation calls; observed 219 completions per step, not 216",
+  "window": "first solver launch submission through final stream completion; first uploads/allocation precede this window",
+  "window_s": 8.345716819,
+  "device_busy_union_s": 4.856481278,
+  "device_idle_gap_s": 3.489235541,
+  "api_inclusive_host": [
+    {
+      "name": "cuCtxCreate_v4",
+      "calls": 1,
+      "inclusive_host_s": 0.133809572
+    },
+    {
+      "name": "cuCtxDestroy_v2",
+      "calls": 1,
+      "inclusive_host_s": 0.042119897
+    },
+    {
+      "name": "cuLaunchKernel",
+      "calls": 69120,
+      "inclusive_host_s": 0.215015686
+    },
+    {
+      "name": "cuMemAlloc_v2",
+      "calls": 13,
+      "inclusive_host_s": 0.00058934
+    },
+    {
+      "name": "cuMemcpyDtoH_v2",
+      "calls": 26880,
+      "inclusive_host_s": 0.9775906
+    },
+    {
+      "name": "cuMemcpyHtoD_v2",
+      "calls": 1440,
+      "inclusive_host_s": 0.032836295
+    },
+    {
+      "name": "cuModuleLoadData",
+      "calls": 1,
+      "inclusive_host_s": 0.000985742
+    },
+    {
+      "name": "cuStreamCreate",
+      "calls": 1,
+      "inclusive_host_s": 4.4215e-05
+    },
+    {
+      "name": "cuStreamSynchronize",
+      "calls": 105120,
+      "inclusive_host_s": 6.699140169
+    }
+  ],
+  "copies": {
+    "Host-to-Device": {
+      "calls": 1440,
+      "bytes": 92206080,
+      "device_s": 0.005329404
+    },
+    "Device-to-Host": {
+      "calls": 26880,
+      "bytes": 983040000,
+      "device_s": 0.061857617
+    }
+  },
+  "maximum_registers_per_thread": 45,
+  "maximum_local_memory_per_thread": 0,
+  "tracked_allocation_peak_bytes": 8966752,
+  "requested_solver_slot_bytes": 8966240,
+  "memory_scope": "traced allocations, including module constants; excludes untraced driver/context working set",
+  "operations": [
+    {
+      "operation": 0,
+      "name": "acceleration",
+      "launches": 480,
+      "device_s": 0.000650968,
+      "launch_to_next_s": 0.067193514
+    },
+    {
+      "operation": 1,
+      "name": "prediction",
+      "launches": 480,
+      "device_s": 0.000720824,
+      "launch_to_next_s": 0.06113753
+    },
+    {
+      "operation": 2,
+      "name": "cell-keys",
+      "launches": 480,
+      "device_s": 0.001582497,
+      "launch_to_next_s": 0.016402232
+    },
+    {
+      "operation": 3,
+      "name": "bitonic-sort",
+      "launches": 43680,
+      "device_s": 0.067160347,
+      "launch_to_next_s": 1.37075707
+    },
+    {
+      "operation": 4,
+      "name": "membership-build",
+      "launches": 480,
+      "device_s": 0.182637445,
+      "launch_to_next_s": 0.218971029
+    },
+    {
+      "operation": 5,
+      "name": "active-distance-validation",
+      "launches": 3840,
+      "device_s": 0.856065128,
+      "launch_to_next_s": 1.155246924
+    },
+    {
+      "operation": 6,
+      "name": "density-and-multipliers",
+      "launches": 3840,
+      "device_s": 2.650844113,
+      "launch_to_next_s": 2.975476848
+    },
+    {
+      "operation": 7,
+      "name": "correction",
+      "launches": 3840,
+      "device_s": 1.01115175,
+      "launch_to_next_s": 1.330092648
+    },
+    {
+      "operation": 8,
+      "name": "physical-density-validation",
+      "launches": 3840,
+      "device_s": 0.00490385,
+      "launch_to_next_s": 0.278843067
+    },
+    {
+      "operation": 9,
+      "name": "candidate-positions",
+      "launches": 3840,
+      "device_s": 0.00542551,
+      "launch_to_next_s": 0.260275598
+    },
+    {
+      "operation": 10,
+      "name": "plane-projection",
+      "launches": 3840,
+      "device_s": 0.007455552,
+      "launch_to_next_s": 0.259651478
+    },
+    {
+      "operation": 11,
+      "name": "velocity-reconstruction",
+      "launches": 480,
+      "device_s": 0.000710043,
+      "launch_to_next_s": 0.351668881
+    }
+  ]
+}

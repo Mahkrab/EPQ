@@ -30,6 +30,14 @@ require hardware checks. Documentation alone cannot establish cleanup after real
 - Memory management supplies explicit allocation, synchronous host/device copies and release.
 - Read the archived context, stream and memory sections on 18 October 2026. Maelstrom's conservative
   invalidation and retry policy is a project decision, verified separately with injected failures.
+- On 22 October, checked the API and stream synchronisation sections for the compact-row experiment.
+  A pageable host-to-device call can return after staging, before device DMA finishes. A non-blocking
+  stream does not inherit the legacy stream's dependency; an ordinary private stream does.
+  The hardware reproduction and chosen repair belong to the development record, not the API's claims.
+- Also checked `cuLaunchKernel` for sort batching: launch arguments are copied from the supplied
+  parameter storage, and a submission call may report an earlier asynchronous failure. Batching
+  therefore retains completion checking and conservative invalidation rather than treating
+  successful submission as completed work.
 
 #### Date added
 

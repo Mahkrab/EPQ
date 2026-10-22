@@ -1,0 +1,231 @@
+{
+  "external": [
+    {
+      "particles": 8000,
+      "boundary_particles": 9712,
+      "steps_inferred_from_iteration_counters": 480,
+      "iterations": 3840,
+      "reported_simulated_s_rounded": 1.00001,
+      "internal_simstep_s_rounded": 3.8639699999999997,
+      "invocation_s": 3.8899222179998105,
+      "internal_pressure_s_rounded": 3.09197,
+      "internal_search_s_rounded": 0.680086,
+      "input_coordinates_verified": true,
+      "quality_equivalence_established": false,
+      "observed_neighbour_counts": null,
+      "timing_scope": "upstream SimStep; excludes boundary-simulator work, setup and output",
+      "raw_stdout_sha256": "b3d326836c4c7025fd8ad176dab99b44c0f3064a6ce01a5927a5ce15b0e93b7c"
+    },
+    {
+      "particles": 110592,
+      "boundary_particles": 35706,
+      "steps_inferred_from_iteration_counters": 480,
+      "iterations": 3840,
+      "reported_simulated_s_rounded": 1.00001,
+      "internal_simstep_s_rounded": 44.8084,
+      "invocation_s": 50.85079600900008,
+      "internal_pressure_s_rounded": 35.649300000000004,
+      "internal_search_s_rounded": 7.51954,
+      "input_coordinates_verified": true,
+      "quality_equivalence_established": false,
+      "observed_neighbour_counts": null,
+      "timing_scope": "upstream SimStep; excludes boundary-simulator work, setup and output",
+      "raw_stdout_sha256": "e8fe216ad25ac7d3d262c733bfdfd4fe3a5d0ea23ee76fd7fd4601acb28a5dfc"
+    }
+  ],
+  "cpu": {
+    "raw_sqlite_sha256": "e885b8cbdce7ace2ac0c4a06a5ffa1efb0b887fa236056a301830734a2685b71",
+    "samples": 118490,
+    "top_leaf_symbols": [
+      {
+        "symbol": "maelstrom::kernel::spiky_direction::h6436aeab0b63631b",
+        "samples": 54226,
+        "fraction_of_retained_samples": 0.45764199510507214
+      },
+      {
+        "symbol": "maelstrom::neighbours::grid::uniform_grid::h850e38b9898dae70",
+        "samples": 9351,
+        "fraction_of_retained_samples": 0.07891805215630011
+      },
+      {
+        "symbol": "maelstrom::fluid::particle_correction::h3426b8d390e996cf",
+        "samples": 8936,
+        "fraction_of_retained_samples": 0.07541564689003291
+      },
+      {
+        "symbol": "maelstrom::fluid::normalised_density_from_active::hd1928fe778ee6a45",
+        "samples": 5397,
+        "fraction_of_retained_samples": 0.04554814752299772
+      },
+      {
+        "symbol": "maelstrom::fluid::active_from_validated_snapshot::hda11c2e48d6897ef",
+        "samples": 4262,
+        "fraction_of_retained_samples": 0.035969280108026
+      },
+      {
+        "symbol": "maelstrom::kernel::poly6::hc507210ac7e7f081",
+        "samples": 3832,
+        "fraction_of_retained_samples": 0.032340281880327455
+      },
+      {
+        "symbol": "rayon::iter::plumbing::Folder::consume_iter::h1315880ba3d81aad",
+        "samples": 2333,
+        "fraction_of_retained_samples": 0.019689425267955103
+      },
+      {
+        "symbol": "maelstrom::boundary::Plane::project::h62f10a4acf8b8284",
+        "samples": 2187,
+        "fraction_of_retained_samples": 0.018457253776690018
+      },
+      {
+        "symbol": "crossbeam_epoch::default::with_handle::hb52fe39960507a57",
+        "samples": 1710,
+        "fraction_of_retained_samples": 0.014431597603173264
+      },
+      {
+        "symbol": "__libc_malloc",
+        "samples": 1301,
+        "fraction_of_retained_samples": 0.010979829521478605
+      },
+      {
+        "symbol": "0x736fb9f95088",
+        "samples": 1161,
+        "fraction_of_retained_samples": 0.009798295214786057
+      },
+      {
+        "symbol": "0x736fb9f95064",
+        "samples": 1122,
+        "fraction_of_retained_samples": 0.009469153515064563
+      },
+      {
+        "symbol": "maelstrom::fluid::relaxed_multiplier::he4cc13d263fe836f",
+        "samples": 1022,
+        "fraction_of_retained_samples": 0.008625200438855599
+      },
+      {
+        "symbol": "maelstrom::fluid::particle_multiplier::hf819cfbc41356a95",
+        "samples": 896,
+        "fraction_of_retained_samples": 0.007561819562832307
+      },
+      {
+        "symbol": "0x736fb9cab51e",
+        "samples": 784,
+        "fraction_of_retained_samples": 0.0066165921174782686
+      },
+      {
+        "symbol": "maelstrom::fluid::directions_from_active::h9bef3aa33f9fdad3",
+        "samples": 753,
+        "fraction_of_retained_samples": 0.00635496666385349
+      },
+      {
+        "symbol": "0x736fb9f95010",
+        "samples": 654,
+        "fraction_of_retained_samples": 0.005519453118406617
+      },
+      {
+        "symbol": "0x736fb9f95019",
+        "samples": 637,
+        "fraction_of_retained_samples": 0.0053759810954510925
+      },
+      {
+        "symbol": "0x736fb9f95084",
+        "samples": 581,
+        "fraction_of_retained_samples": 0.004903367372774073
+      },
+      {
+        "symbol": "crossbeam_deque::deque::Worker$LT$T$GT$::pop::h4e83e79a5233f6e6",
+        "samples": 553,
+        "fraction_of_retained_samples": 0.004667060511435564
+      }
+    ],
+    "futex_calls": 708211,
+    "aggregate_thread_futex_s": 220.024632978,
+    "diagnostics": [
+      "Unable to collect CPU kernel IP/backtrace samples. perf event paranoid level is 2. \nChange the paranoid level to 1 to enable CPU kernel sample collection.\nTry\nsudo sh -c 'echo 1 >/proc/sys/kernel/perf_event_paranoid'\n to change the paranoid level to 1.",
+      "Dwarf backtraces collected.",
+      "Event 'CPU Cycles', with sampling period 2000000, used to trigger process-tree CPU IP sample collection.",
+      "Profiling has started.",
+      "Process was launched by the profiler, see /tmp/nvidia/nsight_systems/quadd_session_1050224/streams/pid_50233_stdout.log and stderr.log for program output",
+      "Common injection library initialized successfully.",
+      "OS runtime libraries injection initialized successfully.",
+      "Number of OS runtime libraries events collected: \t708281.",
+      "Some events (\t86999) were lost (including Perf:\t86999). Certain charts (including CPU utilization) on the timeline may display incorrect data. Try to decrease sampling rate and start a new profiling session.",
+      "Profiling has stopped.",
+      "Number of IP samples collected: \t118490.",
+      "The operating system throttled the collection of sampling data 3 times.",
+      "Process 50233, Thread 50255, lost 9140 CPU profiling records (e.g. CPU Instruction Pointer samples or CPU context switch tracing data). This thread's timeline may be inaccurate.",
+      "Process 50233, Thread 50256, lost 21586 CPU profiling records (e.g. CPU Instruction Pointer samples or CPU context switch tracing data). This thread's timeline may be inaccurate.",
+      "Process 50233, Thread 50253, lost 22255 CPU profiling records (e.g. CPU Instruction Pointer samples or CPU context switch tracing data). This thread's timeline may be inaccurate.",
+      "Process 50233, Thread 50266, lost 114 CPU profiling records (e.g. CPU Instruction Pointer samples or CPU context switch tracing data). This thread's timeline may be inaccurate.",
+      "Process 50233, Thread 50254, lost 6347 CPU profiling records (e.g. CPU Instruction Pointer samples or CPU context switch tracing data). This thread's timeline may be inaccurate.",
+      "Process 50233, Thread 50259, lost 68 CPU profiling records (e.g. CPU Instruction Pointer samples or CPU context switch tracing data). This thread's timeline may be inaccurate.",
+      "Process 50233, Thread 50257, lost 58 CPU profiling records (e.g. CPU Instruction Pointer samples or CPU context switch tracing data). This thread's timeline may be inaccurate.",
+      "Process 50233, Thread 50260, lost 51 CPU profiling records (e.g. CPU Instruction Pointer samples or CPU context switch tracing data). This thread's timeline may be inaccurate.",
+      "Process 50233, Thread 50264, lost 50 CPU profiling records (e.g. CPU Instruction Pointer samples or CPU context switch tracing data). This thread's timeline may be inaccurate.",
+      "Process 50233, Thread 50263, lost 31 CPU profiling records (e.g. CPU Instruction Pointer samples or CPU context switch tracing data). This thread's timeline may be inaccurate.",
+      "Process 50233, Thread 50233, lost 26969 CPU profiling records (e.g. CPU Instruction Pointer samples or CPU context switch tracing data). This thread's timeline may be inaccurate.",
+      "Process 50233, Thread 50268, lost 75 CPU profiling records (e.g. CPU Instruction Pointer samples or CPU context switch tracing data). This thread's timeline may be inaccurate.",
+      "Process 50233, Thread 50262, lost 54 CPU profiling records (e.g. CPU Instruction Pointer samples or CPU context switch tracing data). This thread's timeline may be inaccurate.",
+      "Process 50233, Thread 50265, lost 51 CPU profiling records (e.g. CPU Instruction Pointer samples or CPU context switch tracing data). This thread's timeline may be inaccurate.",
+      "Process 50233, Thread 50258, lost 31 CPU profiling records (e.g. CPU Instruction Pointer samples or CPU context switch tracing data). This thread's timeline may be inaccurate.",
+      "Process 50233, Thread 50261, lost 40 CPU profiling records (e.g. CPU Instruction Pointer samples or CPU context switch tracing data). This thread's timeline may be inaccurate.",
+      "Process 50233, Thread 50267, lost 79 CPU profiling records (e.g. CPU Instruction Pointer samples or CPU context switch tracing data). This thread's timeline may be inaccurate.",
+      "S3EventHandler: S3 trace events were not found, not creating counters"
+    ],
+    "limitation": "lost/throttled samples prevent precise cost shares; thread waits overlap and are not elapsed solver time"
+  },
+  "neighbours": [
+    {
+      "kind": "independently-derived-geometric-counts-not-device-readback",
+      "particles": 8000,
+      "directed_neighbours": 203912,
+      "minimum": 7,
+      "maximum": 32,
+      "mean": 25.489,
+      "median": 28.0,
+      "p95": 30,
+      "state": "reconstructed first prediction",
+      "source_attempt": "capacity/008000/core",
+      "source_stdout_sha256": "f1244f7f6db00e8b791d199c9ced3b9befbff37a8adefb26f282e656c1ab6878"
+    },
+    {
+      "kind": "independently-derived-geometric-counts-not-device-readback",
+      "particles": 8000,
+      "directed_neighbours": 234946,
+      "minimum": 12,
+      "maximum": 41,
+      "mean": 29.36825,
+      "median": 30.0,
+      "p95": 36,
+      "state": "accepted final snapshot; not the previous prediction's membership",
+      "source_attempt": "capacity/008000/core",
+      "source_stdout_sha256": "f1244f7f6db00e8b791d199c9ced3b9befbff37a8adefb26f282e656c1ab6878"
+    },
+    {
+      "kind": "independently-derived-geometric-counts-not-device-readback",
+      "particles": 32768,
+      "directed_neighbours": 855160,
+      "minimum": 7,
+      "maximum": 32,
+      "mean": 26.097412109375,
+      "median": 28.0,
+      "p95": 29,
+      "state": "reconstructed first prediction",
+      "source_attempt": "capacity/032768/core",
+      "source_stdout_sha256": "ce013ee35d50524b1fd9f49f38caad93ca0f5e6ca70c9fcf11a8bbd0bed549ae"
+    },
+    {
+      "kind": "independently-derived-geometric-counts-not-device-readback",
+      "particles": 32768,
+      "directed_neighbours": 1024476,
+      "minimum": 6,
+      "maximum": 47,
+      "mean": 31.2645263671875,
+      "median": 33.0,
+      "p95": 39,
+      "state": "accepted final snapshot; not the previous prediction's membership",
+      "source_attempt": "capacity/032768/core",
+      "source_stdout_sha256": "ce013ee35d50524b1fd9f49f38caad93ca0f5e6ca70c9fcf11a8bbd0bed549ae"
+    }
+  ]
+}

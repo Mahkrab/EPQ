@@ -1,0 +1,65 @@
+{
+  "recorded_utc": "2026-10-22T10:00:44.483827+00:00",
+  "stage": "Establish the comparison and diagnose the costs",
+  "decision": "complete with explicitly unmeasured attribution; no optimisation or final evaluation claimed",
+  "environment": {
+    "location": "local laptop checks of primary-PC evidence",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "architecture": "x86_64"
+  },
+  "command_exit_codes": {
+    "audit": 0,
+    "baseline-tests": 0,
+    "compile": 0,
+    "context": 0,
+    "cuda-4": 0,
+    "cuda-480": 0,
+    "cuda-parent-tests": 0,
+    "diff-check": 0,
+    "final-compile": 0,
+    "final-performance-tests": 0,
+    "maelstrom-unchanged": 0,
+    "performance-tests": 0,
+    "report": 0
+  },
+  "baseline_primary_rows": 21,
+  "independent_component_equal_attempts": 105,
+  "parent_test_counts": {
+    "performance": 16,
+    "baseline": 27,
+    "cuda": 16
+  },
+  "requirements": {
+    "unchanged_source_pc_baseline": "campaign.json, qualification/, baseline.json; source/binary hashes and exact component comparisons",
+    "bounded_capacity_inputs_and_outcomes": "frozen protocol.md, inputs/, capacity/; 110592 full run deferred by pilot; larger sizes skipped by estimate",
+    "ranked_cuda_costs": "cuda-480.json, cuda-4.json; reconciled calls/bytes/allocations and operation timing",
+    "representative_motion_and_timer_boundaries": "baseline.json early/late windows; full 480-step profile; no primary/profile mixing",
+    "cpu_and_arithmetic_attribution": "context.json and diagnosis; lost samples and missing hardware counters remain explicit",
+    "external_comparison": "pinned build identity, exact imported coordinates, 480-step iteration counters and visible physics/timer mismatches",
+    "quality_criteria": "pre-collection protocol defines separate later-study criteria; not claimed achieved",
+    "preserved_negative_results": "setup-failure archive, failed CPU launch, warning runs, estimated skips and collector-model correction",
+    "evidence_privacy": "sanitised SQLite analytical rows verified identical; native originals retained privately; metadata normalisation disclosed"
+  },
+  "git": {
+    "epq_head": "86e4c0ee0a2c1ce3ca312870f9a752127b455e69",
+    "maelstrom_head": "c17d8c586eba7455582ad9597cb23d7addc3c6d9",
+    "epq_branch": "phase/05-00-cli-usability",
+    "maelstrom_branch": "phase/05-00-cli-usability",
+    "maelstrom_status": "",
+    "gitlink": "c17d8c586eba7455582ad9597cb23d7addc3c6d9",
+    "commits_tags_branches_pushes_or_gitlink_changed": false
+  },
+  "not_verified": [
+    "hosted checks/rendering",
+    "kernel-level CPU samples",
+    "Nsight Compute/perf metrics",
+    "precise CPU time shares after event loss",
+    "isolated compatibility-power, packing and allocation costs",
+    "achieved occupancy and bandwidth",
+    "total driver/context memory peak",
+    "external neighbour counts and physical-quality equivalence",
+    "sustained clean 100k-plus or real-time achievement",
+    "original Maelstrom build transcript (not captured)"
+  ]
+}

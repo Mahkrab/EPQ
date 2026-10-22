@@ -29,6 +29,12 @@ Published in ACM Transactions on Graphics and accompanied by an author-hosted pr
   $|\Delta q|=0.1h$--$0.3h$, $k=0.1$ and $n=4$ working well in its simulation coordinates.
 - Presents XSPH viscosity and vorticity confinement as optional velocity post-processes; Maelstrom disables both
   for the reference.
+- Re-read §8 and Table 1 of the [author preprint](https://mmacklin.com/pbf_sig_preprint.pdf) on
+  22 October 2026. The CUDA implementation ran on a GTX 680. Armadillo Splash reports 128k
+  particles, two steps per frame, three iterations per step and 4.2 ms per step; Dam Break
+  reports 100k, four steps per frame, three iterations per step and 4.3 ms per step.
+  Table 1 uses a 16 ms simulated frame. These are workload-specific results, not equivalent
+  Maelstrom benchmarks or display frame rates.
 
 #### Date added
 

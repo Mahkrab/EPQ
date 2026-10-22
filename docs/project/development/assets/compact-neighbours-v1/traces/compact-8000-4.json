@@ -1,0 +1,117 @@
+{
+  "particles": 8000,
+  "steps": 4,
+  "layout": "compact",
+  "primary_timing": false,
+  "sqlite_sha256": "ccd34fe96e957230b3fe64dd5c67bb7a4441e7ad034f9624ff0a486b1e9099dd",
+  "kernel_count": 580,
+  "completion_count": 904,
+  "window_s": 0.036073616,
+  "device_busy_union_s": 0.007209137,
+  "idle_gap_s": 0.028864479,
+  "tracked_allocation_peak_bytes": 3069880,
+  "memory_scope": "traced allocations including transient growth/module constants, not total driver/context memory",
+  "transfers": {
+    "host_to_device": {
+      "calls": 16,
+      "bytes": 1024416
+    },
+    "device_to_host": {
+      "calls": 232,
+      "bytes": 8576032
+    }
+  },
+  "operations": [
+    {
+      "operation": 0,
+      "name": "acceleration",
+      "calls": 4,
+      "device_s": 6.232e-06,
+      "launch_to_next_s": 0.000996537
+    },
+    {
+      "operation": 1,
+      "name": "prediction",
+      "calls": 4,
+      "device_s": 6.476e-06,
+      "launch_to_next_s": 0.000494981
+    },
+    {
+      "operation": 2,
+      "name": "cell-keys",
+      "calls": 4,
+      "device_s": 1.2427e-05,
+      "launch_to_next_s": 0.000128349
+    },
+    {
+      "operation": 3,
+      "name": "bitonic-sort",
+      "calls": 364,
+      "device_s": 0.000626335,
+      "launch_to_next_s": 0.012027419
+    },
+    {
+      "operation": 4,
+      "name": "neighbour-count",
+      "calls": 4,
+      "device_s": 0.000874859,
+      "launch_to_next_s": 0.001665258
+    },
+    {
+      "operation": 5,
+      "name": "active-distance-validation",
+      "calls": 32,
+      "device_s": 0.000345641,
+      "launch_to_next_s": 0.002474319
+    },
+    {
+      "operation": 6,
+      "name": "density-and-multipliers",
+      "calls": 32,
+      "device_s": 0.001237044,
+      "launch_to_next_s": 0.003487277
+    },
+    {
+      "operation": 7,
+      "name": "correction",
+      "calls": 32,
+      "device_s": 0.002276118,
+      "launch_to_next_s": 0.004576269
+    },
+    {
+      "operation": 8,
+      "name": "physical-density-validation",
+      "calls": 32,
+      "device_s": 4.7986e-05,
+      "launch_to_next_s": 0.002135167
+    },
+    {
+      "operation": 9,
+      "name": "candidate-positions",
+      "calls": 32,
+      "device_s": 5.0447e-05,
+      "launch_to_next_s": 0.002143522
+    },
+    {
+      "operation": 10,
+      "name": "plane-projection",
+      "calls": 32,
+      "device_s": 6.597e-05,
+      "launch_to_next_s": 0.002138795
+    },
+    {
+      "operation": 11,
+      "name": "velocity-reconstruction",
+      "calls": 4,
+      "device_s": 6.617e-06,
+      "launch_to_next_s": 0.002401618
+    },
+    {
+      "operation": 12,
+      "name": "neighbour-fill-sort",
+      "calls": 4,
+      "device_s": 0.001042523,
+      "launch_to_next_s": 0.001404105
+    }
+  ]
+}

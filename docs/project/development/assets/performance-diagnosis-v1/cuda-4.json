@@ -1,0 +1,162 @@
+{
+  "steps": 4,
+  "primary_timing": false,
+  "kernel_count": 576,
+  "completion_count": 876,
+  "source_models_verified": true,
+  "model_correction": "initial derivation omitted three upload-internal reservation calls; observed 219 completions per step, not 216",
+  "window": "first solver launch submission through final stream completion; first uploads/allocation precede this window",
+  "window_s": 0.058656565,
+  "device_busy_union_s": 0.02922169,
+  "device_idle_gap_s": 0.029434875,
+  "api_inclusive_host": [
+    {
+      "name": "cuCtxCreate_v4",
+      "calls": 1,
+      "inclusive_host_s": 0.20682142
+    },
+    {
+      "name": "cuCtxDestroy_v2",
+      "calls": 1,
+      "inclusive_host_s": 0.043309867
+    },
+    {
+      "name": "cuLaunchKernel",
+      "calls": 576,
+      "inclusive_host_s": 0.002108468
+    },
+    {
+      "name": "cuMemAlloc_v2",
+      "calls": 13,
+      "inclusive_host_s": 0.000573837
+    },
+    {
+      "name": "cuMemcpyDtoH_v2",
+      "calls": 224,
+      "inclusive_host_s": 0.008090036
+    },
+    {
+      "name": "cuMemcpyHtoD_v2",
+      "calls": 12,
+      "inclusive_host_s": 0.000425693
+    },
+    {
+      "name": "cuModuleLoadData",
+      "calls": 1,
+      "inclusive_host_s": 0.000997352
+    },
+    {
+      "name": "cuStreamCreate",
+      "calls": 1,
+      "inclusive_host_s": 1.8658e-05
+    },
+    {
+      "name": "cuStreamSynchronize",
+      "calls": 876,
+      "inclusive_host_s": 0.045067279
+    }
+  ],
+  "copies": {
+    "Host-to-Device": {
+      "calls": 12,
+      "bytes": 768384,
+      "device_s": 4.534e-05
+    },
+    "Device-to-Host": {
+      "calls": 224,
+      "bytes": 8192000,
+      "device_s": 0.00052781
+    }
+  },
+  "maximum_registers_per_thread": 45,
+  "maximum_local_memory_per_thread": 0,
+  "tracked_allocation_peak_bytes": 8966752,
+  "requested_solver_slot_bytes": 8966240,
+  "memory_scope": "traced allocations, including module constants; excludes untraced driver/context working set",
+  "operations": [
+    {
+      "operation": 0,
+      "name": "acceleration",
+      "launches": 4,
+      "device_s": 6.687e-06,
+      "launch_to_next_s": 0.000655776
+    },
+    {
+      "operation": 1,
+      "name": "prediction",
+      "launches": 4,
+      "device_s": 6.652e-06,
+      "launch_to_next_s": 0.000566584
+    },
+    {
+      "operation": 2,
+      "name": "cell-keys",
+      "launches": 4,
+      "device_s": 1.2461e-05,
+      "launch_to_next_s": 0.000145917
+    },
+    {
+      "operation": 3,
+      "name": "bitonic-sort",
+      "launches": 364,
+      "device_s": 0.000625987,
+      "launch_to_next_s": 0.012136675
+    },
+    {
+      "operation": 4,
+      "name": "membership-build",
+      "launches": 4,
+      "device_s": 0.001433709,
+      "launch_to_next_s": 0.001738624
+    },
+    {
+      "operation": 5,
+      "name": "active-distance-validation",
+      "launches": 32,
+      "device_s": 0.004982724,
+      "launch_to_next_s": 0.007446245
+    },
+    {
+      "operation": 6,
+      "name": "density-and-multipliers",
+      "launches": 32,
+      "device_s": 0.015426703,
+      "launch_to_next_s": 0.018133828
+    },
+    {
+      "operation": 7,
+      "name": "correction",
+      "launches": 32,
+      "device_s": 0.005996521,
+      "launch_to_next_s": 0.008611096
+    },
+    {
+      "operation": 8,
+      "name": "physical-density-validation",
+      "launches": 32,
+      "device_s": 4.5587e-05,
+      "launch_to_next_s": 0.002355074
+    },
+    {
+      "operation": 9,
+      "name": "candidate-positions",
+      "launches": 32,
+      "device_s": 5.0655e-05,
+      "launch_to_next_s": 0.002224426
+    },
+    {
+      "operation": 10,
+      "name": "plane-projection",
+      "launches": 32,
+      "device_s": 6.5749e-05,
+      "launch_to_next_s": 0.002167194
+    },
+    {
+      "operation": 11,
+      "name": "velocity-reconstruction",
+      "launches": 4,
+      "device_s": 6.619e-06,
+      "launch_to_next_s": 0.002475126
+    }
+  ]
+}

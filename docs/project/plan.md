@@ -76,9 +76,10 @@ comparison has not begun.
 
 The [pre-evaluation review](/docs/project/development/pre-evaluation-review.md) records the usability,
 execution-default and scaling concerns identified after application integration. Follow the short
-[usability revision plan](/docs/project/development/usability-plan.md) first, then decide and complete
-the bounded performance investigation before final measurement. Keep completed milestones and their
-evidence intact; the existing evaluation start checkpoints do not imply these concerns are resolved.
+[usability revision plan](/docs/project/development/usability-plan.md) first, then follow the
+[performance investigation plan](/docs/project/development/performance-plan.md) before final
+measurement. Keep completed milestones and their evidence intact; the existing evaluation start
+checkpoints do not imply these concerns are resolved.
 
 ## Milestone 05: comparative evaluation
 
