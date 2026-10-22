@@ -11,6 +11,12 @@ from .audit_compact import close, completed
 
 def audit(root: Path, summary: dict) -> dict:
     campaign = json.loads((root / "campaign.json").read_bytes())
+    experiment = campaign["experiment"]
+    if experiment not in ("sort-batch-v1", "diagnostic-v1", "diagnostic-atomic-v1", "stage-batch-v1") or summary["experiment"] != experiment:
+        raise ValueError("unknown or mismatched coordination experiment")
+    extra_bytes = 0 if experiment == "sort-batch-v1" else 32 if experiment == "stage-batch-v1" else 8
+    if campaign.get("diagnostic_bytes", 0) != extra_bytes:
+        raise ValueError("false persistent diagnostic allocation")
     comparisons = 0
     for count in (64, 216, 512, 1000, 1728, 4096, 8000):
         _, reference = read(root / f"controls/{count:06}")
@@ -46,11 +52,39 @@ def audit(root: Path, summary: dict) -> dict:
                 raise ValueError("false paired timing summary")
     if not close(medians["control"] / medians["candidate"], summary["paired_solver_speedup"]):
         raise ValueError("false paired speedup")
+    if "confirmation" in summary:
+        if summary["confirmation_policy"]["samples"] != list(range(6, 11)):
+            raise ValueError("confirmation sample schedule differs")
+        for variant in ("control", "candidate"):
+            values = []
+            p, d = read(root / f"confirmation/{variant}/warmup"); completed(p, d, 480)
+            if not same(physical(reference), physical(d)):
+                raise ValueError("confirmation warmup differs")
+            comparisons += 1
+            for i in range(6, 11):
+                p, d = read(root / f"confirmation/{variant}/sample-{i}"); completed(p, d, 480)
+                if d["execution"] != {"mode": "cuda", "device": 0, "threads": 128} or d["metadata"]["build_revision"] != campaign["implementations"][variant]["revision"]:
+                    raise ValueError("confirmation resources or revision differ")
+                if not same(physical(reference), physical(d)):
+                    raise ValueError("confirmation physical bits differ")
+                values.append(total(d, "total")); comparisons += 1
+            initial = [total(read(root / f"paired/{variant}/sample-{i}")[1], "total") for i in range(1, 6)]
+            for name, durations in (("confirmation", values), ("combined", initial + values)):
+                claimed = summary[name][variant]
+                if len(claimed["samples"]) != len(durations):
+                    raise ValueError("confirmation or combined samples were removed")
+                for actual, key in ((statistics.median(durations), "median_solver_s"), (min(durations), "minimum_s"),
+                                     (max(durations), "maximum_s"), (statistics.stdev(durations), "standard_deviation_s")):
+                    if not close(actual, claimed[key]):
+                        raise ValueError("false confirmation or combined timing")
+        for name in ("confirmation", "combined"):
+            if not close(summary[name]["control"]["median_solver_s"] / summary[name]["candidate"]["median_solver_s"], summary[f"{name}_solver_speedup"]):
+                raise ValueError("false confirmation or combined speedup")
     pilots = trajectories = 0
     for n in (8000, 32768, 110592, 262144, 512000):
         directory = root / f"capacity/{n:06}"
         admission = json.loads((directory / "admission.json").read_bytes())
-        expected = 88*n + 32*(1 << (n-1).bit_length()) + 96 + 8*(n+1) + 744*n
+        expected = 88*n + 32*(1 << (n-1).bit_length()) + 96 + 8*(n+1) + 744*n + extra_bytes
         ceiling = min(6*1024**3, admission["gpu_total"]*3//5, max(0, admission["gpu_free"]-2*1024**3))
         if admission["initial_lattice_estimate_bytes"] != expected or admission["ceiling_bytes"] != ceiling:
             raise ValueError("false capacity admission estimate")

@@ -119,8 +119,13 @@ The first [compact-neighbour experiment](/docs/project/development/performance-c
 records the implemented storage change, necessary copy-ordering repair and matched PC evidence.
 The subsequent [batched-sort experiment](/docs/project/development/performance-sort-batching.md)
 addresses the measured per-pass host waits without changing the sort kernels.
-The remaining implementation work is still open; reduced diagnostic traffic and other
-host/device round trips still need evidence-led assessment.
+The [diagnostic-readback experiment](/docs/project/development/performance-diagnostic-readback.md)
+retains a modest further gain after rejecting a separate-reduction-kernel candidate.
+The [logical-stage batching experiment](/docs/project/development/performance-stage-batching.md)
+records the matched PC gain from grouped submissions at the existing Jacobi and projection
+cancellation boundaries, with deterministic numerical failure handling.
+The remaining implementation work is still open; further host/device round trips and
+kernel costs still need evidence-led assessment.
 
 Make one attributable change at a time, then reprofile. Compact neighbour storage is the leading
 capacity candidate, not an instruction to ignore a different measured bottleneck. Compare compact

@@ -1,7 +1,8 @@
-"""Measure sort submission independently of the preceding storage experiment.
+"""Measure paired CUDA coordination changes without reusing historical timings.
 
 Each variant has its own source and executable identity. Retained serial controls
 and compact trajectories are comparison evidence, not fresh timing samples.
+Diagnostic readback uses the same requests under a separate experiment identity.
 """
 
 from __future__ import annotations
@@ -22,7 +23,12 @@ from .report import metrics
 from .study import memory
 
 
-def prepare(work: Path, baseline: Path, previous: Path, protocol: Path) -> Path:
+def prepare(work: Path, baseline: Path, previous: Path, protocol: Path,
+            *, experiment: str = "sort-batch-v1") -> Path:
+    if experiment not in ("sort-batch-v1", "diagnostic-v1", "diagnostic-atomic-v1", "stage-batch-v1"):
+        raise ValueError("unknown coordination experiment")
+    revision_prefix = {"sort-batch-v1": "sort", "diagnostic-v1": "diagnostic",
+                       "diagnostic-atomic-v1": "diagnostic-atomic", "stage-batch-v1": "stage-batch"}[experiment]
     root = work / "results"
     root.mkdir(exist_ok=False)
     (root / "protocol.md").write_bytes(protocol.read_bytes())
@@ -33,8 +39,9 @@ def prepare(work: Path, baseline: Path, previous: Path, protocol: Path) -> Path:
         binary = source / "target/release/maelstrom"
         implementations[variant] = {"source": identity, "source_directory": str(source),
             "binary": str(binary), "binary_sha256": digest(binary.read_bytes()),
-            "revision": f"sort-{variant}-" + identity["tree_sha256"]}
-    campaign = {"schema_version": 1, "experiment": "sort-batch-v1", "prepared_utc": utc(),
+            "revision": f"{revision_prefix}-{variant}-" + identity["tree_sha256"]}
+    campaign = {"schema_version": 1, "experiment": experiment, "prepared_utc": utc(),
+        "diagnostic_bytes": 0 if experiment == "sort-batch-v1" else 32 if experiment == "stage-batch-v1" else 8,
         "implementations": implementations, "baseline_directory": str(baseline),
         "previous_directory": str(previous), "protocol_sha256": digest(protocol.read_bytes()),
         "baseline_campaign_sha256": digest((baseline / "campaign.json").read_bytes()),
@@ -87,9 +94,10 @@ def collect(root: Path) -> None:
         directory.mkdir(parents=True)
         available = memory(source)
         ceiling = min(6 * GIB, available["gpu_total"] * 3 // 5, max(0, available["gpu_free"] - 2 * GIB))
-        admitted = available["host_available"] >= 4 * GIB and capacity_estimate(n) <= ceiling
+        estimate = capacity_estimate(n) + campaign.get("diagnostic_bytes", 0)
+        admitted = available["host_available"] >= 4 * GIB and estimate <= ceiling
         write_json(directory / "admission.json", {"admitted": admitted, "ceiling_bytes": ceiling,
-            "initial_lattice_estimate_bytes": capacity_estimate(n), **available})
+            "initial_lattice_estimate_bytes": estimate, **available})
         if not admitted:
             continue
         scene = baseline / f"inputs/scenes/capacity-block-{side:02}.toml"
@@ -117,7 +125,7 @@ def collect(root: Path) -> None:
 
 def report(root: Path) -> dict:
     campaign = json.loads((root / "campaign.json").read_bytes())
-    result = {"experiment": "sort-batch-v1", "primary": {}, "capacity": []}
+    result = {"experiment": campaign["experiment"], "primary": {}, "capacity": []}
     _, reference = load_attempt(root / "controls/008000")
     for variant in ("control", "candidate"):
         samples = []
@@ -182,12 +190,14 @@ def main() -> None:
     parser.add_argument("--baseline", type=Path)
     parser.add_argument("--previous", type=Path)
     parser.add_argument("--protocol", type=Path)
+    parser.add_argument("--experiment", choices=("sort-batch-v1", "diagnostic-v1", "diagnostic-atomic-v1", "stage-batch-v1"), default="sort-batch-v1")
     args = parser.parse_args()
     try:
         if args.operation == "prepare":
             if any(p is None for p in (args.baseline, args.previous, args.protocol)):
                 parser.error("prepare requires baseline, previous and protocol")
-            prepare(args.directory.resolve(), args.baseline.resolve(), args.previous.resolve(), args.protocol.resolve())
+            prepare(args.directory.resolve(), args.baseline.resolve(), args.previous.resolve(), args.protocol.resolve(),
+                    experiment=args.experiment)
         elif args.operation == "collect":
             collect(args.directory.resolve())
         elif args.operation == "traces":

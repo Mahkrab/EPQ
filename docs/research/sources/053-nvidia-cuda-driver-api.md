@@ -38,6 +38,13 @@ require hardware checks. Documentation alone cannot establish cleanup after real
   parameter storage, and a submission call may report an earlier asynchronous failure. Batching
   therefore retains completion checking and conservative invalidation rather than treating
   successful submission as completed work.
+- For diagnostic readback, checked the synchronisation definition: a synchronous
+  device-to-host copy returns only after the copy completes. Maelstrom's preceding
+  private-stream wait and removal of a second wait are implementation decisions;
+  their correctness and performance require separate tests and measurements.
+- Checked `cuMemsetD8Async` for the diagnostic sentinel: it sets a byte range on the
+  supplied stream and may report earlier asynchronous failures. Reset submission is
+  therefore drained and checked under the same conservative resource policy.
 
 #### Date added
 

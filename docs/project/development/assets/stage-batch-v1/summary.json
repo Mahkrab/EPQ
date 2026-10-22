@@ -1,0 +1,254 @@
+{
+  "experiment": "stage-batch-v1",
+  "primary": {
+    "control": {
+      "samples": [
+        {
+          "solver_s": 2.7228954849999982,
+          "invocation_s": 3.6886364920064807,
+          "construction_s": 0.227222627,
+          "teardown_s": 0.038623916,
+          "simulated_s": 1.000000032,
+          "solver_real_time_factor": 0.36725612037217087,
+          "invocation_real_time_factor": 0.2711028951123447,
+          "first_step_s": 0.00702996,
+          "remaining_step_median_s": 0.005650084
+        },
+        {
+          "solver_s": 2.8395039460000047,
+          "invocation_s": 3.8095468579995213,
+          "construction_s": 0.222202275,
+          "teardown_s": 0.037878889,
+          "simulated_s": 1.000000032,
+          "solver_real_time_factor": 0.35217420050030046,
+          "invocation_real_time_factor": 0.2624984202255285,
+          "first_step_s": 0.007304523,
+          "remaining_step_median_s": 0.005857178
+        },
+        {
+          "solver_s": 2.6560299050000014,
+          "invocation_s": 3.6041995879932074,
+          "construction_s": 0.227626115,
+          "teardown_s": 0.038031484,
+          "simulated_s": 1.000000032,
+          "solver_real_time_factor": 0.3765017969554825,
+          "invocation_real_time_factor": 0.2774541219446709,
+          "first_step_s": 0.007196152,
+          "remaining_step_median_s": 0.005553703
+        },
+        {
+          "solver_s": 2.747912884999999,
+          "invocation_s": 3.7016338340035873,
+          "construction_s": 0.219133413,
+          "teardown_s": 0.038608534,
+          "simulated_s": 1.000000032,
+          "solver_real_time_factor": 0.3639125670463168,
+          "invocation_real_time_factor": 0.2701509865221939,
+          "first_step_s": 0.007226694,
+          "remaining_step_median_s": 0.005718047
+        },
+        {
+          "solver_s": 2.7245147540000003,
+          "invocation_s": 3.6798538610019023,
+          "construction_s": 0.22029513,
+          "teardown_s": 0.038318548,
+          "simulated_s": 1.000000032,
+          "solver_real_time_factor": 0.3670378479440599,
+          "invocation_real_time_factor": 0.27174993077788506,
+          "first_step_s": 0.007296292,
+          "remaining_step_median_s": 0.005698837
+        }
+      ],
+      "median_solver_s": 2.7245147540000003,
+      "minimum_s": 2.6560299050000014,
+      "maximum_s": 2.8395039460000047,
+      "standard_deviation_s": 0.06620095197340355
+    },
+    "candidate": {
+      "samples": [
+        {
+          "solver_s": 1.9276494789999998,
+          "invocation_s": 2.8921989090013085,
+          "construction_s": 0.226325984,
+          "teardown_s": 0.038720188,
+          "simulated_s": 1.000000032,
+          "solver_real_time_factor": 0.5187665303749966,
+          "invocation_real_time_factor": 0.3457576962938919,
+          "first_step_s": 0.005292031,
+          "remaining_step_median_s": 0.004026107
+        },
+        {
+          "solver_s": 1.9365420439999999,
+          "invocation_s": 2.9032510630058823,
+          "construction_s": 0.22691478,
+          "teardown_s": 0.038919186,
+          "simulated_s": 1.000000032,
+          "solver_real_time_factor": 0.5163843641289928,
+          "invocation_real_time_factor": 0.34444145900515044,
+          "first_step_s": 0.005220388,
+          "remaining_step_median_s": 0.00404416
+        },
+        {
+          "solver_s": 1.885079043,
+          "invocation_s": 2.831563133004238,
+          "construction_s": 0.219154945,
+          "teardown_s": 0.038705838,
+          "simulated_s": 1.000000032,
+          "solver_real_time_factor": 0.5304817512630955,
+          "invocation_real_time_factor": 0.35316183501055043,
+          "first_step_s": 0.005115472,
+          "remaining_step_median_s": 0.003946793
+        },
+        {
+          "solver_s": 1.912122654999999,
+          "invocation_s": 2.8610952559974976,
+          "construction_s": 0.217725442,
+          "teardown_s": 0.037793219,
+          "simulated_s": 1.000000032,
+          "solver_real_time_factor": 0.522979019878827,
+          "invocation_real_time_factor": 0.34951651116955146,
+          "first_step_s": 0.005393808,
+          "remaining_step_median_s": 0.00399655
+        },
+        {
+          "solver_s": 1.9535048309999985,
+          "invocation_s": 2.92116598499706,
+          "construction_s": 0.222650002,
+          "teardown_s": 0.039505386,
+          "simulated_s": 1.000000032,
+          "solver_real_time_factor": 0.5119004653231906,
+          "invocation_real_time_factor": 0.34232906898681636,
+          "first_step_s": 0.00551786,
+          "remaining_step_median_s": 0.004045959
+        }
+      ],
+      "median_solver_s": 1.9276494789999998,
+      "minimum_s": 1.885079043,
+      "maximum_s": 1.9535048309999985,
+      "standard_deviation_s": 0.025941582740716684
+    }
+  },
+  "capacity": [
+    {
+      "particles": 8000,
+      "admission": {
+        "admitted": true,
+        "ceiling_bytes": 6442450944,
+        "initial_lattice_estimate_bytes": 6982280,
+        "gpu_total": 12878610432,
+        "gpu_free": 9277800448,
+        "host_available": 15086206976
+      },
+      "status": "completed",
+      "warning_steps": 0,
+      "metrics": {
+        "solver_s": 1.929394466,
+        "invocation_s": 2.2237639099985245,
+        "construction_s": 0.224514092,
+        "teardown_s": 0.038527072,
+        "simulated_s": 1.000000032,
+        "solver_real_time_factor": 0.5182973464587516,
+        "invocation_real_time_factor": 0.44968803905117044,
+        "first_step_s": 0.005445048,
+        "remaining_step_median_s": 0.004035347
+      }
+    },
+    {
+      "particles": 32768,
+      "admission": {
+        "admitted": true,
+        "ceiling_bytes": 6442450944,
+        "initial_lattice_estimate_bytes": 28573832,
+        "gpu_total": 12878610432,
+        "gpu_free": 9277800448,
+        "host_available": 15088758784
+      },
+      "status": "completed_with_warnings",
+      "warning_steps": 75,
+      "metrics": {
+        "solver_s": 3.9577633179999996,
+        "invocation_s": 4.299721824994776,
+        "construction_s": 0.217399687,
+        "teardown_s": 0.038502052,
+        "simulated_s": 1.000000032,
+        "solver_real_time_factor": 0.2526679721983315,
+        "invocation_real_time_factor": 0.23257319256954834,
+        "first_step_s": 0.010101388,
+        "remaining_step_median_s": 0.008310938
+      }
+    },
+    {
+      "particles": 110592,
+      "admission": {
+        "admitted": true,
+        "ceiling_bytes": 6442450944,
+        "initial_lattice_estimate_bytes": 97091720,
+        "gpu_total": 12878610432,
+        "gpu_free": 9277800448,
+        "host_available": 15130836992
+      },
+      "status": "completed_with_warnings",
+      "warning_steps": 259,
+      "metrics": {
+        "solver_s": 12.417163719999989,
+        "invocation_s": 12.963706366004772,
+        "construction_s": 0.227966654,
+        "teardown_s": 0.039534312,
+        "simulated_s": 1.000000032,
+        "solver_real_time_factor": 0.08053369147330537,
+        "invocation_real_time_factor": 0.07713843585830814,
+        "first_step_s": 0.026027736,
+        "remaining_step_median_s": 0.026179149
+      }
+    },
+    {
+      "particles": 262144,
+      "admission": {
+        "admitted": true,
+        "ceiling_bytes": 6442450944,
+        "initial_lattice_estimate_bytes": 228589704,
+        "gpu_total": 12878610432,
+        "gpu_free": 9277800448,
+        "host_available": 14638489600
+      },
+      "status": "completed_with_warnings",
+      "warning_steps": 300,
+      "metrics": {
+        "solver_s": 29.598373111000008,
+        "invocation_s": 30.528710929000226,
+        "construction_s": 0.250806778,
+        "teardown_s": 0.039269855,
+        "simulated_s": 1.000000032,
+        "solver_real_time_factor": 0.03378564180706127,
+        "invocation_real_time_factor": 0.032756051650057294,
+        "first_step_s": 0.05509712,
+        "remaining_step_median_s": 0.062965166
+      }
+    },
+    {
+      "particles": 512000,
+      "admission": {
+        "admitted": true,
+        "ceiling_bytes": 6442450944,
+        "initial_lattice_estimate_bytes": 446857352,
+        "gpu_total": 12878610432,
+        "gpu_free": 9277800448,
+        "host_available": 13700775936
+      },
+      "status": "completed_with_warnings",
+      "warning_steps": 304,
+      "metrics": {
+        "solver_s": 59.521721591000045,
+        "invocation_s": 61.036470958999416,
+        "construction_s": 0.260271101,
+        "teardown_s": 0.042872834,
+        "simulated_s": 1.000000032,
+        "solver_real_time_factor": 0.016800589856446703,
+        "invocation_real_time_factor": 0.016383647617368623,
+        "first_step_s": 0.115544618,
+        "remaining_step_median_s": 0.125849434
+      }
+    }
+  ],
+  "paired_solver_speedup": 1.4133870206596832
+}

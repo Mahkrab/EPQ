@@ -1,0 +1,110 @@
+{
+  "candidate_source_tree_sha256": "8a89dbe1c89c429a31c97cf3ad8a6482ccc944f97a3c001899e8885399006fbc",
+  "base_commit": "a21d961a27706e2aa434f20100e9cbbf8ae747e6",
+  "pc_rust_suites": {
+    "cuda-tests-final": {
+      "exit_code": 101,
+      "passed": 253,
+      "failed": 3,
+      "failures": [
+        "configured_iteration_work_is_identified_and_replays_exactly",
+        "replay_rejects_the_previous_projection_contract_explicitly",
+        "threaded_selection_replay_and_environment_independence_are_public"
+      ]
+    },
+    "control-cli-tests": {
+      "exit_code": 101,
+      "passed": 29,
+      "failed": 3,
+      "failures": [
+        "configured_iteration_work_is_identified_and_replays_exactly",
+        "replay_rejects_the_previous_projection_contract_explicitly",
+        "threaded_selection_replay_and_environment_independence_are_public"
+      ]
+    }
+  },
+  "local_checks": {
+    "cpu-tests-final": {
+      "exit_code": 0,
+      "passed": 239,
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline",
+        "--no-fail-fast"
+      ],
+      "wall_s": 103.62195491000057,
+      "stdout_sha256": "b3c93853eb55f2ab6b5a0b6aa0eaf934a13f9636f99ef9e0d5592196d21fe035",
+      "stderr_sha256": "e5215257be275359f73e0b5eb0b558c8daa7e5b4fb28ff83076dda110e8b2e90",
+      "environment": "local WSL2; raw logs retained privately"
+    },
+    "parent-tests-reviewed": {
+      "exit_code": 0,
+      "passed": 25,
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/performance",
+        "-p",
+        "test_*.py"
+      ],
+      "wall_s": 1.0678717339997092,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "8847102df99eaaf1b7dea6d84d122ef6db2b9bd213f8733b3308fbb2fcb24430",
+      "environment": "local WSL2; raw logs retained privately"
+    },
+    "format-final": {
+      "exit_code": 0,
+      "passed": null,
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "wall_s": 0.3287171119991399,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "environment": "local WSL2; raw logs retained privately"
+    },
+    "python-compilation-reviewed": {
+      "exit_code": 0,
+      "passed": null,
+      "command": [
+        "python3",
+        "-m",
+        "compileall",
+        "-q",
+        "tools/performance",
+        "tests/performance"
+      ],
+      "wall_s": 0.043785015999674215,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "environment": "local WSL2; raw logs retained privately"
+    }
+  },
+  "pc_native_address_undefined_sanitizers": true,
+  "pc_strict_clippy": true,
+  "formatting": true,
+  "unperformed": [
+    "hosted checks",
+    "passing device-memory sanitizer",
+    "actual device-loss recovery",
+    "other platforms",
+    "large-scene independent density qualification",
+    "final evaluation"
+  ],
+  "git_changes": "none",
+  "user_files_preserved": [
+    ".gitignore",
+    "Maelstrom/scenes/falling-block-30.toml"
+  ],
+  "rejected_candidate": "separate reduction kernel; no useful paired gain; later profiling/capacity timings excluded"
+}

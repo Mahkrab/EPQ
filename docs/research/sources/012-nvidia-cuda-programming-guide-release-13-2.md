@@ -20,7 +20,15 @@ Official NVIDIA documentation for a specific CUDA Toolkit release.
 
 ## Reading notes
 
-- 
+- On 22 October 2026, checked §10.14.1.4, `atomicMin()`: the unsigned 64-bit overload
+  atomically selects a minimum and requires compute capability 5.0 or above. This
+  supports Maelstrom's packed integer error selection, not a change to floating-point
+  reductions or a performance claim. The source is Release 13.2; the measured PC uses
+  toolkit 13.3, so actual compilation and hardware behaviour are verified separately.
+- Also checked §6.2.8.5 and §6.2.8.5.3: commands within a stream execute in order,
+  and stream synchronisation waits for its preceding commands. This supports whole-kernel
+  dependencies without an intervening host wait, not communication between lanes within
+  a running kernel or a measured speedup.
 
 #### Date added
 
