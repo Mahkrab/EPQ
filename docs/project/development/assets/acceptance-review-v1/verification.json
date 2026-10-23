@@ -1,0 +1,164 @@
+{
+  "checks": {
+    "cpu-tests": {
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "wall_s": 94.37569269400046,
+      "rust_counts": [
+        239,
+        0,
+        0
+      ],
+      "python_tests": null,
+      "original_stdout_sha256": "60bf68d8e28004af8d92bddfcf6263b3b1013085ba0c940c994d1c4bd0e3b746",
+      "original_stderr_sha256": "352ce60a6771b7d6dfc54fb12306a60a437a14f106a51deddaa355171c157333"
+    },
+    "clippy": {
+      "command": [
+        "cargo",
+        "clippy",
+        "--release",
+        "--locked",
+        "--offline",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "wall_s": 2.9545089219991496,
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "python_tests": null,
+      "original_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_stderr_sha256": "7506e7c1b19ce1fe2a08a9a220feed588e8895b13ba29f389799d7808cfcf2c9"
+    },
+    "fmt": {
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "wall_s": 0.37609014099871274,
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "python_tests": null,
+      "original_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "parent-final": {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "tests.performance.test_acceptance",
+        "tests.performance.test_arithmetic",
+        "tests.performance.test_assessment",
+        "tests.performance.test_compact",
+        "tests.performance.test_correction_profile",
+        "tests.performance.test_diagnosis",
+        "tests.performance.test_diagnostic",
+        "tests.performance.test_sort_batch"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "wall_s": 1.1250856740007293,
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "python_tests": 53,
+      "original_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_stderr_sha256": "c9b682e20d535553d3f0250d1acb242ae35d58dc4b8759e0a49f8a5f50274590"
+    },
+    "python-compile-final": {
+      "command": [
+        "python3",
+        "-m",
+        "compileall",
+        "-q",
+        "tools/performance",
+        "tests/performance"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "wall_s": 0.05203435300063575,
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "python_tests": null,
+      "original_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "report-help": {
+      "command": [
+        "python3",
+        "-m",
+        "tools.performance.arithmetic",
+        "--help"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "wall_s": 0.06533261600088736,
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "python_tests": null,
+      "original_stdout_sha256": "6d538cbe4ff3276f4bf35be81cbff38ac0fb86d9fd234de19fd728d8909d3ab7",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "historical-flag-error": {
+      "command": [
+        "python3",
+        "-m",
+        "tools.performance.arithmetic",
+        "collect",
+        "/tmp/nonexistent-assessment-check",
+        "--historical-policy"
+      ],
+      "exit_code": 2,
+      "expected_exit_code": 2,
+      "wall_s": 0.05997967200164567,
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "python_tests": null,
+      "original_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_stderr_sha256": "40c49ecd99cfd5ba0d4c12b0052f6f291948c04117a62b2958c60155a4020893"
+    }
+  },
+  "scope": "fresh local CPU and tooling checks; PC qualification and benchmarks reused for the identical candidate source",
+  "archive_sha256": "362e6607917946b857db9aca050026fb63fc90b494e2e360939dd2e87d68b4bd",
+  "source_paths_sanitised": true,
+  "hosted_verification": false,
+  "reused_pc_cuda_test_counts": {
+    "passed": 258,
+    "failed": 3,
+    "ignored": 0
+  }
+}

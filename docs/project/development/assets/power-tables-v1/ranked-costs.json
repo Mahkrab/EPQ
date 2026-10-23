@@ -1,0 +1,35 @@
+{
+  "primary_timing": false,
+  "source": "diagnosis/windows.json, initial full control trace",
+  "neighbour_build_operations": [
+    2,
+    3,
+    4,
+    12
+  ],
+  "idle_scope": "unattributed gaps in recorded device activity, not a CPU-work attribution",
+  "windows": {
+    "1-120": {
+      "steps": 120,
+      "window_ms_per_step": 20.204639316666665,
+      "correction_ms_per_step": 4.193001183333333,
+      "neighbour_build_ms_per_step": 3.943114158333333,
+      "device_idle_ms_per_step": 8.81014825
+    },
+    "121-240": {
+      "steps": 120,
+      "window_ms_per_step": 25.708380641666665,
+      "correction_ms_per_step": 5.594064091666667,
+      "neighbour_build_ms_per_step": 5.996055091666666,
+      "device_idle_ms_per_step": 8.739407383333333
+    },
+    "241-480": {
+      "steps": 240,
+      "window_ms_per_step": 28.685101358333334,
+      "correction_ms_per_step": 5.744477849999999,
+      "neighbour_build_ms_per_step": 7.798368366666667,
+      "device_idle_ms_per_step": 8.768618220833334
+    }
+  },
+  "ideal_bound_removing_entire_correction_kernel": 1.2594408848729197
+}

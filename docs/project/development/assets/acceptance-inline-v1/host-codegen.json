@@ -1,0 +1,65 @@
+{
+  "ordinary-inline-hint": {
+    "control": {
+      "named_direct_calls": [],
+      "scope": "initial named-call inspection; indirect calls unresolved in this preparation capture"
+    },
+    "candidate": {
+      "named_direct_calls": [
+        "103fee:\te8 4d 22 00 00       \tcall   106240 <maelstrom::boundary::Plane::contains>",
+        "105b51:\te8 ea 06 00 00       \tcall   106240 <maelstrom::boundary::Plane::contains>"
+      ],
+      "scope": "initial named-call inspection; indirect calls unresolved in this preparation capture"
+    }
+  },
+  "always-inline-hint": {
+    "control": {
+      "all_contains_call_sites": [
+        {
+          "caller": "maelstrom::simulation::Simulation::step_inner",
+          "instruction": "e5d82:\tff 15 00 eb 1e 00    \tcall   *0x1eeb00(%rip)        # 2d4888 <_DYNAMIC+0x908>"
+        },
+        {
+          "caller": "maelstrom::simulation::Simulation::step_inner",
+          "instruction": "e6d20:\tff 15 62 db 1e 00    \tcall   *0x1edb62(%rip)        # 2d4888 <_DYNAMIC+0x908>"
+        },
+        {
+          "caller": "maelstrom::simulation::Simulation::step_measured_with_cancellation",
+          "instruction": "e779f:\tff 15 e3 d0 1e 00    \tcall   *0x1ed0e3(%rip)        # 2d4888 <_DYNAMIC+0x908>"
+        },
+        {
+          "caller": "maelstrom::simulation::Simulation::step_measured_with_cancellation",
+          "instruction": "e884c:\tff 15 36 c0 1e 00    \tcall   *0x1ec036(%rip)        # 2d4888 <_DYNAMIC+0x908>"
+        }
+      ],
+      "acceptance_contains_call_sites": [
+        {
+          "caller": "maelstrom::simulation::Simulation::step_inner",
+          "instruction": "e5d82:\tff 15 00 eb 1e 00    \tcall   *0x1eeb00(%rip)        # 2d4888 <_DYNAMIC+0x908>"
+        },
+        {
+          "caller": "maelstrom::simulation::Simulation::step_inner",
+          "instruction": "e6d20:\tff 15 62 db 1e 00    \tcall   *0x1edb62(%rip)        # 2d4888 <_DYNAMIC+0x908>"
+        },
+        {
+          "caller": "maelstrom::simulation::Simulation::step_measured_with_cancellation",
+          "instruction": "e779f:\tff 15 e3 d0 1e 00    \tcall   *0x1ed0e3(%rip)        # 2d4888 <_DYNAMIC+0x908>"
+        },
+        {
+          "caller": "maelstrom::simulation::Simulation::step_measured_with_cancellation",
+          "instruction": "e884c:\tff 15 36 c0 1e 00    \tcall   *0x1ec036(%rip)        # 2d4888 <_DYNAMIC+0x908>"
+        }
+      ],
+      "relative_slots_resolved": 1,
+      "assembly_sha256": "6d56ca9c906d7140404db735d6114ef337b5229d221c90a56d12d648dfae80a3",
+      "relocations_sha256": "ecafbe2dcd302dd5e3adaf468d452458280ecebc970af716dd31201ae0bf7fb7"
+    },
+    "candidate": {
+      "all_contains_call_sites": [],
+      "acceptance_contains_call_sites": [],
+      "relative_slots_resolved": 0,
+      "assembly_sha256": "229de24f0078338532463b7f3ba57c552c6433ce0b93f7dc529fcb159aacd56a",
+      "relocations_sha256": "31b80710147661a8ba1defb0804732141ead6017c8d2d1fcdbc5403420399d8a"
+    }
+  }
+}

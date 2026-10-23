@@ -1,0 +1,94 @@
+{
+  "status": "Local preparation checks; subsequent PC qualification is complete and the candidate was rejected",
+  "checks": {
+    "local-tests": {
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "wall_s": 99.24363125800005,
+      "rust_counts": [
+        239,
+        0,
+        0
+      ],
+      "python_tests": null,
+      "original_stdout_sha256": "2c33a36a58a6dde1ff29052dd56199f212fc98f60b910879fa332d1618c1ece8",
+      "original_stderr_sha256": "368f3f85f65903d3a3e3543e73279e54ae7431d381cc0d8bf2260742326384bc"
+    },
+    "local-fmt": {
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "wall_s": 0.6647122849999505,
+      "rust_counts": null,
+      "python_tests": null,
+      "original_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "parent-tests": {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "tests.performance.test_arithmetic",
+        "tests.performance.test_compact",
+        "tests.performance.test_diagnosis",
+        "tests.performance.test_diagnostic",
+        "tests.performance.test_sort_batch"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "wall_s": 2.1028384820000383,
+      "rust_counts": null,
+      "python_tests": 30,
+      "original_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_stderr_sha256": "a866a8b17ee3d410b1b84c5cbcfdd75aec926d44e66fd2241c0a96b6b612bc05"
+    },
+    "compileall": {
+      "command": [
+        "python3",
+        "-m",
+        "compileall",
+        "-q",
+        "tools/performance",
+        "tests/performance"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "wall_s": 0.0948134029999892,
+      "rust_counts": null,
+      "python_tests": null,
+      "original_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "environment": {
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)\nbinary: rustc\ncommit-hash: 48a229ceaefd4985c50990b14116b6d856af0985\ncommit-date: 2026-09-01\nhost: x86_64-unknown-linux-gnu\nrelease: 1.98.1\nLLVM version: 22.1.8\n",
+    "cargo": "cargo 1.98.1 (797e8a9bc 2026-08-05)\n",
+    "platform": "Linux 6.6.87.2-microsoft-standard-WSL2 x86_64 GNU/Linux\n"
+  },
+  "source_tree_sha256": "42b19c6ee70da1015949548d5e549ac30522e43988b0df7b7e0e2f800cad8ea8",
+  "pc_connection": "Initially unavailable; resumed in an isolated PC workspace after access returned",
+  "not_performed": [
+    "hosted verification",
+    "passing device-memory sanitiser",
+    "actual device-loss recovery",
+    "other platforms",
+    "large-scene independent density qualification"
+  ],
+  "protocol_sha256": "ba8b98ef008c0cc5682348712c42bc30f1db6fae3e250c78fbd7317be0e3acd7",
+  "pc_verification_record": "pc-verification.json",
+  "final_restored_source_record": "final-verification.json"
+}

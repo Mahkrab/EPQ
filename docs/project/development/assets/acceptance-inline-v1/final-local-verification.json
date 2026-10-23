@@ -1,0 +1,90 @@
+{
+  "checks": {
+    "parent-final-v2": {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "tests.performance.test_acceptance",
+        "tests.performance.test_arithmetic",
+        "tests.performance.test_compact",
+        "tests.performance.test_correction_profile",
+        "tests.performance.test_diagnosis",
+        "tests.performance.test_diagnostic",
+        "tests.performance.test_sort_batch"
+      ],
+      "exit_code": 0,
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "python_tests": 44,
+      "original_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_stderr_sha256": "00b254ab648b68445e6c1648dda0d597ae5480fc2ef8f34a9da0a24215eadeac",
+      "wall_s": 1.696344917998431
+    },
+    "compileall-final-v2": {
+      "command": [
+        "python3",
+        "-m",
+        "compileall",
+        "-q",
+        "tools/performance",
+        "tests/performance"
+      ],
+      "exit_code": 0,
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "python_tests": null,
+      "original_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_s": 0.0477286040004401
+    },
+    "final-cpu": {
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "rust_counts": [
+        239,
+        0,
+        0
+      ],
+      "python_tests": null,
+      "original_stdout_sha256": "1418aeab8d91114049540649ccc7bce14a285bb5b0dadbf0dff1907ca9eeb0b3",
+      "original_stderr_sha256": "a5c72cbd740b58df8cfa6d7e7f35c5691af08af151d6177098c6bb0bfdab01a2",
+      "wall_s": 115.1763824690006
+    },
+    "final-fmt": {
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "python_tests": null,
+      "original_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_s": 0.4738361319996329
+    }
+  },
+  "archive_sha256": "fcb0c7ee48e4899b29c4b24503d2963e4e383dfa90036bba53b445b5a8762278",
+  "restored_source_tree_sha256": "e5c8613205873f3788baf630430302c098cd98b9d6395637405aaef244bd8198",
+  "scope": "final CPU checks on restored source and final parent tooling; PC-qualified control has identical source",
+  "source_paths_sanitised": true
+}

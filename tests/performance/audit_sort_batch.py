@@ -12,9 +12,9 @@ from .audit_compact import close, completed
 def audit(root: Path, summary: dict) -> dict:
     campaign = json.loads((root / "campaign.json").read_bytes())
     experiment = campaign["experiment"]
-    if experiment not in ("sort-batch-v1", "diagnostic-v1", "diagnostic-atomic-v1", "stage-batch-v1") or summary["experiment"] != experiment:
+    if experiment not in ("sort-batch-v1", "diagnostic-v1", "diagnostic-atomic-v1", "stage-batch-v1", "gradient-prefix-v1", "reserve-reuse-v1", "power-tables-v1", "acceptance-inline-v1") or summary["experiment"] != experiment:
         raise ValueError("unknown or mismatched coordination experiment")
-    extra_bytes = 0 if experiment == "sort-batch-v1" else 32 if experiment == "stage-batch-v1" else 8
+    extra_bytes = 0 if experiment == "sort-batch-v1" else 32 if experiment in ("stage-batch-v1", "gradient-prefix-v1", "reserve-reuse-v1", "power-tables-v1", "acceptance-inline-v1") else 8
     if campaign.get("diagnostic_bytes", 0) != extra_bytes:
         raise ValueError("false persistent diagnostic allocation")
     comparisons = 0
@@ -45,6 +45,8 @@ def audit(root: Path, summary: dict) -> dict:
                 values.append(total(document, "total"))
             comparisons += 1
         claimed = summary["primary"][variant]
+        if len(claimed["samples"]) != 5 or any(not close(v, s["solver_s"]) for v, s in zip(values, claimed["samples"], strict=True)):
+            raise ValueError("false individual primary-sample timing")
         medians[variant] = statistics.median(values)
         for expected, key in ((statistics.median(values), "median_solver_s"), (min(values), "minimum_s"),
                               (max(values), "maximum_s"), (statistics.stdev(values), "standard_deviation_s")):

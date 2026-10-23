@@ -21,6 +21,11 @@ with independent qualification and new comparison identities. Contracts can chan
 they are not a reason to retain an inefficient design, nor permission to disguise less work as a speedup.
 Rendering changes, unrelated features and final-project synthesis are outside this investigation.
 
+The [optimisation assessment policy](/docs/project/development/performance-assessment.md) owns
+retention decisions. The implementing agent must assess correctness, paired measurements,
+uncertainty, regressions and implementation cost, then explain whether to retain the change.
+Reports describe the evidence; they do not impose automatic percentage or range-overlap vetoes.
+
 ## What the external targets actually mean
 
 The original PBF paper reports Armadillo Splash at 128k particles, two steps per 16 ms frame,
@@ -124,6 +129,21 @@ retains a modest further gain after rejecting a separate-reduction-kernel candid
 The [logical-stage batching experiment](/docs/project/development/performance-stage-batching.md)
 records the matched PC gain from grouped submissions at the existing Jacobi and projection
 cancellation boundaries, with deterministic numerical failure handling.
+The [multiplier-prefix reuse experiment](/docs/project/development/performance-gradient-reuse.md)
+records a rejected register-only arithmetic trial: measured kernel savings did not meet
+its prospective whole-solver admission criterion. The original multiplier remains active.
+The [reused-reservation investigation](/docs/project/development/performance-reservation-reuse.md)
+records a rejected host-only fast path: removing empty driver waits produced no clear
+matched PC runtime gain. The original reservation boundary is restored.
+The [correction-cost investigation](/docs/project/development/performance-correction-profile.md)
+adds full early/evolved profiles and records a rejected power-table placement trial.
+The [host-acceptance investigation](/docs/project/development/performance-host-acceptance.md)
+measures individual components before trying inlining. Its original range-separation rule caused
+a reversion despite substantial savings. The subsequent documented assessment retains the simple
+inlining change: every confirmation pair improved, component probes and traces supported the
+mechanism, and numerical behaviour was preserved. The original failed rule outcomes remain intact.
+Evolved neighbour construction is the next measured implementation priority; timing variability
+must remain visible, and individual power-function cost remains unresolved.
 The remaining implementation work is still open; further host/device round trips and
 kernel costs still need evidence-led assessment.
 

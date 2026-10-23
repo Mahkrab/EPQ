@@ -1,0 +1,60 @@
+--- a/src/cuda/solver.rs
++++ b/src/cuda/solver.rs
+@@ -319,9 +319,13 @@
+             check_cancellation(cancelled)?;
+             clock.mark(Stage::Projection);
+         }
++        let acceptance_start = std::time::Instant::now();
+         self.operation(s, 11)?;
++        let velocity_done = std::time::Instant::now();
+         let positions: Vec<[f32; 3]> = self.context.inner.download(2, particles.len())?;
++        let positions_done = std::time::Instant::now();
+         let velocities: Vec<[f32; 3]> = self.context.inner.download(3, particles.len())?;
++        let velocities_done = std::time::Instant::now();
+         let output = host_values(particles.iter().zip(positions).zip(velocities).map(
+             |((old, p), v)| Particle {
+                 identity: old.identity,
+@@ -329,6 +333,12 @@
+                 velocity_m_s: vector(v),
+             },
+         ))?;
++        let reconstruction_done = std::time::Instant::now();
++        eprintln!("ACCEPT_CUDA,{},{:.9},{:.9},{:.9},{:.9}", s.count,
++            velocity_done.duration_since(acceptance_start).as_secs_f64(),
++            positions_done.duration_since(velocity_done).as_secs_f64(),
++            velocities_done.duration_since(positions_done).as_secs_f64(),
++            reconstruction_done.duration_since(velocities_done).as_secs_f64());
+         Ok((output, cfl))
+     }
+ }
+--- a/src/simulation/mod.rs
++++ b/src/simulation/mod.rs
+@@ -284,7 +284,9 @@
+                 cancelled,
+                 clock,
+             )?;
++            let validation_start = std::time::Instant::now();
+             validate_particles(&particles)?;
++            let validation_done = std::time::Instant::now();
+             for particle in &particles {
+                 for (index, plane) in self.planes.iter().enumerate() {
+                     if !plane.contains(particle.position_m)? {
+@@ -295,11 +297,18 @@
+                     }
+                 }
+             }
++            let planes_done = std::time::Instant::now();
+             check_cancellation(cancelled)?;
++            let commit_start = std::time::Instant::now();
+             self.accepted = Snapshot {
+                 completed_steps,
+                 particles,
+             };
++            let commit_done = std::time::Instant::now();
++            eprintln!("ACCEPT_HOST,{},{:.9},{:.9},{:.9}", completed_steps,
++                validation_done.duration_since(validation_start).as_secs_f64(),
++                planes_done.duration_since(validation_done).as_secs_f64(),
++                commit_done.duration_since(commit_start).as_secs_f64());
+             clock.mark(Stage::Acceptance);
+             return Ok(StepOutcome {
+                 completed_steps,

@@ -1,0 +1,23 @@
+{
+  "primary_timing": false,
+  "method": "Consecutive same-thread cuStreamSynchronize entries in CUDA API rows ordered by start, with no recorded CUDA operation between them. Default tracing omits context push/pop, so these are wait-API durations only, not full reservation spans or an uninstrumented removable-time bound. Counts are checked against source-derived fitting reservations.",
+  "traces": {
+    "control-8000-480": {
+      "consecutive_recorded_waits": 9105,
+      "summed_instrumented_wait_api_s": 0.003245105
+    },
+    "candidate-8000-480": {
+      "consecutive_recorded_waits": 0,
+      "summed_instrumented_wait_api_s": 0.0
+    },
+    "control-110592-4": {
+      "consecutive_recorded_waits": 62,
+      "summed_instrumented_wait_api_s": 2.6474e-05
+    },
+    "candidate-110592-4": {
+      "consecutive_recorded_waits": 0,
+      "summed_instrumented_wait_api_s": 0.0
+    }
+  },
+  "source_derived_counts_match": true
+}

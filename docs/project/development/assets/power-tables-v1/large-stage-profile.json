@@ -1,0 +1,41 @@
+{
+  "primary_timing": false,
+  "source_tree_sha256": "e5c8613205873f3788baf630430302c098cd98b9d6395637405aaef244bd8198",
+  "binary_sha256": "f2d82f77bd93fa4873bac9ee326ee358bdd08ba7663c29fb93f086204b4f3bb7",
+  "physical_control_exact": true,
+  "windows": {
+    "1-120": {
+      "solver_s": 2.929418595,
+      "stages_s": {
+        "validation_and_acceleration_s": 0.130218305,
+        "prediction_s": 0.011585439,
+        "neighbour_search_s": 0.729984991,
+        "jacobi_s": 1.18149238,
+        "projection_s": 0.100008895,
+        "acceptance_s": 0.776077971
+      }
+    },
+    "121-240": {
+      "solver_s": 3.892512697,
+      "stages_s": {
+        "validation_and_acceleration_s": 0.13107371,
+        "prediction_s": 0.014240288,
+        "neighbour_search_s": 1.110768782,
+        "jacobi_s": 1.747919408,
+        "projection_s": 0.103355556,
+        "acceptance_s": 0.785100826
+      }
+    },
+    "241-480": {
+      "solver_s": 8.769786801,
+      "stages_s": {
+        "validation_and_acceleration_s": 0.250308512,
+        "prediction_s": 0.018942977,
+        "neighbour_search_s": 2.811036589,
+        "jacobi_s": 3.940025935,
+        "projection_s": 0.205011565,
+        "acceptance_s": 1.544357248
+      }
+    }
+  }
+}

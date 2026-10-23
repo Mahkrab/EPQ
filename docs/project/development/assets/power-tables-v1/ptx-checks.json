@@ -1,0 +1,25 @@
+{
+  "table_initialisers_identical": true,
+  "power_function_body_identical": true,
+  "only_source_difference": "native/power.cuh",
+  "generated": {
+    "control": {
+      "sha256": "1d15f6bca1d4c3457a2ff7e867f12e622e90936748637d064e318cb3186479f8",
+      "constant_loads": 3,
+      "read_only_global_loads": 0,
+      "declarations": [
+        ".const .align 8 .b8 power_log_table[256]",
+        ".const .align 8 .b8 power_exp_table[256]"
+      ]
+    },
+    "candidate": {
+      "sha256": "0ef200656c2fde8a6836c3f0e3f2f30d851c6c6d3e015989d529b261a2a55b3e",
+      "constant_loads": 0,
+      "read_only_global_loads": 3,
+      "declarations": [
+        ".global .align 8 .b8 power_log_table[256]",
+        ".global .align 8 .b8 power_exp_table[256]"
+      ]
+    }
+  }
+}

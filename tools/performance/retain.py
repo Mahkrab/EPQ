@@ -67,11 +67,11 @@ def retain(source: Path, destination: Path) -> None:
     """Create a fresh evidence tree, never rewriting the original collection."""
     if destination.exists():
         raise FileExistsError(destination)
-    shutil.copytree(source, destination, ignore=shutil.ignore_patterns("*.nsys-rep", "*.sqlite"))
+    shutil.copytree(source, destination, ignore=shutil.ignore_patterns("*.nsys-rep", "*.ncu-rep", "perf.data", "*.sqlite"))
     excluded = {}
     exports = {}
     for path in sorted(source.rglob("*")):
-        if path.suffix == ".nsys-rep":
+        if path.suffix in (".nsys-rep", ".ncu-rep") or path.name == "perf.data":
             excluded[path.relative_to(source).as_posix()] = digest(path.read_bytes())
         elif path.suffix == ".sqlite":
             relative = path.relative_to(source)

@@ -1,0 +1,280 @@
+{
+  "pc": {
+    "candidate-build": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "--offline",
+        "--features",
+        "cuda"
+      ],
+      "wall_s": 7.284348926999883,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "84faf8310b1f05e16a5553f6a43dada75c538cb438cc9338cd53ed1efad4f57d",
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "failures": []
+    },
+    "candidate-clippy": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "clippy",
+        "--release",
+        "--locked",
+        "--offline",
+        "--features",
+        "cuda",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "wall_s": 3.1965836149993265,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "f5ccd9354961a7193ca1399460344cc6dc03a35853952b2f44554353a36b8cde",
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "failures": []
+    },
+    "candidate-fmt": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "wall_s": 0.22579295299965452,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "failures": []
+    },
+    "candidate-tests": {
+      "exit_code": 101,
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline",
+        "--features",
+        "cuda",
+        "--no-fail-fast",
+        "--",
+        "--include-ignored"
+      ],
+      "wall_s": 59.419529874000546,
+      "stdout_sha256": "20e84b0d9a8d526edbf56110c4e46e93b9ac52ffd60d8aeef73d40fd31e9d278",
+      "stderr_sha256": "f242b11521bcfcd8d3a7ea1e4c986ae672d92d2154fa44ac58228fbfab4bda03",
+      "rust_counts": [
+        257,
+        3,
+        0
+      ],
+      "failures": [
+        "configured_iteration_work_is_identified_and_replays_exactly",
+        "replay_rejects_the_previous_projection_contract_explicitly",
+        "threaded_selection_replay_and_environment_independence_are_public"
+      ]
+    },
+    "control-build": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "--offline",
+        "--features",
+        "cuda"
+      ],
+      "wall_s": 7.881570080000529,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "df801358638da3673cac75b64d2e28898346777c66e35eb3365fea3641b17a4e",
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "failures": []
+    },
+    "control-cli": {
+      "exit_code": 101,
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline",
+        "--features",
+        "cuda",
+        "--test",
+        "cli_workflow"
+      ],
+      "wall_s": 7.818147580999721,
+      "stdout_sha256": "fc3ed0ccdef42299552f2787662a4645a95004022226c7feab5a60c56379d39f",
+      "stderr_sha256": "0bd610e3b4c32466fa553ee8066570c96185f977d14f03f66497691313408f5f",
+      "rust_counts": [
+        29,
+        3,
+        0
+      ],
+      "failures": [
+        "replay_rejects_the_previous_projection_contract_explicitly",
+        "threaded_selection_replay_and_environment_independence_are_public",
+        "configured_iteration_work_is_identified_and_replays_exactly"
+      ]
+    },
+    "native-build": {
+      "exit_code": 0,
+      "command": [
+        "c++",
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "-I/usr/local/cuda/include",
+        "native/tests.cpp",
+        "-ldl",
+        "-o",
+        "/tmp/maelstrom-gradient-prefix-VH4v6Z/native-tests"
+      ],
+      "wall_s": 1.8263314380001248,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "failures": []
+    },
+    "native-tests": {
+      "exit_code": 0,
+      "command": [
+        "/tmp/maelstrom-gradient-prefix-VH4v6Z/native-tests"
+      ],
+      "wall_s": 0.018416443999740295,
+      "stdout_sha256": "4981e9847e5f4117eb4b74cdd24f6e5a26940554828567effad6ba78e53e9bd4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "failures": []
+    }
+  },
+  "local": {
+    "local-tests": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline",
+        "--no-fail-fast"
+      ],
+      "wall_s": 93.53139833500006,
+      "stdout_sha256": "89f6739a26329673e999db413a4332236f6b5f90690645eae8198c698f083c26",
+      "stderr_sha256": "16607924221d426692fbf72e60a48ff7bc3d5d1b16b6b02aa4503cf9cd0631c8",
+      "rust_counts": [
+        239,
+        0,
+        0
+      ],
+      "failures": []
+    },
+    "parent-tests": {
+      "exit_code": 0,
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/performance",
+        "-p",
+        "test_*.py"
+      ],
+      "wall_s": 1.713777825999955,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "d1435b4ea63d210a7d72f650bc076b2d63d2056286e8977190b17895c260c226",
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "failures": []
+    },
+    "local-fmt": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "fmt",
+        "--manifest-path",
+        "Maelstrom/Cargo.toml",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "wall_s": 0.8406752759999563,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "failures": []
+    },
+    "compileall": {
+      "exit_code": 0,
+      "command": [
+        "python3",
+        "-m",
+        "compileall",
+        "-q",
+        "tools/performance",
+        "tests/performance"
+      ],
+      "wall_s": 0.10222273800002313,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "failures": []
+    }
+  },
+  "unperformed": [
+    "hosted verification",
+    "passing device-memory sanitizer",
+    "actual device-loss recovery",
+    "other platforms",
+    "large-scene independent density qualification"
+  ]
+}

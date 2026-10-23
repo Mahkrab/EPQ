@@ -1,0 +1,34 @@
+{
+  "candidate_retained": false,
+  "final_source_tree_sha256": "5beb47272ad832dcb79133f5fa140f244a177359885646fd112babba11b0b962",
+  "final_source_base_commit": "5120acfbcb07e94ebefd5957ad8f9afa47888be7",
+  "changed_tracked_files": [
+    "src/cuda/solver_tests.rs"
+  ],
+  "all_final_source_file_hashes_match": true,
+  "rust_passed": 257,
+  "rust_failed": 3,
+  "known_failures": [
+    "configured_iteration_work_is_identified_and_replays_exactly",
+    "replay_rejects_the_previous_projection_contract_explicitly",
+    "threaded_selection_replay_and_environment_independence_are_public"
+  ],
+  "clippy_passed": true,
+  "formatting_passed": true,
+  "archive_members_sha256": {
+    "final-verification/clippy/process.json": "3d43eeb0a43950533f46c74b84f96c275442324284d1f21fb8313ca9772243df",
+    "final-verification/clippy/stderr.txt": "ea57d2af4a60a90c76027800faa3d0265d5f608bca5cf643387c76e5c0e8da53",
+    "final-verification/clippy/stdout.gz": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+    "final-verification/fmt/process.json": "d12f3eeaba6ac990d00f0c4f07b8856446deeb1b15a6a33559f463980f5ea6d7",
+    "final-verification/fmt/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "final-verification/fmt/stdout.gz": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+    "final-verification/results.json": "05aec43660d81260c31d4bd8e6abd8967707ec6256936b08aa2b5015a45c7379",
+    "final-verification/tests/process.json": "0485084e70f98ea3b18f96446e196caf6282975479f80949bcb448b99bf1f015",
+    "final-verification/tests/stderr.txt": "e342b06292a5f7219830011c3b820ee9e30bf9de65f01447ed9294980b3b1231",
+    "final-verification/tests/stdout.gz": "d402e79067d3077af764af232e95e1cbac900e196749c3127106462e6b44b665",
+    "final-source.json": "7f728d9b830588e85c11f3e69400c5feff65dd744c09495eea89d17f344b0652",
+    "final-supervisor.log": "333c6f467e5415875dc61cf69a5a832b6eca9ae88e2985e42cb89a1b8018d0b2"
+  },
+  "archive_sha256": "e8936d32307768ab344e246d439cffec0c70ee1c4d5056edc2bb45974453ffc2",
+  "source_proof": "Runtime implementation restored byte-for-byte to base commit; only new regression tests differ. No final benchmark improvement is claimed."
+}

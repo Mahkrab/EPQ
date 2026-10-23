@@ -1,0 +1,90 @@
+{
+  "checks": {
+    "compileall": {
+      "command": [
+        "python3",
+        "-m",
+        "compileall",
+        "-q",
+        "tools/performance",
+        "tests/performance"
+      ],
+      "exit_code": 0,
+      "wall_s": 0.07804027100064559,
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "python_tests": null,
+      "original_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "local-fmt": {
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "wall_s": 0.5369032660000812,
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "python_tests": null,
+      "original_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "local-tests": {
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "wall_s": 100.2978777770004,
+      "rust_counts": [
+        239,
+        0,
+        0
+      ],
+      "python_tests": null,
+      "original_stdout_sha256": "a8318fa8672a0360a031ad7de82b74fbaff175e993731a7ed0e145a01d08ca9c",
+      "original_stderr_sha256": "66a6db29a013c4495ad7e0e6edeb5c4fc864819e2d814a37f01996d9e512401a"
+    },
+    "parent-tests": {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "tests.performance.test_acceptance",
+        "tests.performance.test_arithmetic",
+        "tests.performance.test_compact",
+        "tests.performance.test_correction_profile",
+        "tests.performance.test_diagnosis",
+        "tests.performance.test_diagnostic",
+        "tests.performance.test_sort_batch"
+      ],
+      "exit_code": 0,
+      "wall_s": 1.7173492870006157,
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "python_tests": 43,
+      "original_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_stderr_sha256": "eb15ebba1691c2cdcfdee778e80a51c81b4edfc60a3fc98f3ccf812492ed7ca8"
+    }
+  },
+  "archive_sha256": "71e5168d8f89d55d4992b1f21960521b92d5bf2a5daadbca7d48e8a6f293a937",
+  "tested_candidate_tree_sha256": "8c37d0e9c36fa6a8ff8f4a35916cf092570c76085ca6594ab0c5c355b580c2ad",
+  "scope": "local CPU and parent checks; CUDA verification and performance ran on the primary PC",
+  "source_paths_sanitised": true
+}

@@ -1,0 +1,92 @@
+{
+  "scope": "all retained user-space IP samples on the main application thread, over the entire invocation; sample shares are not solver wall-time shares",
+  "ip_samples": 4115,
+  "threads": 1,
+  "samples_with_broken_backtraces": 4109,
+  "resolved_leaf_counts": [
+    {
+      "symbol": "maelstrom::boundary::Plane::contains::hc6edf226f1198aab",
+      "samples": 845
+    },
+    {
+      "symbol": "maelstrom::simulation::Simulation::step_inner::hc6d491695d2beac9",
+      "samples": 67
+    },
+    {
+      "symbol": "__clock_gettime",
+      "samples": 55
+    },
+    {
+      "symbol": "maelstrom::cuda::solver::CudaSolver::discover::h049da1ea7bcceeb2",
+      "samples": 36
+    },
+    {
+      "symbol": "maelstrom::simulation::state::validate_particles::h97521c82201814e3",
+      "samples": 34
+    },
+    {
+      "symbol": "maelstrom::diagnostics::cfl_diagnostic::hf1f0eededb1d100c",
+      "samples": 33
+    },
+    {
+      "symbol": "_$LT$alloc..vec..into_iter..IntoIter$LT$T$C$A$GT$$u20$as$u20$core..iter..traits..iterator..Iterator$GT$::fold::ha93a5c7bc3b20e95",
+      "samples": 17
+    },
+    {
+      "symbol": "_$LT$core..iter..adapters..map..Map$LT$I$C$F$GT$$u20$as$u20$core..iter..traits..iterator..Iterator$GT$::fold::h405af2681bde6620",
+      "samples": 16
+    },
+    {
+      "symbol": "__pthread_mutex_lock",
+      "samples": 7
+    },
+    {
+      "symbol": "serde_core::ser::SerializeMap::serialize_entry::h583df7acd81b24ff",
+      "samples": 6
+    },
+    {
+      "symbol": "_$LT$alloc..vec..Vec$LT$T$C$A$GT$$u20$as$u20$alloc..vec..spec_extend..SpecExtend$LT$T$C$I$GT$$GT$::spec_extend::hb2d48e1e084506ba",
+      "samples": 5
+    },
+    {
+      "symbol": "_$LT$alloc..vec..Vec$LT$T$C$A$GT$$u20$as$u20$alloc..vec..spec_extend..SpecExtend$LT$T$C$I$GT$$GT$::spec_extend::h730c3291708011ac",
+      "samples": 5
+    },
+    {
+      "symbol": "__pthread_mutex_unlock",
+      "samples": 4
+    },
+    {
+      "symbol": "serde_json::ser::format_escaped_str::h9a9303701277e895",
+      "samples": 3
+    },
+    {
+      "symbol": "_RNvXsZ_NtCsgW8esjfipvk_5alloc6stringNtB5_6StringNtNtCs27Vx93FoQ6z_4core3fmt5Write10write_char",
+      "samples": 3
+    },
+    {
+      "symbol": "maelstrom::math::_::_$LT$impl$u20$serde_core..ser..Serialize$u20$for$u20$maelstrom..math..Vec3$GT$::serialize::h462b0ecf7f9abccb",
+      "samples": 2
+    },
+    {
+      "symbol": "_RNvXsZ_NtCsgW8esjfipvk_5alloc6stringNtB5_6StringNtNtCs27Vx93FoQ6z_4core3fmt5Write9write_str",
+      "samples": 2
+    },
+    {
+      "symbol": "_RNvMsa_NtCs27Vx93FoQ6z_4core3fmtNtB5_9Formatter12pad_integral",
+      "samples": 2
+    },
+    {
+      "symbol": "solver(Resource&, SolverSettings, unsigned int, unsigned int, unsigned long*, bool)",
+      "samples": 1
+    },
+    {
+      "symbol": "sha2::sha256::x86_sha::compress::h5546ac210f9ce610",
+      "samples": 1
+    }
+  ],
+  "kernel_samples_available": false,
+  "packing_and_allocation_cost_share_qualified": false,
+  "sample_loss_claim": "4115 IP events retained, matching the tool-reported collection count; no independent count of events lost before collection",
+  "raw_sqlite_sha256": "ba3ba6e8bdd9f17720315537fc50b34f803311fa9880890072cdbfca5704fd48"
+}

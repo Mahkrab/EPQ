@@ -1,0 +1,89 @@
+{
+  "checks": {
+    "parent-tests": {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "tests.performance.test_arithmetic",
+        "tests.performance.test_compact",
+        "tests.performance.test_correction_profile",
+        "tests.performance.test_diagnosis",
+        "tests.performance.test_diagnostic",
+        "tests.performance.test_sort_batch"
+      ],
+      "exit_code": 0,
+      "wall_s": 1.6617464290002317,
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "python_tests": 37,
+      "original_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_stderr_sha256": "2d7ed042c2902f386b3adc258fb817de5bfbccd086d6d3190b5c22386166b822"
+    },
+    "compileall": {
+      "command": [
+        "python3",
+        "-m",
+        "compileall",
+        "-q",
+        "tools/performance",
+        "tests/performance"
+      ],
+      "exit_code": 0,
+      "wall_s": 0.07333770800050843,
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "python_tests": null,
+      "original_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "local-tests": {
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "wall_s": 70.66650412200033,
+      "rust_counts": [
+        239,
+        0,
+        0
+      ],
+      "python_tests": null,
+      "original_stdout_sha256": "01fd859b0ddaad456b6ea7fcc107e3c300cbbe3909e1b5a85bcce03075573648",
+      "original_stderr_sha256": "14c8978ddea6598641645ee12e97473838dc2a9b2db131ad0b50eefa2e6ecef2"
+    },
+    "local-fmt": {
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "wall_s": 0.5040036939999482,
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "python_tests": null,
+      "original_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "archive_sha256": "fc588f6f89ec47a44ac3bc73bdd021ad879375dfd523e485daae850eb9db914d",
+  "tested_candidate_source_tree_sha256": "31b9763aef262e669f190f2a4c7685baf63cdb84255aa5b2802f54f6bac817d2",
+  "scope": "local CPU and parent preparation checks; CUDA qualification ran on PC",
+  "source_paths_sanitised": true
+}

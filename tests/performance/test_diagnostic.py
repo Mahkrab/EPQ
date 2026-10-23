@@ -43,10 +43,23 @@ class DiagnosticTests(unittest.TestCase):
                 prepare(root, root, root, root / "protocol", experiment="unknown")
             self.assertFalse((root / "results").exists())
 
+    def test_reserved_completions_retain_growth_and_initial_reset(self):
+        # 480 steps: 32 real non-reservation calls each; initial reset plus
+        # 13 initial slot allocations and three later neighbour growths.
+        self.assertEqual(completion_count(8000, 480, "compact-reserved", allocation_calls=17), 15377)
+        self.assertEqual(completion_count(8000, 480, "compact-stages") - 15377, 19 * 480 - 16)
+        for invalid in (None, 0, -1, True, 1.5):
+            with self.assertRaises(ValueError):
+                completion_count(8000, 480, "compact-reserved", allocation_calls=invalid)
+
     def test_prepare_separates_diagnostic_and_sort_revisions_and_allocation(self):
         for experiment, prefix, extra in (("sort-batch-v1", "sort", 0), ("diagnostic-v1", "diagnostic", 8),
                                            ("diagnostic-atomic-v1", "diagnostic-atomic", 8),
-                                           ("stage-batch-v1", "stage-batch", 32)):
+                                           ("stage-batch-v1", "stage-batch", 32),
+                                           ("gradient-prefix-v1", "gradient-prefix", 32),
+                                           ("reserve-reuse-v1", "reserve-reuse", 32),
+                                           ("power-tables-v1", "power-tables", 32),
+                                           ("acceptance-inline-v1", "acceptance-inline", 32)):
             with self.subTest(experiment=experiment), tempfile.TemporaryDirectory() as temporary:
                 root = Path(temporary).resolve()
                 baseline, previous = root / "baseline", root / "previous"

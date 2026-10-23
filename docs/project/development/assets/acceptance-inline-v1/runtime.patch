@@ -1,0 +1,12 @@
+diff --git a/src/boundary.rs b/src/boundary.rs
+index 939188b..8efe538 100644
+--- a/src/boundary.rs
++++ b/src/boundary.rs
+@@ -150,6 +150,7 @@ impl Plane {
+     ///
+     /// Returns [`NumericalError`] under the same conditions as
+     /// [`Plane::constraint`].
++    #[inline(always)]
+     pub fn contains(self, point: Vec3) -> Result<bool, NumericalError> {
+         Ok(self.constraint(point)? >= 0.0)
+     }

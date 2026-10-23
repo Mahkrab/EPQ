@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "decision": "retain",
+  "authority": "documented_engineering_assessment",
+  "policy": "/docs/project/development/performance-assessment.md",
+  "candidate_tree_sha256": "8c37d0e9c36fa6a8ff8f4a35916cf092570c76085ca6594ab0c5c355b580c2ad",
+  "base_maelstrom_commit": "5120acfbcb07e94ebefd5957ad8f9afa47888be7",
+  "rationale": [
+    "Every confirmation pair improved at both workloads; larger pairs saved 2.355 to 3.862 seconds.",
+    "Whole-workload medians, separate component probes and host/device timelines support a useful host saving.",
+    "One inlining annotation preserves the checked body and numerical contract with low maintenance cost.",
+    "Previously qualified source is reinstated byte for byte; its physical and failure-path evidence applies."
+  ],
+  "limits": [
+    "The first campaign and confirmation remain separate; original automatic rejections are preserved.",
+    "Timing variability remains unexplained; the measured speedups apply to the declared PC workloads.",
+    "No new PC campaign or hosted verification is claimed.",
+    "Known automatic-backend CLI failures and large-scene CFL warnings remain; independent large-fluid quality is not established.",
+    "The initial large-case campaign had only about 3% median improvement and one slower candidate pair; this limits confidence in a fixed speedup magnitude."
+  ],
+  "evidence_sha256": {
+    "summary.json": "f7f4676b6bccbbd158bf72e73260fc1cb991e6bafed6695853e338e1217bee4c",
+    "confirmation-summary.json": "57382301ab45e87b8857210517636a8a68b7442f93fef03990062fe329523679",
+    "confirmation-audit.json": "890afa695bd51a82f7de581ca9f96868e404c3293547c3e770fec95bec08fca3",
+    "acceptance-components.json": "14505876e4e4f9d5545d137fa05437e47f1cdda352ac29dd9a4441bf35e7f5a6",
+    "ptx-checks.json": "4012a5cd9245312a5e9665d50de77725c011f6f61fc9b2d925e420dbf1d0c674",
+    "pc-verification.json": "df33daab9b3739897fa11f6ad5ae1424d40cc0e8663063ac7d75af9efef74c01",
+    "source-identities.json": "c15fa8be009b6b0ec8907c1151c95efb5ccb2f3eda27132787d58ae83dc9cf18"
+  },
+  "new_descriptive_evidence_sha256": "d3a4b03c9737781a3ff0588b0c35a52cd162cf542873d672ce6fa2fef8332303"
+}

@@ -17,13 +17,19 @@ from .capture import digest
 from .timeline import LABELS, union
 
 
-def completion_count(particles: int, steps: int, layout: str) -> int:
+def completion_count(particles: int, steps: int, layout: str, *, allocation_calls: int | None = None) -> int:
     """Model only explicit stream completions; kernel count is unchanged by batching."""
-    if type(particles) is not int or type(steps) is not int or particles < 1 or steps < 1 or layout not in ("compact", "bitset", "compact-batched", "compact-diagnostic", "compact-atomic", "compact-stages"):
+    if type(particles) is not int or type(steps) is not int or particles < 1 or steps < 1 or layout not in ("compact", "bitset", "compact-batched", "compact-diagnostic", "compact-atomic", "compact-stages", "compact-reserved"):
         raise ValueError("positive particles/steps and a known storage layout are required")
     bits = (particles - 1).bit_length()
     passes = bits * (bits + 1) // 2
     base = 135 if layout != "bitset" else 128
+    if layout == "compact-reserved":
+        if type(allocation_calls) is not int or allocation_calls < 1:
+            raise ValueError("reservation traces need observed allocation calls including initial diagnostics")
+        # Nineteen reservations per nonempty step; real growth retains a wait.
+        # One allocation belongs to initial diagnostics, not storage growth.
+        return (base + min(passes, 1) - 53 - 32 - 19) * steps + allocation_calls
     if layout == "compact-diagnostic":
         return (base + min(passes, 1) - 53) * steps
     if layout == "compact-atomic":
@@ -34,7 +40,6 @@ def completion_count(particles: int, steps: int, layout: str) -> int:
 
 
 def analyse(directory: Path, particles: int, steps: int, layout: str = "compact") -> dict:
-    expected_completions = completion_count(particles, steps, layout)
     database = directory / "cuda.sqlite"
     connection = sqlite3.connect(f"file:{database}?mode=ro", uri=True)
     connection.row_factory = sqlite3.Row
@@ -42,7 +47,7 @@ def analyse(directory: Path, particles: int, steps: int, layout: str = "compact"
         kernels = list(connection.execute("SELECT * FROM CUPTI_ACTIVITY_KIND_KERNEL ORDER BY start"))
         apis = list(connection.execute("SELECT a.*,s.value AS name FROM CUPTI_ACTIVITY_KIND_RUNTIME a JOIN StringIds s ON s.id=a.nameId ORDER BY a.start"))
         copies = list(connection.execute("SELECT * FROM CUPTI_ACTIVITY_KIND_MEMCPY ORDER BY start"))
-        memsets = list(connection.execute("SELECT * FROM CUPTI_ACTIVITY_KIND_MEMSET ORDER BY start")) if layout in ("compact-atomic", "compact-stages") else []
+        memsets = list(connection.execute("SELECT * FROM CUPTI_ACTIVITY_KIND_MEMSET ORDER BY start")) if layout in ("compact-atomic", "compact-stages", "compact-reserved") else []
         allocations = list(connection.execute("SELECT * FROM CUDA_GPU_MEMORY_USAGE_EVENTS ORDER BY start"))
         memory_names = {r["id"]: r["label"] for r in connection.execute("SELECT * FROM ENUM_CUDA_DEV_MEM_EVENT_OPER")}
         kernel_names = dict(connection.execute("SELECT id,value FROM StringIds"))
@@ -51,19 +56,23 @@ def analyse(directory: Path, particles: int, steps: int, layout: str = "compact"
     bits = (particles - 1).bit_length()
     compact = layout != "bitset"
     sequence = [0, 1, 2] + [3] * (bits * (bits + 1) // 2) + ([4, 12] if compact else [4]) + list(range(5, 11)) * 8 + [11]
-    diagnostic = layout in ("compact-diagnostic", "compact-atomic", "compact-stages")
+    staged = layout in ("compact-stages", "compact-reserved")
+    diagnostic = layout in ("compact-diagnostic", "compact-atomic", "compact-stages", "compact-reserved")
     if layout == "compact-diagnostic":
         sequence = [item for operation in sequence for item in ((operation, 14) if operation not in (2, 3) else (operation,))]
     launches = [r for r in apis if r["name"] == "cuLaunchKernel"]
     syncs = [r for r in apis if r["name"] == "cuStreamSynchronize"]
+    allocation_calls = sum(r["name"].startswith("cuMemAlloc") for r in apis)
+    expected_completions = completion_count(particles, steps, layout,
+        allocation_calls=allocation_calls if layout == "compact-reserved" else None)
     if len(kernels) != len(sequence) * steps or len(launches) != len(kernels):
         raise ValueError("compact trace launch sequence differs")
     if len(syncs) != expected_completions:
         raise ValueError("compact trace completion count differs")
     reset = None
-    if layout in ("compact-atomic", "compact-stages"):
+    if layout in ("compact-atomic", "compact-stages", "compact-reserved"):
         resets = [r for r in apis if r["name"] == "cuMemsetD8Async"]
-        reset_bytes = 32 if layout == "compact-stages" else 8
+        reset_bytes = 32 if staged else 8
         if len(resets) != 1 or len(memsets) != 1 or memsets[0]["bytes"] != reset_bytes:
             raise ValueError("diagnostic reset count/bytes differ")
         reset = {"calls": 1, "bytes": reset_bytes}
@@ -84,7 +93,7 @@ def analyse(directory: Path, particles: int, steps: int, layout: str = "compact"
         row["launch_to_next_ns"] += (launches[index+1]["start"] if index+1 < len(launches) else stop) - launch["start"]
     transfers = {}
     specification = [(1, "host_to_device", 4, 32 * particles + 104),
-                     (2, "device_to_host", 26 if layout == "compact-stages" else 58, 56 * particles + 432 if diagnostic else 268 * particles + 8)] if compact else [
+                     (2, "device_to_host", 26 if staged else 58, 56 * particles + 432 if diagnostic else 268 * particles + 8)] if compact else [
                      (1, "host_to_device", 3, 24 * particles + 96),
                      (2, "device_to_host", 56, 256 * particles)]
     for kind, name, count, size in specification:
@@ -104,6 +113,7 @@ def analyse(directory: Path, particles: int, steps: int, layout: str = "compact"
     busy = union(intervals)
     return {"particles": particles, "steps": steps, "layout": layout, "primary_timing": False,
             "sqlite_sha256": digest(database.read_bytes()), "kernel_count": len(kernels), "completion_count": len(syncs),
+            **({"allocation_calls_including_diagnostics": allocation_calls} if layout == "compact-reserved" else {}),
             "window_s": (stop-start)/1e9, "device_busy_union_s": busy/1e9, "idle_gap_s": (stop-start-busy)/1e9,
             "tracked_allocation_peak_bytes": peak, "memory_scope": "traced allocations including transient growth/module constants, not total driver/context memory",
             "transfers": transfers,
@@ -118,7 +128,7 @@ def main() -> int:
     parser.add_argument("directory", type=Path)
     parser.add_argument("--particles", type=int, required=True)
     parser.add_argument("--steps", type=int, required=True)
-    parser.add_argument("--layout", choices=("compact", "bitset", "compact-batched", "compact-diagnostic", "compact-atomic", "compact-stages"), default="compact")
+    parser.add_argument("--layout", choices=("compact", "bitset", "compact-batched", "compact-diagnostic", "compact-atomic", "compact-stages", "compact-reserved"), default="compact")
     args = parser.parse_args()
     try:
         print(json.dumps(analyse(args.directory, args.particles, args.steps, args.layout), indent=2))

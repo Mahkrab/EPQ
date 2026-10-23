@@ -1,0 +1,122 @@
+{
+  "particles": 110592,
+  "steps": 4,
+  "layout": "compact-stages",
+  "primary_timing": false,
+  "sqlite_sha256": "68eaedc37455a3e40659cdcf3788fc943a4c6801bc78e60463cea0499f1ed7ee",
+  "kernel_count": 828,
+  "completion_count": 205,
+  "window_s": 0.10107545,
+  "device_busy_union_s": 0.060533446,
+  "idle_gap_s": 0.040542004,
+  "tracked_allocation_peak_bytes": 26781032,
+  "memory_scope": "traced allocations including transient growth/module constants, not total driver/context memory",
+  "transfers": {
+    "host_to_device": {
+      "calls": 16,
+      "bytes": 14156192
+    },
+    "device_to_host": {
+      "calls": 104,
+      "bytes": 24774336
+    }
+  },
+  "diagnostic_reset": {
+    "calls": 1,
+    "bytes": 32
+  },
+  "operations": [
+    {
+      "operation": 0,
+      "name": "acceleration",
+      "calls": 4,
+      "device_s": 1.526e-05,
+      "launch_to_next_s": 0.002472982
+    },
+    {
+      "operation": 1,
+      "name": "prediction",
+      "calls": 4,
+      "device_s": 1.9275e-05,
+      "launch_to_next_s": 0.002162967
+    },
+    {
+      "operation": 2,
+      "name": "cell-keys",
+      "calls": 4,
+      "device_s": 7.2861e-05,
+      "launch_to_next_s": 0.000398522
+    },
+    {
+      "operation": 3,
+      "name": "bitonic-sort",
+      "calls": 612,
+      "device_s": 0.005082792,
+      "launch_to_next_s": 0.006420376
+    },
+    {
+      "operation": 4,
+      "name": "neighbour-count",
+      "calls": 4,
+      "device_s": 0.004127114,
+      "launch_to_next_s": 0.005570036
+    },
+    {
+      "operation": 5,
+      "name": "active-distance-validation",
+      "calls": 32,
+      "device_s": 0.002594104,
+      "launch_to_next_s": 0.000132859
+    },
+    {
+      "operation": 6,
+      "name": "density-and-multipliers",
+      "calls": 32,
+      "device_s": 0.012418501,
+      "launch_to_next_s": 8.2725e-05
+    },
+    {
+      "operation": 7,
+      "name": "correction",
+      "calls": 32,
+      "device_s": 0.022180343,
+      "launch_to_next_s": 7.1419e-05
+    },
+    {
+      "operation": 8,
+      "name": "physical-density-validation",
+      "calls": 32,
+      "device_s": 9.4822e-05,
+      "launch_to_next_s": 0.040768456
+    },
+    {
+      "operation": 9,
+      "name": "candidate-positions",
+      "calls": 32,
+      "device_s": 0.000131626,
+      "launch_to_next_s": 0.000200309
+    },
+    {
+      "operation": 10,
+      "name": "plane-projection",
+      "calls": 32,
+      "device_s": 0.000147531,
+      "launch_to_next_s": 0.003801024
+    },
+    {
+      "operation": 11,
+      "name": "velocity-reconstruction",
+      "calls": 4,
+      "device_s": 2.1122e-05,
+      "launch_to_next_s": 0.0258778
+    },
+    {
+      "operation": 12,
+      "name": "neighbour-fill-sort",
+      "calls": 4,
+      "device_s": 0.012080248,
+      "launch_to_next_s": 0.013115975
+    }
+  ],
+  "original_sqlite_sha256": "fce67b0265d57840b5b55c1bd0ab67294f0a47959f7bc132597c94a0e7a0e04f"
+}

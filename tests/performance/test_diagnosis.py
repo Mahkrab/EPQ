@@ -227,6 +227,21 @@ class EvidenceTests(unittest.TestCase):
         self.assertFalse(audit.same(0.0, -0.0))
         self.assertFalse(audit.same(float("nan"), float("nan")))
 
+    def test_native_profiler_files_stay_private_without_dropping_ordinary_evidence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "original"
+            source.mkdir()
+            for name in ("cuda.nsys-rep", "correction.ncu-rep", "perf.data"):
+                (source / name).write_bytes(b"synthetic private native report")
+            (source / "observation.json").write_text('{"completed":true}')
+            retain.retain(source, root / "shareable")
+            self.assertEqual((root / "shareable/observation.json").read_text(), '{"completed":true}')
+            for name in ("cuda.nsys-rep", "correction.ncu-rep", "perf.data"):
+                self.assertFalse((root / "shareable" / name).exists())
+            records = json.loads((root / "shareable/privacy.json").read_bytes())
+            self.assertEqual(set(records["native_reports_not_published"]), {"cuda.nsys-rep", "correction.ncu-rep", "perf.data"})
+
     def test_sanitisation_removes_environment_bytes_but_preserves_timing_rows(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

@@ -1,0 +1,197 @@
+{
+  "pc": {
+    "candidate-build": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "--offline",
+        "--features",
+        "cuda"
+      ],
+      "wall_s": 7.6618672840004365,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "6a6b16f8897c448033ac86c2e9acaeb4a312fbd73c201cb5676eedd2066b5bdb",
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "failures": []
+    },
+    "candidate-clippy": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "clippy",
+        "--release",
+        "--locked",
+        "--offline",
+        "--features",
+        "cuda",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "wall_s": 3.146832248999999,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "97575def75d270982b6fa1d16ace9e31772613ec249b78a8e7cac4de74983126",
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "failures": []
+    },
+    "candidate-fmt": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "wall_s": 0.22396236599979602,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "failures": []
+    },
+    "candidate-tests": {
+      "exit_code": 101,
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline",
+        "--features",
+        "cuda",
+        "--no-fail-fast",
+        "--",
+        "--include-ignored"
+      ],
+      "wall_s": 78.04913731600027,
+      "stdout_sha256": "7fd8ba38445144262a4bf55741b81a061c2a34053fb3053a5e7fc829261ecd60",
+      "stderr_sha256": "aa777bcd4cd1ea32a72c41bc238eb541e67e8ee71d98afc613cb835007fca4bb",
+      "rust_counts": [
+        258,
+        3,
+        0
+      ],
+      "failures": [
+        "configured_iteration_work_is_identified_and_replays_exactly",
+        "replay_rejects_the_previous_projection_contract_explicitly",
+        "threaded_selection_replay_and_environment_independence_are_public"
+      ]
+    },
+    "control-build": {
+      "exit_code": 0,
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "--offline",
+        "--features",
+        "cuda"
+      ],
+      "wall_s": 8.130719853999835,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "5181b4abb3a5c3c57d6e56f5fb81dbf33f7e15c444f3e033052666d4b9fbfba3",
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "failures": []
+    },
+    "control-tests": {
+      "exit_code": 101,
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline",
+        "--features",
+        "cuda",
+        "--no-fail-fast",
+        "--",
+        "--include-ignored"
+      ],
+      "wall_s": 69.51307832400016,
+      "stdout_sha256": "3752f181d04be7b7b42ea5439a65d9bab8775600df5e46458fca2b3000bfb4fc",
+      "stderr_sha256": "f044e8baa8efcfa9f9f098de3e02e087c0a73b5d2faef75eda02aadfc6accfd2",
+      "rust_counts": [
+        258,
+        3,
+        0
+      ],
+      "failures": [
+        "replay_rejects_the_previous_projection_contract_explicitly",
+        "configured_iteration_work_is_identified_and_replays_exactly",
+        "threaded_selection_replay_and_environment_independence_are_public"
+      ]
+    },
+    "native-build": {
+      "exit_code": 0,
+      "command": [
+        "c++",
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "-I/usr/local/cuda/include",
+        "native/tests.cpp",
+        "-ldl",
+        "-o",
+        "/tmp/maelstrom-power-tables-QcuhKW/native-tests"
+      ],
+      "wall_s": 1.7369083559997307,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "failures": []
+    },
+    "native-tests": {
+      "exit_code": 0,
+      "command": [
+        "/tmp/maelstrom-power-tables-QcuhKW/native-tests"
+      ],
+      "wall_s": 0.018834443999367068,
+      "stdout_sha256": "4981e9847e5f4117eb4b74cdd24f6e5a26940554828567effad6ba78e53e9bd4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rust_counts": [
+        0,
+        0,
+        0
+      ],
+      "failures": []
+    }
+  },
+  "local_verification_record": "local-verification.json and local-verification.tar.xz",
+  "unperformed": [
+    "hosted verification",
+    "passing device-memory sanitizer",
+    "actual device-loss recovery",
+    "other platforms",
+    "large-scene independent density qualification"
+  ]
+}
