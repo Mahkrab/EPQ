@@ -21,6 +21,10 @@ with independent qualification and new comparison identities. Contracts can chan
 they are not a reason to retain an inefficient design, nor permission to disguise less work as a speedup.
 Rendering changes, unrelated features and final-project synthesis are outside this investigation.
 
+The separately requested [compilation and PC graphics repair](/docs/project/development/performance-compilation.md)
+addresses image-producing command costs. Its timings include rendering and output and do not
+replace the solver baselines or change the numerical optimisation order below.
+
 The [optimisation assessment policy](/docs/project/development/performance-assessment.md) owns
 retention decisions. The implementing agent must assess correctness, paired measurements,
 uncertainty, regressions and implementation cost, then explain whether to retain the change.
@@ -132,6 +136,8 @@ cancellation boundaries, with deterministic numerical failure handling.
 The [multiplier-prefix reuse experiment](/docs/project/development/performance-gradient-reuse.md)
 records a rejected register-only arithmetic trial: measured kernel savings did not meet
 its prospective whole-solver admission criterion. The original multiplier remains active.
+That outcome belongs to the historical policy. Its roughly 3% savings warrant a fresh
+assessment against the current implementation, without relabelling the original result.
 The [reused-reservation investigation](/docs/project/development/performance-reservation-reuse.md)
 records a rejected host-only fast path: removing empty driver waits produced no clear
 matched PC runtime gain. The original reservation boundary is restored.
@@ -142,8 +148,16 @@ measures individual components before trying inlining. Its original range-separa
 a reversion despite substantial savings. The subsequent documented assessment retains the simple
 inlining change: every confirmation pair improved, component probes and traces supported the
 mechanism, and numerical behaviour was preserved. The original failed rule outcomes remain intact.
-Evolved neighbour construction is the next measured implementation priority; timing variability
-must remain visible, and individual power-function cost remains unresolved.
+The [neighbour-traversal investigation](/docs/project/development/performance-neighbour-traversal.md)
+retains a narrow cell-lookup reuse change after rejecting a merged-range scan that slowed
+evolved motion. The follow-up improved every large pair with a roughly 2% median saving;
+the smaller workload was mixed. Both campaigns and their differing outcomes remain intact.
+The [neighbour attribution](/docs/project/development/performance-neighbour-attribution.md)
+separates evolved traversal, fill and identity sorting. Sorting is substantial; writes add
+less than the checked traversal in the diagnostic export. Generated PTX already shares local
+distance expressions within individual loops, leaving cross-loop reuse as the stronger arithmetic
+candidate. The reviewed implementation candidates are listed below. Timing
+variability must remain visible, and individual power-function cost remains unresolved.
 The remaining implementation work is still open; further host/device round trips and
 kernel costs still need evidence-led assessment.
 
@@ -165,6 +179,40 @@ Precompute only values invariant over their actual lifetime; positions change du
 so stale distance/gradient caching is not an optimisation. Graph submission, kernel fusion, different
 sorting algorithms and launch tuning need a demonstrated cost to remove, not adoption by fashion.
 Fast maths, changed reduction order, approximate powers and lower precision are numerical variants.
+
+### Candidates after the code review
+
+The [CUDA candidate review](/docs/project/development/performance-candidate-review.md) maps the
+seven proposed techniques to current source, prior trials and retained profiles. They are
+experiments to assess, not a requirement to apply every technique or a promise of a speedup.
+
+| Candidate | Intended first experiment |
+| --- | --- |
+| Dedicated operation kernels | Specialise entry points with unchanged bodies, launch order and grouped diagnostics; compare per-operation resources and complete runs |
+| Pair geometry reuse | Reassess ordered gradient-prefix reuse; local correction-distance sharing is already present in the inspected generated PTX |
+| Neighbour-loop fusion | Consider partial density/owner fusion or ordered prefix/suffix reuse; preserve the owner's insertion point and error precedence |
+| Device component [SoA](https://en.wikipedia.org/wiki/AoS_and_SoA) | Compare hot position storage first, including packing/gather/readback costs; a whole-application representation rewrite is not required |
+| Warp-cooperative row work | Assess integer identity sorting against the now-attributed cost, preserving tail masks, arbitrary row lengths and overflow behaviour |
+| Shared-memory tiles | Establish repeated block-local neighbour access before adding staging, barriers and shared storage |
+| Validation efficiency | Prove individual redundancies or unused diagnostic writes; disabling production `Checked` changes failure handling and needs a separately revised contract |
+
+Attribution and initial instruction inspection are complete. Prioritise dedicated entry points,
+cooperative integer sorting and cross-loop arithmetic reuse as separate implementation comparisons;
+the existing prefix trial makes the latter a concrete candidate. Choose layout and cooperative-memory work from the measured
+access and sorting costs. Do not use shuffle reductions to change floating-point summation order.
+
+Keep device-side bounds, checked integer prefixes and state residency in view: the current path
+still downloads predicted positions and row counts, computes the prefix on the host and uploads
+offsets. Preserve allocation/error decisions and explicitly qualify any accepted-state ownership
+change. Inspect invariant kernel coefficients before introducing a full per-pair cache.
+
+Compilation snapshot copies and image-pipeline overlap are separate application-throughput
+candidates in the review; their gains cannot be reported as solver-only improvements.
+
+The [compiler assessment](/docs/project/development/performance-compiler-assessment.md)
+confirms optimised release/device builds and records a separate ThinLTO/one-unit trial.
+Ordinary release remains the default: the measured CUDA workloads do not establish a
+broad runtime benefit. CPU profile tuning remains open; precise numerical flags stay intact.
 
 **Done when:** each retained change passes independent normal/failure tests and matched PC comparisons,
 and has a recorded speed/memory benefit or a justified capacity benefit with its runtime trade-off.

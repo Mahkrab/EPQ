@@ -12,9 +12,9 @@ from .audit_compact import close, completed
 def audit(root: Path, summary: dict) -> dict:
     campaign = json.loads((root / "campaign.json").read_bytes())
     experiment = campaign["experiment"]
-    if experiment not in ("sort-batch-v1", "diagnostic-v1", "diagnostic-atomic-v1", "stage-batch-v1", "gradient-prefix-v1", "reserve-reuse-v1", "power-tables-v1", "acceptance-inline-v1") or summary["experiment"] != experiment:
+    if experiment not in ("sort-batch-v1", "diagnostic-v1", "diagnostic-atomic-v1", "stage-batch-v1", "gradient-prefix-v1", "reserve-reuse-v1", "power-tables-v1", "acceptance-inline-v1", "neighbour-bands-v1") or summary["experiment"] != experiment:
         raise ValueError("unknown or mismatched coordination experiment")
-    extra_bytes = 0 if experiment == "sort-batch-v1" else 32 if experiment in ("stage-batch-v1", "gradient-prefix-v1", "reserve-reuse-v1", "power-tables-v1", "acceptance-inline-v1") else 8
+    extra_bytes = 0 if experiment == "sort-batch-v1" else 32 if experiment in ("stage-batch-v1", "gradient-prefix-v1", "reserve-reuse-v1", "power-tables-v1", "acceptance-inline-v1", "neighbour-bands-v1") else 8
     if campaign.get("diagnostic_bytes", 0) != extra_bytes:
         raise ValueError("false persistent diagnostic allocation")
     comparisons = 0

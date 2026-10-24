@@ -46,6 +46,10 @@ require hardware checks. Documentation alone cannot establish cleanup after real
   supplied stream and may report earlier asynchronous failures. Reset submission is
   therefore drained and checked under the same conservative resource policy.
 
+- On 25 October 2026, checked the archived `CUjit_option` definition.
+  `CU_JIT_OPTIMIZATION_LEVEL` defaults to 4, the highest documented level.
+  Maelstrom uses ordinary `cuModuleLoadData` rather than overriding that setting.
+
 #### Date added
 
 18/10/26

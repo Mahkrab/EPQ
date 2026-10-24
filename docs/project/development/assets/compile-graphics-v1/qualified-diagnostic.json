@@ -1,0 +1,126 @@
+{
+  "scope": "short diagnostic; not a solver throughput campaign",
+  "particles": 110592,
+  "steps": 8,
+  "refinement": 4,
+  "resolution": [
+    1280,
+    720
+  ],
+  "stride": 1,
+  "binary_sha256": "150868da9b3603704474a9f262a0393cabb998a81319bafd4d5afb171606ef27",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "runs": [
+    {
+      "mode": "software",
+      "pair": 0,
+      "command": [
+        "<release-binary>",
+        "compile",
+        "<workspace>/fixtures/capacity-48.toml",
+        "--backend",
+        "cuda",
+        "--refine-timestep",
+        "4",
+        "--steps",
+        "8",
+        "--width",
+        "1280",
+        "--height",
+        "720",
+        "--fit-camera",
+        "--output",
+        "<workspace>/qualified-software-0",
+        "--format",
+        "json",
+        "--software"
+      ],
+      "exit": 0,
+      "wall_s": 39.484422506000556,
+      "timings": {
+        "encoding": 0.33732480400000003,
+        "graphics_readback": 36.27844790500001,
+        "solver_steps": 0.955409895
+      },
+      "graphics": {
+        "backend": "Vulkan",
+        "device": 0,
+        "device_type": "Cpu",
+        "driver": "llvmpipe",
+        "driver_info": "Mesa 25.2.8-0ubuntu0.24.04.2 (LLVM 20.1.2)",
+        "name": "llvmpipe (LLVM 20.1.2, 256 bits)",
+        "selection_index": 0,
+        "software_requested": true,
+        "vendor": 65541
+      },
+      "frames": 9,
+      "snapshot_hashes": [
+        "sha256:5a01685672096057b2d7a82d00bce4e6dd3f1c55d06e01087510c66aac9e251a",
+        "sha256:7a0796e2f0d0d817425fa265e400164b18e7b2610521d18de05113180468ff99",
+        "sha256:b3dbaf60771d3ef913a12c3aee0313e19eef2ed586c0db662a20693d22c86ba6",
+        "sha256:09c292d3e6f0823f42659fb409f23a6e349af234f4e90ca4a94b5d1b6e85edbe",
+        "sha256:344f7f5e276e4c02673905e685c171f7259ae7d85ca6317075411321b5aa20e8",
+        "sha256:cdee2d3d80f6a91b7c058ee3f0aad1bacc1d4971b2ca1d75c817e2df8c5ea092",
+        "sha256:200103689e1c76b8df5c0da25405b11900c37b4f6e4b5a1a32d28c8dfd15dd83",
+        "sha256:717d605d0f4be872e0acd9db9e354b18e6e37fc143dcb10fc30e858a287cbedc",
+        "sha256:c143cac4828deca9a985f84a3b4aa64de5d3297a5cc2da44779aebbf33a9becc"
+      ],
+      "validation_exit": 0
+    },
+    {
+      "mode": "hardware",
+      "pair": 0,
+      "command": [
+        "<release-binary>",
+        "compile",
+        "<workspace>/fixtures/capacity-48.toml",
+        "--backend",
+        "cuda",
+        "--refine-timestep",
+        "4",
+        "--steps",
+        "8",
+        "--width",
+        "1280",
+        "--height",
+        "720",
+        "--fit-camera",
+        "--output",
+        "<workspace>/qualified-hardware-0",
+        "--format",
+        "json"
+      ],
+      "exit": 0,
+      "wall_s": 2.379809355996258,
+      "timings": {
+        "encoding": 0.332348737,
+        "graphics_readback": 0.12364645099999999,
+        "solver_steps": 0.145954713
+      },
+      "graphics": {
+        "backend": "Gl",
+        "device": 0,
+        "device_type": "Other",
+        "driver": "",
+        "driver_info": "4.6 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.2",
+        "name": "D3D12 (NVIDIA GeForce RTX 4070)",
+        "selection_index": 0,
+        "software_requested": false,
+        "vendor": 0
+      },
+      "frames": 9,
+      "snapshot_hashes": [
+        "sha256:5a01685672096057b2d7a82d00bce4e6dd3f1c55d06e01087510c66aac9e251a",
+        "sha256:7a0796e2f0d0d817425fa265e400164b18e7b2610521d18de05113180468ff99",
+        "sha256:b3dbaf60771d3ef913a12c3aee0313e19eef2ed586c0db662a20693d22c86ba6",
+        "sha256:09c292d3e6f0823f42659fb409f23a6e349af234f4e90ca4a94b5d1b6e85edbe",
+        "sha256:344f7f5e276e4c02673905e685c171f7259ae7d85ca6317075411321b5aa20e8",
+        "sha256:cdee2d3d80f6a91b7c058ee3f0aad1bacc1d4971b2ca1d75c817e2df8c5ea092",
+        "sha256:200103689e1c76b8df5c0da25405b11900c37b4f6e4b5a1a32d28c8dfd15dd83",
+        "sha256:717d605d0f4be872e0acd9db9e354b18e6e37fc143dcb10fc30e858a287cbedc",
+        "sha256:c143cac4828deca9a985f84a3b4aa64de5d3297a5cc2da44779aebbf33a9becc"
+      ],
+      "validation_exit": 0
+    }
+  ]
+}

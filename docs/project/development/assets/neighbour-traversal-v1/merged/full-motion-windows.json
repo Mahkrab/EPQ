@@ -1,0 +1,382 @@
+{
+  "control": {
+    "primary_timing": false,
+    "boundary": "first acceleration launch to next window's first acceleration launch; final window ends at last completion",
+    "whole": {
+      "particles": 110592,
+      "steps": 480,
+      "layout": "compact-stages",
+      "primary_timing": false,
+      "sqlite_sha256": "8cbdb1d8c215fe24378d7a8ccb2ee16281b3c362c74fc30d8f6220c3bc184195",
+      "kernel_count": 99360,
+      "completion_count": 24481,
+      "window_s": 10.513879805,
+      "device_busy_union_s": 8.317081882,
+      "idle_gap_s": 2.196797923,
+      "tracked_allocation_peak_bytes": 59696464,
+      "memory_scope": "traced allocations including transient growth/module constants, not total driver/context memory",
+      "transfers": {
+        "host_to_device": {
+          "calls": 1920,
+          "bytes": 1698743040
+        },
+        "device_to_host": {
+          "calls": 12480,
+          "bytes": 2972920320
+        }
+      },
+      "diagnostic_reset": {
+        "calls": 1,
+        "bytes": 32
+      },
+      "operations": [
+        {
+          "operation": 0,
+          "name": "acceleration",
+          "calls": 480,
+          "device_s": 0.001303713,
+          "launch_to_next_s": 0.211405352
+        },
+        {
+          "operation": 1,
+          "name": "prediction",
+          "calls": 480,
+          "device_s": 0.001607691,
+          "launch_to_next_s": 0.227633021
+        },
+        {
+          "operation": 2,
+          "name": "cell-keys",
+          "calls": 480,
+          "device_s": 0.008466658,
+          "launch_to_next_s": 0.028092548
+        },
+        {
+          "operation": 3,
+          "name": "bitonic-sort",
+          "calls": 73440,
+          "device_s": 0.513331799,
+          "launch_to_next_s": 0.657887185
+        },
+        {
+          "operation": 4,
+          "name": "neighbour-count",
+          "calls": 480,
+          "device_s": 0.841488953,
+          "launch_to_next_s": 0.990425319
+        },
+        {
+          "operation": 5,
+          "name": "active-distance-validation",
+          "calls": 3840,
+          "device_s": 0.503551112,
+          "launch_to_next_s": 0.013910955
+        },
+        {
+          "operation": 6,
+          "name": "density-and-multipliers",
+          "calls": 3840,
+          "device_s": 1.86038169,
+          "launch_to_next_s": 0.009885755
+        },
+        {
+          "operation": 7,
+          "name": "correction",
+          "calls": 3840,
+          "device_s": 2.596680186,
+          "launch_to_next_s": 0.009330888
+        },
+        {
+          "operation": 8,
+          "name": "physical-density-validation",
+          "calls": 3840,
+          "device_s": 0.009103657,
+          "launch_to_next_s": 5.27122133
+        },
+        {
+          "operation": 9,
+          "name": "candidate-positions",
+          "calls": 3840,
+          "device_s": 0.012335726,
+          "launch_to_next_s": 0.026433772
+        },
+        {
+          "operation": 10,
+          "name": "plane-projection",
+          "calls": 3840,
+          "device_s": 0.015466205,
+          "launch_to_next_s": 0.272916199
+        },
+        {
+          "operation": 11,
+          "name": "velocity-reconstruction",
+          "calls": 480,
+          "device_s": 0.001622435,
+          "launch_to_next_s": 0.960772022
+        },
+        {
+          "operation": 12,
+          "name": "neighbour-fill-sort",
+          "calls": 480,
+          "device_s": 1.754626784,
+          "launch_to_next_s": 1.833965459
+        }
+      ]
+    },
+    "windows": {
+      "1-120": {
+        "window_s": 1.921056854,
+        "device_busy_union_s": 1.380589225,
+        "idle_gap_s": 0.540467629,
+        "kernel_s": 1.33125102,
+        "operations_device_s": {
+          "0": 0.000328219,
+          "1": 0.000404359,
+          "2": 0.001949612,
+          "3": 0.135125816,
+          "4": 0.097730051,
+          "5": 0.069934965,
+          "6": 0.266232936,
+          "7": 0.507521216,
+          "8": 0.00228911,
+          "9": 0.003098312,
+          "10": 0.003813681,
+          "11": 0.000406708,
+          "12": 0.242416035
+        }
+      },
+      "121-240": {
+        "window_s": 2.626813578,
+        "device_busy_union_s": 2.072191892,
+        "idle_gap_s": 0.554621686,
+        "kernel_s": 2.02289605,
+        "operations_device_s": {
+          "0": 0.00032537,
+          "1": 0.000401121,
+          "2": 0.002039597,
+          "3": 0.130217462,
+          "4": 0.171386936,
+          "5": 0.125546181,
+          "6": 0.470622299,
+          "7": 0.683931089,
+          "8": 0.00227133,
+          "9": 0.003078288,
+          "10": 0.003814131,
+          "11": 0.00040515,
+          "12": 0.428857096
+        }
+      },
+      "241-480": {
+        "window_s": 5.966009373,
+        "device_busy_union_s": 4.864300765,
+        "idle_gap_s": 1.101708608,
+        "kernel_s": 4.765819539,
+        "operations_device_s": {
+          "0": 0.000650124,
+          "1": 0.000802211,
+          "2": 0.004477449,
+          "3": 0.247988521,
+          "4": 0.572371966,
+          "5": 0.308069966,
+          "6": 1.123526455,
+          "7": 1.405227881,
+          "8": 0.004543217,
+          "9": 0.006159126,
+          "10": 0.007838393,
+          "11": 0.000810577,
+          "12": 1.083353653
+        }
+      }
+    }
+  },
+  "candidate": {
+    "primary_timing": false,
+    "boundary": "first acceleration launch to next window's first acceleration launch; final window ends at last completion",
+    "whole": {
+      "particles": 110592,
+      "steps": 480,
+      "layout": "compact-stages",
+      "primary_timing": false,
+      "sqlite_sha256": "1e8f93b6d2db66f3591d2579f722629e0769d13ad08a9e66c5889d68d0bdc9b5",
+      "kernel_count": 99360,
+      "completion_count": 24481,
+      "window_s": 10.779005614,
+      "device_busy_union_s": 8.59230313,
+      "idle_gap_s": 2.186702484,
+      "tracked_allocation_peak_bytes": 59696464,
+      "memory_scope": "traced allocations including transient growth/module constants, not total driver/context memory",
+      "transfers": {
+        "host_to_device": {
+          "calls": 1920,
+          "bytes": 1698743040
+        },
+        "device_to_host": {
+          "calls": 12480,
+          "bytes": 2972920320
+        }
+      },
+      "diagnostic_reset": {
+        "calls": 1,
+        "bytes": 32
+      },
+      "operations": [
+        {
+          "operation": 0,
+          "name": "acceleration",
+          "calls": 480,
+          "device_s": 0.001305245,
+          "launch_to_next_s": 0.208067128
+        },
+        {
+          "operation": 1,
+          "name": "prediction",
+          "calls": 480,
+          "device_s": 0.00160809,
+          "launch_to_next_s": 0.224793261
+        },
+        {
+          "operation": 2,
+          "name": "cell-keys",
+          "calls": 480,
+          "device_s": 0.008487567,
+          "launch_to_next_s": 0.027335806
+        },
+        {
+          "operation": 3,
+          "name": "bitonic-sort",
+          "calls": 73440,
+          "device_s": 0.514150551,
+          "launch_to_next_s": 0.657210972
+        },
+        {
+          "operation": 4,
+          "name": "neighbour-count",
+          "calls": 480,
+          "device_s": 0.973801267,
+          "launch_to_next_s": 1.121878188
+        },
+        {
+          "operation": 5,
+          "name": "active-distance-validation",
+          "calls": 3840,
+          "device_s": 0.504372582,
+          "launch_to_next_s": 0.013994257
+        },
+        {
+          "operation": 6,
+          "name": "density-and-multipliers",
+          "calls": 3840,
+          "device_s": 1.863188209,
+          "launch_to_next_s": 0.009990527
+        },
+        {
+          "operation": 7,
+          "name": "correction",
+          "calls": 3840,
+          "device_s": 2.598136142,
+          "launch_to_next_s": 0.00932085
+        },
+        {
+          "operation": 8,
+          "name": "physical-density-validation",
+          "calls": 3840,
+          "device_s": 0.009093599,
+          "launch_to_next_s": 5.277709202
+        },
+        {
+          "operation": 9,
+          "name": "candidate-positions",
+          "calls": 3840,
+          "device_s": 0.012303045,
+          "launch_to_next_s": 0.026596027
+        },
+        {
+          "operation": 10,
+          "name": "plane-projection",
+          "calls": 3840,
+          "device_s": 0.015488293,
+          "launch_to_next_s": 0.274890243
+        },
+        {
+          "operation": 11,
+          "name": "velocity-reconstruction",
+          "calls": 480,
+          "device_s": 0.001624411,
+          "launch_to_next_s": 0.95643074
+        },
+        {
+          "operation": 12,
+          "name": "neighbour-fill-sort",
+          "calls": 480,
+          "device_s": 1.891594592,
+          "launch_to_next_s": 1.970788413
+        }
+      ]
+    },
+    "windows": {
+      "1-120": {
+        "window_s": 1.91841707,
+        "device_busy_union_s": 1.36869044,
+        "idle_gap_s": 0.54972663,
+        "kernel_s": 1.319359764,
+        "operations_device_s": {
+          "0": 0.0003294,
+          "1": 0.000404863,
+          "2": 0.001956715,
+          "3": 0.135769652,
+          "4": 0.082639802,
+          "5": 0.070143444,
+          "6": 0.267516048,
+          "7": 0.50998272,
+          "8": 0.002290986,
+          "9": 0.003093573,
+          "10": 0.003824882,
+          "11": 0.000408269,
+          "12": 0.24099941
+        }
+      },
+      "121-240": {
+        "window_s": 2.65819196,
+        "device_busy_union_s": 2.117349024,
+        "idle_gap_s": 0.540842936,
+        "kernel_s": 2.06801485,
+        "operations_device_s": {
+          "0": 0.000325182,
+          "1": 0.000400939,
+          "2": 0.002041558,
+          "3": 0.130257414,
+          "4": 0.195762254,
+          "5": 0.125430769,
+          "6": 0.470554244,
+          "7": 0.683650024,
+          "8": 0.002266665,
+          "9": 0.003068192,
+          "10": 0.003813652,
+          "11": 0.00040366,
+          "12": 0.450040297
+        }
+      },
+      "241-480": {
+        "window_s": 6.202396584,
+        "device_busy_union_s": 5.106263666,
+        "idle_gap_s": 1.096132918,
+        "kernel_s": 5.007778979,
+        "operations_device_s": {
+          "0": 0.000650663,
+          "1": 0.000802288,
+          "2": 0.004489294,
+          "3": 0.248123485,
+          "4": 0.695399211,
+          "5": 0.308798369,
+          "6": 1.125117917,
+          "7": 1.404503398,
+          "8": 0.004535948,
+          "9": 0.00614128,
+          "10": 0.007849759,
+          "11": 0.000812482,
+          "12": 1.200554885
+        }
+      }
+    }
+  }
+}

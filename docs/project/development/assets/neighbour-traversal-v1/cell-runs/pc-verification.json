@@ -1,0 +1,158 @@
+{
+  "candidate-build": {
+    "exit": 0,
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "--locked",
+      "--features",
+      "cuda"
+    ],
+    "passed_failed_ignored": [
+      0,
+      0,
+      0
+    ],
+    "failures": []
+  },
+  "candidate-clippy": {
+    "exit": 0,
+    "command": [
+      "cargo",
+      "clippy",
+      "--release",
+      "--locked",
+      "--features",
+      "cuda",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "passed_failed_ignored": [
+      0,
+      0,
+      0
+    ],
+    "failures": []
+  },
+  "candidate-fmt": {
+    "exit": 0,
+    "command": [
+      "cargo",
+      "fmt",
+      "--all",
+      "--",
+      "--check"
+    ],
+    "passed_failed_ignored": [
+      0,
+      0,
+      0
+    ],
+    "failures": []
+  },
+  "candidate-tests": {
+    "exit": 101,
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--features",
+      "cuda",
+      "--no-fail-fast",
+      "--",
+      "--include-ignored"
+    ],
+    "passed_failed_ignored": [
+      259,
+      3,
+      0
+    ],
+    "failures": [
+      "configured_iteration_work_is_identified_and_replays_exactly",
+      "replay_rejects_the_previous_projection_contract_explicitly",
+      "threaded_selection_replay_and_environment_independence_are_public"
+    ]
+  },
+  "control-build": {
+    "exit": 0,
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "--locked",
+      "--features",
+      "cuda"
+    ],
+    "passed_failed_ignored": [
+      0,
+      0,
+      0
+    ],
+    "failures": []
+  },
+  "control-tests": {
+    "exit": 101,
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--features",
+      "cuda",
+      "--no-fail-fast",
+      "--",
+      "--include-ignored"
+    ],
+    "passed_failed_ignored": [
+      259,
+      3,
+      0
+    ],
+    "failures": [
+      "replay_rejects_the_previous_projection_contract_explicitly",
+      "configured_iteration_work_is_identified_and_replays_exactly",
+      "threaded_selection_replay_and_environment_independence_are_public"
+    ]
+  },
+  "native-build": {
+    "exit": 0,
+    "command": [
+      "c++",
+      "-std=c++17",
+      "-O1",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "-I/usr/local/cuda/include",
+      "native/tests.cpp",
+      "-ldl",
+      "-o",
+      "/tmp/maelstrom-neighbour-cell-runs-n4ssCC/native-tests"
+    ],
+    "passed_failed_ignored": [
+      0,
+      0,
+      0
+    ],
+    "failures": []
+  },
+  "native-sanitizers": {
+    "exit": 0,
+    "command": [
+      "/tmp/maelstrom-neighbour-cell-runs-n4ssCC/native-tests"
+    ],
+    "passed_failed_ignored": [
+      0,
+      0,
+      0
+    ],
+    "failures": []
+  }
+}

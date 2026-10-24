@@ -27,6 +27,8 @@ and tool version; documentation alone does not establish access on the project's
   The guide distinguishes profiled execution from normal application execution.
 - Instruction, memory and occupancy evidence may inform a kernel hypothesis, but utilisation
   alone is not an optimisation result. No counters were collected for this plan.
+- On 24 October 2026, rechecked §2.2.1 and the occupancy section: resource counts
+  and achieved occupancy are distinct evidence. No new PC counters were collected for this review.
 
 #### Date added
 

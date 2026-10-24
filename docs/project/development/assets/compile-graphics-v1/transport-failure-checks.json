@@ -1,0 +1,41 @@
+[
+  {
+    "command": [
+      "maelstrom",
+      "view",
+      "builtin:falling-block-04",
+      "--backend",
+      "serial-grid",
+      "--steps",
+      "0"
+    ],
+    "window_backend": "invalid",
+    "exit": 3,
+    "stderr": "maelstrom: MAELSTROM_WINDOW_BACKEND must be auto, x11 or wayland\n"
+  },
+  {
+    "command": [
+      "maelstrom",
+      "play",
+      "<workspace>/installed-hardware-0"
+    ],
+    "window_backend": "invalid",
+    "exit": 3,
+    "stderr": "maelstrom: MAELSTROM_WINDOW_BACKEND must be auto, x11 or wayland\n"
+  },
+  {
+    "command": [
+      "maelstrom",
+      "run",
+      "builtin:falling-block-04",
+      "--backend",
+      "serial-grid",
+      "--steps",
+      "0",
+      "--unpaced"
+    ],
+    "window_backend": "invalid",
+    "exit": 0,
+    "stderr": "maelstrom: UniformGrid; Serial; unpaced\n"
+  }
+]

@@ -1,0 +1,44 @@
+   Compiling maelstrom v0.1.0 (<laptop-checkout>)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 11.42s
+     Running unittests src/lib.rs (target/debug/deps/maelstrom-6e8e7292e19fd8d5)
+
+running 36 tests
+test cuda::tests::capacity_checks_do_not_allocate_or_need_a_device ... ok
+test execution::tests::unavailable_workers_are_a_typed_setup_failure ... ok
+test export::offscreen::tests::invalid_rgba_lengths_fail_encoding ... ok
+test neighbours::grid::tests::invalid_index_and_capacity_operations_are_errors ... ok
+test neighbours::grid::tests::mapping_uses_floor_at_faces_edges_and_corners ... ok
+test playback::tests::clock_uses_recorded_intervals_speed_pause_seek_and_final_hold ... ok
+test application::tests::shutdown_with_full_queue_resolves_unconstructed_handles_and_receipts ... ok
+test application::tests::full_queue_rejects_restart_atomically_and_cancellation_bypasses_backpressure ... ok
+test playback::tests::letterboxing_preserves_aspect_and_centres_both_orientations ... ok
+test playback::tests::looping_holds_the_final_image_for_the_previous_interval ... ok
+test application::tests::queued_old_steps_are_discarded_and_new_generation_stays_paused_at_zero ... ok
+test execution::tests::joined_work_uses_distinct_workers_and_reports_lowest_index_failure ... ok
+test execution::tests::workers_are_reused_and_terminate_after_the_resource_is_dropped ... ok
+test playback::tests::pixels_load_without_physical_inputs_or_the_recorded_cuda_device ... ok
+test playback::tests::missing_changed_invalid_and_wrong_sized_images_fail_without_regeneration ... ok
+test playback::tests::malformed_or_incomplete_manifests_do_not_become_playback_requests ... ok
+test playback::tests::symlinks_are_not_followed ... ok
+test simulation::tests::exhausted_step_counter_cannot_wrap_or_accept_another_step ... ok
+test application::tests::panic_retains_active_snapshot_marks_queued_runs_and_join_reports_failure ... ok
+test playback::tests::zero_step_export_is_one_static_frame ... ok
+test viewer::tests::overlay_is_bounded_to_the_drawable_and_has_complete_triangles ... ok
+test viewer::tests::zero_extent_and_occlusion_skip_graphics_configuration_and_drawing ... ok
+test viewer::windowing::tests::window_transport_is_explicit_and_rejects_invalid_names ... ok
+test viewer::tests::explicit_cuda_selection_fails_without_fallback ... ok
+test workflow::output::tests::a_partial_write_failure_never_publishes_a_destination ... ok
+test workflow::tests::identity_digest_matches_the_standard_sha256_abc_vector ... ok
+test viewer::tests::close_during_running_work_retains_terminal_accepted_state ... ok
+test playback::tests::unsafe_paths_order_steps_timestamps_hashes_and_dimensions_are_rejected ... ok
+test viewer::tests::graphics_failure_requests_worker_teardown_and_preserves_accepted_state ... ok
+test viewer::tests::receipts_are_polled_and_removed_without_blocking ... ok
+test viewer::tests::invalid_draft_preserves_selection_and_resource_failure_retains_prior ... ok
+test viewer::tests::requested_audit_is_labelled_by_snapshot_and_does_not_change_acceptance ... ok
+test export::offscreen::tests::destroyed_device_rejects_offscreen_readback ... ok
+test playback::tests::saved_pixels_keep_orientation_and_colour_through_the_graphics_pass ... ok
+test export::tests::stage_failures_retain_closed_frames_and_incomplete_progress ... ok
+test viewer::tests::presentation_cadence_camera_draft_and_reset_preserve_all_cpu_modes ... ok
+
+test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.55s
+

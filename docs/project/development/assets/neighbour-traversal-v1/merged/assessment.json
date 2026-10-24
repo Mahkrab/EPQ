@@ -1,0 +1,7 @@
+{
+  "decision": "do not retain",
+  "decision_authority": "documented engineering assessment",
+  "scope": "merged-range candidate only; follow-up assessed separately",
+  "rationale": "All five large pairs were slower. Evolved count and fill/sort costs increased in the separate trace while other major kernel costs and reported registers/local memory stayed close. The modest consistent small-workload saving does not justify making the targeted large workload slower. This is a workload and mechanism assessment, not a percentage cutoff or range-overlap rule.",
+  "limits": "The hardware cause of the changed traversal cost is unresolved; no new counter access was available."
+}

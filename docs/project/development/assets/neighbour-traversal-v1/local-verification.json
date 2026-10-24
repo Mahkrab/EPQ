@@ -1,0 +1,44 @@
+{
+  "environment": "local laptop, Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "checks": {
+    "cpu-tests": {
+      "command": "cargo test --locked --no-fail-fast",
+      "exit": 0,
+      "original_log_sha256": "4073f69137170c2000f5f20ee8a2646348944fbe93c5e7bc63128117fb6d2e82",
+      "shareable_log_sha256": "519eeed70bf15a474a8a85b17516c532a13afe28c638d8989db8a4c35e7bf96f",
+      "passed_failed_ignored": [
+        239,
+        0,
+        0
+      ]
+    },
+    "cpu-clippy": {
+      "command": "cargo clippy --locked --all-targets -- -D warnings",
+      "exit": 0,
+      "original_log_sha256": "c0b8814149210cdb67f7b9da2785fd5b2587aa029c114564417f7179fd182864",
+      "shareable_log_sha256": "e8250b9376c329bbec76c98b7447000284e5a40ea4b75f7fa09cd5c7e146fa8d"
+    },
+    "parent-tests": {
+      "command": "python3 -m unittest discover -s tests/performance -p 'test_*.py'",
+      "exit": 0,
+      "original_log_sha256": "8b4a945d997097ec70dd3b006fdf33ab9e1ac7c09d91ad94288c6457a05cb37c",
+      "shareable_log_sha256": "8b4a945d997097ec70dd3b006fdf33ab9e1ac7c09d91ad94288c6457a05cb37c",
+      "tests": 55
+    },
+    "python-compilation": {
+      "command": "python3 -m compileall -q tools/performance tests/performance",
+      "exit": 0
+    },
+    "historical-policy-rejected": {
+      "command": "python3 -m tools.performance.arithmetic report <new-campaign> --historical-policy",
+      "exit": 1,
+      "expected": "this experiment has no historical automatic decision to reproduce"
+    }
+  },
+  "not_claimed": [
+    "hosted verification",
+    "device-memory sanitiser pass",
+    "new independent large-fluid quality qualification"
+  ]
+}

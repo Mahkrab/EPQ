@@ -13,6 +13,14 @@ from tests.performance.test_arithmetic import workload
 
 
 class AssessmentTests(unittest.TestCase):
+    def test_new_experiments_cannot_invoke_the_historical_decision_rule(self):
+        with patch("tools.performance.arithmetic.json.loads", return_value={"experiment": "neighbour-bands-v1"}), \
+                patch.object(Path, "read_bytes", return_value=b"{}"), \
+                patch("tools.performance.arithmetic.coordination_report") as read:
+            with self.assertRaisesRegex(ValueError, "no historical automatic decision"):
+                report(Path("synthetic"), historical_policy=True)
+            read.assert_not_called()
+
     def test_drift_preserves_all_pairs_even_when_ranges_overlap(self):
         result = paired([10, 20, 30], [8, 16, 24])
         self.assertEqual(result["control_median_s"], 20)

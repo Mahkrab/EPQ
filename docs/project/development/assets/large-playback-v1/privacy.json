@@ -1,0 +1,53 @@
+{
+  "scope": "derived shareable evidence; originals retained on PC",
+  "private_home_replacement": "$HOME",
+  "transforms": {
+    "final-validate/process.json": {
+      "original_sha256": "0392a6db50fe9ff67eba532460906213fbc86f4db0d12ef06f06d1b423895ff7",
+      "shareable_sha256": "ab515b70f48456082672f6153b0f0ea984862981699f3895b8fa8b0e4112a994",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "final-validate/stderr.txt": {
+      "original_sha256": "59a2c27f3ede1e8a80ed074adb5abd3ae897a216ba21c86127da92854ab2384c",
+      "shareable_sha256": "7d1778f68af707b295b974132ea50eec894203a26142a6786083e4311f2a287a",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "final-window/stdout.gz": {
+      "original_sha256": "8334de31f09d2025479b9fa3b851def01834b18d2603e79de3885d8c69af7c5a",
+      "shareable_sha256": "f65aa0c11659dccc2f62826e7e7ed83ee66a71cbc0bf34b2f3006bd8fb24a199",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "installed-before/process.json": {
+      "original_sha256": "927c1204e5815b60755cb7c67321097f76baabcf49f5619e595a9c196511dba9",
+      "shareable_sha256": "5907aaffd4001269288e60927aa427d04f4bde700fdb37df61f1433b5cc475a6",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "large-window-checks.json": {
+      "original_sha256": "a3186651c97b4ef88285b0db9d87d73e4689c366167a71f91db69b0fa35f29d9",
+      "shareable_sha256": "bce85dd8cfe08ffeaa5b568677fbdec5ec0b5f3ed1a2c1f255a8ec8f3c16f11b",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "validate-existing/process.json": {
+      "original_sha256": "12251b110c114f12524294c94f73b35f73db2d2580f8210017d2cd76acde95d9",
+      "shareable_sha256": "0872659352337687ab8ad5f20a6e84d902402c5739cf2f956365aa97800023d9",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "validate-existing/stderr.txt": {
+      "original_sha256": "209d224e90e434a49f20f2c33af2c2c93e50e44fa045fb45ae89461efd92ab44",
+      "shareable_sha256": "2098ed12fe48ab7d2095d85e5bca18265fe6414aa72257ac89a59547e4059465",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "window-check.log": {
+      "original_sha256": "ad1e29ece4020b800887f7babc50e6060026f568b73fa0e6ed148917ba55fb77",
+      "shareable_sha256": "feb1f188fcc74eabcae755a357e5575c23c366b9cf08518c5f70d5d0ec21c3d0",
+      "transformation": "lossless gzip and/or home-path redaction"
+    }
+  },
+  "excluded": [
+    "source repositories",
+    "target trees",
+    "executables and cubins",
+    "native profiler reports",
+    "user manifest and images"
+  ]
+}

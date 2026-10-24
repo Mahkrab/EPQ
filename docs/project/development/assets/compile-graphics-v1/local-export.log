@@ -1,0 +1,38 @@
+   Compiling maelstrom v0.1.0 (<laptop-checkout>)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.03s
+     Running tests/cli_usability.rs (target/debug/deps/cli_usability-6556c0a6baa6c8ef)
+
+running 9 tests
+test paths_obey_flags_then_environment_then_xdg_without_creating_libraries ... ok
+test help_is_example_free_and_legacy_commands_are_not_advertised ... ok
+test diagnostic_discovery_and_completions_have_no_installation_side_effects ... ok
+test preferences_are_explicit_and_cannot_change_scene_physics ... ok
+test explicit_resources_are_recorded_and_rerun_without_the_scene_library ... ok
+test paced_and_unpaced_execution_keep_identical_accepted_results ... ok
+test scene_packages_are_editable_portable_and_do_not_shadow_bundled_names ... ok
+test every_bundled_scene_matches_its_file_and_copies_its_own_configuration ... ok
+test compiled_runs_relocate_validate_and_rerun_without_original_scenes ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.46s
+
+     Running tests/export_contract.rs (target/debug/deps/export_contract-97ae0f97691dbe72)
+
+running 5 tests
+test existing_files_directories_and_symlinks_are_rejected_before_graphics ... ok
+test export_cli_help_and_source_errors_are_usable_without_a_display ... ok
+test schedules_have_exact_endpoints_without_duplicates_or_overflow ... ok
+test saved_records_reject_malformed_and_conflicting_accepted_history ... ok
+test saved_mode_never_invents_missing_initial_or_intermediate_observations ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+
+     Running tests/export_device.rs (target/debug/deps/export_device-d4aa19561c6d28e0)
+
+running 4 tests
+test explicit_saved_prefix_and_process_interruption_cannot_claim_original_completion ... ok
+test exported_pngs_preserve_orientation_scale_depth_and_explicit_camera ... ok
+test failures_and_cancellation_retain_incomplete_sequences_and_prior_files ... ok
+test exports_match_direct_observations_and_repeat_decoded_pixels ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 21.77s
+

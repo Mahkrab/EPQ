@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/tmp/maelstrom-attribution-YZEV6c/collector/tools/performance/neighbour_attribution.py", line 181, in <module>
+    main()
+  File "/tmp/maelstrom-attribution-YZEV6c/collector/tools/performance/neighbour_attribution.py", line 177, in main
+    collect(args.control.resolve(), args.split.resolve(), args.output.resolve())
+  File "/tmp/maelstrom-attribution-YZEV6c/collector/tools/performance/neighbour_attribution.py", line 107, in collect
+    raise ValueError(f"{label} diagnostic build failed")
+ValueError: split diagnostic build failed

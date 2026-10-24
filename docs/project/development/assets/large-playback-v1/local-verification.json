@@ -1,0 +1,21 @@
+{
+  "environment": "Laptop Linux/WSL, rustc 1.98.1; local checks, not hosted verification",
+  "release_viewer_selection": {
+    "passed": 102,
+    "ignored": 4,
+    "command": "cargo test --release --locked --features viewer --lib --test cli_usability --test cli_workflow --test export_contract --test headless_workflow",
+    "ignored_reason": "existing explicit graphics-adapter tests"
+  },
+  "headless_selection": {
+    "passed": 34,
+    "command": "cargo test --locked --no-default-features --test headless_workflow --lib"
+  },
+  "strict_clippy": "cargo clippy --locked --features viewer --all-targets -- -D warnings: passed",
+  "format": "cargo fmt --check: passed",
+  "parent_performance_unit_tests": {
+    "passed": 58,
+    "command": "python3 -m unittest discover -s tests/performance -p 'test_*.py'"
+  },
+  "independent_audits": "four raw timelines; all compiler sample totals/medians and physical JSON; passed",
+  "scope": "No new local CUDA execution or hosted checks. PC CUDA and playback evidence are separate."
+}

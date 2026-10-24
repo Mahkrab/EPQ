@@ -1,0 +1,8 @@
+{
+  "decision": "retain",
+  "decision_authority": "documented engineering assessment",
+  "scope": "separate cell-run cursor reuse; not the original merged-range candidate",
+  "rationale": "All five 110592-particle pairs improved by 0.134-0.260 s, with a 2.0 percent reduction in workload median. Separate traces locate useful savings in evolved count and fill/sort with unchanged transfers, launches and tracked allocation. The code is a narrow lookup reuse with unchanged arithmetic and exact physical results. This benefit at the targeted larger workload justifies its small maintenance cost.",
+  "tradeoffs": "At 8000 particles the candidate median was 2.2 percent higher, with two faster pairs and three slower ones. No universal speedup or statistical significance is claimed. Registers increased from 44 to 46 per thread; local memory remained zero.",
+  "limits": "Known CFL warnings remain. Exact hardware attribution, device-memory sanitiser and independent large-fluid quality qualification remain unconfirmed."
+}

@@ -1,0 +1,35 @@
+{
+  "scope": "reader verification against an existing immutable trace; not a new measurement",
+  "valid_trace": {
+    "kernel_count": 99360,
+    "completion_count": 24481,
+    "windows": {
+      "1-120": {
+        "count_s": 0.098888364,
+        "fill_sort_s": 0.244533878
+      },
+      "121-240": {
+        "count_s": 0.172788957,
+        "fill_sort_s": 0.431856756
+      },
+      "241-480": {
+        "count_s": 0.573591271,
+        "fill_sort_s": 1.099341185
+      }
+    }
+  },
+  "negative_controls": [
+    {
+      "mutation": "window",
+      "rejected": "false evolved window duration"
+    },
+    {
+      "mutation": "operation",
+      "rejected": "false evolved operation duration"
+    },
+    {
+      "mutation": "count",
+      "rejected": "false diagnostic launch or completion summary"
+    }
+  ]
+}

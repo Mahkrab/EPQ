@@ -1,0 +1,33 @@
+{
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "commands": [
+    {
+      "command": [
+        "nvidia-smi",
+        "--query-gpu=name,driver_version",
+        "--format=csv,noheader"
+      ],
+      "exit": 0,
+      "stdout": "NVIDIA GeForce RTX 4070, 610.88\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "rustc",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "rustc 1.96.0 (ac68faa20 2026-05-25)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "glxinfo",
+        "-B"
+      ],
+      "exit": 0,
+      "stdout": "name of display: :0\ndisplay: :0  screen: 0\ndirect rendering: Yes\nExtended renderer info (GLX_MESA_query_renderer):\n    Vendor: Microsoft Corporation (0xffffffff)\n    Device: D3D12 (NVIDIA GeForce RTX 4070) (0xffffffff)\n    Version: 25.2.8\n    Accelerated: yes\n    Video memory: 27990MB\n    Unified memory: no\n    Preferred profile: core (0x1)\n    Max core profile version: 4.6\n    Max compat profile version: 4.6\n    Max GLES1 profile version: 1.1\n    Max GLES[23] profile version: 3.1\nMemory info (GL_ATI_meminfo):\n    VBO free memory - total: 11227 MB, largest block: 11227 MB\n    VBO free aux. memory - total: 0 MB, largest block: 0 MB\n    Texture free memory - total: 11227 MB, largest block: 11227 MB\n    Texture free aux. memory - total: 0 MB, largest block: 0 MB\n    Renderbuffer free memory - total: 11227 MB, largest block: 11227 MB\n    Renderbuffer free aux. memory - total: 0 MB, largest block: 0 MB\nMemory info (GL_NVX_gpu_memory_info):\n    Dedicated video memory: 12010 MB\n    Total available memory: 27990 MB\n    Currently available dedicated video memory: 11227 MB\nOpenGL vendor string: Microsoft Corporation\nOpenGL renderer string: D3D12 (NVIDIA GeForce RTX 4070)\nOpenGL core profile version string: 4.6 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.2\nOpenGL core profile shading language version string: 4.60\nOpenGL core profile context flags: (none)\nOpenGL core profile profile mask: core profile\n\nOpenGL version string: 4.6 (Compatibility Profile) Mesa 25.2.8-0ubuntu0.24.04.2\nOpenGL shading language version string: 4.60\nOpenGL context flags: (none)\nOpenGL profile mask: compatibility profile\n\nOpenGL ES profile version string: OpenGL ES 3.1 Mesa 25.2.8-0ubuntu0.24.04.2\nOpenGL ES profile shading language version string: OpenGL ES GLSL ES 3.10\n\n",
+      "stderr": ""
+    }
+  ]
+}

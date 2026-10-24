@@ -61,7 +61,7 @@ def require_sample(process: dict, document: dict | None, reference: dict, revisi
 def collect(root: Path) -> None:
     """Collect the separately declared 110,592-particle pairs sequentially."""
     campaign = json.loads((root / "campaign.json").read_bytes())
-    if campaign["experiment"] not in ("gradient-prefix-v1", "reserve-reuse-v1", "power-tables-v1", "acceptance-inline-v1"):
+    if campaign["experiment"] not in ("gradient-prefix-v1", "reserve-reuse-v1", "power-tables-v1", "acceptance-inline-v1", "neighbour-bands-v1"):
         raise ValueError("unknown paired solver experiment")
     scene = Path(campaign["baseline_directory"]) / "inputs/scenes/capacity-block-48.toml"
     _, reference = load_attempt(root / "previous/110592")
@@ -80,8 +80,10 @@ def collect(root: Path) -> None:
 def report(root: Path, *, historical_policy: bool = False) -> dict:
     """Validate samples and report evidence; the written assessment decides retention."""
     campaign = json.loads((root / "campaign.json").read_bytes())
-    if campaign["experiment"] not in ("gradient-prefix-v1", "reserve-reuse-v1", "power-tables-v1", "acceptance-inline-v1"):
+    if campaign["experiment"] not in ("gradient-prefix-v1", "reserve-reuse-v1", "power-tables-v1", "acceptance-inline-v1", "neighbour-bands-v1"):
         raise ValueError("unknown paired solver experiment")
+    if historical_policy and campaign["experiment"] == "neighbour-bands-v1":
+        raise ValueError("this experiment has no historical automatic decision to reproduce")
     result = coordination_report(root)
     _, reference = load_attempt(root / "previous/110592")
     result["paired_large"] = {}

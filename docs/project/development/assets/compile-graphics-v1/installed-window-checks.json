@@ -1,0 +1,38 @@
+[
+  {
+    "operation": "view",
+    "command": [
+      "maelstrom",
+      "view",
+      "builtin:falling-block-04",
+      "--backend",
+      "cuda",
+      "--steps",
+      "1",
+      "--fit-camera"
+    ],
+    "display": "X11 WSLg",
+    "mapped": true,
+    "sampled_distinct_colors": 151,
+    "width": 1280,
+    "height": 720,
+    "close": "WM_DELETE_WINDOW",
+    "exit": 0
+  },
+  {
+    "operation": "play",
+    "command": [
+      "maelstrom",
+      "play",
+      "<workspace>/final-hardware-0",
+      "--paused"
+    ],
+    "display": "X11 WSLg",
+    "mapped": true,
+    "sampled_distinct_colors": 173,
+    "width": 1280,
+    "height": 720,
+    "close": "WM_DELETE_WINDOW",
+    "exit": 0
+  }
+]

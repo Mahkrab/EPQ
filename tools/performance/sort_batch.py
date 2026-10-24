@@ -25,11 +25,11 @@ from .study import memory
 
 def prepare(work: Path, baseline: Path, previous: Path, protocol: Path,
             *, experiment: str = "sort-batch-v1") -> Path:
-    if experiment not in ("sort-batch-v1", "diagnostic-v1", "diagnostic-atomic-v1", "stage-batch-v1", "gradient-prefix-v1", "reserve-reuse-v1", "power-tables-v1", "acceptance-inline-v1"):
+    if experiment not in ("sort-batch-v1", "diagnostic-v1", "diagnostic-atomic-v1", "stage-batch-v1", "gradient-prefix-v1", "reserve-reuse-v1", "power-tables-v1", "acceptance-inline-v1", "neighbour-bands-v1"):
         raise ValueError("unknown coordination experiment")
     revision_prefix = {"sort-batch-v1": "sort", "diagnostic-v1": "diagnostic",
                        "diagnostic-atomic-v1": "diagnostic-atomic", "stage-batch-v1": "stage-batch",
-                       "gradient-prefix-v1": "gradient-prefix", "reserve-reuse-v1": "reserve-reuse", "power-tables-v1": "power-tables", "acceptance-inline-v1": "acceptance-inline"}[experiment]
+                       "gradient-prefix-v1": "gradient-prefix", "reserve-reuse-v1": "reserve-reuse", "power-tables-v1": "power-tables", "acceptance-inline-v1": "acceptance-inline", "neighbour-bands-v1": "neighbour-bands"}[experiment]
     root = work / "results"
     root.mkdir(exist_ok=False)
     (root / "protocol.md").write_bytes(protocol.read_bytes())
@@ -42,7 +42,7 @@ def prepare(work: Path, baseline: Path, previous: Path, protocol: Path,
             "binary": str(binary), "binary_sha256": digest(binary.read_bytes()),
             "revision": f"{revision_prefix}-{variant}-" + identity["tree_sha256"]}
     campaign = {"schema_version": 1, "experiment": experiment, "prepared_utc": utc(),
-        "diagnostic_bytes": 0 if experiment == "sort-batch-v1" else 32 if experiment in ("stage-batch-v1", "gradient-prefix-v1", "reserve-reuse-v1", "power-tables-v1", "acceptance-inline-v1") else 8,
+        "diagnostic_bytes": 0 if experiment == "sort-batch-v1" else 32 if experiment in ("stage-batch-v1", "gradient-prefix-v1", "reserve-reuse-v1", "power-tables-v1", "acceptance-inline-v1", "neighbour-bands-v1") else 8,
         "implementations": implementations, "baseline_directory": str(baseline),
         "previous_directory": str(previous), "protocol_sha256": digest(protocol.read_bytes()),
         "baseline_campaign_sha256": digest((baseline / "campaign.json").read_bytes()),
@@ -191,7 +191,7 @@ def main() -> None:
     parser.add_argument("--baseline", type=Path)
     parser.add_argument("--previous", type=Path)
     parser.add_argument("--protocol", type=Path)
-    parser.add_argument("--experiment", choices=("sort-batch-v1", "diagnostic-v1", "diagnostic-atomic-v1", "stage-batch-v1", "gradient-prefix-v1", "reserve-reuse-v1", "power-tables-v1", "acceptance-inline-v1"), default="sort-batch-v1")
+    parser.add_argument("--experiment", choices=("sort-batch-v1", "diagnostic-v1", "diagnostic-atomic-v1", "stage-batch-v1", "gradient-prefix-v1", "reserve-reuse-v1", "power-tables-v1", "acceptance-inline-v1", "neighbour-bands-v1"), default="sort-batch-v1")
     args = parser.parse_args()
     try:
         if args.operation == "prepare":

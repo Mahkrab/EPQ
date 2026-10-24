@@ -30,6 +30,10 @@ Official NVIDIA documentation for a specific CUDA Toolkit release.
   dependencies without an intervening host wait, not communication between lanes within
   a running kernel or a measured speedup.
 
+- On 24 October 2026, read §10.6 and §10.22.2: block barriers require compatible
+  participation; warp shuffle masks name participating lanes and do not provide memory ordering.
+  These requirements inform cooperative-kernel candidates, not measured gains.
+
 #### Date added
 
 05/07/26

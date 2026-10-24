@@ -1,0 +1,18 @@
+{
+  "command": [
+    "nvidia-smi",
+    "--query-gpu=pstate,utilization.gpu,utilization.memory,temperature.gpu,clocks.sm,clocks.mem,power.draw,clocks_event_reasons.active",
+    "--format=csv,noheader,nounits"
+  ],
+  "started_utc": "2026-10-24T23:32:12.244596+00:00",
+  "finished_utc": "2026-10-24T23:32:12.302341+00:00",
+  "wall_s": 0.057524563002516516,
+  "exit_code": 0,
+  "timed_out": false,
+  "interrupted": false,
+  "killed_after_grace": false,
+  "stdout_sha256": "642452fc04f644a4847acd4a2dfaa054b26379e42cfbd6bad4090b3074036bc1",
+  "stdout_gzip_sha256": "26c1bb2e207b66929413999bdc70eaf6277656fa71bcc321ccdf4b2413cf2e8f",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "parse_error": "Expecting value: line 1 column 1 (char 0)"
+}

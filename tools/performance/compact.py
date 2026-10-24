@@ -100,10 +100,15 @@ def attempt(root: Path, campaign: dict, label: str, variant: str, scene: Path, p
     verify(root, campaign)
     selected = campaign["implementations"][variant]
     timeout, grace = (30, 10) if steps == 4 else (120, 30)
+    if campaign.get("experiment") == "neighbour-bands-v1":
+        from .machine_state import capture
+        capture(Path(selected["source_directory"]), root / "telemetry" / label / "before")
     process, document = invoke([selected["binary"], *arguments(scene, "cuda", steps=steps,
         observation=observation, kind=kind)], Path(selected["source_directory"]), root / label,
         timeout=timeout, grace=grace, env=dict(os.environ, XDG_CONFIG_HOME=str(root / "isolated-config"),
         MAELSTROM_SCENES_DIR=str(root / "isolated-scenes"), MAELSTROM_RUNS_DIR=str(root / "isolated-runs")))
+    if campaign.get("experiment") == "neighbour-bands-v1":
+        capture(Path(selected["source_directory"]), root / "telemetry" / label / "after")
     accepted = qualified(process, document, particles=particles, steps=steps, observation=observation, revision=selected["revision"])
     agreement = None
     if document is not None and reference is not None:

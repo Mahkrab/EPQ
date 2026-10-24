@@ -52,7 +52,7 @@ def validate_claims(stats: dict, summary: dict) -> dict:
 def audit(root: Path, summary: dict) -> dict:
     result = audit_small_and_capacity(root, summary)
     campaign = json.loads((root / "campaign.json").read_bytes())
-    if campaign["experiment"] not in ("gradient-prefix-v1", "reserve-reuse-v1", "power-tables-v1", "acceptance-inline-v1"):
+    if campaign["experiment"] not in ("gradient-prefix-v1", "reserve-reuse-v1", "power-tables-v1", "acceptance-inline-v1", "neighbour-bands-v1"):
         raise ValueError("unknown paired solver campaign")
     _, reference = read(root / "previous/110592")
     stats = {}

@@ -1,0 +1,13 @@
+   Compiling maelstrom v0.1.0 (<laptop-checkout>)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.51s
+     Running tests/render_device.rs (target/debug/deps/render_device-95ff9132ed772ca1)
+
+running 2 tests
+Graphics integration: AdapterInfo { name: "D3D12 (Intel(R) Graphics)", vendor: 0, device: 0, device_type: IntegratedGpu, device_pci_bus_id: "", driver: "", driver_info: "4.1 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4", backend: Gl, subgroup_min_size: 4, subgroup_max_size: 128, transient_saves_memory: None, limit_bucket: None }
+Graphics integration: AdapterInfo { name: "D3D12 (Intel(R) Graphics)", vendor: 0, device: 0, device_type: IntegratedGpu, device_pci_bus_id: "", driver: "", driver_info: "4.1 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4", backend: Gl, subgroup_min_size: 4, subgroup_max_size: 128, transient_saves_memory: None, limit_bucket: None }
+Graphics integration: AdapterInfo { name: "D3D12 (Intel(R) Graphics)", vendor: 0, device: 0, device_type: IntegratedGpu, device_pci_bus_id: "", driver: "", driver_info: "4.1 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4", backend: Gl, subgroup_min_size: 4, subgroup_max_size: 128, transient_saves_memory: None, limit_bucket: None }
+test hardware_draws_known_geometry_depth_and_retains_input_bits ... ok
+test independent_hardware_render_threads_close_cleanly ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.64s
+
