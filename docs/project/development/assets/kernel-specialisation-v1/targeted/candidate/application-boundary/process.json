@@ -1,0 +1,25 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--release",
+    "--locked",
+    "--features",
+    "cuda",
+    "--test",
+    "cuda_boundary",
+    "--",
+    "--include-ignored"
+  ],
+  "started_utc": "2026-10-25T09:48:14.320913+00:00",
+  "finished_utc": "2026-10-25T09:48:18.210424+00:00",
+  "wall_s": 3.88926595900557,
+  "exit_code": 0,
+  "timed_out": false,
+  "interrupted": false,
+  "killed_after_grace": false,
+  "stdout_sha256": "16e5ffd18b09131d024ef58c023f8b2a7623651d8658552c676db87ec1e92005",
+  "stdout_gzip_sha256": "001c38fd8ca5f096174e63d5bcc9ede94807525ba7394882f9c1d75f47a31ae1",
+  "stderr_sha256": "f9bfed6e8e286a548fbba54999e48729e154645b0365d459e961c09d5771c3d9",
+  "parse_error": "Expecting value: line 2 column 1 (char 1)"
+}

@@ -1,6 +1,6 @@
 # Primary-PC performance diagnosis evidence
 
-This supports the [diagnosis](/docs/project/development/performance-diagnosis.md), not a new
+This supports the [diagnosis](/docs/project/development/milestones/05/performance-diagnosis.md), not a new
 optimised solver or final evaluation. Collection ran on 22 October 2026 through `ssh pc`,
 sequentially, against unchanged Maelstrom `c17d8c586eba7455582ad9597cb23d7addc3c6d9`.
 EPQ started at `86e4c0ee0a2c1ce3ca312870f9a752127b455e69`; parent tools and records are
@@ -81,7 +81,7 @@ PTS reader's Y/Z swap. Both runs used twelve workers, fixed timestep, eight iter
 time-based stop; iteration totals establish 480 steps. Printed times and simulated totals are rounded.
 Fluid mass is approximately 0.125 kg upstream versus 0.123789966 kg in the Maelstrom input.
 Boundary samples, clamping, stabilisation and timers also differ. Read the
-[mismatch specification](/docs/project/development/performance-comparators.md), not a speedup ratio.
+[mismatch specification](/docs/project/development/milestones/05/performance-comparators.md), not a speedup ratio.
 The mass, parser and timer distinctions follow the inspected upstream code.<sup><a href="#ref-s060">S060</a></sup>
 External neighbour counts, density/escape audits and matched quality remain unmeasured.
 

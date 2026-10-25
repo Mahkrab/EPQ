@@ -1,0 +1,16 @@
+{
+  "policy": "Written engineering assessment; no automatic percentage or range-overlap rule",
+  "full": {
+    "decision": "do not retain",
+    "reason": "All ten ordinary pairs were slower; the small diagnostic localised a substantial fill/sort regression despite lower registers."
+  },
+  "targeted": {
+    "decision": "do not retain",
+    "reason": "Sharing search removed the substantial small regression, but the small trade-off was mixed and there was no sustained larger-workload benefit to justify additional mapping/maintenance."
+  },
+  "production_commit": "4a9675b5f9e3b7aa90335f5a77bdb3e82093a1b5",
+  "production_restored": true,
+  "custom_scene_preserved": true,
+  "campaigns_pooled": false,
+  "next_candidate": "cooperative integer neighbour-row sorting"
+}

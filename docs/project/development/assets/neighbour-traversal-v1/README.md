@@ -1,7 +1,7 @@
 # Evolved neighbour traversal evidence
 
 Two separate primary-PC campaigns assessed cell lookup reuse without changing
-numerical work. The [decision record](/docs/project/development/performance-neighbour-traversal.md)
+numerical work. The [decision record](/docs/project/development/milestones/05/performance-neighbour-traversal.md)
 explains the result and limitations. Nothing here is a hosted check or a new Git checkpoint.
 
 ## Campaigns and decisions

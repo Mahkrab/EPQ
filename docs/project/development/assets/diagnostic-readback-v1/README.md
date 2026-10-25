@@ -1,7 +1,7 @@
 # Diagnostic-readback experiment evidence
 
-This supports the [implementation record](/docs/project/development/performance-diagnostic-readback.md)
-and [protocol](/docs/project/development/performance-diagnostic-protocol.md). Important measurements
+This supports the [implementation record](/docs/project/development/milestones/05/performance-diagnostic-readback.md)
+and [protocol](/docs/project/development/milestones/05/performance-diagnostic-protocol.md). Important measurements
 ran sequentially on the primary PC through `ssh pc` on 22 October 2026. No new Git checkpoint,
 installed application or ordinary PC checkout was created or changed.
 

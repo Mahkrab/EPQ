@@ -39,7 +39,10 @@ def completion_count(particles: int, steps: int, layout: str, *, allocation_call
     return (base + (min(passes, 1) if layout == "compact-batched" else passes)) * steps
 
 
-def analyse(directory: Path, particles: int, steps: int, layout: str = "compact") -> dict:
+def analyse(directory: Path, particles: int, steps: int, layout: str = "compact", *,
+            entry_names: tuple[str, ...] | None = None) -> dict:
+    if entry_names is not None and (len(entry_names) != 13 or any(not isinstance(n, str) or not n for n in entry_names)):
+        raise ValueError("thirteen non-empty solver entry names are required")
     database = directory / "cuda.sqlite"
     connection = sqlite3.connect(f"file:{database}?mode=ro", uri=True)
     connection.row_factory = sqlite3.Row
@@ -82,7 +85,8 @@ def analyse(directory: Path, particles: int, steps: int, layout: str = "compact"
         operation = sequence[index % len(sequence)]
         if kernel["correlationId"] != launch["correlationId"]:
             raise ValueError("compact kernel correlation differs")
-        if diagnostic and kernel_names[kernel["shortName"]] != ("first_error" if operation == 14 else "solver"):
+        expected_name = "first_error" if operation == 14 else entry_names[operation] if entry_names is not None else "solver"
+        if diagnostic and kernel_names[kernel["shortName"]] != expected_name:
             raise ValueError("diagnostic kernel identity differs")
         lanes = 128 if operation == 14 else (1 << bits) if operation in (2, 3) else particles
         if kernel["blockX"] != 128 or kernel["gridX"] != (lanes + 127) // 128:

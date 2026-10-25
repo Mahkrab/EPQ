@@ -2,7 +2,7 @@
 
 Primary-PC comparison of ordinary release against Rust ThinLTO with one code-generation
 unit, collected on 25 October 2026. The
-[assessment](/docs/project/development/performance-compiler-assessment.md) owns the decision.
+[assessment](/docs/project/development/milestones/05/performance-compiler-assessment.md) owns the decision.
 Native flags and production profile defaults were unchanged.
 
 `original/` contains the build, 18 explicitly enabled CUDA tests, settings, binary hashes,

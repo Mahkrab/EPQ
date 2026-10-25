@@ -47,9 +47,9 @@ def metric_rows(text: str) -> list[dict[str, str]]:
     return rows
 
 
-def windows(directory: Path, particles: int) -> dict:
+def windows(directory: Path, particles: int, *, entry_names: tuple[str, ...] | None = None) -> dict:
     """Partition a validated full trace at kernel boundaries, retaining overlap."""
-    whole = analyse(directory, particles, 480, "compact-stages")
+    whole = analyse(directory, particles, 480, "compact-stages", entry_names=entry_names)
     with sqlite3.connect(f"file:{directory / 'cuda.sqlite'}?mode=ro", uri=True) as db:
         db.row_factory = sqlite3.Row
         kernels = list(db.execute("SELECT * FROM CUPTI_ACTIVITY_KIND_KERNEL ORDER BY start"))

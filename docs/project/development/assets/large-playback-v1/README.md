@@ -24,4 +24,4 @@ built from the disposable source export. The installed `~/.cargo/bin/maelstrom` 
 Source checkout, Git history and existing bundles were not changed on the PC. `privacy.json`
 records home-path replacement; originals remain there. `files.json` hashes the shareable record.
 
-The [development record](/docs/project/development/performance-compilation.md) explains the fix.
+The [development record](/docs/project/development/milestones/05/performance-compilation.md) explains the fix.

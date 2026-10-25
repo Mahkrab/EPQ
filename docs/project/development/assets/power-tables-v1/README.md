@@ -1,7 +1,7 @@
 # Correction profiling and rejected table-placement evidence
 
-The [record](/docs/project/development/performance-correction-profile.md) explains the
-findings and rejection. The [protocol](/docs/project/development/performance-correction-protocol.md)
+The [record](/docs/project/development/milestones/05/performance-correction-profile.md) explains the
+findings and rejection. The [protocol](/docs/project/development/milestones/05/performance-correction-protocol.md)
 owns the prospective workload and admission criteria. Original table placement is restored;
 the shared numerical tests and profiling tools remain.
 

@@ -1,9 +1,9 @@
 # Host acceptance investigation evidence
 
-The [record](/docs/project/development/performance-host-acceptance.md) explains the
+The [record](/docs/project/development/milestones/05/performance-host-acceptance.md) explains the
 component saving and failed whole-run admission. The
-[original protocol](/docs/project/development/performance-acceptance-protocol.md) and
-[confirmation protocol](/docs/project/development/performance-acceptance-confirmation.md)
+[original protocol](/docs/project/development/milestones/05/performance-acceptance-protocol.md) and
+[confirmation protocol](/docs/project/development/milestones/05/performance-acceptance-confirmation.md)
 were specified before their respective collections. The original helper is restored.
 
 ## Source identities

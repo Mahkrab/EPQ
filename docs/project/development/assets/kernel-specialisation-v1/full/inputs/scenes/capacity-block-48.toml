@@ -1,0 +1,43 @@
+schema_version = 1
+name = "capacity-block-48"
+description = "Counted 48-by-48-by-48 diagnostic fluid block"
+randomness = "none"
+allow_coincident_particles = false
+
+[configuration]
+source = "file"
+path = "../config/defaults-v4.toml"
+
+[particles]
+construction = "lattice"
+first_identity = 0
+origin_m = [0.2, 0.4, 0.2]
+counts = [48, 48, 48]
+spacing_m = 0.05
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [0.0, 0.0, 0.0]
+
+[[planes]]
+normal = [1.0, 0.0, 0.0]
+offset_m = 0.0
+
+[[planes]]
+normal = [-1.0, 0.0, 0.0]
+offset_m = -2.80
+
+[[planes]]
+normal = [0.0, 1.0, 0.0]
+offset_m = 0.0
+
+[[planes]]
+normal = [0.0, -1.0, 0.0]
+offset_m = -3.00
+
+[[planes]]
+normal = [0.0, 0.0, 1.0]
+offset_m = 0.0
+
+[[planes]]
+normal = [0.0, 0.0, -1.0]
+offset_m = -2.80

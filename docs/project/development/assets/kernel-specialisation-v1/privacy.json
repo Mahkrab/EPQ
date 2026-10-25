@@ -1,0 +1,958 @@
+{
+  "scope": "derived shareable evidence; originals retained on primary PC",
+  "private_home_replacement": "$HOME",
+  "transforms": {
+    "full/paired/110592/candidate/sample-1/solver.json.gz": {
+      "original_sha256": "235c0b6b21df7a0d0ec82de2baeaeb5d091ad97d67b1277879478078e557e99a",
+      "shareable_sha256": "641c5624b45e02005649e7a4db602cb77174a4828470f1bd9f24eece6207e643",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/110592/candidate/sample-2/solver.json.gz": {
+      "original_sha256": "81aa0b06cd0b5775c747071782b36563de5e1a1f0485750abe34db0705d7901b",
+      "shareable_sha256": "ece44a9903572540d509cc1cb46054162392be82d1348e24ffcc130e896a5d54",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/110592/candidate/sample-3/solver.json.gz": {
+      "original_sha256": "c6ec50d5c21da92ab67c4f0cd42ef7c1a4086ba22cd954f47ef967940d4fb778",
+      "shareable_sha256": "7136097d7aef25e08523ac2a972bc6f8b4bf7772d888b7007953298972937225",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/110592/candidate/sample-4/solver.json.gz": {
+      "original_sha256": "8a3208bdf4229bd9a29b2bb50b1190a9b04befaafc0302158978ac2745546778",
+      "shareable_sha256": "3f538398be5e0f3974c1c66fec0837132abdc0045fd1ed22c348206218d037d6",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/110592/candidate/sample-5/solver.json.gz": {
+      "original_sha256": "4abc59ec9862997e66e45ae764ea6af18de2297ee9cb9d5d9fe778fb1491d085",
+      "shareable_sha256": "e330f5c3c23ab43c0ded262da75781d74d12e58b4928b47bb935106bf8e0e5a9",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/110592/candidate/warmup/solver.json.gz": {
+      "original_sha256": "fdfb2a074b36a8812c137f2dae93a7eac4a0d8ceddf08107ba0283bebb5cd02d",
+      "shareable_sha256": "9cbc62e3e657c5ca09de29d61b2dd5f38cd8fc61c5bc223f47fa575390717d00",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/110592/control/sample-1/solver.json.gz": {
+      "original_sha256": "908e4c531ef88b14dc561adccb20f97ae1087dd3bcef1e3b9522f959eae799ce",
+      "shareable_sha256": "30451b0604be4da2a92db9a4a8bc2bee78338f2d5acbb73bad613ea30bf43e1c",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/110592/control/sample-2/solver.json.gz": {
+      "original_sha256": "4fc84af6060b7f6bddc6b0134b5b775a25fa5880fc9fb8c5fb377bcdd187c6ff",
+      "shareable_sha256": "089620ab27937ceee9f63e049460936c7f875f017ef1441685c3b8336c6aeee3",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/110592/control/sample-3/solver.json.gz": {
+      "original_sha256": "4316a1cfdcbd0cf4f51c80f197ab819173f78b83135d84b5e64f33ec3dd6dfe5",
+      "shareable_sha256": "e5d9a25693b4f718335de52ad1ac6c6a9326b5aaeeac95f85434d58e81b49dfe",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/110592/control/sample-4/solver.json.gz": {
+      "original_sha256": "ed99daaf8ccdeae7b799e0d4362cfdb29e332becec1c243db94adc19b369e8b1",
+      "shareable_sha256": "0f38f511803962b9f023b19bff40b0818740ca1a543f5e626b95b30e1ff6ba90",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/110592/control/sample-5/solver.json.gz": {
+      "original_sha256": "97799b7f0e7813930535d828a2691baeca0b60a1f8daffa1756d5d8565cc47a7",
+      "shareable_sha256": "a833fed2a56be9535aaaefc8b919757a3af2ac29929f11efb718180870aa54a8",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/110592/control/warmup/solver.json.gz": {
+      "original_sha256": "fdfb2a074b36a8812c137f2dae93a7eac4a0d8ceddf08107ba0283bebb5cd02d",
+      "shareable_sha256": "9cbc62e3e657c5ca09de29d61b2dd5f38cd8fc61c5bc223f47fa575390717d00",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/8000/candidate/sample-1/solver.json.gz": {
+      "original_sha256": "668299aed95192909fe0ce9fac0c6d13bd567254f2fa91ba7b153844de29450c",
+      "shareable_sha256": "d2cff96f835edc6cd0eeda16bd5ff07819f9c958a6097311fe773bb148af4d17",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/8000/candidate/sample-2/solver.json.gz": {
+      "original_sha256": "5445d8dfd181a19737f3cf79b213af0a37cce3cbc333c1fb85695bbdcada52c3",
+      "shareable_sha256": "077632845cc5098ff1e345fc476be6fa09cbbb6c60cd1718da95a30dc261e709",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/8000/candidate/sample-3/solver.json.gz": {
+      "original_sha256": "9a1dc77671559adc64dcde3debf5cd18f5c281dcf6d956ebe690559ab6e6514b",
+      "shareable_sha256": "d717e0fb08fb7f73353a259e443e4250ec6b8e3f95bf2bc6794e62023380b053",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/8000/candidate/sample-4/solver.json.gz": {
+      "original_sha256": "63e9c4418b8bbd571af9060a6c7b2294efed162a4cfe392ed4374c71c4ce3cdb",
+      "shareable_sha256": "e6a37e71232ac037fbdecd7c5a684112053fc8015e9dbc91ad94022e13fb8111",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/8000/candidate/sample-5/solver.json.gz": {
+      "original_sha256": "809a967bb24645672cf795db1ddb7435b6d4ffc07c41bdc47cee6880d699baac",
+      "shareable_sha256": "bdedb20721bff0defc0889846a22470c97571e4519d52bc1bf37878aa7b125d6",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/8000/candidate/warmup/solver.json.gz": {
+      "original_sha256": "82403502845ef377309e39afa018a58db28b47365e83b821d2bc3747f4f2e9d8",
+      "shareable_sha256": "78534f706bdb6be2dd5a8f0c5b7f4c42d0451c9fcac2c170ecf02108f5d6f062",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/8000/control/sample-1/solver.json.gz": {
+      "original_sha256": "34d78ec85eb9b55f16b927e0aba675eb553ad6c78e18c1ccbeaf947e830b9ce8",
+      "shareable_sha256": "4d06cab9616dadc59d6d5d528c4b0cca951b0d8246c8fe92cf1508aac58946b9",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/8000/control/sample-2/solver.json.gz": {
+      "original_sha256": "edb8c3bcfd1c38b4ed9ba9c56c080d296ba94aeeedeb6e1fb87fc6e352ded619",
+      "shareable_sha256": "c0b94785a3e23f052ffdf5fe255f7b3530018f527443ee32238a20b01e8d45a2",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/8000/control/sample-3/solver.json.gz": {
+      "original_sha256": "bd883ba1e157889c3f067fb2e30c4f675d79876a35b83b62e5835920abab8ebc",
+      "shareable_sha256": "96bf1619f200448dde75148e56013b3d978eedef0155e883ddc19f4044b23d14",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/8000/control/sample-4/solver.json.gz": {
+      "original_sha256": "1ed065d7addb908c0eee7a297f8b0c9cd5f55e4f9e95b1e7bd527e05d42857ae",
+      "shareable_sha256": "932c3dd0dc5775aa554dfff37f683ef6343895be38f914d620a7fba7197fc4c0",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/8000/control/sample-5/solver.json.gz": {
+      "original_sha256": "f6a15b27c044e8c7fb29eaf9f5e26ecfd2465f5d3ec7429e8bbd800c167bfc39",
+      "shareable_sha256": "f990bca42167e751d13114614acdd97ecae7a9077eff883e773023d67c163c5c",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/paired/8000/control/warmup/solver.json.gz": {
+      "original_sha256": "82403502845ef377309e39afa018a58db28b47365e83b821d2bc3747f4f2e9d8",
+      "shareable_sha256": "78534f706bdb6be2dd5a8f0c5b7f4c42d0451c9fcac2c170ecf02108f5d6f062",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/regression/1000/candidate/solver.json.gz": {
+      "original_sha256": "1260e47fa3649ae23c0215e1bcb3d772d13dc1e91a9f43ca7a7ced203ed616b5",
+      "shareable_sha256": "b38210f9525b93b2a03ac532f7ebc8ebf9c1a8b59a44205c53f0684749508f42",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/regression/1000/control/solver.json.gz": {
+      "original_sha256": "1260e47fa3649ae23c0215e1bcb3d772d13dc1e91a9f43ca7a7ced203ed616b5",
+      "shareable_sha256": "b38210f9525b93b2a03ac532f7ebc8ebf9c1a8b59a44205c53f0684749508f42",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/regression/1728/candidate/solver.json.gz": {
+      "original_sha256": "2b00bff85a4f3359f9c6ec2fc8d3bd9adced8704df2dcd770e36da5b9f020325",
+      "shareable_sha256": "b3434c9ea212da9baf022e028b68e0aafcf1adfc4a03aa29b3dd36d05d7b7966",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/regression/1728/control/solver.json.gz": {
+      "original_sha256": "2b00bff85a4f3359f9c6ec2fc8d3bd9adced8704df2dcd770e36da5b9f020325",
+      "shareable_sha256": "b3434c9ea212da9baf022e028b68e0aafcf1adfc4a03aa29b3dd36d05d7b7966",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/regression/216/candidate/solver.json.gz": {
+      "original_sha256": "f51e3b9d6134afdfac8f92d14ca9be0b4ec889cc8fda5cf17fd8773646ffa5a8",
+      "shareable_sha256": "038fd365a62da32d7c81f28d6543f57a8fc91c9b818319416cd73f3f255f6964",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/regression/216/control/solver.json.gz": {
+      "original_sha256": "f51e3b9d6134afdfac8f92d14ca9be0b4ec889cc8fda5cf17fd8773646ffa5a8",
+      "shareable_sha256": "038fd365a62da32d7c81f28d6543f57a8fc91c9b818319416cd73f3f255f6964",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/regression/4096/candidate/solver.json.gz": {
+      "original_sha256": "6edb7ac6e2efacd3b7cf5ca21548a901f1b086dba5e37efe89b36c3d2f806a5a",
+      "shareable_sha256": "f233605a6a2f24696a95b56c4f2fae81d3e226216d1feb05ac1f97f47bfe39aa",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/regression/4096/control/solver.json.gz": {
+      "original_sha256": "6edb7ac6e2efacd3b7cf5ca21548a901f1b086dba5e37efe89b36c3d2f806a5a",
+      "shareable_sha256": "f233605a6a2f24696a95b56c4f2fae81d3e226216d1feb05ac1f97f47bfe39aa",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/regression/512/candidate/solver.json.gz": {
+      "original_sha256": "725f28792f8b16655d79970d48b459026530d521061d1b660f9b51e548b3269d",
+      "shareable_sha256": "64943265d9bb5b4246b94da643480338565edf3a42edba87e27710d2a9ffdf11",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/regression/512/control/solver.json.gz": {
+      "original_sha256": "725f28792f8b16655d79970d48b459026530d521061d1b660f9b51e548b3269d",
+      "shareable_sha256": "64943265d9bb5b4246b94da643480338565edf3a42edba87e27710d2a9ffdf11",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/regression/64/candidate/solver.json.gz": {
+      "original_sha256": "69a2940f3ef324de1041d38aab2cc81be24b24717cc9e31b9997d226d90d3d26",
+      "shareable_sha256": "ef50e478f877ac7a59b46568474137f2152fa95e233d3474446861493bb0230d",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/regression/64/control/solver.json.gz": {
+      "original_sha256": "69a2940f3ef324de1041d38aab2cc81be24b24717cc9e31b9997d226d90d3d26",
+      "shareable_sha256": "ef50e478f877ac7a59b46568474137f2152fa95e233d3474446861493bb0230d",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/regression/8000/candidate/solver.json.gz": {
+      "original_sha256": "82403502845ef377309e39afa018a58db28b47365e83b821d2bc3747f4f2e9d8",
+      "shareable_sha256": "78534f706bdb6be2dd5a8f0c5b7f4c42d0451c9fcac2c170ecf02108f5d6f062",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/regression/8000/control/solver.json.gz": {
+      "original_sha256": "82403502845ef377309e39afa018a58db28b47365e83b821d2bc3747f4f2e9d8",
+      "shareable_sha256": "78534f706bdb6be2dd5a8f0c5b7f4c42d0451c9fcac2c170ecf02108f5d6f062",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/small-timelines/candidate/cuda.sqlite.gz": {
+      "original_sha256": "3419f4db7b30a99b37bd01befc5d6e6ae010f2661933d71a738fac42a803bedd",
+      "shareable_sha256": "0276a0641ffa39e771f3010527e6ddb52d4ee7160c01c742e427c35efc6cdc5c",
+      "redacted_string_ids": [
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        30,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44
+      ],
+      "unchanged_table_sha256": {
+        "ANALYSIS_FILE": "b47969559dab1653fc1f8ddeb9bca421c0a298dbfeb0a58160c8d19b095e16a3",
+        "ProcessStreams": "ae603438f1e14d2a3e88c5546cd32309c5b84e6a6b3298eb0dc1531cb0128ad7",
+        "TARGET_INFO_SESSION_START_TIME": "17ad1b8d81a012a0d81cb16964de1c277d30d7f1fdfaa47b1538d188e80adae5",
+        "ANALYSIS_DETAILS": "2de8e2a2e59c8de6d8297238c5ddc4e7db495f0d58313e8177c31bb96662cce6",
+        "DIAGNOSTIC_EVENT": "7d687f460c9ee2c1bb04c5ac697c842201998c60dd839fb82f48ae9fc5b9b02b",
+        "PROFILER_OVERHEAD": "cc75c087b25f4aab669109e102ea160dce4d80d371389aa39c16ab8ae579bcd3",
+        "CUPTI_ACTIVITY_KIND_OVERHEAD": "e51fe120435297a0c53ab9d4dfeb371811b15a0e4db5d86c7c62e0205c49bd90",
+        "CUPTI_ACTIVITY_KIND_SYNCHRONIZATION": "5a26177b9a4e61378356802104d16df711b4624b4edb5fdfc6d97bb16a1d0233",
+        "CUPTI_ACTIVITY_KIND_MEMCPY": "4f26fd079c3461fb68eda07cabb915f4a1b10bcdae78180e6f9c4d867883cc79",
+        "CUPTI_ACTIVITY_KIND_MEMSET": "19f359b03073687676da8252fd9b716906f00c9bb8f8fa8eab79e0751d5a8a59",
+        "CUPTI_ACTIVITY_KIND_KERNEL": "5e15a0077f627295dbb8a4eb5a445e74a4a975a215fade42f4805da16e4342ac",
+        "PROCESSES": "ad413c2de91a210aafa132409290931fc283b2376132d36ca15d97890e9b4cee",
+        "CUPTI_ACTIVITY_KIND_RUNTIME": "038fa464b7b71be7687b8ab40e79e256a6c5ef7eab390d2c2ace27df419fec4e",
+        "CUDA_GPU_MEMORY_USAGE_EVENTS": "a6029e6f190c3624be5beafdd019d03222c0a6aa13cb1ae7d0cc8e3c104674b9",
+        "ThreadNames": "17e24befb889a0af41c18834f784dd08152bff61a3eb93283f30637fd337bd31",
+        "TARGET_INFO_GPU": "5a61db3c76bf389313d6844be5243baa5327584065da8e079771d0e3dee71e36",
+        "TARGET_INFO_CUDA_DEVICE": "372d82dfb4e458de4fb075bd2d2815fb0e5c672ec6ce641a7c9f776de6db2bc1",
+        "TARGET_INFO_CUDA_CONTEXT_INFO": "8605dd9a77dcfcdee7a9b3a85c251f1f8b69c7bb3e1e9f8369ba8c6a1542be1a",
+        "TARGET_INFO_CUDA_STREAM": "02b223ba4cbb1e953d9718d72f7bf49899f4f8c094b0896965352daa0bf8a9c4",
+        "ENUM_NSYS_EVENT_TYPE": "5fa4556e53fc14c2f7029acbb3ba3daeacfcee755771464c17614741ec89add6",
+        "ENUM_NSYS_EVENT_CLASS": "3b899fb9390b7387671835294c2eb69bad4a3903be1c18b01a22653c8eeac081",
+        "ENUM_NSYS_GENERIC_EVENT_SOURCE": "8ce17852d6f153f6a382c4d2e53d1b785bd2300497ec6a232728b4a9db6fd3ba",
+        "ENUM_NSYS_GENERIC_EVENT_GROUP": "48d83cf6304fbe79c9aeedf2c17da61b2ebb5cb0d672be8b98c79c21556b0f49",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_TYPE": "94678bceb232e05edd95f3008656224ae1b7e29f20b3fccaf23a4ca4257ae13b",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_ETW_PROPERTY": "b0666a364423fec09aa2bd9d57b23320be882197f29707e3d1bd7463c58e17b1",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_ETW_TYPE": "fd160f576b182f3cf109e9ab4f19117435fc9230aef3d34eed00835e0fd18cee",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_ETW_FLAGS": "6ab410846384f6cbc0e921a67ede4647778678fb6157d321e4ac6198297f6ef9",
+        "ENUM_CUDA_MEMCPY_OPER": "60bfa67a93d01be5ee7ba7f1807992e9a539e8c72f7c3844b78717be90766fed",
+        "ENUM_CUDA_MEM_KIND": "9143c388a6951f8d8205fda1534d6b0f7de93db6b202f0f0b3e2ca4a3cd45b13",
+        "ENUM_CUDA_MEMPOOL_TYPE": "9db6489141914d66402d4ddfbf5328c2d3d56132a43ae37d84a3c67a62865992",
+        "ENUM_CUDA_MEMPOOL_OPER": "4e2f5fde12bf899dbd219c06ca9f57551056613bd998d9afb0e1bd0a47b3f090",
+        "ENUM_CUDA_DEV_MEM_EVENT_OPER": "8e7009f7b61524258872392d3afdaa19d3c65ffe38111f6f557bd8ba67d17e69",
+        "ENUM_CUDA_KERNEL_LAUNCH_TYPE": "24633b524d8953955cdaeb4c38b52fd31162c3f2ae9b1ccf333ea9801d1992ca",
+        "ENUM_CUDA_SHARED_MEM_LIMIT_CONFIG": "bd189190a1696f06de59396f0bd8b1417ea78513ba2a307b411d74246639e391",
+        "ENUM_CUDA_UNIF_MEM_MIGRATION": "ae5dc6bab4c11607430345d537b58b9a2695ff9e1e4d16bdb6ae83a9e17218e1",
+        "ENUM_CUDA_UNIF_MEM_ACCESS_TYPE": "28e52855fb8349c76232b0d06123f6b306e0bbad328c56ec95225decc0480aa6",
+        "ENUM_CUDA_FUNC_CACHE_CONFIG": "74d62bd2c1656f4360ea7ac502d290a9460afac63294f0e77918fcb93eec0b75",
+        "ENUM_CUPTI_STREAM_TYPE": "bf0269cf176cb62fb5f8c6be6eab5fe6f4b9e27696bcc750ac319c92275aef8f",
+        "ENUM_CUPTI_SYNC_TYPE": "4df17fb17103f3071fe189b47f31b284e14d1e1840da701f0cea683215af2756",
+        "ENUM_CUPTI_OVERHEAD_TYPE": "6623898d42b141247581424f19c3534a110b517fb2e22577e3b309078d2d3c1e",
+        "ENUM_DIAGNOSTIC_SEVERITY_LEVEL": "8229994884d747b2548963cbcbf543627f3553448ee2c1855d606a3bf08a1e8a",
+        "ENUM_DIAGNOSTIC_SOURCE_TYPE": "fb45588f1950b4bca0e09a0a530152388e83dbf7e681ff04a2382b755dd240f6",
+        "ENUM_DIAGNOSTIC_TIMESTAMP_SOURCE": "f4277b6789d3aa6017da9b479dd66ae6334f0765da1452104dc245e524a459d4",
+        "META_DATA_EXPORT": "e4b522ca090cf42264dbfc4e750d6d568d68ccf4ba0b675f36c8647254227136"
+      },
+      "redacted_metadata": [
+        "StringIds process environments/private paths",
+        "DeviceEnvironment",
+        "Hostname",
+        "META_DATA_CAPTURE environment variables"
+      ]
+    },
+    "full/small-timelines/candidate/solver.json.gz": {
+      "original_sha256": "4ea942272845e7bec291a888bc69845c43b803742ab0f1cb2d7f7fcdee56b892",
+      "shareable_sha256": "693be18164000fd97f6b490cf974eb84b6c2958210b35c11acd2a5c0cccccaff",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/small-timelines/control/cuda.sqlite.gz": {
+      "original_sha256": "02dfe542459df83a02d9cfb286dd315c54edf50a2708f5bbd874f5ad4d3288fc",
+      "shareable_sha256": "cc3c1721f4d91efcc3b44004aab955f5e72ec853c9e6b7cc69be639f336de3cc",
+      "redacted_string_ids": [
+        15,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        59
+      ],
+      "unchanged_table_sha256": {
+        "ANALYSIS_FILE": "a8c099b48e959ff28e05fdeb0aaa383b876e26dd402251aa2458932a57e37ac1",
+        "ProcessStreams": "d2ee0750100893a61d1969fda2a6527ba451a046e1c9519ec5ca13ca72215ec4",
+        "TARGET_INFO_SESSION_START_TIME": "6917a3fc4d023a4430654687e12297946b821f44091ba7164181fe163eb11a13",
+        "ANALYSIS_DETAILS": "6c4f2889cd1d50068cf1bfaf2019f3db6b5c5ec33e90c3316fa2921656762b3d",
+        "DIAGNOSTIC_EVENT": "685c5ef2087a5ec521a3af952e5563ac4268878d2f4ac06878b3b96135157929",
+        "PROFILER_OVERHEAD": "44c110cca9506da2dc308ad4cfaac329ef8b3aa8eab753c9eea8d62b5f7d4c43",
+        "CUPTI_ACTIVITY_KIND_OVERHEAD": "4c2255da2afa4524c2a9c65fce44941997d489219d5d8d0ec789416f08dd08b9",
+        "CUPTI_ACTIVITY_KIND_SYNCHRONIZATION": "ec06e3da04928c01a818dd57c925a725b00f8a49cf68bb46d90a9cd2126ff231",
+        "CUPTI_ACTIVITY_KIND_MEMCPY": "8ec41ca82015144b994781d8fc00c95da3e98db8fbcd31e4726580d7763879bd",
+        "CUPTI_ACTIVITY_KIND_MEMSET": "556bbd76907b7ec8015e6fdbd22754096a003d8d1bc5f63f8287c26accfc9c1f",
+        "CUPTI_ACTIVITY_KIND_KERNEL": "25fb98ea8c51c2d881a9a46ace787455dcfb81cd5f722e66068c6a7f7437d4d2",
+        "PROCESSES": "c0e58b2a949da5dc5f9efef545a1bb0cb945e109b009d2f0848acc4cdc962c9f",
+        "CUPTI_ACTIVITY_KIND_RUNTIME": "77e31fd3065099ef30a51d360083b74a8b3cdc11ea6a3dcff884cf9e06be0ef9",
+        "CUDA_GPU_MEMORY_USAGE_EVENTS": "5fd8843da88a852ffe7128fbd4d1f9dd1c1cf11b559b0d0c1c6519b73373ab03",
+        "ThreadNames": "9849b6598f037ec6cd358fba0699f56ebf73ffd779a70aab6d82a88614b41ed1",
+        "TARGET_INFO_GPU": "5a61db3c76bf389313d6844be5243baa5327584065da8e079771d0e3dee71e36",
+        "TARGET_INFO_CUDA_DEVICE": "2cfc38a849c277a1411d3485f2174be9ec99a77a820e5658dee94c2ffccf9179",
+        "TARGET_INFO_CUDA_CONTEXT_INFO": "5aa0b061a9dee6dc2dd5d2f9c8fb3a7535bb644c67ce5c699a4ee909d69dc0cf",
+        "TARGET_INFO_CUDA_STREAM": "c734bfbf4ba2377c293ed8023689c3d988d261a596baee90a09f150606630b6c",
+        "ENUM_NSYS_EVENT_TYPE": "5fa4556e53fc14c2f7029acbb3ba3daeacfcee755771464c17614741ec89add6",
+        "ENUM_NSYS_EVENT_CLASS": "3b899fb9390b7387671835294c2eb69bad4a3903be1c18b01a22653c8eeac081",
+        "ENUM_NSYS_GENERIC_EVENT_SOURCE": "8ce17852d6f153f6a382c4d2e53d1b785bd2300497ec6a232728b4a9db6fd3ba",
+        "ENUM_NSYS_GENERIC_EVENT_GROUP": "48d83cf6304fbe79c9aeedf2c17da61b2ebb5cb0d672be8b98c79c21556b0f49",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_TYPE": "94678bceb232e05edd95f3008656224ae1b7e29f20b3fccaf23a4ca4257ae13b",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_ETW_PROPERTY": "b0666a364423fec09aa2bd9d57b23320be882197f29707e3d1bd7463c58e17b1",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_ETW_TYPE": "fd160f576b182f3cf109e9ab4f19117435fc9230aef3d34eed00835e0fd18cee",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_ETW_FLAGS": "6ab410846384f6cbc0e921a67ede4647778678fb6157d321e4ac6198297f6ef9",
+        "ENUM_CUDA_MEMCPY_OPER": "60bfa67a93d01be5ee7ba7f1807992e9a539e8c72f7c3844b78717be90766fed",
+        "ENUM_CUDA_MEM_KIND": "9143c388a6951f8d8205fda1534d6b0f7de93db6b202f0f0b3e2ca4a3cd45b13",
+        "ENUM_CUDA_MEMPOOL_TYPE": "9db6489141914d66402d4ddfbf5328c2d3d56132a43ae37d84a3c67a62865992",
+        "ENUM_CUDA_MEMPOOL_OPER": "4e2f5fde12bf899dbd219c06ca9f57551056613bd998d9afb0e1bd0a47b3f090",
+        "ENUM_CUDA_DEV_MEM_EVENT_OPER": "8e7009f7b61524258872392d3afdaa19d3c65ffe38111f6f557bd8ba67d17e69",
+        "ENUM_CUDA_KERNEL_LAUNCH_TYPE": "24633b524d8953955cdaeb4c38b52fd31162c3f2ae9b1ccf333ea9801d1992ca",
+        "ENUM_CUDA_SHARED_MEM_LIMIT_CONFIG": "bd189190a1696f06de59396f0bd8b1417ea78513ba2a307b411d74246639e391",
+        "ENUM_CUDA_UNIF_MEM_MIGRATION": "ae5dc6bab4c11607430345d537b58b9a2695ff9e1e4d16bdb6ae83a9e17218e1",
+        "ENUM_CUDA_UNIF_MEM_ACCESS_TYPE": "28e52855fb8349c76232b0d06123f6b306e0bbad328c56ec95225decc0480aa6",
+        "ENUM_CUDA_FUNC_CACHE_CONFIG": "74d62bd2c1656f4360ea7ac502d290a9460afac63294f0e77918fcb93eec0b75",
+        "ENUM_CUPTI_STREAM_TYPE": "bf0269cf176cb62fb5f8c6be6eab5fe6f4b9e27696bcc750ac319c92275aef8f",
+        "ENUM_CUPTI_SYNC_TYPE": "4df17fb17103f3071fe189b47f31b284e14d1e1840da701f0cea683215af2756",
+        "ENUM_CUPTI_OVERHEAD_TYPE": "6623898d42b141247581424f19c3534a110b517fb2e22577e3b309078d2d3c1e",
+        "ENUM_DIAGNOSTIC_SEVERITY_LEVEL": "8229994884d747b2548963cbcbf543627f3553448ee2c1855d606a3bf08a1e8a",
+        "ENUM_DIAGNOSTIC_SOURCE_TYPE": "fb45588f1950b4bca0e09a0a530152388e83dbf7e681ff04a2382b755dd240f6",
+        "ENUM_DIAGNOSTIC_TIMESTAMP_SOURCE": "f4277b6789d3aa6017da9b479dd66ae6334f0765da1452104dc245e524a459d4",
+        "META_DATA_EXPORT": "786a879fcfc96bc108b1c6076fbc5659391450dec66d0df74f50a981bd186055"
+      },
+      "redacted_metadata": [
+        "StringIds process environments/private paths",
+        "DeviceEnvironment",
+        "Hostname",
+        "META_DATA_CAPTURE environment variables"
+      ]
+    },
+    "full/small-timelines/control/solver.json.gz": {
+      "original_sha256": "4ea942272845e7bec291a888bc69845c43b803742ab0f1cb2d7f7fcdee56b892",
+      "shareable_sha256": "693be18164000fd97f6b490cf974eb84b6c2958210b35c11acd2a5c0cccccaff",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/timelines/candidate/cuda.sqlite.gz": {
+      "original_sha256": "96d0f9c11812166d42730c91d248d20bcded2e07173a7fcc3fbdb105a6b62bc5",
+      "shareable_sha256": "ac5797e39376f30a8dd7e94ab08761c42a6fe7dc7cace33193f46f2712ae519f",
+      "redacted_string_ids": [
+        16,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        176,
+        177
+      ],
+      "unchanged_table_sha256": {
+        "ANALYSIS_FILE": "2d7752bb66c8ea8af3de5438498248a07ae6efd1428c17009764adfbe87bcfdb",
+        "ProcessStreams": "c95cb4a7f4552bed1f922a0c4dbbc9508da6212139c3286935050c10b3333773",
+        "TARGET_INFO_SESSION_START_TIME": "84f5b4175ba3a6d2e0415064a08b61131b4ecd6c0a6dea2f40a1783fb2cda813",
+        "ANALYSIS_DETAILS": "a6db56a6256c67df6ff38f8a3bbfb9c54442420de5f1d836135a2a1aebcaf70d",
+        "DIAGNOSTIC_EVENT": "425f2d2fbe82dad38c605f0c7d615ade3b5c91238cc87f09a54c466b7cd19122",
+        "PROFILER_OVERHEAD": "f11677332a327b2f938825b1b742737442ade709a0b8379d62b20224b9842acc",
+        "CUPTI_ACTIVITY_KIND_OVERHEAD": "13c81e7ffcdd0f9cb4e08393546af235db495f057a9a61d1e5f098da6a61d53a",
+        "CUPTI_ACTIVITY_KIND_SYNCHRONIZATION": "16e477e3059d40796377bf4b56e65f448de7f64a1c6addb2a173acd9ca6d333e",
+        "CUPTI_ACTIVITY_KIND_MEMCPY": "5c78844d386fd687eace875e88dc224d08b990cf4aad3aa2d88229251a49eccd",
+        "CUPTI_ACTIVITY_KIND_MEMSET": "a424fae0612f331a5c17232d7ea62a5b0237ef7f1ba72e7b932ca63cc0f20d32",
+        "CUPTI_ACTIVITY_KIND_KERNEL": "dc717d17e1d838acf37f574eaa97fa6d93a0ca24b14b2396be1598cf6ca1d273",
+        "PROCESSES": "3803905702b8929a05859a5e7fe51daa1fbb08732c89d324494fbf9f2cbb52fc",
+        "CUPTI_ACTIVITY_KIND_RUNTIME": "5c564ed627659e7af222dbdec4b847c57fc01df33fed5451010b3e3f7153bea7",
+        "CUDA_GPU_MEMORY_USAGE_EVENTS": "48e245b6f864d2307adf7d78d006fae086169462ca72491d732aa3497729f457",
+        "ThreadNames": "ff7d398719ab4cd5c6711b2483bede12190f0d75c8120c23b8801e59c65e28c8",
+        "TARGET_INFO_GPU": "5a61db3c76bf389313d6844be5243baa5327584065da8e079771d0e3dee71e36",
+        "TARGET_INFO_CUDA_DEVICE": "8487a3ca719ac877d81f5ed04d961d3b7e73ca27d6dd63f2081e85eff58be703",
+        "TARGET_INFO_CUDA_CONTEXT_INFO": "954f85c85e7f32062bfdfc96807149c11effe26638a095309e114031bc6826fd",
+        "TARGET_INFO_CUDA_STREAM": "05f129129423dd46b5a99d83bcbad1351542516fce3b1d7e9c3c498101fd8538",
+        "ENUM_NSYS_EVENT_TYPE": "5fa4556e53fc14c2f7029acbb3ba3daeacfcee755771464c17614741ec89add6",
+        "ENUM_NSYS_EVENT_CLASS": "3b899fb9390b7387671835294c2eb69bad4a3903be1c18b01a22653c8eeac081",
+        "ENUM_NSYS_GENERIC_EVENT_SOURCE": "8ce17852d6f153f6a382c4d2e53d1b785bd2300497ec6a232728b4a9db6fd3ba",
+        "ENUM_NSYS_GENERIC_EVENT_GROUP": "48d83cf6304fbe79c9aeedf2c17da61b2ebb5cb0d672be8b98c79c21556b0f49",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_TYPE": "94678bceb232e05edd95f3008656224ae1b7e29f20b3fccaf23a4ca4257ae13b",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_ETW_PROPERTY": "b0666a364423fec09aa2bd9d57b23320be882197f29707e3d1bd7463c58e17b1",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_ETW_TYPE": "fd160f576b182f3cf109e9ab4f19117435fc9230aef3d34eed00835e0fd18cee",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_ETW_FLAGS": "6ab410846384f6cbc0e921a67ede4647778678fb6157d321e4ac6198297f6ef9",
+        "ENUM_CUDA_MEMCPY_OPER": "60bfa67a93d01be5ee7ba7f1807992e9a539e8c72f7c3844b78717be90766fed",
+        "ENUM_CUDA_MEM_KIND": "9143c388a6951f8d8205fda1534d6b0f7de93db6b202f0f0b3e2ca4a3cd45b13",
+        "ENUM_CUDA_MEMPOOL_TYPE": "9db6489141914d66402d4ddfbf5328c2d3d56132a43ae37d84a3c67a62865992",
+        "ENUM_CUDA_MEMPOOL_OPER": "4e2f5fde12bf899dbd219c06ca9f57551056613bd998d9afb0e1bd0a47b3f090",
+        "ENUM_CUDA_DEV_MEM_EVENT_OPER": "8e7009f7b61524258872392d3afdaa19d3c65ffe38111f6f557bd8ba67d17e69",
+        "ENUM_CUDA_KERNEL_LAUNCH_TYPE": "24633b524d8953955cdaeb4c38b52fd31162c3f2ae9b1ccf333ea9801d1992ca",
+        "ENUM_CUDA_SHARED_MEM_LIMIT_CONFIG": "bd189190a1696f06de59396f0bd8b1417ea78513ba2a307b411d74246639e391",
+        "ENUM_CUDA_UNIF_MEM_MIGRATION": "ae5dc6bab4c11607430345d537b58b9a2695ff9e1e4d16bdb6ae83a9e17218e1",
+        "ENUM_CUDA_UNIF_MEM_ACCESS_TYPE": "28e52855fb8349c76232b0d06123f6b306e0bbad328c56ec95225decc0480aa6",
+        "ENUM_CUDA_FUNC_CACHE_CONFIG": "74d62bd2c1656f4360ea7ac502d290a9460afac63294f0e77918fcb93eec0b75",
+        "ENUM_CUPTI_STREAM_TYPE": "bf0269cf176cb62fb5f8c6be6eab5fe6f4b9e27696bcc750ac319c92275aef8f",
+        "ENUM_CUPTI_SYNC_TYPE": "4df17fb17103f3071fe189b47f31b284e14d1e1840da701f0cea683215af2756",
+        "ENUM_CUPTI_OVERHEAD_TYPE": "6623898d42b141247581424f19c3534a110b517fb2e22577e3b309078d2d3c1e",
+        "ENUM_DIAGNOSTIC_SEVERITY_LEVEL": "8229994884d747b2548963cbcbf543627f3553448ee2c1855d606a3bf08a1e8a",
+        "ENUM_DIAGNOSTIC_SOURCE_TYPE": "fb45588f1950b4bca0e09a0a530152388e83dbf7e681ff04a2382b755dd240f6",
+        "ENUM_DIAGNOSTIC_TIMESTAMP_SOURCE": "f4277b6789d3aa6017da9b479dd66ae6334f0765da1452104dc245e524a459d4",
+        "META_DATA_EXPORT": "582563b3a0d1765651c4cf0a91573d912e89ee9f33f9d0bade5d095df6c27d3c"
+      },
+      "redacted_metadata": [
+        "StringIds process environments/private paths",
+        "DeviceEnvironment",
+        "Hostname",
+        "META_DATA_CAPTURE environment variables"
+      ]
+    },
+    "full/timelines/candidate/solver.json.gz": {
+      "original_sha256": "fdfb2a074b36a8812c137f2dae93a7eac4a0d8ceddf08107ba0283bebb5cd02d",
+      "shareable_sha256": "9cbc62e3e657c5ca09de29d61b2dd5f38cd8fc61c5bc223f47fa575390717d00",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "full/timelines/control/cuda.sqlite.gz": {
+      "original_sha256": "6430a9bdc6b4cec58acc55e4331803fb458ae3b3a8ec2a539d09c25ef4613652",
+      "shareable_sha256": "2382723a76db6c7f9bbe1809e1a34b77c602fa3bdd287279ec54388ec67b390a",
+      "redacted_string_ids": [
+        16,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        54,
+        56,
+        58,
+        59,
+        61,
+        65,
+        68,
+        161
+      ],
+      "unchanged_table_sha256": {
+        "ANALYSIS_FILE": "53df4606d147e2a3c70786d202edfec72b473348e1e91c15f82deef92e8ee9f8",
+        "ProcessStreams": "00242dd4eaa5934fe2ad80820ba7d6d2ce7d3427f2035691fea536f951760fd7",
+        "TARGET_INFO_SESSION_START_TIME": "f18f6fde72140d949a292cc69ec347e7a7cbbb7e1ef6753bc3d7174b27e3486d",
+        "ANALYSIS_DETAILS": "c81cdbe7ab3c4519fb9d8b39af33074e7e04b56bdb05cf3b8d7ebb65802f7202",
+        "DIAGNOSTIC_EVENT": "a091098f0a8b7420250a5ce1ba4c1e07e58e2fe4eac98aa84b8d6d4a4bb80f62",
+        "PROFILER_OVERHEAD": "db0a6b3efb5a8964ba78ee2d71623d36c0e3bcad80ea3136b3b1705611ae2ea6",
+        "CUPTI_ACTIVITY_KIND_OVERHEAD": "47d03abac9e635e7adc9daf46e2e8d5dc94fb5f383b01c5f164de98bbc20adba",
+        "CUPTI_ACTIVITY_KIND_SYNCHRONIZATION": "22197d00b555150fe55d34561303568c61f2f1647a8b81defe3497bdd2e62ff3",
+        "CUPTI_ACTIVITY_KIND_MEMCPY": "efc2d848b345c7ea3a49d1c8510d6693b4e78d7d404df6bb255891beca9c4e59",
+        "CUPTI_ACTIVITY_KIND_MEMSET": "50e8c1395d23c8bd1c021022b352225c5f3bac7e80e7b32ec77e56b9923ea5d3",
+        "CUPTI_ACTIVITY_KIND_KERNEL": "e2c5a1fdd9d45cef8c2bd46fff9200055b27fd86f0b917adc7f3f23ee67d13be",
+        "PROCESSES": "43a400c5b0cc469132362bcc63b2337ea831a79317227355ef4e8ffd8afb3f1c",
+        "CUPTI_ACTIVITY_KIND_RUNTIME": "388b8177832304829964a72860f98b619a7ae84077a960520d2cad16b5c793d3",
+        "CUDA_GPU_MEMORY_USAGE_EVENTS": "721a9d4b6760ba69f51e1ad962e0137c891ee92e3e5b11e3a3f7d5fe6ddce340",
+        "ThreadNames": "1dbbae9207de89c8f3073f7910c86cf6e89caeab3dfe52b6e849d1f852079987",
+        "TARGET_INFO_GPU": "5a61db3c76bf389313d6844be5243baa5327584065da8e079771d0e3dee71e36",
+        "TARGET_INFO_CUDA_DEVICE": "f8f0b3dda88e9da1bef5281e1327c8028c462e824798ca966584798df722f5a9",
+        "TARGET_INFO_CUDA_CONTEXT_INFO": "d25748c1eb5b007d6d8865b55afb0c6254b95b40c4d81421dc57c77cbc9d9415",
+        "TARGET_INFO_CUDA_STREAM": "3cba10f2b0fc0453074e1c61d81e078bd68d0ceab4dc37a070e9a20b239af95b",
+        "ENUM_NSYS_EVENT_TYPE": "5fa4556e53fc14c2f7029acbb3ba3daeacfcee755771464c17614741ec89add6",
+        "ENUM_NSYS_EVENT_CLASS": "3b899fb9390b7387671835294c2eb69bad4a3903be1c18b01a22653c8eeac081",
+        "ENUM_NSYS_GENERIC_EVENT_SOURCE": "8ce17852d6f153f6a382c4d2e53d1b785bd2300497ec6a232728b4a9db6fd3ba",
+        "ENUM_NSYS_GENERIC_EVENT_GROUP": "48d83cf6304fbe79c9aeedf2c17da61b2ebb5cb0d672be8b98c79c21556b0f49",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_TYPE": "94678bceb232e05edd95f3008656224ae1b7e29f20b3fccaf23a4ca4257ae13b",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_ETW_PROPERTY": "b0666a364423fec09aa2bd9d57b23320be882197f29707e3d1bd7463c58e17b1",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_ETW_TYPE": "fd160f576b182f3cf109e9ab4f19117435fc9230aef3d34eed00835e0fd18cee",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_ETW_FLAGS": "6ab410846384f6cbc0e921a67ede4647778678fb6157d321e4ac6198297f6ef9",
+        "ENUM_CUDA_MEMCPY_OPER": "60bfa67a93d01be5ee7ba7f1807992e9a539e8c72f7c3844b78717be90766fed",
+        "ENUM_CUDA_MEM_KIND": "9143c388a6951f8d8205fda1534d6b0f7de93db6b202f0f0b3e2ca4a3cd45b13",
+        "ENUM_CUDA_MEMPOOL_TYPE": "9db6489141914d66402d4ddfbf5328c2d3d56132a43ae37d84a3c67a62865992",
+        "ENUM_CUDA_MEMPOOL_OPER": "4e2f5fde12bf899dbd219c06ca9f57551056613bd998d9afb0e1bd0a47b3f090",
+        "ENUM_CUDA_DEV_MEM_EVENT_OPER": "8e7009f7b61524258872392d3afdaa19d3c65ffe38111f6f557bd8ba67d17e69",
+        "ENUM_CUDA_KERNEL_LAUNCH_TYPE": "24633b524d8953955cdaeb4c38b52fd31162c3f2ae9b1ccf333ea9801d1992ca",
+        "ENUM_CUDA_SHARED_MEM_LIMIT_CONFIG": "bd189190a1696f06de59396f0bd8b1417ea78513ba2a307b411d74246639e391",
+        "ENUM_CUDA_UNIF_MEM_MIGRATION": "ae5dc6bab4c11607430345d537b58b9a2695ff9e1e4d16bdb6ae83a9e17218e1",
+        "ENUM_CUDA_UNIF_MEM_ACCESS_TYPE": "28e52855fb8349c76232b0d06123f6b306e0bbad328c56ec95225decc0480aa6",
+        "ENUM_CUDA_FUNC_CACHE_CONFIG": "74d62bd2c1656f4360ea7ac502d290a9460afac63294f0e77918fcb93eec0b75",
+        "ENUM_CUPTI_STREAM_TYPE": "bf0269cf176cb62fb5f8c6be6eab5fe6f4b9e27696bcc750ac319c92275aef8f",
+        "ENUM_CUPTI_SYNC_TYPE": "4df17fb17103f3071fe189b47f31b284e14d1e1840da701f0cea683215af2756",
+        "ENUM_CUPTI_OVERHEAD_TYPE": "6623898d42b141247581424f19c3534a110b517fb2e22577e3b309078d2d3c1e",
+        "ENUM_DIAGNOSTIC_SEVERITY_LEVEL": "8229994884d747b2548963cbcbf543627f3553448ee2c1855d606a3bf08a1e8a",
+        "ENUM_DIAGNOSTIC_SOURCE_TYPE": "fb45588f1950b4bca0e09a0a530152388e83dbf7e681ff04a2382b755dd240f6",
+        "ENUM_DIAGNOSTIC_TIMESTAMP_SOURCE": "f4277b6789d3aa6017da9b479dd66ae6334f0765da1452104dc245e524a459d4",
+        "META_DATA_EXPORT": "9ff7ed25d338a8135c0f927bc6eda834ae13fe2ff91e7b312a8e3b5eac80209a"
+      },
+      "redacted_metadata": [
+        "StringIds process environments/private paths",
+        "DeviceEnvironment",
+        "Hostname",
+        "META_DATA_CAPTURE environment variables"
+      ]
+    },
+    "full/timelines/control/solver.json.gz": {
+      "original_sha256": "fdfb2a074b36a8812c137f2dae93a7eac4a0d8ceddf08107ba0283bebb5cd02d",
+      "shareable_sha256": "9cbc62e3e657c5ca09de29d61b2dd5f38cd8fc61c5bc223f47fa575390717d00",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/110592/candidate/sample-1/solver.json.gz": {
+      "original_sha256": "b7caba4bb3c663b2440a9a5b3f773dba3b69068b53a8270d10bc04a1c6ae4598",
+      "shareable_sha256": "c19150b12e83124a59da4f40967b185d906d57faa993d2bc71e013e759b84bb5",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/110592/candidate/sample-2/solver.json.gz": {
+      "original_sha256": "7f84b5933809fb9a5c4817dcd554a71bd72f8ce2f2e50618cd67a02610f17d9a",
+      "shareable_sha256": "bd5763845dc04f61d93acf4794db25a22923075dea571a6a7e11f6a6cfde7a4a",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/110592/candidate/sample-3/solver.json.gz": {
+      "original_sha256": "9e9b78be9bc755e9141f9c12ca5b2e5c0f260e97f6cec743d120f75ff76f3a8b",
+      "shareable_sha256": "f0385ae053c83514f8e7a9a0a6b03113d054ade88331898ae9d9d3c123372e92",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/110592/candidate/sample-4/solver.json.gz": {
+      "original_sha256": "7157d724d5c451e363b6d90c0f013c19093491b31bfc220a69c368e853f439a9",
+      "shareable_sha256": "66a19181203004f52cb04a58bf44ab5f046bc895cf5c14f0f07923176375b05d",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/110592/candidate/sample-5/solver.json.gz": {
+      "original_sha256": "ed0d42a6c3bd4bf1b2f074d4318c807ff9cdcda7364a7526dd11e7b286492482",
+      "shareable_sha256": "853e38be212a2de2050bdb97799cd1aac012f9714369c1b5a9e5cf46f717d9d7",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/110592/candidate/warmup/solver.json.gz": {
+      "original_sha256": "fdfb2a074b36a8812c137f2dae93a7eac4a0d8ceddf08107ba0283bebb5cd02d",
+      "shareable_sha256": "9cbc62e3e657c5ca09de29d61b2dd5f38cd8fc61c5bc223f47fa575390717d00",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/110592/control/sample-1/solver.json.gz": {
+      "original_sha256": "5dbd40ce9e99ae3184b14cc45c2e1c156fb80a55f5d4d22e9b9e9770f933f935",
+      "shareable_sha256": "a45a70c917a71b0f2d11f8c68959e1f52f2ab51e518aebd30392ead14d9e31b0",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/110592/control/sample-2/solver.json.gz": {
+      "original_sha256": "21ec9c69e44eb7e42ed99b0d41ad182d9840ef88e0b0e197be71c68e31918fc2",
+      "shareable_sha256": "2f7e123c5f29f003d6ccdda3ab021066246539dbdf3b880a6cf379a7ad61d4b3",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/110592/control/sample-3/solver.json.gz": {
+      "original_sha256": "7c1f3c6872f48a525c0f61a1b7627a2d545de69b525dd2b67a0d7f65a4b66766",
+      "shareable_sha256": "fc81446396942a27b4badbe5521ff767deae6dcfd1afbb90e4b9918fd4000f56",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/110592/control/sample-4/solver.json.gz": {
+      "original_sha256": "1638e5769d7c937d6dc731944d93cdffa895ef33d7e5ce770cc9b7d155028ff9",
+      "shareable_sha256": "8db49c2e88329111aad34c11f8f5e42b03e72f2d436feca9daac23a4546f97c0",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/110592/control/sample-5/solver.json.gz": {
+      "original_sha256": "ae8653405adfda59b80d4e63bdbe3bd64f65e287e5b381450e1f891aae9185ec",
+      "shareable_sha256": "3f970467df4ea039a86a4d40bea03b5109472ddcb58c2a5b5f3d0b518b538986",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/110592/control/warmup/solver.json.gz": {
+      "original_sha256": "fdfb2a074b36a8812c137f2dae93a7eac4a0d8ceddf08107ba0283bebb5cd02d",
+      "shareable_sha256": "9cbc62e3e657c5ca09de29d61b2dd5f38cd8fc61c5bc223f47fa575390717d00",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/8000/candidate/sample-1/solver.json.gz": {
+      "original_sha256": "d7bb1d46d1be78aa5a32da26c35aaf8ebf2ecfe00d8874075ca9b1d3a8c1af56",
+      "shareable_sha256": "0273c7c0658416b6206a09c5590ea6f97b31a8f1edee928096d9e964d4f7e6e1",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/8000/candidate/sample-2/solver.json.gz": {
+      "original_sha256": "e49e0b748ac381262ce7be452fff03d517d27529f88e879d1ad106ae1acbb157",
+      "shareable_sha256": "bf61ba9c075014d75bba23e81163c3a39da622f55ded2614520a65491f4eee7b",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/8000/candidate/sample-3/solver.json.gz": {
+      "original_sha256": "a96ba78b13e62399836233ded8723d90d36012233eeae63e5850064b64e3d6f3",
+      "shareable_sha256": "bc4aacb29b216c9b79bdf10d6667698b6d03e1fde88a5308c4bbed110e10b641",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/8000/candidate/sample-4/solver.json.gz": {
+      "original_sha256": "10f4e5a709e700157f7778f2e25a9175f4fb6021bc1d6be49a8e3e33b0f9a8d0",
+      "shareable_sha256": "c5627b77786c95376e70d8e9ddd7e368262de1a18b6b5076e05b264b58b32204",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/8000/candidate/sample-5/solver.json.gz": {
+      "original_sha256": "4f2a3ea600b9aafd48656c63912cf56c94b1f800657d08182d84a47b4e142642",
+      "shareable_sha256": "de89180e2b998850b9394a5a16e4f5af85f1a756e5c0728a1a8d50b522537f06",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/8000/candidate/warmup/solver.json.gz": {
+      "original_sha256": "82403502845ef377309e39afa018a58db28b47365e83b821d2bc3747f4f2e9d8",
+      "shareable_sha256": "78534f706bdb6be2dd5a8f0c5b7f4c42d0451c9fcac2c170ecf02108f5d6f062",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/8000/control/sample-1/solver.json.gz": {
+      "original_sha256": "a906ccc237e4bb6625a4f2b80d3d65155b19aeb33397198c286502b4ae98e0d4",
+      "shareable_sha256": "43c26f4a06fa762970b21a6c7ee4eb79aef934836ae12116e70097dcf265fa13",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/8000/control/sample-2/solver.json.gz": {
+      "original_sha256": "ff1b34e97e51bdf4612ebd1d0399f122d355d2d58cb7647c45c1644f41c3ad49",
+      "shareable_sha256": "d9fed121bc08a0198d0e4a2739cfdbd9df3d16aedddc459378cdf6835f5e4545",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/8000/control/sample-3/solver.json.gz": {
+      "original_sha256": "ce5991589d46bb03f2b9aeddabe0c96b814ab5776ee6c9d9a0d7e5c99bfd82f2",
+      "shareable_sha256": "e5b8ef520d57ea2702cad52e3eacd0bb0484f5acef12625c76ad47a53224d16b",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/8000/control/sample-4/solver.json.gz": {
+      "original_sha256": "3c099e48ad2b4ad2ea7c3389a2834addfe9db3d71839a3224bd9fe84be7789c8",
+      "shareable_sha256": "6be3f760a4f05d8d94280a955a6ec53052d1415cd7673f6faf37bcc603f672ac",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/8000/control/sample-5/solver.json.gz": {
+      "original_sha256": "3efaa01f85e4990a2d565326a03b71cf4019c4db3dd89d9704b8e78db85fba35",
+      "shareable_sha256": "ee8f4aae4cfb5a0ecc01166d41f48a6497a0e0e52cbde8f1e539fb6fd90168cf",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/paired/8000/control/warmup/solver.json.gz": {
+      "original_sha256": "82403502845ef377309e39afa018a58db28b47365e83b821d2bc3747f4f2e9d8",
+      "shareable_sha256": "78534f706bdb6be2dd5a8f0c5b7f4c42d0451c9fcac2c170ecf02108f5d6f062",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/regression/1000/candidate/solver.json.gz": {
+      "original_sha256": "1260e47fa3649ae23c0215e1bcb3d772d13dc1e91a9f43ca7a7ced203ed616b5",
+      "shareable_sha256": "b38210f9525b93b2a03ac532f7ebc8ebf9c1a8b59a44205c53f0684749508f42",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/regression/1000/control/solver.json.gz": {
+      "original_sha256": "1260e47fa3649ae23c0215e1bcb3d772d13dc1e91a9f43ca7a7ced203ed616b5",
+      "shareable_sha256": "b38210f9525b93b2a03ac532f7ebc8ebf9c1a8b59a44205c53f0684749508f42",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/regression/1728/candidate/solver.json.gz": {
+      "original_sha256": "2b00bff85a4f3359f9c6ec2fc8d3bd9adced8704df2dcd770e36da5b9f020325",
+      "shareable_sha256": "b3434c9ea212da9baf022e028b68e0aafcf1adfc4a03aa29b3dd36d05d7b7966",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/regression/1728/control/solver.json.gz": {
+      "original_sha256": "2b00bff85a4f3359f9c6ec2fc8d3bd9adced8704df2dcd770e36da5b9f020325",
+      "shareable_sha256": "b3434c9ea212da9baf022e028b68e0aafcf1adfc4a03aa29b3dd36d05d7b7966",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/regression/216/candidate/solver.json.gz": {
+      "original_sha256": "f51e3b9d6134afdfac8f92d14ca9be0b4ec889cc8fda5cf17fd8773646ffa5a8",
+      "shareable_sha256": "038fd365a62da32d7c81f28d6543f57a8fc91c9b818319416cd73f3f255f6964",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/regression/216/control/solver.json.gz": {
+      "original_sha256": "f51e3b9d6134afdfac8f92d14ca9be0b4ec889cc8fda5cf17fd8773646ffa5a8",
+      "shareable_sha256": "038fd365a62da32d7c81f28d6543f57a8fc91c9b818319416cd73f3f255f6964",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/regression/4096/candidate/solver.json.gz": {
+      "original_sha256": "6edb7ac6e2efacd3b7cf5ca21548a901f1b086dba5e37efe89b36c3d2f806a5a",
+      "shareable_sha256": "f233605a6a2f24696a95b56c4f2fae81d3e226216d1feb05ac1f97f47bfe39aa",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/regression/4096/control/solver.json.gz": {
+      "original_sha256": "6edb7ac6e2efacd3b7cf5ca21548a901f1b086dba5e37efe89b36c3d2f806a5a",
+      "shareable_sha256": "f233605a6a2f24696a95b56c4f2fae81d3e226216d1feb05ac1f97f47bfe39aa",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/regression/512/candidate/solver.json.gz": {
+      "original_sha256": "725f28792f8b16655d79970d48b459026530d521061d1b660f9b51e548b3269d",
+      "shareable_sha256": "64943265d9bb5b4246b94da643480338565edf3a42edba87e27710d2a9ffdf11",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/regression/512/control/solver.json.gz": {
+      "original_sha256": "725f28792f8b16655d79970d48b459026530d521061d1b660f9b51e548b3269d",
+      "shareable_sha256": "64943265d9bb5b4246b94da643480338565edf3a42edba87e27710d2a9ffdf11",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/regression/64/candidate/solver.json.gz": {
+      "original_sha256": "69a2940f3ef324de1041d38aab2cc81be24b24717cc9e31b9997d226d90d3d26",
+      "shareable_sha256": "ef50e478f877ac7a59b46568474137f2152fa95e233d3474446861493bb0230d",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/regression/64/control/solver.json.gz": {
+      "original_sha256": "69a2940f3ef324de1041d38aab2cc81be24b24717cc9e31b9997d226d90d3d26",
+      "shareable_sha256": "ef50e478f877ac7a59b46568474137f2152fa95e233d3474446861493bb0230d",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/regression/8000/candidate/solver.json.gz": {
+      "original_sha256": "82403502845ef377309e39afa018a58db28b47365e83b821d2bc3747f4f2e9d8",
+      "shareable_sha256": "78534f706bdb6be2dd5a8f0c5b7f4c42d0451c9fcac2c170ecf02108f5d6f062",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/regression/8000/control/solver.json.gz": {
+      "original_sha256": "82403502845ef377309e39afa018a58db28b47365e83b821d2bc3747f4f2e9d8",
+      "shareable_sha256": "78534f706bdb6be2dd5a8f0c5b7f4c42d0451c9fcac2c170ecf02108f5d6f062",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/timelines/candidate/cuda.sqlite.gz": {
+      "original_sha256": "b87b1e8385f350f3c67972956a09f79c35eedf3096c6a2c7c95a8f6d75507cfe",
+      "shareable_sha256": "4d26b6d5bfd166411173e82d09505d1b1ce6046b32acca880560e6e807a7f363",
+      "redacted_string_ids": [
+        15,
+        44,
+        46,
+        49,
+        50,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        173,
+        174,
+        175
+      ],
+      "unchanged_table_sha256": {
+        "ANALYSIS_FILE": "5a998db5061e7d2e10153d28ccb4f9ea381e6f285b93f996de3399c9de304382",
+        "ProcessStreams": "1b3d2aa1bb55bb6853f326f6da7b33def931b707cca6e653b4a2b7fdc7ef9dd5",
+        "TARGET_INFO_SESSION_START_TIME": "0f9d561c748dae7febacd666d2756be852907c001b6c940f6e88d0cc33c14859",
+        "ANALYSIS_DETAILS": "91c65ace4f1803409e4b45d3e3d49d8aef1df13982cd31e169cfaf72367a1061",
+        "DIAGNOSTIC_EVENT": "18b4f5f0eef5ad52ea7cdcc4f850853d0122198905d9e5fdc301d00816fddd02",
+        "PROFILER_OVERHEAD": "2ea94518eef54544784cecabbabbe85b1137ce135dc635a1b246ed1512cb0dac",
+        "CUPTI_ACTIVITY_KIND_OVERHEAD": "46d92ef8ebb7e258217fa5d9bf85c512f3bce59a43b426f32483d22d7d052c32",
+        "CUPTI_ACTIVITY_KIND_SYNCHRONIZATION": "7b51ff9bd3733133303f10c9ef8c819f89515602d521c1cd93741e2e8933956a",
+        "CUPTI_ACTIVITY_KIND_MEMCPY": "d3d58bd7114b2d460108bee69f6195367ca67cf48d247bc3af0ef66d90348924",
+        "CUPTI_ACTIVITY_KIND_MEMSET": "593ccd9915689fa8eb9fa394cb07b0edbbc18e06ebea3f4aafc0a30adcc8308e",
+        "CUPTI_ACTIVITY_KIND_KERNEL": "96d7538e44966689b6602a23e0ceed126993334dfbe3d824ee7d0d7e1b55084b",
+        "PROCESSES": "f988275b68038421c834aa2497d5550586d2840c474707964d8ba17525db1e2a",
+        "CUPTI_ACTIVITY_KIND_RUNTIME": "028cc085e637d63512ff28df618673665936aa95e6bf5def3b985bf0bc07002a",
+        "CUDA_GPU_MEMORY_USAGE_EVENTS": "5723d924ba9a8d9a12e0c13d5de828ed62de7b67983aa9792ad945ff8db0f297",
+        "ThreadNames": "06cd9abe5959d96ba46356e6118addf194cad94697aaff18295da5a95efd5b27",
+        "TARGET_INFO_GPU": "5a61db3c76bf389313d6844be5243baa5327584065da8e079771d0e3dee71e36",
+        "TARGET_INFO_CUDA_DEVICE": "fc70fec35cd4ea00aea053603487c2f053c3fc695e2e31426481c33613536931",
+        "TARGET_INFO_CUDA_CONTEXT_INFO": "db6d23366f3153e34088b7bc600de8bbd1adffb72621145f8dfcd7d79fea3bbb",
+        "TARGET_INFO_CUDA_STREAM": "95409a72a9c74baddbde97c18f26a89a72ea82dcc0851bcd96cf52b03c047987",
+        "ENUM_NSYS_EVENT_TYPE": "5fa4556e53fc14c2f7029acbb3ba3daeacfcee755771464c17614741ec89add6",
+        "ENUM_NSYS_EVENT_CLASS": "3b899fb9390b7387671835294c2eb69bad4a3903be1c18b01a22653c8eeac081",
+        "ENUM_NSYS_GENERIC_EVENT_SOURCE": "8ce17852d6f153f6a382c4d2e53d1b785bd2300497ec6a232728b4a9db6fd3ba",
+        "ENUM_NSYS_GENERIC_EVENT_GROUP": "48d83cf6304fbe79c9aeedf2c17da61b2ebb5cb0d672be8b98c79c21556b0f49",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_TYPE": "94678bceb232e05edd95f3008656224ae1b7e29f20b3fccaf23a4ca4257ae13b",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_ETW_PROPERTY": "b0666a364423fec09aa2bd9d57b23320be882197f29707e3d1bd7463c58e17b1",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_ETW_TYPE": "fd160f576b182f3cf109e9ab4f19117435fc9230aef3d34eed00835e0fd18cee",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_ETW_FLAGS": "6ab410846384f6cbc0e921a67ede4647778678fb6157d321e4ac6198297f6ef9",
+        "ENUM_CUDA_MEMCPY_OPER": "60bfa67a93d01be5ee7ba7f1807992e9a539e8c72f7c3844b78717be90766fed",
+        "ENUM_CUDA_MEM_KIND": "9143c388a6951f8d8205fda1534d6b0f7de93db6b202f0f0b3e2ca4a3cd45b13",
+        "ENUM_CUDA_MEMPOOL_TYPE": "9db6489141914d66402d4ddfbf5328c2d3d56132a43ae37d84a3c67a62865992",
+        "ENUM_CUDA_MEMPOOL_OPER": "4e2f5fde12bf899dbd219c06ca9f57551056613bd998d9afb0e1bd0a47b3f090",
+        "ENUM_CUDA_DEV_MEM_EVENT_OPER": "8e7009f7b61524258872392d3afdaa19d3c65ffe38111f6f557bd8ba67d17e69",
+        "ENUM_CUDA_KERNEL_LAUNCH_TYPE": "24633b524d8953955cdaeb4c38b52fd31162c3f2ae9b1ccf333ea9801d1992ca",
+        "ENUM_CUDA_SHARED_MEM_LIMIT_CONFIG": "bd189190a1696f06de59396f0bd8b1417ea78513ba2a307b411d74246639e391",
+        "ENUM_CUDA_UNIF_MEM_MIGRATION": "ae5dc6bab4c11607430345d537b58b9a2695ff9e1e4d16bdb6ae83a9e17218e1",
+        "ENUM_CUDA_UNIF_MEM_ACCESS_TYPE": "28e52855fb8349c76232b0d06123f6b306e0bbad328c56ec95225decc0480aa6",
+        "ENUM_CUDA_FUNC_CACHE_CONFIG": "74d62bd2c1656f4360ea7ac502d290a9460afac63294f0e77918fcb93eec0b75",
+        "ENUM_CUPTI_STREAM_TYPE": "bf0269cf176cb62fb5f8c6be6eab5fe6f4b9e27696bcc750ac319c92275aef8f",
+        "ENUM_CUPTI_SYNC_TYPE": "4df17fb17103f3071fe189b47f31b284e14d1e1840da701f0cea683215af2756",
+        "ENUM_CUPTI_OVERHEAD_TYPE": "6623898d42b141247581424f19c3534a110b517fb2e22577e3b309078d2d3c1e",
+        "ENUM_DIAGNOSTIC_SEVERITY_LEVEL": "8229994884d747b2548963cbcbf543627f3553448ee2c1855d606a3bf08a1e8a",
+        "ENUM_DIAGNOSTIC_SOURCE_TYPE": "fb45588f1950b4bca0e09a0a530152388e83dbf7e681ff04a2382b755dd240f6",
+        "ENUM_DIAGNOSTIC_TIMESTAMP_SOURCE": "f4277b6789d3aa6017da9b479dd66ae6334f0765da1452104dc245e524a459d4",
+        "META_DATA_EXPORT": "dd98a8879512c765468fd3c018bc6848f41846c5ddc3d80337b7ddf7c8ef6e47"
+      },
+      "redacted_metadata": [
+        "StringIds process environments/private paths",
+        "DeviceEnvironment",
+        "Hostname",
+        "META_DATA_CAPTURE environment variables"
+      ]
+    },
+    "targeted/timelines/candidate/solver.json.gz": {
+      "original_sha256": "fdfb2a074b36a8812c137f2dae93a7eac4a0d8ceddf08107ba0283bebb5cd02d",
+      "shareable_sha256": "9cbc62e3e657c5ca09de29d61b2dd5f38cd8fc61c5bc223f47fa575390717d00",
+      "transformation": "lossless gzip and/or home-path redaction"
+    },
+    "targeted/timelines/control/cuda.sqlite.gz": {
+      "original_sha256": "0ddb527379036516135f2517ec74c4c8ab5957294172244a8d5484aa72293a1b",
+      "shareable_sha256": "13b86e456265a36d25b9b0b60a52c9ff76df8e92d5f1174ff9603c2580d47f52",
+      "redacted_string_ids": [
+        16,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        56,
+        58
+      ],
+      "unchanged_table_sha256": {
+        "ANALYSIS_FILE": "6fe1e54ed007810d4c4931c40b67177db95046f656d3c3bee7a8da320740dd2d",
+        "ProcessStreams": "a569c0b23f85355c8ac5041e3fdd9b347ca06481c3eff3fb8fb24aaece2b9a8c",
+        "TARGET_INFO_SESSION_START_TIME": "e534ba60b0bcdf86865638cf17192ebf51346c58d7940d16c10b1ca02c4727e4",
+        "ANALYSIS_DETAILS": "c6b8888ff6ff40fd556641661691e7f3a68912e331d93fba6c11f65ea70266cc",
+        "DIAGNOSTIC_EVENT": "4552214058b92930381f87b2da9e8f408090190ab180082c6644d2731a4dcb2e",
+        "PROFILER_OVERHEAD": "1d81217cc87d8f86a8709e466f67459c3eadef67b143667fe164f8ada11690e7",
+        "CUPTI_ACTIVITY_KIND_OVERHEAD": "859b80a4af694a1037940acc82aa2a8594b3c479c9ecd29b1e41133c7d95046d",
+        "CUPTI_ACTIVITY_KIND_SYNCHRONIZATION": "fa2eefaae5c3fd98ae7eff10bfbd74994ef94f749d9c14b6a2e9f533f039139e",
+        "CUPTI_ACTIVITY_KIND_MEMCPY": "3f127dcd29225f4dfc9dc429552fe228979f946846f6036923d4bcde235137d5",
+        "CUPTI_ACTIVITY_KIND_MEMSET": "79019aed3c678e378a076e55097ca0b8ea4a5f9bbcf402a39467df383fb6443c",
+        "CUPTI_ACTIVITY_KIND_KERNEL": "1eda45c38b90daa2d7cc47c2474d45b32986eb5c73d7f7fda454aec0b49a9e2d",
+        "PROCESSES": "1af065a9b3995a93b78f97e8b06e4964a0374850691cbbf83249086434fb9130",
+        "CUPTI_ACTIVITY_KIND_RUNTIME": "d7c609b60d1724b426f31df087ac9e44c5e4910b4cac195a66bcb6b776c12a9e",
+        "CUDA_GPU_MEMORY_USAGE_EVENTS": "07725b27abf940d8445aacf621bdd9d978ae589e31a15cbca39905783b9fb52e",
+        "ThreadNames": "6c4c9af9f0d2196e2f60762b461d1bc8edc56842a7abd0df52ffc145b60d8dbc",
+        "TARGET_INFO_GPU": "5a61db3c76bf389313d6844be5243baa5327584065da8e079771d0e3dee71e36",
+        "TARGET_INFO_CUDA_DEVICE": "0c0b0c45b94b09af17674f1e154f8406738fcead63f1fafa0953fcbfc0a99aa9",
+        "TARGET_INFO_CUDA_CONTEXT_INFO": "3de4f4d68f46c0f1d6039a52b76e740e98f2710d01b2945fd713bc4511659218",
+        "TARGET_INFO_CUDA_STREAM": "336063cee2a31388bd1ccb38c3b6ce96123346e61e6665009d972fa7ff55d25d",
+        "ENUM_NSYS_EVENT_TYPE": "5fa4556e53fc14c2f7029acbb3ba3daeacfcee755771464c17614741ec89add6",
+        "ENUM_NSYS_EVENT_CLASS": "3b899fb9390b7387671835294c2eb69bad4a3903be1c18b01a22653c8eeac081",
+        "ENUM_NSYS_GENERIC_EVENT_SOURCE": "8ce17852d6f153f6a382c4d2e53d1b785bd2300497ec6a232728b4a9db6fd3ba",
+        "ENUM_NSYS_GENERIC_EVENT_GROUP": "48d83cf6304fbe79c9aeedf2c17da61b2ebb5cb0d672be8b98c79c21556b0f49",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_TYPE": "94678bceb232e05edd95f3008656224ae1b7e29f20b3fccaf23a4ca4257ae13b",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_ETW_PROPERTY": "b0666a364423fec09aa2bd9d57b23320be882197f29707e3d1bd7463c58e17b1",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_ETW_TYPE": "fd160f576b182f3cf109e9ab4f19117435fc9230aef3d34eed00835e0fd18cee",
+        "ENUM_NSYS_GENERIC_EVENT_FIELD_ETW_FLAGS": "6ab410846384f6cbc0e921a67ede4647778678fb6157d321e4ac6198297f6ef9",
+        "ENUM_CUDA_MEMCPY_OPER": "60bfa67a93d01be5ee7ba7f1807992e9a539e8c72f7c3844b78717be90766fed",
+        "ENUM_CUDA_MEM_KIND": "9143c388a6951f8d8205fda1534d6b0f7de93db6b202f0f0b3e2ca4a3cd45b13",
+        "ENUM_CUDA_MEMPOOL_TYPE": "9db6489141914d66402d4ddfbf5328c2d3d56132a43ae37d84a3c67a62865992",
+        "ENUM_CUDA_MEMPOOL_OPER": "4e2f5fde12bf899dbd219c06ca9f57551056613bd998d9afb0e1bd0a47b3f090",
+        "ENUM_CUDA_DEV_MEM_EVENT_OPER": "8e7009f7b61524258872392d3afdaa19d3c65ffe38111f6f557bd8ba67d17e69",
+        "ENUM_CUDA_KERNEL_LAUNCH_TYPE": "24633b524d8953955cdaeb4c38b52fd31162c3f2ae9b1ccf333ea9801d1992ca",
+        "ENUM_CUDA_SHARED_MEM_LIMIT_CONFIG": "bd189190a1696f06de59396f0bd8b1417ea78513ba2a307b411d74246639e391",
+        "ENUM_CUDA_UNIF_MEM_MIGRATION": "ae5dc6bab4c11607430345d537b58b9a2695ff9e1e4d16bdb6ae83a9e17218e1",
+        "ENUM_CUDA_UNIF_MEM_ACCESS_TYPE": "28e52855fb8349c76232b0d06123f6b306e0bbad328c56ec95225decc0480aa6",
+        "ENUM_CUDA_FUNC_CACHE_CONFIG": "74d62bd2c1656f4360ea7ac502d290a9460afac63294f0e77918fcb93eec0b75",
+        "ENUM_CUPTI_STREAM_TYPE": "bf0269cf176cb62fb5f8c6be6eab5fe6f4b9e27696bcc750ac319c92275aef8f",
+        "ENUM_CUPTI_SYNC_TYPE": "4df17fb17103f3071fe189b47f31b284e14d1e1840da701f0cea683215af2756",
+        "ENUM_CUPTI_OVERHEAD_TYPE": "6623898d42b141247581424f19c3534a110b517fb2e22577e3b309078d2d3c1e",
+        "ENUM_DIAGNOSTIC_SEVERITY_LEVEL": "8229994884d747b2548963cbcbf543627f3553448ee2c1855d606a3bf08a1e8a",
+        "ENUM_DIAGNOSTIC_SOURCE_TYPE": "fb45588f1950b4bca0e09a0a530152388e83dbf7e681ff04a2382b755dd240f6",
+        "ENUM_DIAGNOSTIC_TIMESTAMP_SOURCE": "f4277b6789d3aa6017da9b479dd66ae6334f0765da1452104dc245e524a459d4",
+        "META_DATA_EXPORT": "55b08e6b08d3ec38f96cc1c1e819c0d9c6d9def9fc5a8d049dd03f7737fb2f8b"
+      },
+      "redacted_metadata": [
+        "StringIds process environments/private paths",
+        "DeviceEnvironment",
+        "Hostname",
+        "META_DATA_CAPTURE environment variables"
+      ]
+    },
+    "targeted/timelines/control/solver.json.gz": {
+      "original_sha256": "fdfb2a074b36a8812c137f2dae93a7eac4a0d8ceddf08107ba0283bebb5cd02d",
+      "shareable_sha256": "9cbc62e3e657c5ca09de29d61b2dd5f38cd8fc61c5bc223f47fa575390717d00",
+      "transformation": "lossless gzip and/or home-path redaction"
+    }
+  },
+  "excluded": [
+    "source trees",
+    "target/build caches",
+    "executables",
+    "PTX/cubins",
+    "native profiler reports"
+  ],
+  "analytical_rows_unchanged": true
+}

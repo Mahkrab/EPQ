@@ -1,6 +1,6 @@
 # Compact-neighbour experiment evidence
 
-This supports the [implementation record](/docs/project/development/performance-compact-neighbours.md).
+This supports the [implementation record](/docs/project/development/milestones/05/performance-compact-neighbours.md).
 Measurements ran sequentially on the primary PC through `ssh pc` on 22 October 2026.
 The implementation is uncommitted working evidence, not a Git checkpoint or final evaluation.
 

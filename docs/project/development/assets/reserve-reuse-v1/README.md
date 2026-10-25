@@ -1,7 +1,7 @@
 # Reused-reservation candidate evidence
 
-This supports the [investigation record](/docs/project/development/performance-reservation-reuse.md)
-and its [prospective protocol](/docs/project/development/performance-reservation-protocol.md).
+This supports the [investigation record](/docs/project/development/milestones/05/performance-reservation-reuse.md)
+and its [prospective protocol](/docs/project/development/milestones/05/performance-reservation-protocol.md).
 The primary-PC comparison and independent audit are complete. **The candidate was rejected:**
 neither declared workload showed a clear runtime gain. The original runtime is restored.
 

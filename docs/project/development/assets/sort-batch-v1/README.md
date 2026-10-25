@@ -1,7 +1,7 @@
 # Batched-sort experiment evidence
 
-This supports the [implementation record](/docs/project/development/performance-sort-batching.md)
-and its [predeclared protocol](/docs/project/development/performance-sort-protocol.md).
+This supports the [implementation record](/docs/project/development/milestones/05/performance-sort-batching.md)
+and its [predeclared protocol](/docs/project/development/milestones/05/performance-sort-protocol.md).
 Measurements ran sequentially on the primary PC through `ssh pc` on 22 October 2026.
 This is uncommitted implementation evidence, not a Git checkpoint or final evaluation.
 

@@ -1,7 +1,7 @@
 # Multiplier-prefix arithmetic experiment
 
-This supports the [implementation record](/docs/project/development/performance-gradient-reuse.md)
-and [prospective protocol](/docs/project/development/performance-gradient-protocol.md).
+This supports the [implementation record](/docs/project/development/milestones/05/performance-gradient-reuse.md)
+and [prospective protocol](/docs/project/development/milestones/05/performance-gradient-protocol.md).
 PC verification and measurement ran across 22–23 October 2026. Local CPU/tooling tests
 are separate from the primary-PC benchmarks; no laptop timing replaces a PC baseline.
 

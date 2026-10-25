@@ -1,0 +1,636 @@
+diff --git a/build.rs b/build.rs
+index 6d38af9..f293aa7 100644
+--- a/build.rs
++++ b/build.rs
+@@ -56,6 +56,9 @@ fn main() {
+         "native/roundtrip.cu",
+         "native/solver.h",
+         "native/solver.cu",
++        "native/solver_math.cuh",
++        "native/solver_pass.cuh",
++        "native/solver_operations.h",
+         "native/neighbours.cuh",
+         "native/kernels.cu",
+         "native/power.cuh",
+diff --git a/native/bridge.cpp b/native/bridge.cpp
+index f03fe87..cc03237 100644
+--- a/native/bridge.cpp
++++ b/native/bridge.cpp
+@@ -2,6 +2,7 @@
+ // independent handles never reset a shared primary context or steal its stream.
+ #include "probe.h"
+ #include "solver.h"
++#include "solver_operations.h"
+ #include <cuda.h>
+ #include <dlfcn.h>
+ #include <limits>
+@@ -55,7 +56,7 @@ struct Resource {
+     CUstream stream = nullptr;
+     CUmodule module = nullptr;
+     CUfunction kernel = nullptr;
+-    CUfunction solver = nullptr;
++    CUfunction solvers[solver_operation_count]{};
+     CUdeviceptr diagnostic = 0;
+     bool diagnostic_clear = false;
+     CUdeviceptr slots[14]{};
+@@ -96,7 +97,16 @@ static Status initialise(Resource &r, int ordinal, const char *ptx,
+     Status status{0, 0};
+     if ((code = d.cuModuleLoadData_fn(&r.module, ptx)) != CUDA_SUCCESS) status = {code, 5};
+     if (!status.code && (code = d.cuModuleGetFunction_fn(&r.kernel, r.module, "roundtrip")) != CUDA_SUCCESS) status = {code, 5};
+-    if (!status.code && (code = d.cuModuleGetFunction_fn(&r.solver, r.module, "solver")) != CUDA_SUCCESS) status = {code, 5};
++    CUfunction shared=nullptr;
++    for (unsigned int operation=0;!status.code && operation<solver_operation_count;++operation) {
++        if (solver_shared_dispatch[operation] && shared) {
++            r.solvers[operation]=shared;
++            continue;
++        }
++        if ((code = d.cuModuleGetFunction_fn(&r.solvers[operation], r.module, solver_names[operation])) != CUDA_SUCCESS)
++            status = {code, 5};
++        if (solver_shared_dispatch[operation]) shared=r.solvers[operation];
++    }
+     // Pageable uploads may return before DMA finishes on the legacy stream.
+     // This private stream must inherit that dependency before reading the data.
+     if (!status.code && (code = d.cuStreamCreate_fn(&r.stream, CU_STREAM_DEFAULT)) != CUDA_SUCCESS) status = {code, 6};
+@@ -266,10 +276,12 @@ static Status solver(Resource &r, SolverSettings settings, unsigned int operatio
+         if (diagnostic) __builtin_memcpy(&buffers.diagnostic,&r.diagnostic,sizeof(r.diagnostic));
+         const bool sort=operation==13;
+         unsigned int kernel_operation=sort ? 3 : operation;
++        // Dedicated entries consume two arguments; the shared search entry
++        // also consumes the operation. The driver uses each function's ABI.
+         void *args[]={&buffers,&settings,&kernel_operation};
+         std::uint64_t count=(operation==2 || kernel_operation==3) ? settings.padded : settings.count;
+         auto launch=[&]() -> Status {
+-            auto code=r.driver.cuLaunchKernel_fn(r.solver,static_cast<unsigned int>((count+threads-1)/threads),
++            auto code=r.driver.cuLaunchKernel_fn(r.solvers[kernel_operation],static_cast<unsigned int>((count+threads-1)/threads),
+                 1,1,threads,1,1,0,r.stream,args,nullptr);
+             return {code,code==CUDA_SUCCESS ? 0 : 9};
+         };
+diff --git a/native/solver.cu b/native/solver.cu
+index 5af0b36..e5a8fb4 100644
+--- a/native/solver.cu
++++ b/native/solver.cu
+@@ -1,179 +1,18 @@
+-// Each lane owns a particle row. Stream-ordered launches complete whole snapshots
+-// before dependent work; no floating-point atomics or block-local stage barriers.
+-#include "solver.h"
+-#include <cmath>
+-#include <climits>
+-#include "power.cuh"
++// Numerical entries specialise one pass; search keeps its shared dispatch.
++#include "solver_operations.h"
++#include "solver_pass.cuh"
+ 
+-// Error numbers map to enduring checked quantities in src/cuda/solver.rs.
+-struct Checked {
+-    unsigned int error = 0;
+-    __device__ float scalar(float value, unsigned int quantity) {
+-        if (!isfinite(value) && !error) error = quantity;
+-        return value;
+-    }
+-    __device__ Vector vector(Vector v, unsigned int quantity) {
+-        if ((!isfinite(v.x) || !isfinite(v.y) || !isfinite(v.z)) && !error) error = quantity;
+-        return v;
+-    }
+-};
+-__device__ Vector add(Vector a, Vector b) { return {a.x+b.x,a.y+b.y,a.z+b.z}; }
+-__device__ Vector sub(Vector a, Vector b) { return {a.x-b.x,a.y-b.y,a.z-b.z}; }
+-__device__ Vector mul(Vector a, float b) { return {a.x*b,a.y*b,a.z*b}; }
+-__device__ Vector neg(Vector a) { return {-a.x,-a.y,-a.z}; }
+-__device__ float dot(Vector a, Vector b) { return (a.x*b.x+a.y*b.y)+a.z*b.z; }
+-__device__ float length(Vector a, Checked &c) {
+-    return c.scalar(__fsqrt_rn(c.scalar(dot(a,a), 2)), 3);
++#define MAELSTROM_ENTRY_dedicated(id, name) \
++extern "C" __global__ void solver_##name(SolverBuffers b, SolverSettings s) { \
++    solver_pass<id>(b,s); \
+ }
+-__device__ float separation(Vector a, Vector b, Checked &c, unsigned int quantity = 1) {
+-    return length(c.vector(sub(a,b),quantity),c);
+-}
+-__device__ float poly6(float d, float h, Checked &c) {
+-    if (d >= h) return 0.0f;
+-    float h2=c.scalar(h*h,4), d2=c.scalar(d*d,5);
+-    float term=c.scalar(h2-d2,6);
+-    float h4=h2*h2, h8=h4*h4;
+-    float h9=c.scalar(h*h8,7);
+-    float denom=c.scalar((64.0f*0x1.921fb6p+1f)*h9,8);
+-    float coeff=c.scalar(__fdiv_rn(315.0f,denom),9);
+-    float cube=c.scalar(term*(term*term),10);
+-    return c.scalar(coeff*cube,11);
+-}
+-__device__ Vector spiky(Vector displacement, float h, Checked &c) {
+-    float d=length(displacement,c);
+-    if (d == 0.0f || d >= h) return {0,0,0};
+-    float h2=h*h, h4=h2*h2;
+-    float h6=c.scalar(h2*h4,12);
+-    float denom=c.scalar(0x1.921fb6p+1f*h6,13);
+-    float coeff=c.scalar(__fdiv_rn(-45.0f,denom),14);
+-    float remain=c.scalar(h-d,15);
+-    float scale=c.scalar(__fdiv_rn(coeff*(remain*remain),d),16);
+-    return c.vector(mul(displacement,scale),17);
+-}
+-__device__ bool active(SolverBuffers b, SolverSettings s, unsigned int i, unsigned int j, Checked &c) {
+-    // Callers enumerate the fixed row; only current-distance filtering remains.
+-    return separation(b.position[i],b.position[j],c,18) < s.radius;
+-}
+-#include "neighbours.cuh"
++#define MAELSTROM_ENTRY_shared(id, name)
++#define MAELSTROM_SOLVER_ENTRY(id, name, kind) MAELSTROM_ENTRY_##kind(id, name)
++MAELSTROM_SOLVER_OPERATIONS(MAELSTROM_SOLVER_ENTRY)
++#undef MAELSTROM_SOLVER_ENTRY
++#undef MAELSTROM_ENTRY_shared
++#undef MAELSTROM_ENTRY_dedicated
+ 
+-extern "C" __global__ void solver(SolverBuffers b, SolverSettings s, unsigned int operation) {
+-    const auto lane=static_cast<std::uint64_t>(blockIdx.x)*blockDim.x+threadIdx.x;
+-    if (operation==3) {
+-        if (lane>=s.padded) return;
+-        unsigned int i=static_cast<unsigned int>(lane), j=i^s.stride;
+-        if (j>i) {
+-            Cell a=b.cells[i], other=b.cells[j];
+-            if (less(other,a) == ((i&s.span)==0)) { b.cells[i]=other; b.cells[j]=a; }
+-        }
+-        return;
+-    }
+-    if (operation==2) {
+-        if (lane>=s.padded) return;
+-        auto i=static_cast<unsigned int>(lane);
+-        b.cells[i]=i<s.count ? cell(b.position[i],s.width,i) : Cell{LLONG_MAX,LLONG_MAX,LLONG_MAX,UINT_MAX,0};
+-        return;
+-    }
+-    if (lane>=s.count) return;
+-    auto i=static_cast<unsigned int>(lane);
+-    const auto pass=b.first_operation ? operation-b.first_operation : 0;
+-    // Earlier kernels have completed on this stream. Their records are no
+-    // longer being written, so these reads do not race this pass's atomic min.
+-    // Check every earlier slot: skipped kernels leave their own sentinel alone.
+-    for (unsigned int previous=0;previous<pass;++previous)
+-        if (b.diagnostic[previous]!=ULLONG_MAX) return;
+-    Checked c;
+-    if (operation==0) {
+-        Vector delta=c.vector(mul(s.acceleration,s.timestep),19);
+-        b.velocity[i]=c.vector(add(b.old_velocity[i],delta),20);
+-    } else if (operation==1) {
+-        Vector delta=c.vector(mul(b.velocity[i],s.timestep),21);
+-        b.position[i]=c.vector(add(b.old_position[i],delta),22);
+-    } else if (operation==4 || operation==12) {
+-        discover_row(b,s,i,c,operation==12);
+-    } else if (operation==5) {
+-        // Complete all active-distance checks before any multiplier calculation.
+-        Members row(b,s,i);
+-        for (auto j=row.next(s.count);j<s.count;j=row.next(s.count)) {
+-            separation(b.position[i],b.position[j],c,18);
+-            if (c.error) break;
+-        }
+-    } else if (operation==6) {
+-        float self=poly6(0,s.radius,c), density=0;
+-        Vector owner{0,0,0};
+-        // Density includes self at its identity-ordered position.
+-        Members density_row(b,s,i,true);
+-        for (auto j=density_row.next(s.count);j<s.count;j=density_row.next(s.count)) {
+-            if (i==j) density=c.scalar(density+self,23);
+-            else if (active(b,s,i,j,c)) density=c.scalar(density+poly6(separation(b.position[i],b.position[j],c,18),s.radius,c),23);
+-        }
+-        b.density[i]=density;
+-        float constraint=c.scalar(c.scalar(__fdiv_rn(density,s.rest_density),24)-1.0f,25);
+-        b.constraint[i]=constraint;
+-        float reciprocal=c.scalar(__fdiv_rn(1.0f,s.rest_density),26);
+-        Members owner_row(b,s,i);
+-        for (auto j=owner_row.next(s.count);j<s.count;j=owner_row.next(s.count)) if (active(b,s,i,j,c)) {
+-            Vector direction=spiky(sub(b.position[i],b.position[j]),s.radius,c);
+-            owner=c.vector(add(owner,direction),27);
+-            c.vector(mul(neg(direction),reciprocal),29);
+-        }
+-        owner=c.vector(mul(owner,reciprocal),28);
+-        float sum=0;
+-        Members squared_row(b,s,i,true);
+-        for (auto j=squared_row.next(s.count);j<s.count;j=squared_row.next(s.count)) {
+-            if (i==j) sum=c.scalar(sum+c.scalar(dot(owner,owner),30),31);
+-            else if (active(b,s,i,j,c)) {
+-                Vector dir=c.vector(mul(neg(spiky(sub(b.position[i],b.position[j]),s.radius,c)),reciprocal),29);
+-                sum=c.scalar(sum+c.scalar(dot(dir,dir),30),31);
+-            }
+-        }
+-        float denom=c.scalar(sum+s.relaxation,32);
+-        b.multiplier[i]=c.scalar(__fdiv_rn(-constraint,denom),33);
+-    } else if (operation==7) {
+-        Vector sum{0,0,0};
+-        Members correction_row(b,s,i);
+-        for (auto j=correction_row.next(s.count);j<s.count;j=correction_row.next(s.count)) if (active(b,s,i,j,c)) {
+-            Vector displacement=sub(b.position[i],b.position[j]);
+-            float distance=separation(b.position[i],b.position[j],c,18);
+-            Vector direction=spiky(displacement,s.radius,c);
+-            float weight=poly6(distance,s.radius,c), pressure=0;
+-            if (weight!=0 && s.strength!=0) {
+-                float ratio=c.scalar(__fdiv_rn(weight,s.reference_weight),34);
+-                float shaped=c.scalar(ordered_power(ratio,s.exponent),35);
+-                pressure=c.scalar(-s.strength*shaped,36);
+-            }
+-            float pair=c.scalar(b.multiplier[i]+b.multiplier[j],37);
+-            float coefficient=c.scalar(pair+pressure,38);
+-            Vector contribution=c.vector(mul(direction,coefficient),39);
+-            sum=c.vector(add(sum,contribution),40);
+-        }
+-        Vector correction=c.vector(mul(sum,c.scalar(__fdiv_rn(1.0f,s.rest_density),26)),41);
+-        b.correction[i]=s.correction_scale==1.0f ? correction : c.vector(mul(correction,s.correction_scale),42);
+-    } else if (operation==8) {
+-        c.scalar(b.density[i]*s.mass,43);
+-    } else if (operation==9) {
+-        b.candidate[i]=c.vector(add(b.position[i],b.correction[i]),44);
+-    } else if (operation==10) {
+-        Vector point=b.candidate[i];
+-        for (unsigned int k=0;k<s.planes;++k) {
+-            auto plane=b.planes[k];
+-            float constraint=c.scalar(c.scalar(dot(plane.normal,point),45)-plane.offset,46);
+-            if (constraint<0) {
+-                Vector correction=c.vector(mul(plane.normal,constraint),47);
+-                point=c.vector(sub(point,correction),48);
+-                auto n=plane.normal;
+-                if (n.y==0 && n.z==0 && (n.x==1 || n.x==-1)) point.x=n.x==1 ? plane.offset : -plane.offset;
+-                else if (n.x==0 && n.z==0 && (n.y==1 || n.y==-1)) point.y=n.y==1 ? plane.offset : -plane.offset;
+-                else if (n.x==0 && n.y==0 && (n.z==1 || n.z==-1)) point.z=n.z==1 ? plane.offset : -plane.offset;
+-            }
+-        }
+-        b.position[i]=point;
+-    } else if (operation==11) {
+-        Vector displacement=c.vector(sub(b.position[i],b.old_position[i]),49);
+-        float reciprocal=c.scalar(__fdiv_rn(1.0f,s.timestep),50);
+-        b.velocity[i]=c.vector(mul(displacement,reciprocal),51);
+-    }
+-    b.errors[i]=c.error;
+-    // Only failing lanes contend. The high word preserves particle precedence;
+-    // Checked already retained the first failing expression within that lane.
+-    if (c.error && b.diagnostic) atomicMin(b.diagnostic+pass,(static_cast<unsigned long long>(i)<<32)|c.error);
++extern "C" __global__ void solver_shared(SolverBuffers b, SolverSettings s, unsigned int operation) {
++    solver_pass<13>(b,s,operation);
+ }
+diff --git a/native/solver_math.cuh b/native/solver_math.cuh
+new file mode 100644
+index 0000000..0889896
+--- /dev/null
++++ b/native/solver_math.cuh
+@@ -0,0 +1,56 @@
++// Checked binary32 geometry keeps expression and failure order shared by every pass.
++#pragma once
++#include "solver.h"
++#include <cmath>
++#include <climits>
++#include "power.cuh"
++
++// Error numbers map to enduring checked quantities in src/cuda/solver.rs.
++struct Checked {
++    unsigned int error = 0;
++    __device__ float scalar(float value, unsigned int quantity) {
++        if (!isfinite(value) && !error) error = quantity;
++        return value;
++    }
++    __device__ Vector vector(Vector v, unsigned int quantity) {
++        if ((!isfinite(v.x) || !isfinite(v.y) || !isfinite(v.z)) && !error) error = quantity;
++        return v;
++    }
++};
++__device__ Vector add(Vector a, Vector b) { return {a.x+b.x,a.y+b.y,a.z+b.z}; }
++__device__ Vector sub(Vector a, Vector b) { return {a.x-b.x,a.y-b.y,a.z-b.z}; }
++__device__ Vector mul(Vector a, float b) { return {a.x*b,a.y*b,a.z*b}; }
++__device__ Vector neg(Vector a) { return {-a.x,-a.y,-a.z}; }
++__device__ float dot(Vector a, Vector b) { return (a.x*b.x+a.y*b.y)+a.z*b.z; }
++__device__ float length(Vector a, Checked &c) {
++    return c.scalar(__fsqrt_rn(c.scalar(dot(a,a), 2)), 3);
++}
++__device__ float separation(Vector a, Vector b, Checked &c, unsigned int quantity = 1) {
++    return length(c.vector(sub(a,b),quantity),c);
++}
++__device__ float poly6(float d, float h, Checked &c) {
++    if (d >= h) return 0.0f;
++    float h2=c.scalar(h*h,4), d2=c.scalar(d*d,5);
++    float term=c.scalar(h2-d2,6);
++    float h4=h2*h2, h8=h4*h4;
++    float h9=c.scalar(h*h8,7);
++    float denom=c.scalar((64.0f*0x1.921fb6p+1f)*h9,8);
++    float coeff=c.scalar(__fdiv_rn(315.0f,denom),9);
++    float cube=c.scalar(term*(term*term),10);
++    return c.scalar(coeff*cube,11);
++}
++__device__ Vector spiky(Vector displacement, float h, Checked &c) {
++    float d=length(displacement,c);
++    if (d == 0.0f || d >= h) return {0,0,0};
++    float h2=h*h, h4=h2*h2;
++    float h6=c.scalar(h2*h4,12);
++    float denom=c.scalar(0x1.921fb6p+1f*h6,13);
++    float coeff=c.scalar(__fdiv_rn(-45.0f,denom),14);
++    float remain=c.scalar(h-d,15);
++    float scale=c.scalar(__fdiv_rn(coeff*(remain*remain),d),16);
++    return c.vector(mul(displacement,scale),17);
++}
++__device__ bool active(SolverBuffers b, SolverSettings s, unsigned int i, unsigned int j, Checked &c) {
++    // Callers enumerate the fixed row; only current-distance filtering remains.
++    return separation(b.position[i],b.position[j],c,18) < s.radius;
++}
+diff --git a/native/solver_operations.h b/native/solver_operations.h
+new file mode 100644
+index 0000000..bbbd47b
+--- /dev/null
++++ b/native/solver_operations.h
+@@ -0,0 +1,38 @@
++// Native operation IDs match the Rust execution boundary. One list supplies
++// both exported device names and the driver lookup table.
++#pragma once
++
++#define MAELSTROM_SOLVER_OPERATIONS(X) \
++    X(0, accelerate, dedicated) \
++    X(1, predict, dedicated) \
++    X(2, build_cells, shared) \
++    X(3, sort_cells, shared) \
++    X(4, count_neighbours, shared) \
++    X(5, validate_distances, dedicated) \
++    X(6, multipliers, dedicated) \
++    X(7, corrections, dedicated) \
++    X(8, validate_density, dedicated) \
++    X(9, apply_corrections, dedicated) \
++    X(10, project_planes, dedicated) \
++    X(11, reconstruct_velocity, dedicated) \
++    X(12, fill_neighbours, shared)
++
++#define MAELSTROM_NAME_dedicated(name) "solver_" #name
++#define MAELSTROM_NAME_shared(name) "solver_shared"
++#define MAELSTROM_SOLVER_NAME(id, name, kind) MAELSTROM_NAME_##kind(name),
++inline constexpr const char *solver_names[]={
++    MAELSTROM_SOLVER_OPERATIONS(MAELSTROM_SOLVER_NAME)
++};
++#undef MAELSTROM_SOLVER_NAME
++#undef MAELSTROM_NAME_shared
++#undef MAELSTROM_NAME_dedicated
++#define MAELSTROM_SHARED_dedicated false
++#define MAELSTROM_SHARED_shared true
++#define MAELSTROM_SOLVER_SHARED(id, name, kind) MAELSTROM_SHARED_##kind,
++inline constexpr bool solver_shared_dispatch[]={
++    MAELSTROM_SOLVER_OPERATIONS(MAELSTROM_SOLVER_SHARED)
++};
++#undef MAELSTROM_SOLVER_SHARED
++#undef MAELSTROM_SHARED_shared
++#undef MAELSTROM_SHARED_dedicated
++inline constexpr unsigned int solver_operation_count=sizeof(solver_names)/sizeof(solver_names[0]);
+diff --git a/native/solver_pass.cuh b/native/solver_pass.cuh
+new file mode 100644
+index 0000000..18194e9
+--- /dev/null
++++ b/native/solver_pass.cuh
+@@ -0,0 +1,129 @@
++// Each instantiation owns one operation. Stream order still completes a whole
++// particle snapshot before any dependent pass observes it.
++#pragma once
++#include "solver_math.cuh"
++#include "neighbours.cuh"
++
++template<unsigned int selected_operation>
++__device__ __forceinline__ void solver_pass(SolverBuffers b, SolverSettings s, unsigned int runtime_operation=0) {
++    const auto operation=selected_operation==13 ? runtime_operation : selected_operation;
++    const auto lane=static_cast<std::uint64_t>(blockIdx.x)*blockDim.x+threadIdx.x;
++    if (operation==3) {
++        if (lane>=s.padded) return;
++        unsigned int i=static_cast<unsigned int>(lane), j=i^s.stride;
++        if (j>i) {
++            Cell a=b.cells[i], other=b.cells[j];
++            if (less(other,a) == ((i&s.span)==0)) { b.cells[i]=other; b.cells[j]=a; }
++        }
++        return;
++    }
++    if (operation==2) {
++        if (lane>=s.padded) return;
++        auto i=static_cast<unsigned int>(lane);
++        b.cells[i]=i<s.count ? cell(b.position[i],s.width,i) : Cell{LLONG_MAX,LLONG_MAX,LLONG_MAX,UINT_MAX,0};
++        return;
++    }
++    if (lane>=s.count) return;
++    auto i=static_cast<unsigned int>(lane);
++    const auto pass=b.first_operation ? operation-b.first_operation : 0;
++    // Earlier kernels have completed on this stream. Their records are no
++    // longer being written, so these reads do not race this pass's atomic min.
++    // Check every earlier slot: skipped kernels leave their own sentinel alone.
++    for (unsigned int previous=0;previous<pass;++previous)
++        if (b.diagnostic[previous]!=ULLONG_MAX) return;
++    Checked c;
++    if (operation==0) {
++        Vector delta=c.vector(mul(s.acceleration,s.timestep),19);
++        b.velocity[i]=c.vector(add(b.old_velocity[i],delta),20);
++    } else if (operation==1) {
++        Vector delta=c.vector(mul(b.velocity[i],s.timestep),21);
++        b.position[i]=c.vector(add(b.old_position[i],delta),22);
++    } else if (operation==4 || operation==12) {
++        discover_row(b,s,i,c,operation==12);
++    } else if (operation==5) {
++        // Complete all active-distance checks before any multiplier calculation.
++        Members row(b,s,i);
++        for (auto j=row.next(s.count);j<s.count;j=row.next(s.count)) {
++            separation(b.position[i],b.position[j],c,18);
++            if (c.error) break;
++        }
++    } else if (operation==6) {
++        float self=poly6(0,s.radius,c), density=0;
++        Vector owner{0,0,0};
++        // Density includes self at its identity-ordered position.
++        Members density_row(b,s,i,true);
++        for (auto j=density_row.next(s.count);j<s.count;j=density_row.next(s.count)) {
++            if (i==j) density=c.scalar(density+self,23);
++            else if (active(b,s,i,j,c)) density=c.scalar(density+poly6(separation(b.position[i],b.position[j],c,18),s.radius,c),23);
++        }
++        b.density[i]=density;
++        float constraint=c.scalar(c.scalar(__fdiv_rn(density,s.rest_density),24)-1.0f,25);
++        b.constraint[i]=constraint;
++        float reciprocal=c.scalar(__fdiv_rn(1.0f,s.rest_density),26);
++        Members owner_row(b,s,i);
++        for (auto j=owner_row.next(s.count);j<s.count;j=owner_row.next(s.count)) if (active(b,s,i,j,c)) {
++            Vector direction=spiky(sub(b.position[i],b.position[j]),s.radius,c);
++            owner=c.vector(add(owner,direction),27);
++            c.vector(mul(neg(direction),reciprocal),29);
++        }
++        owner=c.vector(mul(owner,reciprocal),28);
++        float sum=0;
++        Members squared_row(b,s,i,true);
++        for (auto j=squared_row.next(s.count);j<s.count;j=squared_row.next(s.count)) {
++            if (i==j) sum=c.scalar(sum+c.scalar(dot(owner,owner),30),31);
++            else if (active(b,s,i,j,c)) {
++                Vector dir=c.vector(mul(neg(spiky(sub(b.position[i],b.position[j]),s.radius,c)),reciprocal),29);
++                sum=c.scalar(sum+c.scalar(dot(dir,dir),30),31);
++            }
++        }
++        float denom=c.scalar(sum+s.relaxation,32);
++        b.multiplier[i]=c.scalar(__fdiv_rn(-constraint,denom),33);
++    } else if (operation==7) {
++        Vector sum{0,0,0};
++        Members correction_row(b,s,i);
++        for (auto j=correction_row.next(s.count);j<s.count;j=correction_row.next(s.count)) if (active(b,s,i,j,c)) {
++            Vector displacement=sub(b.position[i],b.position[j]);
++            float distance=separation(b.position[i],b.position[j],c,18);
++            Vector direction=spiky(displacement,s.radius,c);
++            float weight=poly6(distance,s.radius,c), pressure=0;
++            if (weight!=0 && s.strength!=0) {
++                float ratio=c.scalar(__fdiv_rn(weight,s.reference_weight),34);
++                float shaped=c.scalar(ordered_power(ratio,s.exponent),35);
++                pressure=c.scalar(-s.strength*shaped,36);
++            }
++            float pair=c.scalar(b.multiplier[i]+b.multiplier[j],37);
++            float coefficient=c.scalar(pair+pressure,38);
++            Vector contribution=c.vector(mul(direction,coefficient),39);
++            sum=c.vector(add(sum,contribution),40);
++        }
++        Vector correction=c.vector(mul(sum,c.scalar(__fdiv_rn(1.0f,s.rest_density),26)),41);
++        b.correction[i]=s.correction_scale==1.0f ? correction : c.vector(mul(correction,s.correction_scale),42);
++    } else if (operation==8) {
++        c.scalar(b.density[i]*s.mass,43);
++    } else if (operation==9) {
++        b.candidate[i]=c.vector(add(b.position[i],b.correction[i]),44);
++    } else if (operation==10) {
++        Vector point=b.candidate[i];
++        for (unsigned int k=0;k<s.planes;++k) {
++            auto plane=b.planes[k];
++            float constraint=c.scalar(c.scalar(dot(plane.normal,point),45)-plane.offset,46);
++            if (constraint<0) {
++                Vector correction=c.vector(mul(plane.normal,constraint),47);
++                point=c.vector(sub(point,correction),48);
++                auto n=plane.normal;
++                if (n.y==0 && n.z==0 && (n.x==1 || n.x==-1)) point.x=n.x==1 ? plane.offset : -plane.offset;
++                else if (n.x==0 && n.z==0 && (n.y==1 || n.y==-1)) point.y=n.y==1 ? plane.offset : -plane.offset;
++                else if (n.x==0 && n.y==0 && (n.z==1 || n.z==-1)) point.z=n.z==1 ? plane.offset : -plane.offset;
++            }
++        }
++        b.position[i]=point;
++    } else if (operation==11) {
++        Vector displacement=c.vector(sub(b.position[i],b.old_position[i]),49);
++        float reciprocal=c.scalar(__fdiv_rn(1.0f,s.timestep),50);
++        b.velocity[i]=c.vector(mul(displacement,reciprocal),51);
++    }
++    b.errors[i]=c.error;
++    // Only failing lanes contend. The high word preserves particle precedence;
++    // Checked already retained the first failing expression within that lane.
++    if (c.error && b.diagnostic) atomicMin(b.diagnostic+pass,(static_cast<unsigned long long>(i)<<32)|c.error);
++}
+diff --git a/native/tests.cpp b/native/tests.cpp
+index 6755b0b..fa17753 100644
+--- a/native/tests.cpp
++++ b/native/tests.cpp
+@@ -7,6 +7,15 @@
+ #include <vector>
+ #include <map>
+ #include <algorithm>
++#include <string>
++
++// This independent table catches a changed native ID/name correspondence.
++static constexpr const char *expected_operations[]={
++    "solver_accelerate", "solver_predict", "solver_shared", "solver_shared",
++    "solver_shared", "solver_validate_distances", "solver_multipliers",
++    "solver_corrections", "solver_validate_density", "solver_apply_corrections",
++    "solver_project_planes", "solver_reconstruct_velocity", "solver_shared"
++};
+ 
+ struct Observed {
+     int fail = 0;
+@@ -20,6 +29,8 @@ struct Observed {
+     int fail_launch = 0;
+     int resets = 0;
+     bool fail_reset = false;
++    unsigned int fail_lookup = 0;
++    std::vector<std::string> loaded_names;
+     struct Launch { unsigned int operation, stride, span, grid, block; };
+     std::vector<Launch> launches;
+     std::map<unsigned int,std::pair<unsigned int,std::uint32_t>> numerical_failures;
+@@ -51,8 +62,19 @@ static void fake_driver(Driver &d) {
+     d.cuCtxPopCurrent_fn = [](CUcontext *context) { ++observed.pops; *context = nullptr; return fault(16); };
+     d.cuModuleLoadData_fn = [](CUmodule *module, const void *) { *module = reinterpret_cast<CUmodule>(1); return fault(5); };
+     d.cuModuleGetFunction_fn = [](CUfunction *function, CUmodule, const char *name) {
+-        *function = reinterpret_cast<CUfunction>(std::strcmp(name,"solver")==0 ? 2 : 1);
+-        return CUDA_SUCCESS;
++        observed.loaded_names.emplace_back(name);
++        if (observed.loaded_names.size()==observed.fail_lookup) return CUDA_ERROR_NOT_FOUND;
++        if (std::strcmp(name,"roundtrip")==0) {
++            *function=reinterpret_cast<CUfunction>(1);return CUDA_SUCCESS;
++        }
++        if (std::strcmp(name,"solver_shared")==0) {
++            *function=reinterpret_cast<CUfunction>(100);return CUDA_SUCCESS;
++        }
++        for (unsigned int operation=0;operation<13;++operation)
++            if (std::strcmp(name,expected_operations[operation])==0) {
++                *function=reinterpret_cast<CUfunction>(operation+2);return CUDA_SUCCESS;
++            }
++        return CUDA_ERROR_NOT_FOUND;
+     };
+     d.cuStreamCreate_fn = [](CUstream *stream, unsigned int flags) {
+         assert(flags==CU_STREAM_DEFAULT);
+@@ -74,12 +96,15 @@ static void fake_driver(Driver &d) {
+     d.cuLaunchKernel_fn = [](CUfunction function, unsigned int grid, unsigned int, unsigned int,
+                             unsigned int block, unsigned int, unsigned int, unsigned int,
+                             CUstream, void **args, void **) {
+-        if (function==reinterpret_cast<CUfunction>(2)) {
++        const auto handle=reinterpret_cast<std::uintptr_t>(function);
++        assert((handle>=1 && handle<=14) || handle==100);
++        const auto operation=handle==100 ? *static_cast<unsigned int *>(args[2]) :
++            handle>=2 ? static_cast<unsigned int>(handle-2) : 0;
++        if (handle>=2) {
+             // This host stand-in supplies an independent serial selection oracle;
+             // hardware tests exercise the actual competing atomic updates.
+             auto buffers=*static_cast<SolverBuffers *>(args[0]);
+             auto settings=*static_cast<SolverSettings *>(args[1]);
+-            auto operation=*static_cast<unsigned int *>(args[2]);
+             if (buffers.diagnostic && observed.fail!=9) {
+                 auto pointer=reinterpret_cast<CUdeviceptr>(buffers.errors);
+                 auto output=reinterpret_cast<CUdeviceptr>(buffers.diagnostic);
+@@ -107,7 +132,8 @@ static void fake_driver(Driver &d) {
+         }
+         if (observed.record_solver) {
+             auto settings=*static_cast<SolverSettings *>(args[1]);
+-            observed.launches.push_back({*static_cast<unsigned int *>(args[2]),
++            assert(handle>=2);
++            observed.launches.push_back({operation,
+                 settings.stride,settings.span,grid,block});
+             if (static_cast<int>(observed.launches.size())==observed.fail_launch) return CUDA_ERROR_UNKNOWN;
+         }
+@@ -124,6 +150,42 @@ static void ready(Resource &r) {
+     assert(observed.pops == 1);
+ }
+ 
++static void entry_points() {
++    for (unsigned int fail_at=1;fail_at<=11;++fail_at) {
++        observed={};
++        {
++            Resource r;fake_driver(r.driver);
++            observed.fail_lookup=fail_at;
++            DeviceInfo info{};
++            const auto status=initialise(r,0,"unused",89,&info);
++            assert(status.code==CUDA_ERROR_NOT_FOUND && status.stage==5);
++            assert(observed.loaded_names.size()==fail_at && observed.pops==1);
++        }
++        assert(observed.destroys==1 && observed.memory.empty());
++    }
++    observed={};
++    Resource r;ready(r);
++    assert(observed.loaded_names.size()==11 && observed.loaded_names[0]=="roundtrip");
++    unsigned int lookup=1;
++    for (unsigned int operation=0;operation<13;++operation) {
++        if (operation==3 || operation==4 || operation==12) {
++            assert(r.solvers[operation]==r.solvers[2]);
++        } else {
++            assert(observed.loaded_names[lookup++]==expected_operations[operation]);
++        }
++    }
++    SolverSettings settings{};
++    settings.count=1;settings.padded=2;settings.width=1;settings.stride=1;settings.span=2;
++    for (unsigned int slot=0;slot<14;++slot)
++        assert(maelstrom_cuda_storage(&r,slot,nullptr,256,0).code==0);
++    observed.record_solver=true;
++    for (unsigned int operation=0;operation<13;++operation)
++        assert(maelstrom_cuda_solver(&r,settings,operation,128).code==0);
++    assert(observed.launches.size()==13);
++    for (unsigned int operation=0;operation<13;++operation)
++        assert(observed.launches[operation].operation==operation);
++}
++
+ static void sort_batches() {
+     for (auto threads : {32U,64U,128U,256U}) {
+         observed={};
+@@ -314,6 +376,7 @@ static void checked_solver() {
+ }
+ 
+ int main() {
++    entry_points();
+     sort_batches();
+     checked_solver();
+     checked_groups();

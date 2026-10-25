@@ -50,6 +50,11 @@ require hardware checks. Documentation alone cannot establish cleanup after real
   `CU_JIT_OPTIMIZATION_LEVEL` defaults to 4, the highest documented level.
   Maelstrom uses ordinary `cuModuleLoadData` rather than overriding that setting.
 
+- Also checked `cuFuncGetAttribute` in the archived execution-control section on 25 October.
+  It reports resources for a loaded function, including registers and local/shared storage.
+  These attributes are not achieved-occupancy counters. `PTX_VERSION` identifies the
+  virtual architecture, not the PTX instruction-set revision.
+
 #### Date added
 
 18/10/26

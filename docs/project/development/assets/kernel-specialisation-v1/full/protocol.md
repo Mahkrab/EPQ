@@ -1,0 +1,54 @@
+# Dedicated CUDA entry-point trial
+
+Start from EPQ `e6c5795b982e0079b1bb8ef212fac47114cf5947` and Maelstrom
+`4a9675b5f9e3b7aa90335f5a77bdb3e82093a1b5`, published before implementation.
+The [plan](/docs/project/development/performance-plan.md) and
+[attribution](/docs/project/development/performance-neighbour-attribution.md) motivate this
+separate experiment. No sorting, layout or arithmetic-reuse change is included.
+
+## Hypothesis and boundaries
+
+Replace the shared device entry with one named entry per existing operation. Keep the
+stage bodies, precision flags, buffers, row ordering, launch sequence, block sizes,
+completion boundaries and packed diagnostics unchanged. The old operation branch is
+uniform across a launch; this tests compiler specialisation and per-operation resources,
+not a claim of fixing warp divergence. Host operation 13 still batches cell-sort launches.
+
+Keep the native operation mapping in one shared definition and test its correspondence
+independently. Qualify every function-lookup failure, context cleanup, grouped launch failure
+and deterministic numerical error path. Public Rust API and execution selection stay stable.
+
+## Verification and measurement
+
+Freeze separate source manifests and executable hashes from disposable exports. Exclude the
+unrelated custom scene. Run the CUDA hardware suite explicitly, relevant CPU/CLI tests,
+strict Clippy, formatting and native injected-failure tests with address/undefined sanitisers.
+Check exact agreement with small independent cases and the unchanged control at all seven
+bundled sizes, including dense rows, tails, all block sizes, cancellation and retry.
+
+Use the primary PC, CUDA device 0 and 128 lanes. Both timing sizes use 480 steps,
+timestep refinement 4 and eight iterations. At 8,000 particles retain checkpoints
+0/1/120/240/480; the separately named 110,592-particle capacity scene omits audits.
+Collect one warm-up per variant and five alternating matched pairs at each size.
+Record solver-step totals, constructor/teardown and invocation durations separately.
+Preserve all samples, warnings, failures and machine readings outside the timers.
+Bound each invocation to 120 s with 30 s cancellation grace.
+
+After ordinary sampling, collect one full 110,592-particle Nsight Systems trace per
+variant. Check named functions against the original operation sequence, unchanged
+launch/completion/transfer counts, early/evolved component costs and exact results.
+Query actual driver-loaded function registers, local/shared storage and limits using
+a separate resource probe. These are resource observations, not achieved occupancy
+or hardware-counter measurements. Do not change counter permissions or installed executables.
+
+Recheck source, executable and input hashes after collection. Keep native reports private
+and publish only metadata-sanitised trace data with unchanged analytical rows. Retained
+large-run warnings are an existing fluid-quality limitation, not a new qualification.
+
+## Assessment
+
+Apply the [engineering policy](/docs/project/development/performance-assessment.md).
+Weigh complete-workload and component effects against constructor costs, code size,
+maintenance and uncertainty. Keep the original samples and explain any follow-up before
+collecting it. No percentage cutoff or timing-range overlap decides retention by itself.
+Conclude retain, do not retain or needs more evidence in the decision record.

@@ -1,7 +1,7 @@
 # Neighbour attribution evidence
 
 Primary-PC diagnostic collection on 25 October 2026. The
-[decision record](/docs/project/development/performance-neighbour-attribution.md) owns the
+[decision record](/docs/project/development/milestones/05/performance-neighbour-attribution.md) owns the
 interpretation. No production solver change, historical checkpoint or hosted check is claimed.
 
 - `8000/` and `110592/` contain one warm-up and one full 480-step trace per variant.

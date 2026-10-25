@@ -1,13 +1,13 @@
 # Retaining the checked plane-helper optimisation
 
 **Decision: retain `#[inline(always)]` on `Plane::contains`.** This is an engineering
-assessment under the [current policy](/docs/project/development/performance-assessment.md),
+assessment under the [current policy](/docs/project/development/milestones/05/performance-assessment.md),
 replacing the earlier automatic reversion. It does not rewrite that trial as a historical pass.
 
 The [original bundle](/docs/project/development/assets/acceptance-inline-v1/README.md) is
 unchanged, including raw measurements, protocols, manifests and failed automatic decisions.
 Its statements about restoring the helper describe the earlier outcome. The
-[development record](/docs/project/development/performance-host-acceptance.md) owns the current outcome.
+[development record](/docs/project/development/milestones/05/performance-host-acceptance.md) owns the current outcome.
 
 ## Reason for retention
 

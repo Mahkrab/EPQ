@@ -1,7 +1,7 @@
 # Logical-stage batching evidence
 
-This supports the [implementation record](/docs/project/development/performance-stage-batching.md)
-and [protocol](/docs/project/development/performance-stage-protocol.md). Verification, matched
+This supports the [implementation record](/docs/project/development/milestones/05/performance-stage-batching.md)
+and [protocol](/docs/project/development/milestones/05/performance-stage-protocol.md). Verification, matched
 measurements and separate profiler runs were sequential on the primary PC through `ssh pc`
 on 22 October 2026. Installed applications and ordinary PC checkouts were not changed.
 

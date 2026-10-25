@@ -1,0 +1,18 @@
+{
+  "command": [
+    "nvidia-smi",
+    "--query-gpu=name,driver_version,memory.total",
+    "--format=csv,noheader"
+  ],
+  "started_utc": "2026-10-24T23:57:25.844972+00:00",
+  "finished_utc": "2026-10-24T23:57:25.903977+00:00",
+  "wall_s": 0.0587506400042912,
+  "exit_code": 0,
+  "timed_out": false,
+  "interrupted": false,
+  "killed_after_grace": false,
+  "stdout_sha256": "f99d0f77f01c1a8a23f7da049b26c0a4ea8b589d46e2f5a46ee5cf5a0175e3d3",
+  "stdout_gzip_sha256": "bed500832bdcf2ce881b820985b05fa79eb3dfc228b9afb614f00a036ae3cec7",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "parse_error": "Expecting value: line 1 column 1 (char 0)"
+}

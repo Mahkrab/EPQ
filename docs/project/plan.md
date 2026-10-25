@@ -77,7 +77,7 @@ comparison has not begun.
 The [pre-evaluation review](/docs/project/development/pre-evaluation-review.md) records the usability,
 execution-default and scaling concerns identified after application integration. Follow the short
 [usability revision plan](/docs/project/development/usability-plan.md) first, then follow the
-[performance investigation plan](/docs/project/development/performance-plan.md) before final
+[performance investigation plan](/docs/project/development/milestones/05/performance-plan.md) before final
 measurement. Keep completed milestones and their evidence intact; the existing evaluation start
 checkpoints do not imply these concerns are resolved.
 
@@ -85,7 +85,7 @@ checkpoints do not imply these concerns are resolved.
 
 Complete the controlled correctness, performance and scalability comparison across brute-force search, uniform-grid partitioning, CPU multithreading and CUDA acceleration, then evaluate the results against the research question.
 
-The [Milestone 05 completion plan](/docs/project/development/milestones/05/plan.md) separates the
+The [Milestone 05 completion plan](/archive/plan.md) separates the
 evidence audit and evaluation protocol, verified comparison evidence, then synthesis and final-project
 handoff. The first decision is whether retained campaigns suffice or a matched new comparison is
 needed; preparing the plan does not begin collection or establish an evaluation result. Final
