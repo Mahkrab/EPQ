@@ -1,0 +1,64 @@
+   Compiling maelstrom v0.1.0 (/tmp/maelstrom-usability-20261026/source)
+    Finished `release` profile [optimized] target(s) in 1.22s
+     Running tests/grouped_scenes.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/grouped_scenes-73b5968fd8feddca)
+
+running 13 tests
+test box_forms_expand_to_exact_planes_and_match_an_explicit_legacy_scene ... ok
+test decimal_lattice_validation_still_rejects_collapsed_axes_and_cross_group_overlap ... ok
+test grouped_count_limits_fail_before_generation_and_large_regular_scenes_construct ... ok
+test grouped_explicit_sources_use_the_total_limit_and_empty_sources_remain_valid ... ok
+test groups_parse_and_flatten_in_document_order_with_independent_expected_positions ... ok
+test invalid_boxes_additional_planes_and_out_of_bounds_particles_are_rejected ... ok
+test legacy_documents_reject_new_shapes_and_grouped_sources_reject_invalid_coordinates ... ok
+test mixed_sources_preserve_explicit_ids_and_automatically_continue_lattice_ranges ... ok
+test names_ranges_and_external_group_fields_are_checked ... ok
+test overlap_errors_are_deterministic_and_cover_both_within_and_between_sources ... ok
+test spatial_validation_matches_independent_all_pairs_at_faces_edges_and_corners ... ok
+test translated_decimal_lattice_groups_match_standalone_construction ... ok
+test two_block_fixture_matches_independently_written_legacy_inputs_and_interacts ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.71s
+
+     Running tests/saved_settings_cli.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/saved_settings_cli-21acc521eb257e0a)
+
+running 10 tests
+test compilation_records_colours_with_identical_physical_observations ... ok
+test compilation_uses_saved_limit_dimensions_and_stride_and_publishes_playable_images ... ok
+test invalid_colour_requests_fail_before_graphics_or_output_creation ... ok
+test legacy_compounding_and_source_assertions_are_migrated_without_reinterpreting_them ... ok
+test malformed_packages_fail_without_changing_the_previously_accepted_inputs ... ok
+test migration_preserves_effective_physics_and_created_spacing_is_editable ... ok
+test presentation_discovery_replacement_and_relocation_work_without_graphics ... ok
+test saved_edits_and_cli_overrides_have_visible_origins_and_do_not_rewrite_files ... ok
+test saved_limits_and_refinement_reach_execution_and_recorded_inputs_do_not_reapply_them ... ok
+test shared_config_and_scene_overlays_remain_visible_with_explicit_base_replacement ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.97s
+
+     Running tests/scene_authoring_cli.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/scene_authoring_cli-cd73f37ec638a832)
+
+running 6 tests
+test editable_groups_and_container_survive_copying_and_records_survive_source_removal ... ok
+test grouped_scene_compiles_to_a_portable_validated_image_sequence ... ok
+test invalid_group_edits_do_not_create_a_destination_or_change_an_existing_record ... ok
+test relocated_fluid_package_compiles_identical_state_and_survives_source_removal ... FAILED
+test saved_vorticity_controls_resolve_override_and_replay_without_the_original_package ... ok
+test saved_xsph_controls_resolve_override_and_replay_without_the_original_package ... ok
+
+failures:
+
+---- relocated_fluid_package_compiles_identical_state_and_survives_source_removal stdout ----
+
+thread 'relocated_fluid_package_compiles_identical_state_and_survives_source_removal' (28564) panicked at tests/scene_authoring_cli.rs:425:5:
+assertion `left == right` failed
+  left: Object {"artificial_pressure_enabled": Bool(true), "artificial_pressure_exponent": Number(4.0), "artificial_pressure_reference_separation_ratio": Number(0.20000000298023224), "artificial_pressure_strength_scale": Number(0.10000000149011612), "boundary_model": String("static_plane_projection"), "cfl_factor": Number(0.4000000059604645), "coordinate_system": String("right_handed_y_up_metres_seconds_kilograms"), "correction_kernel": String("spiky"), "correction_scale": Number(0.0625), "density_kernel": String("poly6"), "external_acceleration_m_s2": Object {"x": Number(0.0), "y": Number(-9.8100004196167), "z": Number(0.0)}, "fixed_timestep_s": Number(0.0020833334419876337), "neighbour_rebuild_policy": String("once_after_prediction"), "particle_order_policy": String("ascending_particle_identity"), "particle_spacing_m": Number(0.05000000074505806), "physical_rest_density_kg_m3": Number(1000.0), "relaxation_scale": Number(20.0), "scalar_precision": String("binary32"), "solver_iterations": Number(8), "solver_update_policy": String("jacobi_immutable_snapshot"), "support_policy": String("strict_less_than"), "support_radius_ratio": Number(2.0), "timestep_policy": String("fixed"), "vorticity_confinement_enabled": Bool(true), "vorticity_confinement_strength_m_s": Number(0.009999999776482582), "xsph_viscosity_coefficient": Number(0.009999999776482582), "xsph_viscosity_enabled": Bool(true)}
+ right: Object {"artificial_pressure_enabled": Bool(true), "artificial_pressure_exponent": Number(4.0), "artificial_pressure_reference_separation_ratio": Number(0.2), "artificial_pressure_strength_scale": Number(0.1), "boundary_model": String("static_plane_projection"), "cfl_factor": Number(0.4), "coordinate_system": String("right_handed_y_up_metres_seconds_kilograms"), "correction_kernel": String("spiky"), "correction_scale": Number(0.0625), "density_kernel": String("poly6"), "external_acceleration_m_s2": Object {"x": Number(0.0), "y": Number(-9.81), "z": Number(0.0)}, "fixed_timestep_s": Number(0.0020833334), "neighbour_rebuild_policy": String("once_after_prediction"), "particle_order_policy": String("ascending_particle_identity"), "particle_spacing_m": Number(0.05), "physical_rest_density_kg_m3": Number(1000.0), "relaxation_scale": Number(20.0), "scalar_precision": String("binary32"), "solver_iterations": Number(8), "solver_update_policy": String("jacobi_immutable_snapshot"), "support_policy": String("strict_less_than"), "support_radius_ratio": Number(2.0), "timestep_policy": String("fixed"), "vorticity_confinement_enabled": Bool(true), "vorticity_confinement_strength_m_s": Number(0.01), "xsph_viscosity_coefficient": Number(0.01), "xsph_viscosity_enabled": Bool(true)}
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    relocated_fluid_package_compiles_identical_state_and_survives_source_removal
+
+test result: FAILED. 5 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.92s
+
+error: test failed, to rerun pass `--test scene_authoring_cli`

@@ -1,0 +1,18 @@
+Maelstrom | gen 1 Paused | 0/6 steps | warnings 0
+Captured initial.png: 640x360
+Native key: n
+Maelstrom | gen 1 Paused | 1/6 steps | warnings 0
+Native key: Right
+Native key: Up
+Native key: equal
+Native key: s
+Native key: Escape
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/tmp/maelstrom-usability-20261026/harness/tests/verification/scene_display.py", line 113, in <module>
+    main()
+  File "/tmp/maelstrom-usability-20261026/harness/tests/verification/scene_display.py", line 78, in main
+    if effective["camera_mode"] != "fixed" or effective["camera"] != saved["camera"]:
+                                              ~~~~~~~~~^^^^^^^^^^
+KeyError: 'camera'

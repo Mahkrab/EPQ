@@ -1,0 +1,24 @@
+{
+  "rustc -Vv": {
+    "exit_code": 0,
+    "stdout": "rustc 1.96.0 (ac68faa20 2026-05-25)\nbinary: rustc\ncommit-hash: ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96\ncommit-date: 2026-05-25\nhost: x86_64-unknown-linux-gnu\nrelease: 1.96.0\nLLVM version: 22.1.2\n",
+    "stderr": ""
+  },
+  "/usr/local/cuda/bin/nvcc --version": {
+    "exit_code": 0,
+    "stdout": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2026 NVIDIA Corporation\nBuilt on Tue_Jun_09_02:43:40_PM_PDT_2026\nCuda compilation tools, release 13.3, V13.3.73\nBuild cuda_13.3.r13.3/compiler.38244171_0\n",
+    "stderr": ""
+  },
+  "nvidia-smi --query-gpu=name,driver_version,memory.total,compute_cap --format=csv,noheader,nounits": {
+    "exit_code": 0,
+    "stdout": "NVIDIA GeForce RTX 4070, 610.88, 12282, 8.9\n",
+    "stderr": ""
+  },
+  "uname -sr": {
+    "exit_code": 0,
+    "stdout": "Linux 6.6.87.2-microsoft-standard-WSL2\n",
+    "stderr": ""
+  },
+  "cpu_model": "AMD Ryzen 9 7900X 12-Core Processor",
+  "purpose": "Functional and numerical qualification; no performance campaign or capacity claim."
+}

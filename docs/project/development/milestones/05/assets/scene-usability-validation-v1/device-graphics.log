@@ -1,0 +1,21 @@
+    Finished `release` profile [optimized] target(s) in 0.10s
+     Running tests/export_device.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/export_device-a9f445b6966b2cc6)
+
+running 4 tests
+test explicit_saved_prefix_and_process_interruption_cannot_claim_original_completion ... ok
+test exported_pngs_preserve_orientation_scale_depth_and_explicit_camera ... ok
+test exports_match_direct_observations_and_repeat_decoded_pixels ... ok
+test failures_and_cancellation_retain_incomplete_sequences_and_prior_files ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.78s
+
+     Running tests/render_device.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/render_device-00df759af82a6332)
+
+running 4 tests
+test cuda_worker_snapshots_draw_on_an_independent_graphics_device ... ok
+test hardware_draws_known_geometry_depth_and_retains_input_bits ... ok
+test independent_hardware_render_threads_close_cleanly ... ok
+test software_vulkan_draws_known_geometry_depth_and_retains_input_bits ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.00s
+

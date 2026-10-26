@@ -1,0 +1,79 @@
+{
+  "working_directory": "Maelstrom source root; PC used an isolated temporary source directory",
+  "source_state": "uncommitted working tree; not a Git checkpoint",
+  "laptop_log_redaction": "only local home and source directory prefixes replaced",
+  "verification": [
+    {
+      "environment": "pc",
+      "command": "CUDA_HOME=/usr/local/cuda CARGO_TARGET_DIR=../target cargo test --offline --release -j 4 --features cuda --all-targets --no-fail-fast -- --test-threads=2",
+      "exit_code": 0,
+      "log": "full-suite.log"
+    },
+    {
+      "environment": "pc",
+      "command": "CUDA_HOME=/usr/local/cuda CARGO_TARGET_DIR=../target cargo test --offline --release -j 4 --features cuda --test xsph_viscosity -- --include-ignored --test-threads=1",
+      "exit_code": 0,
+      "log": "xsph-tests.log"
+    },
+    {
+      "environment": "pc",
+      "command": "CUDA_HOME=/usr/local/cuda CARGO_TARGET_DIR=../target cargo test --offline --release -j 4 --features cuda --lib xsph_candidate -- --ignored --test-threads=1",
+      "exit_code": 0,
+      "log": "cuda-stage.log"
+    },
+    {
+      "environment": "pc",
+      "command": "CUDA_HOME=/usr/local/cuda CARGO_TARGET_DIR=../target cargo test --offline --release -j 4 --features cuda --test cuda_execution -- --include-ignored --test-threads=1",
+      "exit_code": 0,
+      "log": "cuda-regression.log"
+    },
+    {
+      "environment": "pc",
+      "command": "c++ -std=c++17 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -I/usr/local/cuda/include native/tests.cpp -ldl -o ../native-tests",
+      "exit_code": 0,
+      "log": "native-build.log"
+    },
+    {
+      "environment": "pc",
+      "command": "../native-tests",
+      "exit_code": 0,
+      "log": "native-tests.log"
+    },
+    {
+      "environment": "pc",
+      "command": "CUDA_HOME=/usr/local/cuda CARGO_TARGET_DIR=../target cargo clippy --offline --release -j 4 --features cuda --all-targets -- -D warnings",
+      "exit_code": 0,
+      "log": "clippy.log"
+    },
+    {
+      "environment": "laptop",
+      "command": "cargo test --offline -j 2 --test xsph_viscosity --test headless_workflow --test configuration_contract --test serial_simulation",
+      "exit_code": 0,
+      "log": "laptop-cpu.log"
+    },
+    {
+      "environment": "laptop",
+      "command": "cargo test --offline -j 2 --test scene_authoring_cli --test xsph_viscosity --test configuration_contract --test grouped_scenes",
+      "exit_code": 0,
+      "log": "laptop-cli-final.log"
+    },
+    {
+      "environment": "laptop",
+      "command": "cargo test --offline -j 2 --features viewer --lib --bin maelstrom --test saved_settings_cli --test application_lifecycle --test saved_numerics --test presentation_inputs",
+      "exit_code": 0,
+      "log": "laptop-viewer.log"
+    },
+    {
+      "environment": "laptop",
+      "command": "cargo clippy --offline -j 2 --features viewer --all-targets -- -D warnings",
+      "exit_code": 0,
+      "log": "laptop-final-viewer-clippy.log"
+    },
+    {
+      "environment": "laptop",
+      "command": "RUSTDOCFLAGS='-D warnings' cargo doc --offline -j 2 --features viewer --no-deps",
+      "exit_code": 0,
+      "log": "laptop-final-rustdoc.log"
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "purpose": "Temporary functional fixtures, not permanent comparison scenes or performance baselines.",
+  "numerical": {
+    "schema_version": 2,
+    "particle_spacing_m": 0.025,
+    "refine_timestep": 4,
+    "xsph_viscosity_enabled": true,
+    "xsph_viscosity_coefficient": 0.01,
+    "vorticity_confinement_enabled": true,
+    "vorticity_confinement_strength_m_s": 0.01,
+    "other_values": "built-in defaults"
+  },
+  "scene": {
+    "schema_version": 2,
+    "configuration": "scene-relative config.toml",
+    "run_steps": 6,
+    "container_min_m": [
+      0,
+      0,
+      0
+    ],
+    "container_max_m": [
+      3,
+      3,
+      2
+    ],
+    "construction": "groups",
+    "endpoint_rule": "counted_half_open",
+    "order": "x_then_y_then_z",
+    "identities": "automatic ascending, beginning at zero"
+  },
+  "families": {
+    "small": {
+      "counts_per_group": [
+        4,
+        4,
+        4
+      ],
+      "origins_m": [
+        [
+          0.1,
+          0.75,
+          0.1
+        ],
+        [
+          1.1,
+          0.75,
+          0.1
+        ]
+      ],
+      "initial_x_velocities_m_s": [
+        0.25,
+        -0.25
+      ],
+      "expected_particles": 128
+    },
+    "large": {
+      "counts_per_group": [
+        20,
+        25,
+        20
+      ],
+      "origins_m": [
+        [
+          0.1,
+          0.75,
+          0.1
+        ],
+        [
+          1.1,
+          0.75,
+          0.1
+        ]
+      ],
+      "initial_x_velocities_m_s": [
+        0.25,
+        -0.25
+      ],
+      "expected_particles": 20000
+    },
+    "capacity": {
+      "counts_per_group": [
+        48,
+        48,
+        48
+      ],
+      "origins_m": [
+        [
+          0.1,
+          0.75,
+          0.1
+        ]
+      ],
+      "initial_x_velocities_m_s": [
+        0.0
+      ],
+      "expected_particles": 110592
+    }
+  },
+  "presentation": {
+    "schema_version": 2,
+    "width": 640,
+    "height": 360,
+    "step_stride": 2,
+    "camera_mode": "fit before explicit native save",
+    "particles": {
+      "colour_mode": "kinetic_energy",
+      "min_energy_j": 0.0,
+      "max_energy_j": 0.001
+    }
+  },
+  "saved_camera": {
+    "eye_m": [
+      5.516615173471907,
+      4.750054923092691,
+      4.28410028223443
+    ],
+    "target_m": [
+      1.5,
+      1.5,
+      1.0
+    ],
+    "up": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "vertical_fov_deg": 45.0,
+    "near_m": 0.0023665309529993656,
+    "far_m": 30.467757266523307
+  },
+  "timing_limit": "One six-step run/compilation per workload, while other qualification work could run. Component timings are retained for transparency and are not controlled comparative measurements."
+}

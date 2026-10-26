@@ -1,0 +1,15 @@
+    Finished `release` profile [optimized] target(s) in 0.06s
+     Running tests/xsph_viscosity.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/xsph_viscosity-83bcaccbb56cf609)
+
+running 8 tests
+test analytical_pair_damps_relative_motion_and_preserves_equal_mass_momentum ... ok
+test asymmetric_rows_read_one_immutable_velocity_snapshot ... ok
+test coefficient_validation_provenance_serialisation_and_identity_are_explicit ... ok
+test cpu_backends_match_and_zero_or_disabled_smoothing_preserves_every_bit ... ok
+test cuda_smoothing_matches_cpu_at_all_block_sizes_and_retries_cancelled_stages ... ok
+test enabled_smoothing_cancellation_is_atomic_at_every_boundary_and_retry_is_identical ... ok
+test invalid_inputs_and_intermediate_overflow_are_errors_without_mutation ... ok
+test strict_support_coincidence_fixed_rows_empty_and_zero_behaviour ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.69s
+

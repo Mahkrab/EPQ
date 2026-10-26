@@ -1,0 +1,183 @@
+[
+  {
+    "name": "doctor",
+    "command": [
+      "MAELSTROM_BINARY",
+      "doctor",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.002470415000061621
+  },
+  {
+    "name": "graphics",
+    "command": [
+      "MAELSTROM_BINARY",
+      "doctor",
+      "graphics",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.39698066399978416
+  },
+  {
+    "name": "create",
+    "command": [
+      "MAELSTROM_BINARY",
+      "scenes",
+      "create",
+      "editable",
+      "--from",
+      "/tmp/maelstrom-usability-20261026/source/tests/fixtures/two-blocks/scene.toml",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.004240566000589752
+  },
+  {
+    "name": "small-inspect",
+    "command": [
+      "MAELSTROM_BINARY",
+      "inspect",
+      "user:small",
+      "--backend",
+      "cuda",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.003138287999718159
+  },
+  {
+    "name": "small-validate",
+    "command": [
+      "MAELSTROM_BINARY",
+      "validate",
+      "user:small",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.002829461999681371
+  },
+  {
+    "name": "small-run",
+    "command": [
+      "MAELSTROM_BINARY",
+      "run",
+      "user:small",
+      "--backend",
+      "cuda",
+      "--unpaced",
+      "--measure",
+      "--stage-profile",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.26619111799936945
+  },
+  {
+    "name": "large-inspect",
+    "command": [
+      "MAELSTROM_BINARY",
+      "inspect",
+      "user:large",
+      "--backend",
+      "cuda",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.01549762299964641
+  },
+  {
+    "name": "large-validate",
+    "command": [
+      "MAELSTROM_BINARY",
+      "validate",
+      "user:large",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.014010910999786574
+  },
+  {
+    "name": "large-run",
+    "command": [
+      "MAELSTROM_BINARY",
+      "run",
+      "user:large",
+      "--backend",
+      "cuda",
+      "--unpaced",
+      "--measure",
+      "--stage-profile",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.358545631999732
+  },
+  {
+    "name": "relocated-inspect",
+    "command": [
+      "MAELSTROM_BINARY",
+      "inspect",
+      "./relocated-large/scene.toml",
+      "--backend",
+      "cuda",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.014529469000081008
+  },
+  {
+    "name": "capacity-inspect",
+    "command": [
+      "MAELSTROM_BINARY",
+      "inspect",
+      "user:capacity",
+      "--backend",
+      "cuda",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.06819381000059366
+  },
+  {
+    "name": "capacity-validate",
+    "command": [
+      "MAELSTROM_BINARY",
+      "validate",
+      "user:capacity",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.06401402000028611
+  },
+  {
+    "name": "capacity-run",
+    "command": [
+      "MAELSTROM_BINARY",
+      "run",
+      "user:capacity",
+      "--backend",
+      "cuda",
+      "--unpaced",
+      "--measure",
+      "--stage-profile",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.879126357000132
+  }
+]

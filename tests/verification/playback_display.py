@@ -27,7 +27,11 @@ def main() -> None:
     parser.add_argument("--sequence", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--runtime-lib-dir", type=Path)
+    parser.add_argument("--speed", type=float, default=1.0, help="playback speed for control checks; use 0.01 for very short sequences")
+    parser.add_argument("--hardware", action="store_true", help="select hardware graphics instead of the default software Vulkan check")
     args = parser.parse_args()
+    if not 0.01 <= args.speed <= 50.0:
+        parser.error("--speed must be in 0.01..=50 so the doubling check stays in range")
     if not args.output.is_dir() or any(args.output.iterdir()):
         parser.error("--output must be an existing empty evidence directory")
     sequence = args.sequence.resolve()
@@ -40,7 +44,9 @@ def main() -> None:
         env.pop(key, None)
     if args.runtime_lib_dir:
         env["LD_LIBRARY_PATH"] = str(args.runtime_lib_dir.resolve())
-    command = [str(args.binary.resolve()), "play", str(sequence), "--software", "--paused"]
+    command = [str(args.binary.resolve()), "play", str(sequence), "--paused", "--speed", str(args.speed)]
+    if not args.hardware:
+        command.append("--software")
     x = X11()
     process = None
     window = None
@@ -49,7 +55,7 @@ def main() -> None:
             process = subprocess.Popen(command, env=env, stdout=log, stderr=subprocess.STDOUT)
             window = x.find_window(process)
             count = manifest["frame_count"]
-            x.wait(window, rf"paused.*frame 1/{count}.*step 0.*1.00x")
+            x.wait(window, rf"paused.*frame 1/{count}.*step 0.*{args.speed:.2f}x")
             x.capture(window, args.output / "initial.png")
             x.key(window, "Right")
             x.wait(window, rf"paused.*frame 2/{count}.*step {manifest['frames'][1]['step']}")
@@ -64,9 +70,9 @@ def main() -> None:
             x.key(window, "Home")
             x.wait(window, rf"paused.*frame 1/{count}")
             x.key(window, "equal")
-            x.wait(window, r"paused.*2.00x")
+            x.wait(window, rf"paused.*{args.speed * 2:.2f}x")
             x.key(window, "minus")
-            x.wait(window, r"paused.*1.00x")
+            x.wait(window, rf"paused.*{args.speed:.2f}x")
             x.key(window, "r")
             x.wait(window, r"playing")
             x.key(window, "space")
@@ -80,7 +86,7 @@ def main() -> None:
                 raise RuntimeError(f"playback shutdown exit: {code}")
         if inventory(sequence) != before:
             raise RuntimeError("playback modified its saved sequence")
-        result = {"command": ["MAELSTROM_BINARY", "play", "EXPORTED_SEQUENCE", "--software", "--paused"],
+        result = {"command": ["MAELSTROM_BINARY", "play", "EXPORTED_SEQUENCE", "--paused", "--speed", str(args.speed)] + ([] if args.hardware else ["--software"]),
                   "exit": code, "sequence_files_unchanged": True,
                   "frames": count, "checks": ["initial", "seek", "endpoints", "resize",
                   "speed", "restart", "pause", "resume", "completion", "close"],

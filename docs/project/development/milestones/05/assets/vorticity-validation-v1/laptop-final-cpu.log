@@ -1,0 +1,37 @@
+    Blocking waiting for file lock on build directory
+   Compiling maelstrom v0.1.0 (<Maelstrom>)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 24.84s
+     Running tests/external_scenes.rs (Maelstrom/target/debug/deps/external_scenes-4d4cf3b5d849421c)
+
+running 3 tests
+test every_external_scene_uses_the_ordinary_versioned_loader ... ok
+test differently_sized_external_scenes_have_distinct_comparison_identities ... ok
+test repeated_external_scene_resolution_is_structurally_identical ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests/scene_authoring_cli.rs (Maelstrom/target/debug/deps/scene_authoring_cli-86b07242693c06f4)
+
+running 4 tests
+test invalid_group_edits_do_not_create_a_destination_or_change_an_existing_record ... ok
+test saved_xsph_controls_resolve_override_and_replay_without_the_original_package ... ok
+test saved_vorticity_controls_resolve_override_and_replay_without_the_original_package ... ok
+test editable_groups_and_container_survive_copying_and_records_survive_source_removal ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+
+     Running tests/vorticity_confinement.rs (Maelstrom/target/debug/deps/vorticity_confinement-eb94b6ec29bc1014)
+
+running 9 tests
+test invalid_parameters_lengths_non_finite_state_and_overflow_fail ... ok
+test independent_curl_sign_gradient_normalisation_and_timestep_match ... ok
+test strict_support_coincidence_and_fixed_row_omissions_are_respected ... ok
+test uniform_motion_zero_curl_constant_curl_and_zero_strength_do_not_change_bits ... ok
+test controls_provenance_records_and_comparison_identity_are_explicit ... ok
+test numerical_failure_does_not_accept_partial_confinement ... ok
+test confinement_precedes_smoothing_and_never_changes_the_same_steps_positions ... ok
+test cancellation_at_every_boundary_is_atomic_and_retry_is_identical ... ok
+test cpu_backends_agree_for_each_effect_and_zero_strength_preserves_legacy_bits ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+

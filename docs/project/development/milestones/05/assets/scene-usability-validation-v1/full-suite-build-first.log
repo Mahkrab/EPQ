@@ -1,0 +1,16 @@
+   Compiling maelstrom v0.1.0 (/tmp/maelstrom-usability-20261026/source)
+error[E0425]: cannot find value `colours` in this scope
+   --> tests/render_device.rs:317:17
+    |
+317 |                 colours,
+    |                 ^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `mass` in this scope
+   --> tests/render_device.rs:318:35
+    |
+318 |                 particle_mass_kg: mass,
+    |                                   ^^^^ not found in this scope
+
+For more information about this error, try `rustc --explain E0425`.
+error: could not compile `maelstrom` (test "render_device") due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...

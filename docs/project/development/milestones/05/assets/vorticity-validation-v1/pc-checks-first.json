@@ -1,0 +1,58 @@
+{
+  "environment": "primary PC; isolated working-tree source copy",
+  "env": {
+    "CUDA_HOME": "/usr/local/cuda",
+    "CARGO_TARGET_DIR": "shared temporary build cache from XSPH qualification"
+  },
+  "checks": [
+    {
+      "name": "device-stages",
+      "command": "cargo test --offline --release -j 4 --features cuda --lib confinement_stages -- --ignored --test-threads=1",
+      "exit_code": 0,
+      "elapsed_s": 6.1951367069996195,
+      "log": "device-stages.log"
+    },
+    {
+      "name": "full-suite",
+      "command": "cargo test --offline --release -j 4 --features cuda --all-targets --no-fail-fast -- --test-threads=2",
+      "exit_code": 101,
+      "elapsed_s": 65.85135570300008,
+      "log": "full-suite-first.log"
+    },
+    {
+      "name": "xsph-regression",
+      "command": "cargo test --offline --release -j 4 --features cuda --test xsph_viscosity -- --include-ignored --test-threads=1",
+      "exit_code": 0,
+      "elapsed_s": 8.784795507999661,
+      "log": "xsph-regression.log"
+    },
+    {
+      "name": "cuda-regression",
+      "command": "cargo test --offline --release -j 4 --features cuda --test cuda_execution -- --include-ignored --test-threads=1",
+      "exit_code": 0,
+      "elapsed_s": 12.715564457000255,
+      "log": "cuda-regression.log"
+    },
+    {
+      "name": "native-build",
+      "command": "c++ -std=c++17 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -I/usr/local/cuda/include native/tests.cpp -ldl -o ../native-tests",
+      "exit_code": 0,
+      "elapsed_s": 1.88231565300066,
+      "log": "native-build.log"
+    },
+    {
+      "name": "native-tests",
+      "command": "../native-tests",
+      "exit_code": 0,
+      "elapsed_s": 0.018114834999323648,
+      "log": "native-tests.log"
+    },
+    {
+      "name": "cuda-clippy",
+      "command": "cargo clippy --offline --release -j 4 --features cuda --all-targets -- -D warnings",
+      "exit_code": 0,
+      "elapsed_s": 3.3551097629997457,
+      "log": "cuda-clippy.log"
+    }
+  ]
+}

@@ -1,0 +1,166 @@
+[
+  {
+    "name": "small-snapshot",
+    "command": [
+      "MAELSTROM_BINARY",
+      "run",
+      "user:small",
+      "--backend",
+      "cuda",
+      "--unpaced",
+      "--snapshot",
+      "small-final.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.3028987590005272
+  },
+  {
+    "name": "small-compile",
+    "command": [
+      "MAELSTROM_BINARY",
+      "compile",
+      "user:small",
+      "--backend",
+      "cuda",
+      "--output",
+      "small-images",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.7277784230000179
+  },
+  {
+    "name": "small-validate-bundle",
+    "command": [
+      "MAELSTROM_BINARY",
+      "runs",
+      "validate",
+      "./small-images",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.008037775000047986
+  },
+  {
+    "name": "large-snapshot",
+    "command": [
+      "MAELSTROM_BINARY",
+      "run",
+      "./relocated-large/scene.toml",
+      "--backend",
+      "cuda",
+      "--unpaced",
+      "--snapshot",
+      "large-final.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.4229250670005058
+  },
+  {
+    "name": "large-compile",
+    "command": [
+      "MAELSTROM_BINARY",
+      "compile",
+      "./relocated-large/scene.toml",
+      "--backend",
+      "cuda",
+      "--output",
+      "large-images",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.8847539950002101
+  },
+  {
+    "name": "large-validate-bundle",
+    "command": [
+      "MAELSTROM_BINARY",
+      "runs",
+      "validate",
+      "./large-images",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.039915362000101595
+  },
+  {
+    "name": "capacity-snapshot",
+    "command": [
+      "MAELSTROM_BINARY",
+      "run",
+      "user:capacity",
+      "--backend",
+      "cuda",
+      "--unpaced",
+      "--snapshot",
+      "capacity-final.json",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.9817808890002198
+  },
+  {
+    "name": "capacity-compile",
+    "command": [
+      "MAELSTROM_BINARY",
+      "compile",
+      "user:capacity",
+      "--backend",
+      "cuda",
+      "--output",
+      "capacity-images",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 1.7163629930000752
+  },
+  {
+    "name": "capacity-validate-bundle",
+    "command": [
+      "MAELSTROM_BINARY",
+      "runs",
+      "validate",
+      "./capacity-images",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.18380284100021527
+  },
+  {
+    "name": "portable-validate",
+    "command": [
+      "MAELSTROM_BINARY",
+      "runs",
+      "validate",
+      "./portable-images",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.04056694100017921
+  },
+  {
+    "name": "corrupt-validate",
+    "command": [
+      "MAELSTROM_BINARY",
+      "runs",
+      "validate",
+      "./corrupt-images",
+      "--format",
+      "json"
+    ],
+    "exit_code": 3,
+    "elapsed_s": 0.03705035300026793
+  }
+]

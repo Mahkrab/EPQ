@@ -1,0 +1,264 @@
+{
+  "applicability": {
+    "numerical": [
+      "run",
+      "view",
+      "compile"
+    ],
+    "play": "recorded images only; current scene defaults are not loaded",
+    "presentation": [
+      "view",
+      "compile",
+      "export"
+    ],
+    "run_defaults": [
+      "run",
+      "view",
+      "compile"
+    ],
+    "step_stride": [
+      "compile",
+      "export"
+    ]
+  },
+  "application_version": "0.1.0",
+  "configuration": {
+    "comparison_key": "configuration-comparison-v1|binary32|right_handed_y_up_metres_seconds_kilograms|fixed|poly6|spiky|jacobi_immutable_snapshot|00000000,c11cf5c3,00000000|3b088889|3ecccccd|3ccccccd|40000000|447a0000|8|41a00000|true|3dcccccd|3e4ccccd|40800000|strict_less_than|static_plane_projection|once_after_prediction|ascending_particle_identity|true|true|3ccccccd|3d4ccccd|477c7198|3c7d8598|45f9ffff|3983126f|3c23d70b|27|correction-scale:3d800000|xsph-rest-volume-poly6-v1:3c23d70a|vorticity-rest-volume-spiky-v1:3c23d70a",
+    "derived": {
+      "artificial_pressure_reference_separation_m": 0.010000000707805157,
+      "artificial_pressure_strength_m2": 0.0002500000118743628,
+      "lattice_offset_count": 27,
+      "normalised_rest_density_per_m3": 64625.59375,
+      "particle_diameter_m": 0.02500000037252903,
+      "particle_mass_kg": 0.01547374576330185,
+      "relaxation_per_m2": 7999.99951171875,
+      "support_radius_m": 0.05000000074505806
+    },
+    "description": "Saved numerical controls for a bounded functional check",
+    "name": "fluid-model",
+    "numerical": {
+      "artificial_pressure_enabled": true,
+      "artificial_pressure_exponent": 4.0,
+      "artificial_pressure_reference_separation_ratio": 0.20000000298023224,
+      "artificial_pressure_strength_scale": 0.10000000149011612,
+      "boundary_model": "static_plane_projection",
+      "cfl_factor": 0.4000000059604645,
+      "coordinate_system": "right_handed_y_up_metres_seconds_kilograms",
+      "correction_kernel": "spiky",
+      "correction_scale": 0.0625,
+      "density_kernel": "poly6",
+      "external_acceleration_m_s2": {
+        "x": 0.0,
+        "y": -9.8100004196167,
+        "z": 0.0
+      },
+      "fixed_timestep_s": 0.0020833334419876337,
+      "neighbour_rebuild_policy": "once_after_prediction",
+      "particle_order_policy": "ascending_particle_identity",
+      "particle_spacing_m": 0.02500000037252903,
+      "physical_rest_density_kg_m3": 1000.0,
+      "relaxation_scale": 20.0,
+      "scalar_precision": "binary32",
+      "solver_iterations": 8,
+      "solver_update_policy": "jacobi_immutable_snapshot",
+      "support_policy": "strict_less_than",
+      "support_radius_ratio": 2.0,
+      "timestep_policy": "fixed",
+      "vorticity_confinement_enabled": true,
+      "vorticity_confinement_strength_m_s": 0.009999999776482582,
+      "xsph_viscosity_coefficient": 0.009999999776482582,
+      "xsph_viscosity_enabled": true
+    },
+    "provenance": {
+      "artificial_pressure_enabled": "built_in_default",
+      "artificial_pressure_exponent": "built_in_default",
+      "artificial_pressure_reference_separation_ratio": "built_in_default",
+      "artificial_pressure_strength_scale": "built_in_default",
+      "boundary_model": "built_in_default",
+      "cfl_factor": "built_in_default",
+      "coordinate_system": "built_in_default",
+      "correction_kernel": "built_in_default",
+      "correction_scale": "configuration_file",
+      "density_kernel": "built_in_default",
+      "external_acceleration_m_s2": "built_in_default",
+      "fixed_timestep_s": "configuration_file",
+      "neighbour_rebuild_policy": "built_in_default",
+      "particle_order_policy": "built_in_default",
+      "particle_spacing_m": "configuration_file",
+      "physical_rest_density_kg_m3": "built_in_default",
+      "relaxation_scale": "built_in_default",
+      "scalar_precision": "built_in_default",
+      "solver_iterations": "built_in_default",
+      "solver_update_policy": "built_in_default",
+      "support_policy": "built_in_default",
+      "support_radius_ratio": "built_in_default",
+      "timestep_policy": "built_in_default",
+      "vorticity_confinement_enabled": "configuration_file",
+      "vorticity_confinement_strength_m_s": "configuration_file",
+      "xsph_viscosity_coefficient": "configuration_file",
+      "xsph_viscosity_enabled": "configuration_file"
+    },
+    "schema_version": 2
+  },
+  "documents": [
+    {
+      "domain": "scene",
+      "label": "scene.toml",
+      "sha256": "55d7d672fa25347a19ff598c0c19a0bf1b652d8989bf20e491e6c36ea63f58ba"
+    },
+    {
+      "domain": "configuration",
+      "label": "config.toml",
+      "sha256": "4faf871b973c90cc4bee835c728bc967f8f0731ac9923d40b49e8e6b0592db3f"
+    }
+  ],
+  "operation": "validate",
+  "presentation": {
+    "document": {
+      "domain": "render",
+      "label": "render.toml",
+      "sha256": "72436d0de9334f1f985336feaf457a3bd76ca9fc5d132934c640c98bfedba025"
+    },
+    "drawing_supported": true,
+    "effective": {
+      "camera_mode": "fit",
+      "particles": {
+        "colour_mode": "kinetic_energy",
+        "max_energy_j": 0.001,
+        "min_energy_j": 0.0
+      },
+      "schema_version": 2,
+      "settings": {
+        "camera": {
+          "eye_m": [
+            1.2,
+            1.0,
+            1.2
+          ],
+          "far_m": 100.0,
+          "near_m": 0.001,
+          "target_m": [
+            0.3,
+            0.4,
+            0.3
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "format": "png",
+        "height": 360,
+        "step_stride": 2,
+        "width": 640
+      }
+    },
+    "provenance": {
+      "camera": "built_in_default",
+      "camera.eye_m": "built_in_default",
+      "camera.far_m": "built_in_default",
+      "camera.near_m": "built_in_default",
+      "camera.target_m": "built_in_default",
+      "camera.up": "built_in_default",
+      "camera.vertical_fov_deg": "built_in_default",
+      "camera_mode": "render.toml",
+      "format": "built_in_default",
+      "height": "render.toml",
+      "particles": "render.toml",
+      "particles.colour": "built_in_default",
+      "particles.colour_mode": "render.toml",
+      "particles.max_energy_j": "render.toml",
+      "particles.min_energy_j": "render.toml",
+      "step_stride": "render.toml",
+      "width": "render.toml"
+    }
+  },
+  "refinement": {
+    "correction_scale_source": "built_in_default",
+    "factor": 4,
+    "source": "configuration_file",
+    "timestep_source": "built_in_default",
+    "unrefined_correction_scale": 1.0,
+    "unrefined_timestep_s": 0.008333333767950535
+  },
+  "run_defaults": {
+    "steps": 6
+  },
+  "scene": {
+    "container": {
+      "max_m": [
+        3.0,
+        3.0,
+        2.0
+      ],
+      "min_m": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "description": "Named initial fluid groups in a finite container",
+    "name": "functional-scene",
+    "particle_count": 110592,
+    "particle_groups": [
+      "fluid"
+    ],
+    "plane_count": 6,
+    "planes": [
+      {
+        "normal": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "offset_m": 0.0
+      },
+      {
+        "normal": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "offset_m": -3.0
+      },
+      {
+        "normal": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+        },
+        "offset_m": 0.0
+      },
+      {
+        "normal": {
+          "x": 0.0,
+          "y": -1.0,
+          "z": 0.0
+        },
+        "offset_m": -3.0
+      },
+      {
+        "normal": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+        },
+        "offset_m": 0.0
+      },
+      {
+        "normal": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+        },
+        "offset_m": -2.0
+      }
+    ],
+    "randomness": "none",
+    "schema_version": 2
+  },
+  "schema_version": 1,
+  "valid": true
+}

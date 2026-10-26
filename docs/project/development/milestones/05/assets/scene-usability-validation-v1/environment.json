@@ -1,0 +1,71 @@
+{
+  "rustc -Vv": {
+    "exit_code": 0,
+    "stdout": "rustc 1.96.0 (ac68faa20 2026-05-25)\nbinary: rustc\ncommit-hash: ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96\ncommit-date: 2026-05-25\nhost: x86_64-unknown-linux-gnu\nrelease: 1.96.0\nLLVM version: 22.1.2\n",
+    "stderr": ""
+  },
+  "/usr/local/cuda/bin/nvcc --version": {
+    "exit_code": 0,
+    "stdout": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2026 NVIDIA Corporation\nBuilt on Tue_Jun_09_02:43:40_PM_PDT_2026\nCuda compilation tools, release 13.3, V13.3.73\nBuild cuda_13.3.r13.3/compiler.38244171_0\n",
+    "stderr": ""
+  },
+  "nvidia-smi --query-gpu=name,driver_version,memory.total,compute_cap --format=csv,noheader,nounits": {
+    "exit_code": 0,
+    "stdout": "NVIDIA GeForce RTX 4070, 610.88, 12282, 8.9\n",
+    "stderr": ""
+  },
+  "uname -sr": {
+    "exit_code": 0,
+    "stdout": "Linux 6.6.87.2-microsoft-standard-WSL2\n",
+    "stderr": ""
+  },
+  "cpu_model": "AMD Ryzen 9 7900X 12-Core Processor",
+  "build_identity": {
+    "commit": "unavailable",
+    "debug_assertions": false,
+    "dirty": "unavailable",
+    "features": {
+      "cuda": true,
+      "render": true,
+      "viewer": true
+    },
+    "lock_sha256": "sha256:ecb21f75f53ae52ac9ef1d3a6630586c5ed535635b891c91859a095880f58b56",
+    "opt_level": "3",
+    "profile": "release",
+    "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+    "rustflags_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source_sha256": "sha256:f35c361d1f53302e518d722e0f0d70a6ec9ce84c8d052b0846c2bae069f033db",
+    "target": "x86_64-unknown-linux-gnu"
+  },
+  "source_files_verified": 175,
+  "compiled_source_identity_matches_current_code": true,
+  "renderer": {
+    "format": "Rgba8UnormSrgb",
+    "overlays": false,
+    "revision": "opaque-spheres-lines-v2",
+    "samples": 1,
+    "shader_sha256": "sha256:8071c913866560eb36a541a378d2489620753f7b2469d68e8edac17a8ee49e56"
+  },
+  "binaries": {
+    "maelstrom-cpu": "9f9241ba7fdffa7dd8608660685c4048dc7a98628bc6acf573a76f358fd15d15",
+    "maelstrom-cuda": "762b635f83b3affddbef3b41c5edab94041f2befe3192cc900a62d1d1db0cb00"
+  },
+  "purpose": "End-to-end functional qualification. Six-step runs, not a benchmark campaign; raw timing components are not competitive performance evidence.",
+  "graphics_environment": {
+    "DISPLAY": ":0",
+    "GALLIUM_DRIVER": "d3d12",
+    "MESA_D3D12_DEFAULT_ADAPTER_NAME": "NVIDIA",
+    "MAELSTROM_WINDOW_BACKEND": "x11"
+  },
+  "graphics": {
+    "backend": "Gl",
+    "device": 0,
+    "device_type": "Other",
+    "driver": "",
+    "driver_info": "4.6 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.2",
+    "name": "D3D12 (NVIDIA GeForce RTX 4070)",
+    "selection_index": 0,
+    "software_requested": false,
+    "vendor": 0
+  }
+}

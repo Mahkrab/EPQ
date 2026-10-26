@@ -1,0 +1,114 @@
+   Compiling maelstrom v0.1.0 (<laptop-source>/Maelstrom)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 31.48s
+     Running unittests src/lib.rs (Maelstrom/target/debug/deps/maelstrom-e9c87c30c3dae59e)
+
+running 45 tests
+test export::offscreen::tests::destroyed_device_rejects_offscreen_readback ... ignored, requires explicitly available software Vulkan
+test execution::tests::unavailable_workers_are_a_typed_setup_failure ... ok
+test application::tests::shutdown_with_full_queue_resolves_unconstructed_handles_and_receipts ... ok
+test cuda::tests::capacity_checks_do_not_allocate_or_need_a_device ... ok
+test application::tests::full_queue_rejects_restart_atomically_and_cancellation_bypasses_backpressure ... ok
+test export::tests::stage_failures_retain_closed_frames_and_incomplete_progress ... ignored, requires explicitly available software Vulkan
+test neighbours::grid::tests::invalid_index_and_capacity_operations_are_errors ... ok
+test neighbours::grid::tests::mapping_uses_floor_at_faces_edges_and_corners ... ok
+test application::tests::panic_retains_active_snapshot_marks_queued_runs_and_join_reports_failure ... ok
+test playback::tests::looping_holds_the_final_image_for_the_previous_interval ... ok
+test playback::tests::letterboxing_preserves_aspect_and_centres_both_orientations ... ok
+test export::offscreen::tests::invalid_rgba_lengths_fail_encoding ... ok
+test playback::tests::saved_pixels_keep_orientation_and_colour_through_the_graphics_pass ... ignored, requires explicitly available software Vulkan
+test playback::tests::clock_uses_recorded_intervals_speed_pause_seek_and_final_hold ... ok
+test application::tests::queued_old_steps_are_discarded_and_new_generation_stays_paused_at_zero ... ok
+test execution::tests::workers_are_reused_and_terminate_after_the_resource_is_dropped ... ok
+test execution::tests::joined_work_uses_distinct_workers_and_reports_lowest_index_failure ... ok
+test playback::tests::pixels_load_without_physical_inputs_or_the_recorded_cuda_device ... ok
+test playback::tests::zero_step_export_is_one_static_frame ... ok
+test playback::tests::symlinks_are_not_followed ... ok
+test presentation::save::tests::invalid_documents_and_camera_are_rejected_before_writing ... ok
+test simulation::tests::exhausted_step_counter_cannot_wrap_or_accept_another_step ... ok
+test playback::tests::missing_changed_invalid_and_wrong_sized_images_fail_without_regeneration ... ok
+test viewer::tests::explicit_cuda_selection_fails_without_fallback ... ok
+test viewer::tests::close_during_running_work_retains_terminal_accepted_state ... ok
+test playback::tests::malformed_or_incomplete_manifests_do_not_become_playback_requests ... ok
+test playback::tests::unsafe_paths_order_steps_timestamps_hashes_and_dimensions_are_rejected ... ok
+test viewer::tests::presentation_resolution_failure_retains_generation_camera_and_snapshot ... ok
+test viewer::tests::overlay_is_bounded_to_the_drawable_and_has_complete_triangles ... ok
+test presentation::save::tests::symlinks_and_readonly_files_are_rejected_and_permissions_retained ... ok
+test viewer::tests::zero_extent_and_occlusion_skip_graphics_configuration_and_drawing ... ok
+test viewer::windowing::tests::window_transport_is_explicit_and_rejects_invalid_names ... ok
+test workflow::output::tests::a_partial_write_failure_never_publishes_a_destination ... ok
+test workflow::tests::identity_digest_matches_the_standard_sha256_abc_vector ... ok
+test presentation::save::tests::new_save_roundtrips_and_energy_settings_survive_replacement ... ok
+test viewer::tests::camera_save_uses_displayed_selection_and_does_not_change_accepted_state ... ok
+test viewer::tests::invalid_draft_preserves_selection_and_resource_failure_retains_prior ... ok
+test viewer::tests::graphics_failure_requests_worker_teardown_and_preserves_accepted_state ... ok
+test presentation::save::tests::save_preserves_unrelated_values_comments_and_camera_field_comments ... ok
+test viewer::tests::requested_audit_is_labelled_by_snapshot_and_does_not_change_acceptance ... ok
+test viewer::tests::receipts_are_polled_and_removed_without_blocking ... ok
+test presentation::save::tests::publication_failure_and_detected_concurrent_edit_preserve_target ... ok
+test viewer::tests::presentation_cadence_camera_draft_and_reset_preserve_all_cpu_modes ... ok
+test application::tests::supported_scene_versions_construct_and_unknown_versions_fail_explicitly ... ok
+test playback::tests::large_particle_provenance_does_not_prevent_playing_existing_images ... ok
+
+test result: ok. 42 passed; 0 failed; 3 ignored; 0 measured; 0 filtered out; finished in 8.10s
+
+     Running unittests src/main.rs (Maelstrom/target/debug/deps/maelstrom-45384766b9e767e6)
+
+running 6 tests
+test cli::bundled::tests::built_in_defaults_do_not_supply_a_configuration_document ... ok
+test cli::bundled::tests::references_resolve_without_access_to_the_source_tree ... ok
+test cli::viewer::tests::invalid_settings_and_selected_paths_have_explicit_redacted_feedback ... ok
+test cli::viewer::tests::scene_selected_configuration_errors_hide_the_external_input_directory ... ok
+test cli::viewer::tests::external_and_bundled_selection_share_precedence_and_identity ... ok
+test cli::viewer::tests::presentation_saves_to_scene_unless_an_output_is_explicitly_selected ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/application_lifecycle.rs (Maelstrom/target/debug/deps/application_lifecycle-bd63f484179230a3)
+
+running 10 tests
+test cuda_selection_on_cpu_build_fails_explicitly_on_the_worker ... ok
+test pause_acknowledgement_is_a_stable_boundary_and_running_step_is_rejected ... ok
+test numerical_failure_retains_accepted_state_and_failure_across_controls_and_shutdown ... ok
+test cancellation_wakes_paused_worker_is_latched_and_retains_an_exact_prefix ... ok
+test invalid_setup_retains_previous_outcome_and_never_selects_a_fallback ... ok
+test shutdown_and_drop_join_idle_paused_running_and_queued_work ... ok
+test zero_step_empty_input_and_last_single_step_have_explicit_completion ... ok
+test restart_isolates_old_snapshots_commands_and_cancellation ... ok
+test slow_or_absent_display_cannot_backpressure_solver_or_lose_final_diagnostics ... ok
+test pause_step_resume_and_completion_preserve_every_accepted_bit ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.67s
+
+     Running tests/presentation_inputs.rs (Maelstrom/target/debug/deps/presentation_inputs-bc85fc706180b69b)
+
+running 2 tests
+test presentation_versions_camera_modes_and_roundtrip_are_explicit ... ok
+test colour_domains_and_supported_drawing_roundtrip ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/saved_numerics.rs (Maelstrom/target/debug/deps/saved_numerics-e2d2a6bdcb307cd2)
+
+running 3 tests
+test inherited_spacing_has_independent_positions_and_explicit_assertions_stay_strict ... ok
+test refinement_is_selected_once_and_can_be_reset_without_changing_legacy_resolution ... ok
+test invalid_shadowed_values_and_final_assertions_cannot_be_hidden ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/saved_settings_cli.rs (Maelstrom/target/debug/deps/saved_settings_cli-b9e36ac722b770ac)
+
+running 10 tests
+test compilation_records_colours_with_identical_physical_observations ... ignored, requires explicitly available software Vulkan
+test compilation_uses_saved_limit_dimensions_and_stride_and_publishes_playable_images ... ignored, requires explicitly available software Vulkan
+test invalid_colour_requests_fail_before_graphics_or_output_creation ... ok
+test legacy_compounding_and_source_assertions_are_migrated_without_reinterpreting_them ... ok
+test shared_config_and_scene_overlays_remain_visible_with_explicit_base_replacement ... ok
+test saved_edits_and_cli_overrides_have_visible_origins_and_do_not_rewrite_files ... ok
+test saved_limits_and_refinement_reach_execution_and_recorded_inputs_do_not_reapply_them ... ok
+test presentation_discovery_replacement_and_relocation_work_without_graphics ... ok
+test migration_preserves_effective_physics_and_created_spacing_is_editable ... ok
+test malformed_packages_fail_without_changing_the_previously_accepted_inputs ... ok
+
+test result: ok. 8 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.10s
+

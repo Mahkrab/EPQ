@@ -81,6 +81,12 @@ execution-default and scaling concerns identified after application integration.
 measurement. Keep completed milestones and their evidence intact; the existing evaluation start
 checkpoints do not imply these concerns are resolved.
 
+The [scene, settings and fluid-control plan](/docs/project/development/milestones/05/scene-usability-plan.md)
+is complete within the platform scope recorded in its
+[verification](/docs/project/development/milestones/05/scene-usability-verification.md). Persistent settings,
+scene construction, camera behaviour and both fluid effects are implemented. The performance
+investigation remains open; numerical changes need renewed comparison evidence before final evaluation.
+
 ## Milestone 05: comparative evaluation
 
 Complete the controlled correctness, performance and scalability comparison across brute-force search, uniform-grid partitioning, CPU multithreading and CUDA acceleration, then evaluate the results against the research question.

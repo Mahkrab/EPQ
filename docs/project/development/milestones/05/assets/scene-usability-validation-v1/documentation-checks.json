@@ -1,0 +1,20 @@
+{
+  "environment": "laptop",
+  "markdown_unit_tests": {
+    "command": "python3 -m unittest tests.markdown.test",
+    "passed": 3,
+    "exit_code": 0
+  },
+  "links": {
+    "pages": [
+      "docs/project/development/milestones/05/scene-usability-verification.md",
+      "docs/project/development/milestones/05/scene-usability-plan.md",
+      "Maelstrom/docs/inputs.md",
+      "Maelstrom/docs/usage.md"
+    ],
+    "checked": 27,
+    "missing": []
+  },
+  "hosted_rendering": "not performed",
+  "formatting": "cargo fmt -- --check and git diff --check in both repositories"
+}

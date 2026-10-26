@@ -1,0 +1,112 @@
+{
+  "working_directories": {
+    "maelstrom": "isolated temporary source copy on the PC; local source commands use --manifest-path Maelstrom/Cargo.toml",
+    "native": "isolated EPQ harness copy, with --binary pointing to the retained CPU or CUDA executable",
+    "fixtures": "isolated work directory; exact fixtures in inputs.json"
+  },
+  "source_state": "uncommitted working tree; no completion commit or tag",
+  "checks": [
+    {
+      "environment": "pc",
+      "command": "CUDA_HOME=/usr/local/cuda cargo build --offline --release -j 4 --features viewer,cuda",
+      "exit_code": 101,
+      "log": "build-offline.log",
+      "note": "Existing locked toml_edit version was absent from the PC dependency cache."
+    },
+    {
+      "environment": "pc",
+      "command": "CUDA_HOME=/usr/local/cuda cargo build --locked --release -j 4 --features viewer,cuda",
+      "exit_code": 0,
+      "log": "build.log",
+      "note": "Downloaded existing locked dependency; no version or lockfile changes."
+    },
+    {
+      "environment": "pc",
+      "command": "cargo test --offline --release -j 4 --features viewer,cuda --test grouped_scenes --test scene_contract --test scene_authoring_cli --test saved_settings_cli --no-fail-fast -- --include-ignored --test-threads=1",
+      "exit_code": 0,
+      "log": "scene-contracts.log"
+    },
+    {
+      "environment": "pc",
+      "command": "cargo test --offline --release -j 4 --features viewer,cuda --all-targets --no-fail-fast -- --test-threads=2",
+      "exit_code": 101,
+      "log": "full-suite-build-first.log",
+      "note": "Detected missing colour/mass fixture values behind combined CUDA/render cfg."
+    },
+    {
+      "environment": "pc",
+      "command": "cargo test --offline --release -j 4 --features viewer,cuda --all-targets --no-fail-fast -- --test-threads=2",
+      "exit_code": 0,
+      "log": "full-suite.log"
+    },
+    {
+      "environment": "pc",
+      "command": "cargo test --offline --release -j 4 --features viewer,cuda --test render_device --test export_device -- --include-ignored --test-threads=1",
+      "exit_code": 0,
+      "log": "device-graphics.log"
+    },
+    {
+      "environment": "pc",
+      "command": "cargo build --offline --locked --release -j 4 --features viewer",
+      "exit_code": 0,
+      "log": "build-cpu-viewer.log",
+      "note": "CPU-only player copied to an independent executable; doctor confirms CUDA disabled."
+    },
+    {
+      "environment": "pc",
+      "command": "cargo clippy --offline --release -j 4 --features viewer,cuda --all-targets -- -D warnings",
+      "exit_code": 0,
+      "log": "clippy.log"
+    },
+    {
+      "environment": "pc",
+      "command": "python3 -m tests.verification.scene_display --binary MAELSTROM_CUDA --scene RELOCATED_SCENE --backend cuda --output NATIVE_EVIDENCE",
+      "exit_code": 0,
+      "log": "native-viewer-harness.log"
+    },
+    {
+      "environment": "pc",
+      "command": "python3 -m tests.verification.playback_display --binary MAELSTROM_CPU --sequence COPIED_BUNDLE --hardware --speed 0.01 --output PLAYBACK_EVIDENCE",
+      "exit_code": 0,
+      "log": "native-playback-harness.log"
+    },
+    {
+      "environment": "pc",
+      "command": "python3 -m tests.verification.playback_display --binary MAELSTROM_CPU --sequence COPIED_BUNDLE --speed 0.01 --output SOFTWARE_EVIDENCE",
+      "exit_code": 0,
+      "log": "native-playback-software-harness.log"
+    },
+    {
+      "environment": "laptop",
+      "command": "cargo test --offline --test grouped_scenes decimal_lattice -- --nocapture",
+      "exit_code": 101,
+      "log": "laptop-regression-before.log",
+      "note": "Regression reproduced before changing production validation."
+    },
+    {
+      "environment": "laptop",
+      "command": "cargo test --offline --test grouped_scenes --test scene_contract --test scene_authoring_cli --test saved_numerics",
+      "exit_code": 0,
+      "log": "laptop-headless-final.log"
+    },
+    {
+      "environment": "laptop",
+      "command": "cargo clippy --offline --features viewer --all-targets -- -D warnings",
+      "exit_code": 0,
+      "log": "laptop-clippy-final.log"
+    },
+    {
+      "environment": "laptop",
+      "command": "RUSTDOCFLAGS='-D warnings' cargo doc --offline --features viewer --no-deps",
+      "exit_code": 0,
+      "log": "laptop-rustdoc.log"
+    }
+  ],
+  "cli_protocols": [
+    "journey-commands.json",
+    "compile-commands.json"
+  ],
+  "build_cache": "PC used a shared temporary Cargo target directory; different feature builds and CLI-test suites ran sequentially. Native checks used separate immutable executable copies.",
+  "raw_output": "Large particle-state stdout and generated image bundles remain in the temporary PC work directory. This evidence retains hashes, component timings, controls, failures and selected screenshots; it is not a source snapshot or permanent benchmark.",
+  "laptop_rustc": "rustc 1.98.1 (48a229cea 2026-09-01)\nbinary: rustc\ncommit-hash: 48a229ceaefd4985c50990b14116b6d856af0985\ncommit-date: 2026-09-01\nhost: x86_64-unknown-linux-gnu\nrelease: 1.98.1\nLLVM version: 22.1.8\n"
+}

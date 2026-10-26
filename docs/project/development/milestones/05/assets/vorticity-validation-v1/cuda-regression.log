@@ -1,0 +1,14 @@
+    Finished `release` profile [optimized] target(s) in 0.05s
+     Running tests/cuda_execution.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/cuda_execution-bfe1fa94cd18b471)
+
+running 7 tests
+test hardware::all_cancellation_polls_rollback_after_acceptance_and_retry_with_no_stale_buffers ... ok
+test hardware::asymmetric_stages_reject_stale_membership_in_place_updates_and_wrong_work ... ok
+test hardware::empty_single_coincident_and_independent_lifetimes_keep_accepted_bits ... ok
+test hardware::numerical_error_precedence_projection_and_rollback_match_serial ... ok
+test hardware::workflow_keeps_empty_audits_warnings_partial_failure_and_cancellation ... ok
+test hardware::workflow_restores_replay_settings_and_rejects_incompatible_options ... ok
+test invalid_device_settings_and_cpu_scheduler_pairings_fail_without_a_driver ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.63s
+

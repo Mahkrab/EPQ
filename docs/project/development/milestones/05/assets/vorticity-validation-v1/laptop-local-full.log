@@ -1,0 +1,519 @@
+   Compiling maelstrom v0.1.0 (<Maelstrom>)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 38.53s
+     Running unittests src/lib.rs (Maelstrom/target/debug/deps/maelstrom-13d532e97f74264d)
+
+running 14 tests
+test application::tests::panic_retains_active_snapshot_marks_queued_runs_and_join_reports_failure ... ok
+test application::tests::full_queue_rejects_restart_atomically_and_cancellation_bypasses_backpressure ... ok
+test application::tests::shutdown_with_full_queue_resolves_unconstructed_handles_and_receipts ... ok
+test application::tests::queued_old_steps_are_discarded_and_new_generation_stays_paused_at_zero ... ok
+test cuda::tests::capacity_checks_do_not_allocate_or_need_a_device ... ok
+test execution::tests::joined_work_uses_distinct_workers_and_reports_lowest_index_failure ... ok
+test execution::tests::unavailable_workers_are_a_typed_setup_failure ... ok
+test execution::tests::workers_are_reused_and_terminate_after_the_resource_is_dropped ... ok
+test neighbours::grid::tests::invalid_index_and_capacity_operations_are_errors ... ok
+test neighbours::grid::tests::mapping_uses_floor_at_faces_edges_and_corners ... ok
+test simulation::tests::exhausted_step_counter_cannot_wrap_or_accept_another_step ... ok
+test workflow::output::tests::a_partial_write_failure_never_publishes_a_destination ... ok
+test workflow::tests::identity_digest_matches_the_standard_sha256_abc_vector ... ok
+test application::tests::supported_scene_versions_construct_and_unknown_versions_fail_explicitly ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.38s
+
+     Running unittests src/main.rs (Maelstrom/target/debug/deps/maelstrom-610de4952316cc20)
+
+running 2 tests
+test cli::bundled::tests::built_in_defaults_do_not_supply_a_configuration_document ... ok
+test cli::bundled::tests::references_resolve_without_access_to_the_source_tree ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/application_lifecycle.rs (Maelstrom/target/debug/deps/application_lifecycle-045f59058db8ad0b)
+
+running 10 tests
+test cuda_selection_on_cpu_build_fails_explicitly_on_the_worker ... ok
+test cancellation_wakes_paused_worker_is_latched_and_retains_an_exact_prefix ... ok
+test numerical_failure_retains_accepted_state_and_failure_across_controls_and_shutdown ... ok
+test invalid_setup_retains_previous_outcome_and_never_selects_a_fallback ... ok
+test pause_acknowledgement_is_a_stable_boundary_and_running_step_is_rejected ... ok
+test restart_isolates_old_snapshots_commands_and_cancellation ... ok
+test shutdown_and_drop_join_idle_paused_running_and_queued_work ... ok
+test slow_or_absent_display_cannot_backpressure_solver_or_lose_final_diagnostics ... ok
+test zero_step_empty_input_and_last_single_step_have_explicit_completion ... ok
+test pause_step_resume_and_completion_preserve_every_accepted_bit ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.76s
+
+     Running tests/application_motion.rs (Maelstrom/target/debug/deps/application_motion-11c712a902301b16)
+
+running 1 test
+test worker_single_steps_match_exact_constant_acceleration_motion ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/bundled_catalogue.rs (Maelstrom/target/debug/deps/bundled_catalogue-c3e52d2236ab4b5c)
+
+running 3 tests
+test filenames_must_be_selectable_through_the_cli ... ok
+test catalogue_is_sorted_and_tracks_added_and_removed_files ... ok
+test symbolic_links_cannot_pull_external_inputs_into_the_binary ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/cli_usability.rs (Maelstrom/target/debug/deps/cli_usability-f1ac8213368a8657)
+
+running 9 tests
+test diagnostic_discovery_and_completions_have_no_installation_side_effects ... ok
+test explicit_resources_are_recorded_and_rerun_without_the_scene_library ... ok
+test help_is_example_free_and_legacy_commands_are_not_advertised ... ok
+test missing_graphics_is_actionable_and_does_not_create_output ... ok
+test paced_and_unpaced_execution_keep_identical_accepted_results ... ok
+test paths_obey_flags_then_environment_then_xdg_without_creating_libraries ... ok
+test preferences_are_explicit_and_cannot_change_scene_physics ... ok
+test every_bundled_scene_matches_its_file_and_copies_its_own_configuration ... ok
+test scene_packages_are_editable_portable_and_do_not_shadow_bundled_names ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.98s
+
+     Running tests/cli_workflow.rs (Maelstrom/target/debug/deps/cli_workflow-8cf0b8c49a48b4d3)
+
+running 32 tests
+test broken_stdout_returns_an_output_failure_without_panicking ... ok
+test cli_run_matches_independently_known_free_fall_state ... ok
+test configuration_only_validation_never_executes_a_timestep ... ok
+test configured_iteration_work_is_identified_and_replays_exactly ... ok
+test ctrl_c_returns_a_cancelled_result_and_preserves_accepted_state ... ok
+test dangling_symlinks_are_not_replaced ... ok
+test bundled_scenes_and_defaults_are_discoverable_outside_the_checkout ... ok
+test diagnostic_and_checkpoint_choices_preserve_accepted_state ... ok
+test explicit_config_replaces_scene_selection_but_preserves_scene_values ... ok
+test duration_uses_the_effective_fixed_timestep_and_rounds_up ... ok
+test external_scene_configuration_precedence_and_relative_paths_are_explicit ... ok
+test grid_ctrl_c_publishes_its_last_accepted_state ... ok
+test grid_publication_keeps_no_clobber_guarantees_and_snapshot_bits ... ok
+test help_version_and_operation_help_explain_the_workflow ... ok
+test historical_configuration_replays_its_recorded_values_after_defaults_change ... ok
+test invalid_inputs_and_malformed_records_are_distinct_from_usage_errors ... ok
+test invalid_use_has_actionable_stderr_and_no_result_stdout ... ok
+test measured_cli_retains_replay_identity_and_profiles_only_when_requested ... ok
+test named_and_external_inputs_produce_identical_physical_results ... ok
+test output_paths_refuse_replacement_aliases_and_missing_directories ... ok
+test referenced_configuration_errors_name_the_dependency_file ... ok
+test replay_cannot_silently_discard_or_invent_worker_settings ... ok
+test replay_rejects_the_previous_projection_contract_explicitly ... ok
+test result_publication_snapshots_and_replay_reproduce_the_entire_run ... ok
+test saved_playback_command_is_optional_and_explains_its_non_numerical_input ... ok
+test simulation_failure_reports_the_last_accepted_state_and_returns_failure ... ok
+test supplied_scene_and_selected_configuration_replay_without_original_files ... ok
+test threaded_default_uses_available_capacity_and_invalid_combinations_fail ... ok
+test explicit_discovery_selection_preserves_inputs_and_replays_every_work_count ... ok
+test threaded_selection_replay_and_environment_independence_are_public ... ok
+test unsupported_discovery_and_replay_contracts_cannot_silently_substitute ... ok
+test timestep_refinement_matches_explicit_values_and_replays_without_the_recipe ... ok
+
+test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.31s
+
+     Running tests/configuration_contract.rs (Maelstrom/target/debug/deps/configuration_contract-4503f57e5ca32c27)
+
+running 16 tests
+test checked_in_configuration_resolves_to_the_selected_numerical_values ... ok
+test canonical_inspection_and_resolution_are_exactly_repeatable ... ok
+test derived_assertions_are_exact_deterministic_checks_not_tuning_inputs ... ok
+test comparison_identity_uses_resolved_values_not_text_or_provenance ... ok
+test every_floating_primary_field_rejects_a_non_finite_value ... ok
+test every_primary_numeric_domain_rejects_invalid_or_non_finite_values ... ok
+test different_supported_values_resolve_and_fixed_policy_alternatives_fail ... ok
+test failed_resolution_cannot_mutate_a_previously_resolved_value ... ok
+test every_supported_simulation_value_change_changes_comparison_identity ... ok
+test invalid_numeric_errors_identify_the_field_to_correct ... ok
+test ordinary_valid_configurations_need_no_research_classification ... ok
+test precedence_and_field_provenance_are_explicit ... ok
+test historical_defaults_remain_explicit_and_have_distinct_comparison_identities ... ok
+test timestep_refinement_follows_overrides_and_rejects_invalid_or_overflowing_inputs ... ok
+test schema_unknown_fields_and_missing_required_fields_are_rejected ... ok
+test timestep_refinement_records_scaled_values_and_preserves_other_inputs ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/cuda_boundary.rs (Maelstrom/target/debug/deps/cuda_boundary-03f7549765a0e018)
+
+running 2 tests
+test cpu_builds_report_disabled_cuda_without_falling_back ... ok
+test invalid_probe_requests_are_rejected_by_the_application ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/cuda_execution.rs (Maelstrom/target/debug/deps/cuda_execution-70fd6b90941e782b)
+
+running 1 test
+test invalid_device_settings_and_cpu_scheduler_pairings_fail_without_a_driver ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/export_contract.rs (Maelstrom/target/debug/deps/export_contract-d13d7451489e86ba)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/export_device.rs (Maelstrom/target/debug/deps/export_device-784bd34acd7858c6)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/external_scenes.rs (Maelstrom/target/debug/deps/external_scenes-4d4cf3b5d849421c)
+
+running 3 tests
+test every_external_scene_uses_the_ordinary_versioned_loader ... FAILED
+test differently_sized_external_scenes_have_distinct_comparison_identities ... ok
+test repeated_external_scene_resolution_is_structurally_identical ... ok
+
+failures:
+
+---- every_external_scene_uses_the_ordinary_versioned_loader stdout ----
+
+thread 'every_external_scene_uses_the_ordinary_versioned_loader' (27444) panicked at tests/external_scenes.rs:172:9:
+assertion failed: scene.configuration.sources.iter().all(|(field, source)|
+        *source ==
+            if *field == "xsph_viscosity_coefficient" {
+                FieldSource::BuiltInDefault
+            } else { FieldSource::ConfigurationFile })
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    every_external_scene_uses_the_ordinary_versioned_loader
+
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+error: test failed, to rerun pass `--test external_scenes`
+     Running tests/fluid_foundations.rs (Maelstrom/target/debug/deps/fluid_foundations-1d7cc12007e0d793)
+
+running 13 tests
+test active_interactions_exclude_self_and_apply_strict_current_support ... ok
+test artificial_pressure_matches_reference_point_and_support_boundaries ... ok
+test artificial_pressure_rejects_invalid_parameters_and_distances ... ok
+test coincident_distinct_particles_have_density_but_zero_correction ... ok
+test complete_correction_uses_one_immutable_multiplier_and_position_snapshot ... ok
+test correction_scale_changes_only_the_complete_correction_and_rejects_invalid_values ... ok
+test density_constraint_is_signed_unclamped_and_validated ... ok
+test density_includes_self_and_coincident_particles_but_not_exact_support ... ok
+test fluid_boundaries_reject_invalid_lengths_state_and_parameters ... ok
+test interaction_sets_reject_self_duplicates_order_and_invalid_indices ... ok
+test multiplier_rejects_invalid_relaxation_and_non_finite_constraint ... ok
+test single_particle_density_contains_exactly_one_self_weight ... ok
+test substituted_directions_and_multiplier_match_independent_equations ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/fluid_stability.rs (Maelstrom/target/debug/deps/fluid_stability-8025db686dcb0120)
+
+running 12 tests
+test changing_only_timestep_reproduces_the_correction_energy_defect ... ok
+test falling_blocks_keep_separation_and_bound_energy_across_resolutions ... ok
+test interior_equilibrium_has_negligible_correction ... ok
+test intermediate_regularisation_still_inverts_pairs_and_injects_motion ... ok
+test lateral_and_spreading_blocks_survive_wall_and_floor_contact ... ok
+test compressed_blocks_reduce_excess_density_without_iteration_oscillation ... ok
+test perturbed_block_keeps_separation_during_asymmetric_impact ... ok
+test refined_timestep_matches_independent_position_and_velocity_equations ... ok
+test matched_time_refinement_converges_in_settled_shape_without_growing_energy_budget ... ok
+test sparse_pairs_remain_ordered_during_each_correction ... ok
+test small_blocks_remain_settled_over_three_seconds ... ok
+test stationary_blocks_limit_correction_induced_motion_and_settle ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 60.23s
+
+     Running tests/grouped_scenes.rs (Maelstrom/target/debug/deps/grouped_scenes-9354ab293520dcb9)
+
+running 11 tests
+test box_forms_expand_to_exact_planes_and_match_an_explicit_legacy_scene ... ok
+test grouped_explicit_sources_use_the_total_limit_and_empty_sources_remain_valid ... ok
+test groups_parse_and_flatten_in_document_order_with_independent_expected_positions ... ok
+test invalid_boxes_additional_planes_and_out_of_bounds_particles_are_rejected ... ok
+test legacy_documents_reject_new_shapes_and_grouped_sources_reject_invalid_coordinates ... ok
+test mixed_sources_preserve_explicit_ids_and_automatically_continue_lattice_ranges ... ok
+test names_ranges_and_external_group_fields_are_checked ... ok
+test overlap_errors_are_deterministic_and_cover_both_within_and_between_sources ... ok
+test spatial_validation_matches_independent_all_pairs_at_faces_edges_and_corners ... ok
+test grouped_count_limits_fail_before_generation_and_large_regular_scenes_construct ... ok
+test two_block_fixture_matches_independently_written_legacy_inputs_and_interacts ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.19s
+
+     Running tests/headless_workflow.rs (Maelstrom/target/debug/deps/headless_workflow-b1ab3d6ab030b7b6)
+
+running 21 tests
+test audit_failure_does_not_reject_or_corrupt_the_last_accepted_state ... ok
+test audit_strict_support_and_coincident_self_contribution_match_independent_values ... ok
+test accepted_step_observers_preserve_results_and_never_observe_failed_attempts ... ok
+test checkpoint_audit_discovers_neighbours_absent_from_solver_membership ... ok
+test complete_set_audit_includes_self_and_uses_mean_of_absolute_errors ... ok
+test cancellation_retains_prior_work_and_poll_order_is_independent_of_observation ... ok
+test cpu_workflow_matches_empty_warning_audit_input_and_late_failure_outcomes ... ok
+test earlier_cfl_warning_survives_later_unbounded_steps_and_summary ... ok
+test empty_audits_and_unbounded_cfl_are_explicit_in_both_outputs ... ok
+test full_record_replays_identical_bits_with_names_and_provenance_preserved ... ok
+test input_and_checkpoint_validation_failures_are_distinct_from_execution_failure ... ok
+test large_finite_density_error_is_only_diagnostic ... ok
+test machine_records_preserve_signed_zero_subnormals_large_values_and_u64_identities ... ok
+test malformed_or_inconsistent_recorded_inputs_are_rejected_before_replay ... ok
+test numerical_failure_preserves_prior_steps_warnings_and_last_accepted_snapshot ... ok
+test observation_and_output_selection_leave_every_accepted_checkpoint_bitwise_unchanged ... ok
+test physical_identity_excludes_labels_provenance_and_observation_but_tracks_inputs ... ok
+test publication_is_complete_no_clobber_and_failure_preserves_state_and_history ... ok
+test replay_uses_all_recorded_numerical_values_and_canonical_identity_order ... ok
+test snapshot_publication_preserves_state_and_retains_publication_failures ... ok
+test cpu_workflow_cancellation_retains_its_own_prior_work_in_all_modes ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.73s
+
+     Running tests/kernels_and_math.rs (Maelstrom/target/debug/deps/kernels_and_math-babea5d2b26ac17f)
+
+running 8 tests
+test poly6_has_exact_zero_at_and_above_strict_support ... ok
+test poly6_matches_an_independent_analytical_value_below_support ... ok
+test poly6_rejects_every_invalid_argument_domain ... ok
+test spiky_direction_matches_magnitude_direction_and_symmetry ... ok
+test spiky_rejects_non_finite_vectors_and_invalid_support ... ok
+test spiky_zero_distance_and_support_boundaries_are_exact ... ok
+test vector_operations_preserve_simple_binary32_expectations_exactly ... ok
+test vector_length_rejects_non_finite_input_and_overflow ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/motion_boundaries_diagnostics.rs (Maelstrom/target/debug/deps/motion_boundaries_diagnostics-53430f24dc7fd0cf)
+
+running 12 tests
+test acceleration_prediction_and_reconstruction_match_exact_binary_examples ... ok
+test axis_aligned_projection_recovers_exact_contact_across_signs_and_scales ... ok
+test cfl_rejects_invalid_domains_and_non_finite_speeds_or_limits ... ok
+test axis_aligned_projection_repairs_the_observed_one_ulp_penetration ... ok
+test cfl_reports_below_equality_and_above_without_changing_timestep ... ok
+test cfl_zero_speed_and_empty_input_are_semantically_unbounded ... ok
+test nearly_axis_aligned_normals_keep_the_original_vector_projection ... ok
+test motion_primitives_reject_invalid_inputs_and_non_finite_outputs ... ok
+test ordered_plane_projection_is_deterministic_and_order_sensitive ... ok
+test plane_projection_handles_permitted_penetrated_and_contact_points ... ok
+test plane_projection_rejects_non_finite_points_and_results ... ok
+test plane_validation_uses_explicit_tolerance_without_normalising ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/presentation_inputs.rs (Maelstrom/target/debug/deps/presentation_inputs-19c13ae8b20f643d)
+
+running 2 tests
+test presentation_versions_camera_modes_and_roundtrip_are_explicit ... ok
+test colour_domains_and_supported_drawing_roundtrip ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/presentation_mapping.rs (Maelstrom/target/debug/deps/presentation_mapping-c8f4b6fc370bdd5c)
+
+running 4 tests
+test bounded_box_tetrahedron_and_unbounded_intersections_are_distinguished ... ok
+test energy_uses_mass_all_velocity_components_and_fixed_clamping ... ok
+test fixed_colour_is_linearised_and_default_preserves_legacy_constants ... ok
+test fitting_uses_complete_domain_at_portrait_and_landscape_aspects ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/reference_lattice.rs (Maelstrom/target/debug/deps/reference_lattice-8651240bd27042a5)
+
+running 3 tests
+test documented_lattice_reproduces_27_offsets_density_and_mass ... ok
+test reference_derivation_is_exactly_repeatable_in_the_same_environment ... ok
+test reference_derivation_rejects_invalid_domains_and_non_finite_intermediates ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/reference_verification.rs (Maelstrom/target/debug/deps/reference_verification-714802eddd84ae4b)
+
+running 15 tests
+test exact_comparison_detects_signed_zero_and_non_final_checkpoint_changes ... ok
+test frozen_family_has_exact_inputs_and_one_declared_scalability_sequence ... ok
+test frozen_reference_cancellation_preserves_state_at_every_stage_and_retries_exactly ... ok
+test golden_falling_trajectory_has_independent_health_audits_and_cfl_evidence ... ok
+test golden_results_replay_through_the_public_cli_in_both_formats ... ok
+test golden_runs_replay_and_repeat_every_accepted_value_exactly ... ok
+test grid_ordinary_and_measured_runs_match_complete_frozen_outputs ... ok
+test measured_cancellation_keeps_poll_order_and_successful_work_separate ... ok
+test measured_empty_invalid_and_numerically_failed_runs_are_explicit ... ok
+test grid_and_reference_agree_on_every_family_size_before_measurement has been running for over 60 seconds
+test measured_reference_runs_preserve_every_numerical_bit ... ok
+test serial_comparison_keeps_signed_zero_and_checkpoint_disagreements_visible ... ok
+test small_lattice_every_transition_matches_independent_equations ... ok
+test grid_and_reference_agree_on_every_family_size_before_measurement ... ok
+test threaded_complete_goldens_repeat_across_workers_instrumentation_and_replay has been running for over 60 seconds
+test threaded_family_one_step_matches_both_serial_controls_at_every_size has been running for over 60 seconds
+test threaded_complete_goldens_repeat_across_workers_instrumentation_and_replay ... ok
+test threaded_family_one_step_matches_both_serial_controls_at_every_size ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 264.34s
+
+     Running tests/render_contract.rs (Maelstrom/target/debug/deps/render_contract-5a23f77e20ae290a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/render_device.rs (Maelstrom/target/debug/deps/render_device-33e542e1772af8f4)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/saved_numerics.rs (Maelstrom/target/debug/deps/saved_numerics-5d075c11c346b400)
+
+running 3 tests
+test inherited_spacing_has_independent_positions_and_explicit_assertions_stay_strict ... ok
+test invalid_shadowed_values_and_final_assertions_cannot_be_hidden ... ok
+test refinement_is_selected_once_and_can_be_reset_without_changing_legacy_resolution ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/saved_settings_cli.rs (Maelstrom/target/debug/deps/saved_settings_cli-c08e730720018f20)
+
+running 7 tests
+test legacy_compounding_and_source_assertions_are_migrated_without_reinterpreting_them ... ok
+test migration_preserves_effective_physics_and_created_spacing_is_editable ... ok
+test malformed_packages_fail_without_changing_the_previously_accepted_inputs ... ok
+test presentation_discovery_replacement_and_relocation_work_without_graphics ... ok
+test saved_edits_and_cli_overrides_have_visible_origins_and_do_not_rewrite_files ... ok
+test saved_limits_and_refinement_reach_execution_and_recorded_inputs_do_not_reapply_them ... ok
+test shared_config_and_scene_overlays_remain_visible_with_explicit_base_replacement ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+
+     Running tests/scene_authoring_cli.rs (Maelstrom/target/debug/deps/scene_authoring_cli-86b07242693c06f4)
+
+running 4 tests
+test invalid_group_edits_do_not_create_a_destination_or_change_an_existing_record ... ok
+test saved_vorticity_controls_resolve_override_and_replay_without_the_original_package ... ok
+test editable_groups_and_container_survive_copying_and_records_survive_source_removal ... ok
+test saved_xsph_controls_resolve_override_and_replay_without_the_original_package ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+
+     Running tests/scene_contract.rs (Maelstrom/target/debug/deps/scene_contract-0668edb378f454c5)
+
+running 15 tests
+test absolute_configuration_references_are_rejected ... ok
+test comparison_metadata_uses_resolved_inputs_not_names_or_descriptions ... ok
+test duplicate_or_descending_identities_are_rejected ... ok
+test explicit_identity_and_plane_document_order_are_preserved ... ok
+test configuration_paths_resolve_relative_to_the_scene_file_not_current_directory ... ok
+test focused_test_inputs_have_distinct_exact_construction ... ok
+test lattice_counts_positions_identities_and_endpoint_rule_are_exact ... ok
+test invalid_lattice_geometry_and_impractical_counts_are_rejected ... ok
+test non_finite_particles_planes_and_offsets_are_rejected ... ok
+test out_of_bounds_particles_are_rejected_and_exact_contact_is_valid ... ok
+test overlapping_particles_require_the_explicit_coincidence_exception ... ok
+test scene_overrides_use_neutral_configuration_layers_and_record_provenance ... ok
+test repeated_construction_and_failure_leave_accepted_inputs_unchanged ... ok
+test zero_non_unit_and_contradictory_planes_are_rejected ... ok
+test scene_schema_unknown_fields_missing_values_and_randomness_are_rejected ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/serial_simulation.rs (Maelstrom/target/debug/deps/serial_simulation-e77fe1d154153ef6)
+
+running 24 tests
+test cfl_equality_is_allowed_and_stationary_on_plane_is_unchanged ... ok
+test coincident_particles_keep_identity_and_receive_no_invented_separation ... ok
+test cancellation_at_every_poll_rolls_back_and_a_retry_matches_an_uninterrupted_step ... ok
+test empty_steps_are_successful_unbounded_and_counted ... ok
+test fixed_membership_filters_current_distances_without_adding_new_particles ... ok
+test configured_iteration_counts_match_independent_asymmetric_systems ... ok
+test four_jacobi_iterations_match_independent_asymmetric_system ... ok
+test grid_numerical_and_plane_failures_preserve_every_accepted_bit ... ok
+test grid_retains_prediction_membership_and_rebuilds_after_acceptance ... ok
+test incomplete_runs_retain_only_fully_accepted_steps_and_warnings ... ok
+test invalid_particles_configuration_and_permissively_constructed_planes_are_rejected ... ok
+test late_numerical_errors_discard_completed_work ... ok
+test neighbours_are_built_from_prediction_and_rebuilt_on_subsequent_steps ... ok
+test numerical_failure_and_final_plane_failure_roll_back_every_particle ... ok
+test numerical_failure_in_a_later_step_retains_the_previous_acceptance ... ok
+test original_neighbours_stop_contributing_after_leaving_support ... ok
+test predicate_panic_cannot_commit_working_state ... ok
+test grid_cancellation_at_every_stage_discards_work_and_retries_exactly ... ok
+test projection_uses_configuration_order_on_every_iteration ... ok
+test search_has_strict_support_sorted_unique_rows_and_no_self ... ok
+test search_rejects_invalid_support_positions_and_overflowing_distances ... ok
+test single_particle_accelerates_projects_and_reconstructs_without_reflection ... ok
+test solver_keeps_newly_close_particles_out_until_next_step ... ok
+test repeated_scene_runs_and_input_permutations_are_bitwise_identical ... ok
+
+test result: ok. 24 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.57s
+
+     Running tests/solver_regularisation.rs (Maelstrom/target/debug/deps/solver_regularisation-8a1e8e5b697a17c3)
+
+running 4 tests
+test default_regularisation_limits_sparse_near_support_corrections ... ok
+test legacy_relaxation_reproduces_large_corrections_in_independent_arithmetic ... ok
+test asymmetric_stage_matches_independent_equations_across_resolutions_and_relaxation ... ok
+test regularised_defaults_prevent_catastrophic_collapse_in_small_falling_scenes ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.56s
+
+     Running tests/threaded_execution.rs (Maelstrom/target/debug/deps/threaded_execution-a4f0703f3cf289dc)
+
+running 11 tests
+test a_later_active_row_failure_precedes_an_earlier_particle_multiplier_failure ... ok
+test asymmetric_timestep_rejects_stale_distances_in_place_updates_and_missing_passes ... ok
+test current_filtering_keeps_fixed_rows_and_does_not_admit_new_neighbours ... ok
+test competing_errors_use_pass_then_particle_precedence_and_do_not_poison_retry ... ok
+test dense_sparse_boundary_and_empty_stages_keep_all_ordered_bits ... ok
+test failures_after_acceptance_and_predicate_panics_preserve_prior_work ... ok
+test independent_equations_check_every_stage_quantity_with_more_workers_than_particles ... ok
+test independent_simultaneous_solvers_keep_their_own_pools_inputs_and_observations ... ok
+test invalid_resources_and_backend_pairings_fail_before_state_is_created ... ok
+test numerical_and_projection_failures_preserve_state_and_classification_on_repeat ... ok
+test every_cancellation_poll_runs_on_caller_and_retry_matches_uninterrupted_state ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.97s
+
+     Running tests/uniform_grid.rs (Maelstrom/target/debug/deps/uniform_grid-7f1a01456f5c9a19)
+
+running 7 tests
+test dense_sparse_and_extreme_finite_inputs_keep_all_particles ... ok
+test every_adjacent_face_edge_and_corner_is_searched ... ok
+test invalid_inputs_fail_before_construction_and_do_not_poison_later_searches ... ok
+test overflow_checks_include_distant_pairs_and_preserve_the_first_error ... ok
+test power_of_two_faces_and_support_limits_agree_across_the_finite_exponent_domain ... ok
+test strict_support_coincidence_and_identity_order_have_explicit_rows ... ok
+test deterministic_generated_rows_match_the_reference_across_scales_and_translations ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.29s
+
+     Running tests/vorticity_confinement.rs (Maelstrom/target/debug/deps/vorticity_confinement-eb94b6ec29bc1014)
+
+running 9 tests
+test confinement_precedes_smoothing_and_never_changes_the_same_steps_positions ... ok
+test controls_provenance_records_and_comparison_identity_are_explicit ... ok
+test cancellation_at_every_boundary_is_atomic_and_retry_is_identical ... ok
+test independent_curl_sign_gradient_normalisation_and_timestep_match ... ok
+test invalid_parameters_lengths_non_finite_state_and_overflow_fail ... ok
+test numerical_failure_does_not_accept_partial_confinement ... ok
+test strict_support_coincidence_and_fixed_row_omissions_are_respected ... ok
+test uniform_motion_zero_curl_constant_curl_and_zero_strength_do_not_change_bits ... ok
+test cpu_backends_agree_for_each_effect_and_zero_strength_preserves_legacy_bits ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+
+     Running tests/xsph_viscosity.rs (Maelstrom/target/debug/deps/xsph_viscosity-ab76bd6203b6c23b)
+
+running 7 tests
+test analytical_pair_damps_relative_motion_and_preserves_equal_mass_momentum ... ok
+test asymmetric_rows_read_one_immutable_velocity_snapshot ... ok
+test coefficient_validation_provenance_serialisation_and_identity_are_explicit ... ok
+test enabled_smoothing_cancellation_is_atomic_at_every_boundary_and_retry_is_identical ... ok
+test invalid_inputs_and_intermediate_overflow_are_errors_without_mutation ... ok
+test strict_support_coincidence_fixed_rows_empty_and_zero_behaviour ... ok
+test cpu_backends_match_and_zero_or_disabled_smoothing_preserves_every_bit ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+error: 1 target failed:
+    `--test external_scenes`

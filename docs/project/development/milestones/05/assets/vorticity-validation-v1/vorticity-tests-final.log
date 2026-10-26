@@ -1,0 +1,18 @@
+    Finished `release` profile [optimized] target(s) in 0.06s
+     Running tests/vorticity_confinement.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/vorticity_confinement-be7656480e406ad1)
+
+running 11 tests
+test cancellation_at_every_boundary_is_atomic_and_retry_is_identical ... ok
+test confinement_precedes_smoothing_and_never_changes_the_same_steps_positions ... ok
+test controls_provenance_records_and_comparison_identity_are_explicit ... ok
+test cpu_backends_agree_for_each_effect_and_zero_strength_preserves_legacy_bits ... ok
+test cuda_confinement_and_combined_effects_match_cpu_and_retry_cancellation ... ok
+test cuda_zero_strength_is_bitwise_legacy_and_failed_confinement_never_accepts ... ok
+test independent_curl_sign_gradient_normalisation_and_timestep_match ... ok
+test invalid_parameters_lengths_non_finite_state_and_overflow_fail ... ok
+test numerical_failure_does_not_accept_partial_confinement ... ok
+test strict_support_coincidence_and_fixed_row_omissions_are_respected ... ok
+test uniform_motion_zero_curl_constant_curl_and_zero_strength_do_not_change_bits ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 14.38s
+

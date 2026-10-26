@@ -1,0 +1,24 @@
+   Compiling maelstrom v0.1.0 (<Maelstrom>)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.57s
+     Running tests/grouped_scenes.rs (Maelstrom/target/debug/deps/grouped_scenes-9354ab293520dcb9)
+
+running 2 tests
+
+thread 'decimal_lattice_validation_still_rejects_collapsed_axes_and_cross_group_overlap' (37559) panicked at tests/grouped_scenes.rs:596:41:
+called `Result::unwrap()` on an `Err` value: OverlappingParticles { first: 420, second: 440 }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test decimal_lattice_validation_still_rejects_collapsed_axes_and_cross_group_overlap ... FAILED
+
+thread 'translated_decimal_lattice_groups_match_standalone_construction' (37560) panicked at tests/grouped_scenes.rs:581:45:
+called `Result::unwrap()` on an `Err` value: OverlappingParticles { first: 420, second: 440 }
+test translated_decimal_lattice_groups_match_standalone_construction ... FAILED
+
+failures:
+
+failures:
+    decimal_lattice_validation_still_rejects_collapsed_axes_and_cross_group_overlap
+    translated_decimal_lattice_groups_match_standalone_construction
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `--test grouped_scenes`

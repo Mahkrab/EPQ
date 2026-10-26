@@ -1,0 +1,134 @@
+{
+  "environment": "primary PC; isolated working-tree source copy",
+  "env": {
+    "CUDA_HOME": "/usr/local/cuda",
+    "CARGO_TARGET_DIR": "shared temporary build cache from XSPH qualification"
+  },
+  "checks": [
+    {
+      "name": "device-stages",
+      "command": "cargo test --offline --release -j 4 --features cuda --lib confinement_stages -- --ignored --test-threads=1",
+      "exit_code": 0,
+      "elapsed_s": 6.1951367069996195,
+      "log": "device-stages.log",
+      "environment": "pc"
+    },
+    {
+      "name": "full-suite",
+      "command": "cargo test --offline --release -j 4 --features cuda --all-targets --no-fail-fast -- --test-threads=2",
+      "exit_code": 101,
+      "elapsed_s": 65.85135570300008,
+      "log": "full-suite-first.log",
+      "environment": "pc"
+    },
+    {
+      "name": "xsph-regression",
+      "command": "cargo test --offline --release -j 4 --features cuda --test xsph_viscosity -- --include-ignored --test-threads=1",
+      "exit_code": 0,
+      "elapsed_s": 8.784795507999661,
+      "log": "xsph-regression.log",
+      "environment": "pc"
+    },
+    {
+      "name": "cuda-regression",
+      "command": "cargo test --offline --release -j 4 --features cuda --test cuda_execution -- --include-ignored --test-threads=1",
+      "exit_code": 0,
+      "elapsed_s": 12.715564457000255,
+      "log": "cuda-regression.log",
+      "environment": "pc"
+    },
+    {
+      "name": "native-build",
+      "command": "c++ -std=c++17 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -I/usr/local/cuda/include native/tests.cpp -ldl -o ../native-tests",
+      "exit_code": 0,
+      "elapsed_s": 1.88231565300066,
+      "log": "native-build.log",
+      "environment": "pc"
+    },
+    {
+      "name": "native-tests",
+      "command": "../native-tests",
+      "exit_code": 0,
+      "elapsed_s": 0.018114834999323648,
+      "log": "native-tests.log",
+      "environment": "pc"
+    },
+    {
+      "name": "cuda-clippy",
+      "command": "cargo clippy --offline --release -j 4 --features cuda --all-targets -- -D warnings",
+      "exit_code": 0,
+      "elapsed_s": 3.3551097629997457,
+      "log": "cuda-clippy.log",
+      "environment": "pc"
+    },
+    {
+      "name": "full-suite-final",
+      "command": "cargo test --offline --release -j 4 --features cuda --all-targets --no-fail-fast -- --test-threads=2",
+      "exit_code": 0,
+      "log": "full-suite.log",
+      "environment": "pc"
+    },
+    {
+      "name": "vorticity-final",
+      "command": "cargo test --offline --release -j 4 --features cuda --test vorticity_confinement -- --include-ignored --test-threads=1",
+      "exit_code": 0,
+      "log": "vorticity-tests-final.log",
+      "environment": "pc"
+    },
+    {
+      "name": "cuda-clippy-final",
+      "environment": "pc",
+      "command": "cargo clippy --offline --release -j 4 --features cuda --all-targets -- -D warnings",
+      "exit_code": 0,
+      "log": "cuda-clippy-final.log"
+    },
+    {
+      "name": "laptop-cpu-initial",
+      "environment": "laptop",
+      "command": "cargo test --offline --all-targets --no-fail-fast -- --test-threads=2",
+      "exit_code": 101,
+      "log": "laptop-local-full.log",
+      "note": "Ran before correcting the same absent-field provenance assertion found on the PC."
+    },
+    {
+      "name": "laptop-cpu-final",
+      "environment": "laptop",
+      "command": "cargo test --offline --test external_scenes --test vorticity_confinement --test scene_authoring_cli",
+      "exit_code": 0,
+      "log": "laptop-final-cpu.log"
+    },
+    {
+      "name": "laptop-viewer-initial",
+      "environment": "laptop",
+      "command": "cargo test --offline -j 2 --features viewer --lib --bin maelstrom --test saved_settings_cli --test saved_numerics --test presentation_inputs --test application_lifecycle",
+      "exit_code": 101,
+      "log": "laptop-viewer-tests.log",
+      "note": "Overlapped a CPU build using the shared debug executable; sequential rerun below passed without viewer changes."
+    },
+    {
+      "name": "laptop-viewer-final",
+      "environment": "laptop",
+      "command": "cargo test --offline -j 2 --features viewer --lib --bin maelstrom --test saved_settings_cli --test saved_numerics --test presentation_inputs --test application_lifecycle",
+      "exit_code": 0,
+      "log": "laptop-viewer-tests-final.log"
+    },
+    {
+      "name": "laptop-viewer-clippy",
+      "environment": "laptop",
+      "command": "cargo clippy --offline --features viewer --all-targets -- -D warnings",
+      "exit_code": 0,
+      "log": "laptop-viewer-clippy-final.log"
+    },
+    {
+      "name": "laptop-rustdoc",
+      "environment": "laptop",
+      "command": "RUSTDOCFLAGS='-D warnings' cargo doc --offline --features viewer --no-deps",
+      "exit_code": 0,
+      "log": "laptop-rustdoc.log"
+    }
+  ],
+  "working_directory": "Maelstrom source root; laptop --manifest-path invocations normalised to that directory",
+  "laptop_toolchain": "rustc 1.98.1 (48a229cea 2026-09-01)\nbinary: rustc\ncommit-hash: 48a229ceaefd4985c50990b14116b6d856af0985\ncommit-date: 2026-09-01\nhost: x86_64-unknown-linux-gnu\nrelease: 1.98.1\nLLVM version: 22.1.8\n",
+  "path_redaction": "Laptop logs replace only local source and home prefixes.",
+  "initial_checks": "The first PC suite preceded the absent-field provenance assertion correction and expanded device test cases. Final source hashes apply to final verification."
+}

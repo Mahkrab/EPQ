@@ -1,0 +1,62 @@
+   Compiling maelstrom v0.1.0 (<Maelstrom>)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.80s
+     Running tests/grouped_scenes.rs (Maelstrom/target/debug/deps/grouped_scenes-9354ab293520dcb9)
+
+running 14 tests
+test box_forms_expand_to_exact_planes_and_match_an_explicit_legacy_scene ... ok
+test lattice_range_exemptions_do_not_extend_to_explicit_sources ... ok
+test mixed_sources_preserve_explicit_ids_and_automatically_continue_lattice_ranges ... ok
+test invalid_boxes_additional_planes_and_out_of_bounds_particles_are_rejected ... ok
+test groups_parse_and_flatten_in_document_order_with_independent_expected_positions ... ok
+test legacy_documents_reject_new_shapes_and_grouped_sources_reject_invalid_coordinates ... ok
+test overlap_errors_are_deterministic_and_cover_both_within_and_between_sources ... ok
+test names_ranges_and_external_group_fields_are_checked ... ok
+test spatial_validation_matches_independent_all_pairs_at_faces_edges_and_corners ... ok
+test grouped_explicit_sources_use_the_total_limit_and_empty_sources_remain_valid ... ok
+test translated_decimal_lattice_groups_match_standalone_construction ... ok
+test decimal_lattice_validation_still_rejects_collapsed_axes_and_cross_group_overlap ... ok
+test grouped_count_limits_fail_before_generation_and_large_regular_scenes_construct ... ok
+test two_block_fixture_matches_independently_written_legacy_inputs_and_interacts ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.24s
+
+     Running tests/saved_numerics.rs (Maelstrom/target/debug/deps/saved_numerics-5d075c11c346b400)
+
+running 3 tests
+test refinement_is_selected_once_and_can_be_reset_without_changing_legacy_resolution ... ok
+test inherited_spacing_has_independent_positions_and_explicit_assertions_stay_strict ... ok
+test invalid_shadowed_values_and_final_assertions_cannot_be_hidden ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/scene_authoring_cli.rs (Maelstrom/target/debug/deps/scene_authoring_cli-86b07242693c06f4)
+
+running 4 tests
+test invalid_group_edits_do_not_create_a_destination_or_change_an_existing_record ... ok
+test saved_xsph_controls_resolve_override_and_replay_without_the_original_package ... ok
+test saved_vorticity_controls_resolve_override_and_replay_without_the_original_package ... ok
+test editable_groups_and_container_survive_copying_and_records_survive_source_removal ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running tests/scene_contract.rs (Maelstrom/target/debug/deps/scene_contract-0668edb378f454c5)
+
+running 15 tests
+test absolute_configuration_references_are_rejected ... ok
+test comparison_metadata_uses_resolved_inputs_not_names_or_descriptions ... ok
+test explicit_identity_and_plane_document_order_are_preserved ... ok
+test duplicate_or_descending_identities_are_rejected ... ok
+test lattice_counts_positions_identities_and_endpoint_rule_are_exact ... ok
+test non_finite_particles_planes_and_offsets_are_rejected ... ok
+test focused_test_inputs_have_distinct_exact_construction ... ok
+test out_of_bounds_particles_are_rejected_and_exact_contact_is_valid ... ok
+test invalid_lattice_geometry_and_impractical_counts_are_rejected ... ok
+test overlapping_particles_require_the_explicit_coincidence_exception ... ok
+test scene_overrides_use_neutral_configuration_layers_and_record_provenance ... ok
+test repeated_construction_and_failure_leave_accepted_inputs_unchanged ... ok
+test zero_non_unit_and_contradictory_planes_are_rejected ... ok
+test configuration_paths_resolve_relative_to_the_scene_file_not_current_directory ... ok
+test scene_schema_unknown_fields_missing_values_and_randomness_are_rejected ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

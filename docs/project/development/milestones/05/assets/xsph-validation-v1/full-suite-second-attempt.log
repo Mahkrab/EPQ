@@ -1,0 +1,211 @@
+   Compiling maelstrom v0.1.0 (/tmp/maelstrom-xsph-20261026/source)
+    Finished `release` profile [optimized] target(s) in 2.34s
+     Running unittests src/lib.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/maelstrom-13d7f2152309ef5d)
+
+running 32 tests
+test application::tests::full_queue_rejects_restart_atomically_and_cancellation_bypasses_backpressure ... ok
+test application::tests::queued_old_steps_are_discarded_and_new_generation_stays_paused_at_zero ... ok
+test application::tests::panic_retains_active_snapshot_marks_queued_runs_and_join_reports_failure ... ok
+test application::tests::shutdown_with_full_queue_resolves_unconstructed_handles_and_receipts ... ok
+test cuda::native::tests::driver_status_preserves_submission_completion_and_retry_policy ... ok
+test cuda::solver::correction_tests::hardware_corrections_match_ordered_cpu_for_divergent_power_inputs ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::search_tests::hardware_discovery_keeps_discontinuous_columns_and_identity_order ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::capacity_arithmetic_rejects_unrepresentable_workspace_without_allocating ... ok
+test cuda::solver::tests::hardware_batched_sort_matches_integer_keys_and_individual_passes ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_compact_rows_grow_shrink_and_reject_inconsistent_offsets ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_components_preserve_ordered_cpu_arithmetic ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_diagnostic_selection_preserves_particle_priority_and_clears_old_failures ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_fixed_membership_and_independent_two_particle_equations ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_grid_covers_rounded_boundaries_dense_rows_and_extreme_domain ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_groups_preserve_stage_priority_and_skip_dependent_writes ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_large_lattice_count_and_fill_match_independent_grid_rows ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_multiplier_errors_keep_owner_checks_before_prefix_squares ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_multiplier_prefix_keeps_self_order_and_rechecks_current_support ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_projection_group_keeps_candidate_failure_before_plane_failure ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::neighbour_prefixes_preserve_empty_rows_and_reject_invalid_counts ... ok
+test cuda::solver::tests::packed_diagnostics_preserve_quantities_and_reject_invalid_records ... ok
+test cuda::solver::tests::xsph_candidate_is_separate_and_numerical_failure_can_retry_without_partial_commit ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::tests::capacity_checks_do_not_allocate_or_need_a_device ... ok
+test execution::tests::joined_work_uses_distinct_workers_and_reports_lowest_index_failure ... ok
+test execution::tests::unavailable_workers_are_a_typed_setup_failure ... ok
+test execution::tests::workers_are_reused_and_terminate_after_the_resource_is_dropped ... ok
+test neighbours::grid::tests::invalid_index_and_capacity_operations_are_errors ... ok
+test neighbours::grid::tests::mapping_uses_floor_at_faces_edges_and_corners ... ok
+test simulation::tests::exhausted_step_counter_cannot_wrap_or_accept_another_step ... ok
+test workflow::output::tests::a_partial_write_failure_never_publishes_a_destination ... ok
+test workflow::tests::identity_digest_matches_the_standard_sha256_abc_vector ... ok
+test application::tests::supported_scene_versions_construct_and_unknown_versions_fail_explicitly ... ok
+
+test result: ok. 18 passed; 0 failed; 14 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+     Running unittests src/main.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/maelstrom-c5e05773298df766)
+
+running 2 tests
+test cli::bundled::tests::built_in_defaults_do_not_supply_a_configuration_document ... ok
+test cli::bundled::tests::references_resolve_without_access_to_the_source_tree ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/application_lifecycle.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/application_lifecycle-7b524526f942b587)
+
+running 10 tests
+test cuda_context_lives_entirely_on_worker_across_step_restart_cancel_and_teardown ... ignored, requires an available qualified CUDA device
+test cancellation_wakes_paused_worker_is_latched_and_retains_an_exact_prefix ... ok
+test invalid_setup_retains_previous_outcome_and_never_selects_a_fallback ... ok
+test numerical_failure_retains_accepted_state_and_failure_across_controls_and_shutdown ... ok
+test pause_acknowledgement_is_a_stable_boundary_and_running_step_is_rejected ... ok
+test restart_isolates_old_snapshots_commands_and_cancellation ... ok
+test shutdown_and_drop_join_idle_paused_running_and_queued_work ... ok
+test slow_or_absent_display_cannot_backpressure_solver_or_lose_final_diagnostics ... ok
+test zero_step_empty_input_and_last_single_step_have_explicit_completion ... ok
+test pause_step_resume_and_completion_preserve_every_accepted_bit ... ok
+
+test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/application_motion.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/application_motion-d1ebcbdd9dc2c93b)
+
+running 1 test
+test worker_single_steps_match_exact_constant_acceleration_motion ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/bundled_catalogue.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/bundled_catalogue-d0dc3a81157ed70f)
+
+running 3 tests
+test filenames_must_be_selectable_through_the_cli ... ok
+test catalogue_is_sorted_and_tracks_added_and_removed_files ... ok
+test symbolic_links_cannot_pull_external_inputs_into_the_binary ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cli_usability.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/cli_usability-7d9ac05bee36fb74)
+
+running 9 tests
+test diagnostic_discovery_and_completions_have_no_installation_side_effects ... ok
+test explicit_resources_are_recorded_and_rerun_without_the_scene_library ... ok
+test help_is_example_free_and_legacy_commands_are_not_advertised ... ok
+test missing_graphics_is_actionable_and_does_not_create_output ... ok
+test every_bundled_scene_matches_its_file_and_copies_its_own_configuration ... ok
+test paced_and_unpaced_execution_keep_identical_accepted_results ... ok
+test paths_obey_flags_then_environment_then_xdg_without_creating_libraries ... ok
+test preferences_are_explicit_and_cannot_change_scene_physics ... ok
+test scene_packages_are_editable_portable_and_do_not_shadow_bundled_names ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests/cli_workflow.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/cli_workflow-98109c31ab92e7fb)
+
+running 32 tests
+test broken_stdout_returns_an_output_failure_without_panicking ... ok
+test cli_run_matches_independently_known_free_fall_state ... ok
+test configuration_only_validation_never_executes_a_timestep ... ok
+test configured_iteration_work_is_identified_and_replays_exactly ... ok
+test ctrl_c_returns_a_cancelled_result_and_preserves_accepted_state ... ok
+test dangling_symlinks_are_not_replaced ... ok
+test bundled_scenes_and_defaults_are_discoverable_outside_the_checkout ... ok
+test diagnostic_and_checkpoint_choices_preserve_accepted_state ... ok
+test explicit_config_replaces_scene_selection_but_preserves_scene_values ... ok
+test explicit_discovery_selection_preserves_inputs_and_replays_every_work_count ... ok
+test duration_uses_the_effective_fixed_timestep_and_rounds_up ... ok
+test grid_ctrl_c_publishes_its_last_accepted_state ... ok
+test grid_publication_keeps_no_clobber_guarantees_and_snapshot_bits ... ok
+test help_version_and_operation_help_explain_the_workflow ... ok
+test external_scene_configuration_precedence_and_relative_paths_are_explicit ... ok
+test invalid_inputs_and_malformed_records_are_distinct_from_usage_errors ... ok
+test invalid_use_has_actionable_stderr_and_no_result_stdout ... ok
+test historical_configuration_replays_its_recorded_values_after_defaults_change ... ok
+test named_and_external_inputs_produce_identical_physical_results ... ok
+test measured_cli_retains_replay_identity_and_profiles_only_when_requested ... ok
+test referenced_configuration_errors_name_the_dependency_file ... ok
+test replay_cannot_silently_discard_or_invent_worker_settings ... ok
+test replay_rejects_the_previous_projection_contract_explicitly ... ok
+test output_paths_refuse_replacement_aliases_and_missing_directories ... ok
+test saved_playback_command_is_optional_and_explains_its_non_numerical_input ... ok
+test result_publication_snapshots_and_replay_reproduce_the_entire_run ... ok
+test simulation_failure_reports_the_last_accepted_state_and_returns_failure ... ok
+test threaded_default_uses_available_capacity_and_invalid_combinations_fail ... ok
+test threaded_selection_replay_and_environment_independence_are_public ... ok
+test supplied_scene_and_selected_configuration_replay_without_original_files ... ok
+test unsupported_discovery_and_replay_contracts_cannot_silently_substitute ... ok
+test timestep_refinement_matches_explicit_values_and_replays_without_the_recipe ... ok
+
+test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.02s
+
+     Running tests/configuration_contract.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/configuration_contract-4f51c22e3f5af65a)
+
+running 16 tests
+test checked_in_configuration_resolves_to_the_selected_numerical_values ... ok
+test canonical_inspection_and_resolution_are_exactly_repeatable ... ok
+test comparison_identity_uses_resolved_values_not_text_or_provenance ... ok
+test derived_assertions_are_exact_deterministic_checks_not_tuning_inputs ... ok
+test different_supported_values_resolve_and_fixed_policy_alternatives_fail ... ok
+test every_floating_primary_field_rejects_a_non_finite_value ... ok
+test every_primary_numeric_domain_rejects_invalid_or_non_finite_values ... ok
+test every_supported_simulation_value_change_changes_comparison_identity ... ok
+test failed_resolution_cannot_mutate_a_previously_resolved_value ... ok
+test historical_defaults_remain_explicit_and_have_distinct_comparison_identities ... ok
+test invalid_numeric_errors_identify_the_field_to_correct ... ok
+test ordinary_valid_configurations_need_no_research_classification ... ok
+test precedence_and_field_provenance_are_explicit ... ok
+test timestep_refinement_follows_overrides_and_rejects_invalid_or_overflowing_inputs ... ok
+test schema_unknown_fields_and_missing_required_fields_are_rejected ... ok
+test timestep_refinement_records_scaled_values_and_preserves_other_inputs ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cuda_boundary.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/cuda_boundary-8567a37573248c73)
+
+running 2 tests
+test hardware_layout_lifetimes_and_public_application ... ignored, requires a CUDA device; run explicitly on the selected hardware
+test invalid_probe_requests_are_rejected_by_the_application ... ok
+
+test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/cuda_execution.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/cuda_execution-bfe1fa94cd18b471)
+
+running 7 tests
+test hardware::all_cancellation_polls_rollback_after_acceptance_and_retry_with_no_stale_buffers ... ignored, requires an explicitly selected CUDA hardware test run
+test hardware::asymmetric_stages_reject_stale_membership_in_place_updates_and_wrong_work ... ignored, requires an explicitly selected CUDA hardware test run
+test hardware::empty_single_coincident_and_independent_lifetimes_keep_accepted_bits ... ignored, requires an explicitly selected CUDA hardware test run
+test hardware::numerical_error_precedence_projection_and_rollback_match_serial ... ignored, requires an explicitly selected CUDA hardware test run
+test hardware::workflow_keeps_empty_audits_warnings_partial_failure_and_cancellation ... ignored, requires an explicitly selected CUDA hardware test run
+test hardware::workflow_restores_replay_settings_and_rejects_incompatible_options ... ignored, requires an explicitly selected CUDA hardware test run
+test invalid_device_settings_and_cpu_scheduler_pairings_fail_without_a_driver ... ok
+
+test result: ok. 1 passed; 0 failed; 6 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/export_contract.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/export_contract-7d50dd312e31120c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/export_device.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/export_device-a777fe8b13549179)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/external_scenes.rs (/tmp/maelstrom-xsph-20261026/target/release/deps/external_scenes-dfa0e1c82b7ab694)
+
+running 3 tests
+test every_external_scene_uses_the_ordinary_versioned_loader ... FAILED
+test differently_sized_external_scenes_have_distinct_comparison_identities ... ok
+test repeated_external_scene_resolution_is_structurally_identical ... ok
+
+failures:
+
+---- every_external_scene_uses_the_ordinary_versioned_loader stdout ----
+
+thread 'every_external_scene_uses_the_ordinary_versioned_loader' (8722) panicked at tests/external_scenes.rs:172:9:
+assertion failed: scene.configuration.sources.values().all(|source|
+        *source == FieldSource::ConfigurationFile)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    every_external_scene_uses_the_ordinary_versioned_loader
+
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `--test external_scenes`
