@@ -1,0 +1,321 @@
+--- a/docs/export.md
++++ b/docs/export.md
+@@ -110,6 +110,15 @@
+ Solver work, graphics/readback and PNG encoding have separate manifest timings;
+ total wall time includes additional work and is not an interchangeable solver benchmark.
+ 
++New manifests also contain `timing_profile` schema 1. Its disjoint `components_s` cover
++setup, solver steps, snapshot capture, checkpoint comparison, frame particle copying,
++graphics/readback, PNG encoding, frame publication, frame hashing, progress updates and
++an explicit `other` remainder. `total_s` ends before manifest construction, as indicated
++by `boundary = "export_entry_to_before_manifest"`. It excludes final manifest publication,
++CLI output and teardown; measure whole-command wall time for the full cost. Graphics/readback
++includes CPU packing and driver waits. Frame hashing includes portable snapshot JSON encoding.
++The existing three `timing_seconds` fields retain their meanings, and older bundles remain valid.
++
+ The default stride is 1: every accepted timestep produces an image, including when
+ the timestep has been refined. For example, `--steps 480 --frame-stride 4` stores
+ 121 images while still computing all 480 steps. Choose the stride for the desired
+--- a/src/export/mod.rs
++++ b/src/export/mod.rs
+@@ -3,6 +3,7 @@
+ 
+ mod offscreen;
+ mod source;
++mod timing;
+ 
+ use crate::{
+     render::{BoundaryLines, Graphics, GraphicsSelection, Settings},
+@@ -130,6 +131,8 @@
+     mut cancelled: impl FnMut() -> bool,
+     operations: offscreen::FrameOperations,
+ ) -> Result<Value, ExportError> {
++    let started = Instant::now();
++    let mut timings = timing::ExportTimings::default();
+     let mut settings = request.settings;
+     settings.validate().map_err(fail)?;
+     let recorded = match &request.source {
+@@ -234,11 +237,13 @@
+     // Exclusive creation rejects directories, files and symlinks equally.
+     fs::create_dir(request.destination)
+         .map_err(|e| fail(format!("create new output directory: {}", e.kind())))?;
++    timings.setup = started.elapsed();
++    let start = Instant::now();
+     let mut progress = json!({"schema_version":1,"complete":false,"source_mode":mode,"expected_frames":schedule.steps.len(),"frames":[],"failures":[],"original":recorded.as_ref().map(|r|&r.provenance)});
+     write_progress(request.destination, &progress)?;
++    timings.progress += start.elapsed();
+     let result = (|| {
+         let mut frames = Vec::with_capacity(schedule.steps.len());
+-        let mut step_seconds = 0.0;
+         let mut writer = offscreen::FrameWriter {
+             operations,
+             graphics: &graphics,
+@@ -248,10 +253,10 @@
+             mass_kg: scene.configuration.derived.particle_mass_kg,
+             dt,
+             destination: request.destination,
+-            render_seconds: 0.0,
+-            encode_seconds: 0.0,
++            timings: timing::FrameTimings::default(),
+         };
+         let mut diagnostics = Vec::new();
++        let start = Instant::now();
+         let mut solver = if mode == "saved" {
+             None
+         } else {
+@@ -265,6 +270,7 @@
+             m.device = s.device().cloned();
+             m
+         });
++        timings.setup += start.elapsed();
+         let mut next = 0;
+         for step in 0..=last_step {
+             // Saved schedules can be sparse and enormous. Iterate scheduled
+@@ -281,11 +287,14 @@
+             if step > 0 {
+                 let start = Instant::now();
+                 let outcome = s.step_with_cancellation(&mut cancelled).map_err(fail)?;
+-                step_seconds += start.elapsed().as_secs_f64();
++                timings.solver_steps += start.elapsed();
+                 diagnostics.push(crate::workflow::StepDiagnostic::new(step, outcome.cfl));
+                 progress["accepted_steps"] = json!(step.to_string());
+             }
++            let start = Instant::now();
+             let snapshot = SnapshotRecord::capture(s.snapshot());
++            timings.snapshot_capture += start.elapsed();
++            let start = Instant::now();
+             if let Some(expected) = recorded.as_ref().and_then(|r| r.snapshots.get(&step))
+                 && let Err(error) = source::compare(expected, &snapshot, options.execution)
+             {
+@@ -301,13 +310,16 @@
+                 }
+                 return Err(error);
+             }
++            timings.comparison += start.elapsed();
+             if schedule.steps.get(next) == Some(&step) {
+                 let frame = writer.write(&snapshot, next)?;
+                 frames.push(frame);
+                 next += 1;
++                let start = Instant::now();
+                 progress["frames"] = serde_json::to_value(&frames).map_err(fail)?;
+                 progress["accepted_steps"] = json!(step.to_string());
+                 write_progress(request.destination, &progress)?;
++                timings.progress += start.elapsed();
+             }
+         }
+         if mode == "saved" {
+@@ -323,9 +335,11 @@
+                     .get(step)
+                     .ok_or_else(|| fail("missing saved frame"))?;
+                 frames.push(writer.write(snapshot, index)?);
++                let start = Instant::now();
+                 progress["frames"] = serde_json::to_value(&frames).map_err(fail)?;
+                 progress["accepted_steps"] = json!(step.to_string());
+                 write_progress(request.destination, &progress)?;
++                timings.progress += start.elapsed();
+             }
+         }
+         if frames.len() != schedule.steps.len() {
+@@ -335,6 +349,8 @@
+             return Err(fail("export cancelled before completion publication"));
+         }
+         graphics.check().map_err(fail)?;
++        timings.frames = writer.timings;
++        let timing_profile = timings.profile(started.elapsed())?;
+         let manifest = json!({"schema_version":1,"complete":true,"source_mode":mode,"application_version":env!("CARGO_PKG_VERSION"),
+             "build":{"commit":option_env!("MAELSTROM_EXPORT_COMMIT"),"dirty":option_env!("MAELSTROM_EXPORT_DIRTY"),"source_sha256":option_env!("MAELSTROM_EXPORT_SOURCE"),"lock_sha256":option_env!("MAELSTROM_EXPORT_LOCK"),"target":option_env!("MAELSTROM_EXPORT_TARGET"),"rustc":option_env!("MAELSTROM_EXPORT_RUSTC"),"debug_assertions":cfg!(debug_assertions),"profile":option_env!("MAELSTROM_EXPORT_PROFILE"),"opt_level":option_env!("MAELSTROM_EXPORT_OPT_LEVEL"),"rustflags_sha256":option_env!("MAELSTROM_EXPORT_CARGO_ENCODED_RUSTFLAGS"),"features":{"render":true,"viewer":cfg!(feature="viewer"),"cuda":cfg!(feature="cuda")}},
+             "backend":RunMetadata::new(&input,last_step,options.backend,options.execution).backend,"execution":options.execution,"request":{"steps":last_step.to_string(),"checkpoints":schedule.steps.iter().map(u64::to_string).collect::<Vec<_>>()},"input":input,"effective_execution":options.execution,"discovery":format!("{:?}",options.backend),"run_metadata":metadata,"original":recorded.as_ref().map(|r|&r.provenance),
+@@ -343,7 +359,7 @@
+             "renderer":{"revision":"opaque-spheres-lines-v2","shader_sha256":hash(include_bytes!("../render/particles.wgsl")),"format":"Rgba8UnormSrgb","samples":1,"overlays":false},
+             "graphics":{"backend":format!("{:?}",graphics.adapter_info.backend),"name":graphics.adapter_info.name,"device_type":format!("{:?}",graphics.adapter_info.device_type),"vendor":graphics.adapter_info.vendor,"device":graphics.adapter_info.device,"driver":graphics.adapter_info.driver,"driver_info":graphics.adapter_info.driver_info,"selection_index":request.graphics.index,"software_requested":request.graphics.software},
+             "encoder":{"crate":"png","version":"0.18.1","colour":"RGBA8 sRGB","compression":"Balanced","filter":"Adaptive"},
+-            "timing_seconds":{"solver_steps":step_seconds,"graphics_readback":writer.render_seconds,"encoding":writer.encode_seconds},"accepted_diagnostics":diagnostics,
++            "timing_seconds":{"solver_steps":timings.solver_steps.as_secs_f64(),"graphics_readback":timings.frames.graphics_readback.as_secs_f64(),"encoding":timings.frames.png_encoding.as_secs_f64()},"timing_profile":timing_profile,"accepted_diagnostics":diagnostics,
+             "destination_label":request.destination.file_name().map(|s|s.to_string_lossy())});
+         publish_bytes(
+             &request.destination.join("manifest.json"),
+--- a/src/export/offscreen.rs
++++ b/src/export/offscreen.rs
+@@ -1,6 +1,7 @@
+ //! One submitted texture is read back completely before the next observation is
+ //! admitted. Row padding is removed without changing the top-left image origin.
+ 
++use super::timing::FrameTimings;
+ use super::{ExportError, fail};
+ use crate::{
+     render::{BoundaryLines, DrawScene, Graphics, Settings},
+@@ -143,8 +144,7 @@
+     pub mass_kg: f32,
+     pub dt: f64,
+     pub destination: &'a std::path::Path,
+-    pub render_seconds: f64,
+-    pub encode_seconds: f64,
++    pub timings: FrameTimings,
+ }
+ impl FrameWriter<'_> {
+     pub fn write(
+@@ -152,7 +152,9 @@
+         snapshot: &SnapshotRecord,
+         index: usize,
+     ) -> Result<super::Frame, ExportError> {
++        let start = std::time::Instant::now();
+         let particles: Vec<_> = snapshot.particles().iter().map(|p| p.particle()).collect();
++        self.timings.particle_copy += start.elapsed();
+         let start = std::time::Instant::now();
+         let rgba = (self.operations.read_pixels)(
+             self.graphics,
+@@ -167,14 +169,17 @@
+                 height: self.settings.height,
+             },
+         )?;
+-        self.render_seconds += start.elapsed().as_secs_f64();
++        self.timings.graphics_readback += start.elapsed();
+         let start = std::time::Instant::now();
+         let bytes = (self.operations.encode_png)(self.settings.width, self.settings.height, &rgba)?;
+-        self.encode_seconds += start.elapsed().as_secs_f64();
++        self.timings.png_encoding += start.elapsed();
++        let start = std::time::Instant::now();
+         let file = format!("frame-{index:08}.png");
+         publish_bytes(&self.destination.join(&file), &bytes)
+             .map_err(|e| fail(format!("frame {index} publication: {}", e.kind())))?;
+-        Ok(super::Frame {
++        self.timings.publication += start.elapsed();
++        let start = std::time::Instant::now();
++        let frame = super::Frame {
+             index,
+             step: snapshot.completed_steps().to_string(),
+             simulated_seconds: snapshot.completed_steps() as f64 * self.dt,
+@@ -182,7 +187,9 @@
+             png_sha256: super::hash(&bytes),
+             rgba_sha256: super::hash(&rgba),
+             snapshot_sha256: super::hash(snapshot.to_json().map_err(fail)?.as_bytes()),
+-        })
++        };
++        self.timings.hashing += start.elapsed();
++        Ok(frame)
+     }
+ }
+ 
+--- /dev/null
++++ b/src/export/timing.rs
+@@ -0,0 +1,87 @@
++//! Export intervals account for synchronous work before manifest construction.
++//! Final manifest publication, caller output and teardown belong to command wall
++//! time; the manifest cannot contain a measurement of its own completed write.
++
++use super::{ExportError, fail};
++use serde_json::{Value, json};
++use std::time::Duration;
++
++#[derive(Clone, Copy, Default)]
++pub(super) struct FrameTimings {
++    pub particle_copy: Duration,
++    pub graphics_readback: Duration,
++    pub png_encoding: Duration,
++    pub publication: Duration,
++    pub hashing: Duration,
++}
++
++#[derive(Default)]
++pub(super) struct ExportTimings {
++    pub setup: Duration,
++    pub solver_steps: Duration,
++    pub snapshot_capture: Duration,
++    pub comparison: Duration,
++    pub progress: Duration,
++    pub frames: FrameTimings,
++}
++
++impl ExportTimings {
++    pub fn profile(&self, elapsed: Duration) -> Result<Value, ExportError> {
++        let components = [
++            ("setup", self.setup),
++            ("solver_steps", self.solver_steps),
++            ("snapshot_capture", self.snapshot_capture),
++            ("comparison", self.comparison),
++            ("frame_particle_copy", self.frames.particle_copy),
++            ("graphics_readback", self.frames.graphics_readback),
++            ("png_encoding", self.frames.png_encoding),
++            ("frame_publication", self.frames.publication),
++            ("frame_hashing", self.frames.hashing),
++            ("progress", self.progress),
++        ];
++        let accounted: Duration = components.iter().map(|(_, time)| *time).sum();
++        let other = elapsed
++            .checked_sub(accounted)
++            .ok_or_else(|| fail("export timing intervals exceed their enclosing duration"))?;
++        let mut seconds: serde_json::Map<_, _> = components
++            .into_iter()
++            .map(|(name, duration)| (name.to_owned(), json!(duration.as_secs_f64())))
++            .collect();
++        seconds.insert("other".into(), json!(other.as_secs_f64()));
++        Ok(json!({
++            "schema_version": 1,
++            "boundary": "export_entry_to_before_manifest",
++            "total_s": elapsed.as_secs_f64(),
++            "components_s": seconds,
++        }))
++    }
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    #[test]
++    fn profile_accounts_for_frame_work_and_rejects_overlapping_intervals() {
++        let timings = ExportTimings {
++            setup: Duration::from_secs(2),
++            solver_steps: Duration::from_secs(3),
++            frames: FrameTimings {
++                publication: Duration::from_secs(5),
++                hashing: Duration::from_secs(7),
++                ..Default::default()
++            },
++            progress: Duration::from_secs(11),
++            ..Default::default()
++        };
++        let profile = timings.profile(Duration::from_secs(31)).unwrap();
++        assert_eq!(profile["schema_version"], 1);
++        assert_eq!(profile["boundary"], "export_entry_to_before_manifest");
++        assert_eq!(profile["total_s"], 31.0);
++        assert_eq!(profile["components_s"]["frame_publication"], 5.0);
++        assert_eq!(profile["components_s"]["frame_hashing"], 7.0);
++        assert_eq!(profile["components_s"]["progress"], 11.0);
++        assert_eq!(profile["components_s"]["other"], 3.0);
++        assert!(timings.profile(Duration::from_secs(27)).is_err());
++    }
++}
+--- a/tests/export_device.rs
++++ b/tests/export_device.rs
+@@ -116,12 +116,30 @@
+     .unwrap();
+     eprintln!("export graphics: {}", direct["graphics"]);
+     for manifest in [&direct, &saved, &rerun] {
++        let profile = &manifest["timing_profile"];
++        assert_eq!(profile["schema_version"], 1);
++        assert_eq!(profile["boundary"], "export_entry_to_before_manifest");
++        let components = profile["components_s"].as_object().unwrap();
++        assert_eq!(components.len(), 11);
++        let seconds: Vec<_> = components.values().map(|v| v.as_f64().unwrap()).collect();
++        assert!(seconds.iter().all(|v| v.is_finite() && *v >= 0.0));
++        let total = profile["total_s"].as_f64().unwrap();
++        assert!(total.is_finite() && total > 0.0);
++        assert!((seconds.iter().sum::<f64>() - total).abs() <= total * 1e-12);
++        for (legacy, component) in [
++            ("solver_steps", "solver_steps"),
++            ("graphics_readback", "graphics_readback"),
++            ("encoding", "png_encoding"),
++        ] {
++            assert_eq!(manifest["timing_seconds"][legacy], components[component]);
++        }
+         assert_eq!(manifest["frame_count"], schedule.steps.len());
+         assert_eq!(
+             manifest["input"]["comparison_key"],
+             serde_json::to_value(reference.input().unwrap()).unwrap()["comparison_key"]
+         );
+     }
++    assert_eq!(saved["timing_profile"]["components_s"]["solver_steps"], 0.0);
+     for (i, checkpoint) in reference.checkpoints().iter().enumerate() {
+         let name = format!("frame-{i:08}.png");
+         let rgba = decode(&a.0.join(&name));

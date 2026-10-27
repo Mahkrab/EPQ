@@ -1,0 +1,415 @@
+--- a/docs/cuda.md
++++ b/docs/cuda.md
+@@ -75,8 +75,9 @@
+ required. Storage follows actual membership rather than an all-pairs matrix; dense
+ input can still require quadratic space and is never silently capped or truncated.
+ 
+-Each attempt uploads accepted state, returns velocities for the host CFL diagnostic
+-and predictions for bounds checks, then retains iterative working arrays on device.
++The first attempt uploads accepted state and static planes and reserves fixed storage.
++Later attempts reuse accepted device vectors, returning velocities for the host CFL diagnostic
++and predictions for bounds checks while retaining iterative working arrays on device.
+ Failing lanes select the first particle's checked quantity with an integer atomic
+ minimum instead of returning the complete error array. Each Jacobi calculation and
+ candidate/projection pair is submitted as a stream-ordered group, with one result
+@@ -90,8 +91,10 @@
+ as one batch. Their kernels and dependencies are unchanged; submission failure stops
+ the batch, drains outstanding work and invalidates the context before returning.
+ Whole-stage Jacobi dependencies and ordered plane projection remain intact. The host
+-validates and atomically accepts a complete step; scratch never becomes accepted state
+-merely because a kernel finished.
++validates a complete step and passes its final cancellation poll before exchanging accepted
++and working device vectors and installing the host snapshot. Promotion makes no driver calls.
++Scratch never becomes accepted state merely because a kernel finished. Host snapshots remain
++current after every accepted step; this does not eliminate final downloads or host validation.
+ 
+ Ordered binary32 sums, denormals, round-to-nearest division/square root and disabled
+ contraction preserve the supported arithmetic. Native power alternatives diverged on
+@@ -107,7 +110,7 @@
+ coefficient units and the effect of timestep refinement.
+ 
+ Cancellation is cooperative between completed stages. Numerical failure or cancellation
+-retains old accepted state; retry reloads it and rebuilds membership. Input rejection
++retains old accepted host/device state; retry reuses those device inputs and rebuilds membership. Input rejection
+ and device-allocation exhaustion may be retried. Other driver faults poison the
+ resource, including for later empty requests; construct a new solver rather than
+ resetting the process or silently substituting CPU. Actual device-loss recovery and
+--- a/native/bridge.cpp
++++ b/native/bridge.cpp
+@@ -7,6 +7,7 @@
+ #include <limits>
+ #include <new>
+ #include <cmath>
++#include <utility>
+ 
+ #if CUDA_VERSION < 13000
+ #error "The CUDA bridge requires CUDA 13 headers; see docs/cuda.md"
+@@ -58,6 +59,7 @@
+     CUfunction solver = nullptr;
+     CUdeviceptr diagnostic = 0;
+     bool diagnostic_clear = false;
++    bool attempt_open = false;
+     CUdeviceptr slots[14]{};
+     std::size_t capacities[14]{};
+     CUdeviceptr buffer = 0;
+@@ -315,7 +317,8 @@
+ extern "C" Status maelstrom_cuda_begin_attempt(void *handle) {
+     auto &r=*static_cast<Resource *>(handle);
+     if (r.poisoned) return {-3,14};
+-    if (r.diagnostic_clear) return {0,0};
++    r.attempt_open=false;
++    if (r.diagnostic_clear) { r.attempt_open=true; return {0,0}; }
+     // Successful passes leave the sentinel untouched. Reset only for the first
+     // attempt or after a numerical failure; never trust that flag after a driver
+     // fault. No dependent work can observe a partly initialised record.
+@@ -323,8 +326,23 @@
+         auto code=r.driver.cuMemsetD8Async_fn(r.diagnostic,0xff,4*sizeof(std::uint64_t),r.stream);
+         return {code,code==CUDA_SUCCESS ? 0 : 9};
+     });
+-    if (!status.code) r.diagnostic_clear=true;
+-    return status;
++    if (!status.code) { r.diagnostic_clear=true; r.attempt_open=true; }
++    return status;
++}
++
++// The caller has downloaded and validated final output and passed its last
++// cancellation poll. All prior calls drained the stream; promotion only changes
++// ownership of allocations. Rejected attempts leave both accepted vectors alone.
++extern "C" Status maelstrom_cuda_accept(void *handle) {
++    auto &r=*static_cast<Resource *>(handle);
++    if (r.poisoned) return {-3,14};
++    if (!r.attempt_open || !r.diagnostic_clear) return {CUDA_ERROR_INVALID_VALUE,7};
++    for (unsigned int slot : {0U,1U}) {
++        std::swap(r.slots[slot],r.slots[slot+2]);
++        std::swap(r.capacities[slot],r.capacities[slot+2]);
++    }
++    r.attempt_open=false;
++    return {0,0};
+ }
+ 
+ extern "C" Status maelstrom_cuda_solver(void *handle, SolverSettings settings,
+--- a/native/tests.cpp
++++ b/native/tests.cpp
+@@ -16,6 +16,7 @@
+     int frees = 0;
+     int completions = 0;
+     int downloads = 0;
++    int uploads = 0;
+     bool record_solver = false;
+     int fail_launch = 0;
+     int resets = 0;
+@@ -63,7 +64,7 @@
+         *buffer=observed.next++; observed.memory[*buffer].resize(bytes); return CUDA_SUCCESS;
+     };
+     d.cuMemFree_fn = [](CUdeviceptr pointer) { ++observed.frees; if (!observed.fail) observed.memory.erase(pointer); return fault(12); };
+-    d.cuMemcpyHtoD_fn = [](CUdeviceptr pointer, const void *data, std::size_t bytes) { assert(bytes<=observed.memory.at(pointer).size());std::memcpy(observed.memory.at(pointer).data(), data, bytes); return fault(8); };
++    d.cuMemcpyHtoD_fn = [](CUdeviceptr pointer, const void *data, std::size_t bytes) { ++observed.uploads;assert(bytes<=observed.memory.at(pointer).size());std::memcpy(observed.memory.at(pointer).data(), data, bytes); return fault(8); };
+     d.cuMemsetD8Async_fn = [](CUdeviceptr pointer, unsigned char value, std::size_t bytes, CUstream) {
+         ++observed.resets;
+         if (observed.fail_reset) return CUDA_ERROR_UNKNOWN;
+@@ -349,7 +350,46 @@
+     assert(maelstrom_cuda_begin_attempt(&r).stage==10 && r.poisoned);
+ }
+ 
++static void accepted_vectors() {
++    observed={};
++    Resource r;ready(r);
++    for (unsigned int slot=0;slot<4;++slot) {
++        assert(maelstrom_cuda_storage(&r,slot,nullptr,12*(slot+1),0).code==0);
++        std::fill(observed.memory.at(r.slots[slot]).begin(),
++                  observed.memory.at(r.slots[slot]).end(),static_cast<unsigned char>(slot+1));
++    }
++    const std::vector<CUdeviceptr> pointers(r.slots,r.slots+14);
++    const std::vector<std::size_t> capacities(r.capacities,r.capacities+14);
++    assert(maelstrom_cuda_accept(&r).stage==7);
++    assert(maelstrom_cuda_begin_attempt(&r).code==0);
++    r.diagnostic_clear=false;
++    assert(maelstrom_cuda_accept(&r).stage==7);
++    r.poisoned=true;
++    assert(maelstrom_cuda_accept(&r).stage==14);
++    r.poisoned=false;r.diagnostic_clear=true;
++    assert(std::equal(pointers.begin(),pointers.end(),r.slots));
++    assert(std::equal(capacities.begin(),capacities.end(),r.capacities));
++    const auto pushes=observed.pushes,pops=observed.pops,waits=observed.completions;
++    const auto uploads=observed.uploads,downloads=observed.downloads,resets=observed.resets;
++    assert(maelstrom_cuda_accept(&r).code==0);
++    for (unsigned int slot=0;slot<4;++slot) {
++        const auto source=(slot+2)%4;
++        assert(r.slots[slot]==pointers[source] && r.capacities[slot]==capacities[source]);
++        for (auto byte:observed.memory.at(r.slots[slot])) assert(byte==source+1);
++    }
++    assert(std::equal(pointers.begin()+4,pointers.end(),r.slots+4));
++    assert(observed.pushes==pushes && observed.pops==pops && observed.completions==waits);
++    assert(observed.uploads==uploads && observed.downloads==downloads && observed.resets==resets);
++    const auto accepted=r.slots[0];
++    assert(maelstrom_cuda_accept(&r).stage==7 && r.slots[0]==accepted);
++    assert(maelstrom_cuda_begin_attempt(&r).code==0);
++    assert(maelstrom_cuda_accept(&r).code==0);
++    assert(std::equal(pointers.begin(),pointers.end(),r.slots));
++    assert(std::equal(capacities.begin(),capacities.end(),r.capacities));
++}
++
+ int main() {
++    accepted_vectors();
+     sort_batches();
+     row_sort_batches();
+     checked_solver();
+--- a/src/cuda/native.rs
++++ b/src/cuda/native.rs
+@@ -93,6 +93,7 @@
+         diagnostic: *mut u64,
+     ) -> Status;
+     fn maelstrom_cuda_begin_attempt(handle: *mut c_void) -> Status;
++    fn maelstrom_cuda_accept(handle: *mut c_void) -> Status;
+     fn maelstrom_cuda_checked_group(
+         handle: *mut c_void,
+         settings: Settings,
+@@ -125,6 +126,15 @@
+ };
+ 
+ impl Context {
++    pub(super) fn accept(&mut self) -> Result<(), CudaError> {
++        let handle = self.handle.ok_or(CudaError::Poisoned)?;
++        // SAFETY: This unique thread-local handle has no outstanding work or
++        // borrowed host memory. Simulation calls only after final validation.
++        // Native code rejects poisoned/closed attempts before exchanging owned
++        // vector allocations and their capacities; it makes no driver calls.
++        unsafe { maelstrom_cuda_accept(handle.as_ptr()) }.result()
++    }
++
+     pub(super) fn begin_attempt(&mut self) -> Result<(), CudaError> {
+         let handle = self.handle.ok_or(CudaError::Poisoned)?;
+         // SAFETY: The unique live handle owns the diagnostic allocation. Native
+--- /dev/null
++++ b/src/cuda/residency_tests.rs
+@@ -0,0 +1,132 @@
++//! Pointer promotion must follow acceptance, while failed attempts retain the
++//! preceding device inputs. The serial solver supplies an independent trajectory.
++
++use super::*;
++use crate::simulation::Simulation;
++
++fn bits(particles: &[Particle]) -> Vec<(u64, [u32; 3], [u32; 3])> {
++    particles
++        .iter()
++        .map(|p| {
++            (
++                p.identity,
++                array(p.position_m).map(f32::to_bits),
++                array(p.velocity_m_s).map(f32::to_bits),
++            )
++        })
++        .collect()
++}
++
++fn device_vectors(gpu: &mut CudaSolver, slot: u32, count: usize) -> Vec<[u32; 3]> {
++    gpu.context
++        .inner
++        .download::<[f32; 3]>(slot, count)
++        .unwrap()
++        .into_iter()
++        .map(|v| v.map(f32::to_bits))
++        .collect()
++}
++
++#[test]
++#[ignore = "requires an explicitly selected CUDA hardware test run"]
++fn hardware_resident_inputs_promote_after_acceptance_and_survive_retry() {
++    let config = crate::config::resolve_effective_configuration(None, None, None).unwrap();
++    let plane = Plane::new(Vec3::new(0., 1., 0.), 0., 0.).unwrap();
++    for threads in [32, 64, 128, 256] {
++        for count in [0, 1, 33] {
++            let mut particles: Vec<_> = (0..count)
++                .map(|i| Particle {
++                    identity: 2 * i as u64 + 1,
++                    position_m: Vec3::new(i as f32, 0.01, 0.),
++                    velocity_m_s: Vec3::new(0.25, -0.5, 0.),
++                })
++                .collect();
++            let mut cpu = Simulation::new(&config, particles.clone(), vec![plane]).unwrap();
++            let mut gpu = CudaSolver::new(0, threads).unwrap();
++            for step in 0..6 {
++                let old = bits(&particles);
++                let output = gpu
++                    .step(
++                        &config,
++                        &particles,
++                        &[plane],
++                        &mut || false,
++                        &mut StageClock::<false>::new(),
++                    )
++                    .unwrap()
++                    .0;
++                let _ = cpu.step().unwrap();
++                assert_eq!(bits(&output), bits(cpu.snapshot().particles()));
++                assert_eq!(
++                    device_vectors(&mut gpu, 0, count),
++                    old.iter().map(|p| p.1).collect::<Vec<_>>()
++                );
++                assert_eq!(
++                    device_vectors(&mut gpu, 1, count),
++                    old.iter().map(|p| p.2).collect::<Vec<_>>()
++                );
++                gpu.accept().unwrap();
++                let accepted = bits(&output);
++                assert_eq!(
++                    device_vectors(&mut gpu, 0, count),
++                    accepted.iter().map(|p| p.1).collect::<Vec<_>>()
++                );
++                assert_eq!(
++                    device_vectors(&mut gpu, 1, count),
++                    accepted.iter().map(|p| p.2).collect::<Vec<_>>()
++                );
++                assert_eq!(
++                    device_vectors(&mut gpu, 2, count),
++                    old.iter().map(|p| p.1).collect::<Vec<_>>()
++                );
++                assert_eq!(
++                    device_vectors(&mut gpu, 3, count),
++                    old.iter().map(|p| p.2).collect::<Vec<_>>()
++                );
++                assert!(gpu.accept().is_err(), "a second promotion must be rejected");
++                let failed = gpu.step(
++                    &config,
++                    &output,
++                    &[plane],
++                    &mut || true,
++                    &mut StageClock::<false>::new(),
++                );
++                assert!(matches!(failed, Err(StepError::Cancelled)));
++                assert_eq!(
++                    device_vectors(&mut gpu, 0, count),
++                    accepted.iter().map(|p| p.1).collect::<Vec<_>>()
++                );
++                assert_eq!(
++                    device_vectors(&mut gpu, 1, count),
++                    accepted.iter().map(|p| p.2).collect::<Vec<_>>()
++                );
++                if step == 0 {
++                    let mut polls = 0;
++                    let panic = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
++                        gpu.step(
++                            &config,
++                            &output,
++                            &[plane],
++                            &mut || {
++                                polls += 1;
++                                assert_ne!(polls, 2, "injected panic after prediction");
++                                false
++                            },
++                            &mut StageClock::<false>::new(),
++                        )
++                    }));
++                    assert!(panic.is_err());
++                    assert_eq!(
++                        device_vectors(&mut gpu, 0, count),
++                        accepted.iter().map(|p| p.1).collect::<Vec<_>>()
++                    );
++                    assert_eq!(
++                        device_vectors(&mut gpu, 1, count),
++                        accepted.iter().map(|p| p.2).collect::<Vec<_>>()
++                    );
++                }
++                particles = output;
++            }
++        }
++    }
++}
+--- a/src/cuda/solver.rs
++++ b/src/cuda/solver.rs
+@@ -1,6 +1,6 @@
+-//! Device scratch persists across timesteps; accepted state belongs to Simulation.
+-//! Each attempt reloads that state, so cancellation or numerical failure can retry
+-//! without exposing or trusting a previous attempt's partial device buffers.
++//! Accepted device vectors survive timesteps alongside Simulation's host mirror.
++//! Attempts write separate working vectors. Only final host validation permits
++//! promotion, so cancellation and retries never depend on partial device output.
+ 
+ use super::{CudaContext, CudaError};
+ use crate::{
+@@ -50,6 +50,7 @@
+     pub(crate) context: CudaContext,
+     threads: u32,
+     neighbour_capacity: usize,
++    resident: bool,
+ }
+ 
+ fn array(v: Vec3) -> [f32; 3] {
+@@ -188,6 +189,7 @@
+             context: CudaContext::new(device)?,
+             threads,
+             neighbour_capacity: 0,
++            resident: false,
+         })
+     }
+ 
+@@ -197,6 +199,7 @@
+         particles: &[Particle],
+         planes: &[Plane],
+     ) -> Result<(), CudaError> {
++        self.resident = false;
+         for (slot, size) in storage_sizes(s)?.into_iter().enumerate() {
+             self.context.inner.reserve(slot as u32, size)?;
+         }
+@@ -211,6 +214,12 @@
+         self.context.inner.upload(1, &velocities)?;
+         self.context.inner.upload(9, &planes)?;
+         self.context.inner.begin_attempt()
++    }
++
++    /// Promote only after Simulation's final checks; host installation follows
++    /// immediately and cannot fail. Inputs and planes are immutable for its life.
++    pub(crate) fn accept(&mut self) -> Result<(), CudaError> {
++        self.context.inner.accept()
+     }
+ 
+     fn operation(&mut self, s: Settings, operation: u32) -> Result<(), StepError> {
+@@ -293,7 +302,15 @@
+         clock: &mut StageClock<PROFILE>,
+     ) -> Result<(Vec<Particle>, CflDiagnostic), StepError> {
+         let mut s = settings(configuration, particles.len(), planes.len())?;
+-        self.prepare(s, particles, planes)?;
++        if !self.resident {
++            self.prepare(s, particles, planes)?;
++            self.resident = true;
++        } else {
++            // Count, identities, configuration and planes belong to one fixed
++            // Simulation. Accepted vectors were promoted at its last commit;
++            // a failed attempt can overwrite scratch but never these inputs.
++            self.context.inner.begin_attempt()?;
++        }
+         self.operation(s, 0)?;
+         let velocities = host_values(
+             self.context
+@@ -438,6 +455,10 @@
+ mod tests;
+ 
+ #[cfg(test)]
++#[path = "residency_tests.rs"]
++mod residency_tests;
++
++#[cfg(test)]
+ #[path = "correction_tests.rs"]
+ mod correction_tests;
+ 
+--- a/src/simulation/mod.rs
++++ b/src/simulation/mod.rs
+@@ -296,6 +296,7 @@
+                 }
+             }
+             check_cancellation(cancelled)?;
++            cuda.accept()?;
+             self.accepted = Snapshot {
+                 completed_steps,
+                 particles,
+--- a/src/simulation/timing.rs
++++ b/src/simulation/timing.rs
+@@ -49,7 +49,7 @@
+ }
+ 
+ impl<const ENABLED: bool> StageClock<ENABLED> {
+-    pub(super) fn new() -> Self {
++    pub(crate) fn new() -> Self {
+         Self {
+             previous: if ENABLED { Some(Instant::now()) } else { None },
+             times: StageTimes::default(),

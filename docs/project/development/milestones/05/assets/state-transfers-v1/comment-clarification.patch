@@ -1,0 +1,9 @@
+--- a/native/neighbours.cuh
++++ b/native/neighbours.cuh
+@@ -1,5 +1,5 @@
+ // Prediction-time rows contain only actual neighbours, sorted by identity. The
+-// count and fill passes share geometry; checked host prefixes determine storage.
++// count and fill passes share geometry; checked prefix totals determine storage.
+ #pragma once
+ #include "row_sort.cuh"
+ 

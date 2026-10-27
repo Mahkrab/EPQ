@@ -1,0 +1,138 @@
+{
+  "physical_runs": 74,
+  "exact_groups": 10,
+  "ordinary": {
+    "110592": {
+      "median_s": {
+        "control": 8.818003897,
+        "candidate": 8.215197278
+      },
+      "speedup": 1.0733770107522913,
+      "paired_reduction_percent": [
+        7.148015747177771,
+        5.779379706394982,
+        4.39582916871375,
+        6.372718749813123,
+        6.945109756737056
+      ]
+    },
+    "110592-effects": {
+      "median_s": {
+        "control": 9.018208946,
+        "candidate": 8.548742507
+      },
+      "speedup": 1.054916432284115,
+      "paired_reduction_percent": [
+        4.953815404755646,
+        6.742461974687486,
+        7.533447841818308,
+        4.14962751685689,
+        4.916273118525383
+      ]
+    },
+    "8000": {
+      "median_s": {
+        "control": 1.600256041,
+        "candidate": 1.495986496
+      },
+      "speedup": 1.069699522875907,
+      "paired_reduction_percent": [
+        6.801981963184112,
+        14.106972216197844,
+        5.735136048180123,
+        7.2097670400184555,
+        6.340106732957496
+      ]
+    }
+  },
+  "stage": {
+    "110592": {
+      "sort_gpu_s": {
+        "median_s": {
+          "control": 0.6197054077899999,
+          "candidate": 0.10566086383699999
+        },
+        "speedup": 5.8650420343524905
+      },
+      "sort_submit_s": {
+        "median_s": {
+          "control": 0.12792904,
+          "candidate": 0.008900133
+        },
+        "speedup": 14.373834638201474
+      },
+      "solver_s": {
+        "median_s": {
+          "control": 8.74678762,
+          "candidate": 8.24197482
+        },
+        "speedup": 1.0612490102220429
+      },
+      "instrumentation_percent": {
+        "control": -0.8076235600693038,
+        "candidate": 0.3259512960414046
+      }
+    },
+    "8000": {
+      "sort_gpu_s": {
+        "median_s": {
+          "control": 0.120436351934,
+          "candidate": 0.021240735979
+        },
+        "speedup": 5.6700649192698105
+      },
+      "sort_submit_s": {
+        "median_s": {
+          "control": 0.072619213,
+          "candidate": 0.00571917
+        },
+        "speedup": 12.697509079114628
+      },
+      "solver_s": {
+        "median_s": {
+          "control": 1.608991054,
+          "candidate": 1.509460572
+        },
+        "speedup": 1.0659377819111395
+      },
+      "instrumentation_percent": {
+        "control": 0.5458509623585961,
+        "candidate": 0.9006816596291101
+      }
+    }
+  },
+  "traces": {
+    "8000": {
+      "control": {
+        "total_launches": 1168,
+        "sort_launches": 728,
+        "non_sort_launches": 440,
+        "waits": 168,
+        "copies": 219
+      },
+      "candidate": {
+        "total_launches": 496,
+        "sort_launches": 56,
+        "non_sort_launches": 440,
+        "waits": 168,
+        "copies": 219
+      }
+    },
+    "110592": {
+      "control": {
+        "total_launches": 1664,
+        "sort_launches": 1224,
+        "non_sort_launches": 440,
+        "waits": 168,
+        "copies": 219
+      },
+      "candidate": {
+        "total_launches": 528,
+        "sort_launches": 88,
+        "non_sort_launches": 440,
+        "waits": 168,
+        "copies": 219
+      }
+    }
+  }
+}

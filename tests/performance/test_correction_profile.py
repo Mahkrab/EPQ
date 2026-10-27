@@ -18,6 +18,11 @@ class CorrectionProfileTests(unittest.TestCase):
         self.assertEqual(launch_index(1, 1, 1), 7)
         self.assertEqual(launch_index(2, 2, 1), 63)
 
+    def test_cooperative_row_sort_shifts_each_steps_correction_once(self):
+        self.assertEqual(launch_index(110592, 1, 1, row_sort=True), 161)
+        self.assertEqual(launch_index(110592, 241, 1, row_sort=True), 50081)
+        self.assertEqual(launch_index(110592, 480, 8, row_sort=True), 99835)
+
     def test_invalid_launch_requests_fail_before_tool_execution(self):
         for request in ((True, 1, 1), (0, 1, 1), (1000001, 1, 1), (4, 0, 1),
                         (4, 481, 1), (4, 1, 0), (4, 1, 9), (4, 1.5, 1)):

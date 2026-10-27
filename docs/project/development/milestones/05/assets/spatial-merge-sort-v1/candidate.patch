@@ -1,0 +1,462 @@
+--- a/build.rs
++++ b/build.rs
+@@ -58,6 +58,7 @@
+         "native/solver.cu",
+         "native/neighbours.cuh",
+         "native/row_sort.cuh",
++        "native/spatial_sort.cuh",
+         "native/kernels.cu",
+         "native/power.cuh",
+     ] {
+--- a/docs/cuda.md
++++ b/docs/cuda.md
+@@ -90,8 +90,15 @@
+ Reservations within capacity and empty transfers require no driver call. Synchronous host
+ copies finish their borrows before returning and add no empty stream wait. Numerical checks and their stage,
+ particle and expression ordering remain unchanged. Final state still returns for inspection.
+-Cell generation, the integer cell-sort passes and neighbour counting run in order on the
+-private stream, with one completion at the checked count. Their kernels and dependencies are
++Cell generation, spatial sorting and neighbour counting run in order on the private stream,
++with one completion at the checked count. Spatial sorting first orders block-sized tiles in
++shared memory, then merges adjacent runs through two equally sized cell buffers. The final
++merge always lands at the original cell-array address, without a copy-back pass. Ordering
++uses all three signed 64-bit coordinates and the particle-index tie-breaker; padding sentinels
++are retained. A separate sorting entry point keeps its shared-memory allocation out of the
++numerical kernels. At block size 128 this takes seven sorting launches for 8,000 particles
++and eleven for 110,592, replacing 91 and 153 global bitonic passes. The second buffer costs
++32 bytes per padded entry (256 KiB and 4 MiB respectively), retained across timesteps. Their kernels and dependencies are
+ unchanged. Immediate submission failure stops the batch and drains outstanding work;
+ completion faults take precedence and invalidate the context before returning. An unchecked
+ submission can report success before a device fault is observed; the next diagnostic or
+--- a/native/bridge.cpp
++++ b/native/bridge.cpp
+@@ -57,6 +57,7 @@
+     CUmodule module = nullptr;
+     CUfunction kernel = nullptr;
+     CUfunction solver = nullptr;
++    CUfunction spatial_sort = nullptr;
+     CUdeviceptr diagnostic = 0;
+     bool diagnostic_clear = false;
+     bool attempt_open = false;
+@@ -100,6 +101,7 @@
+     if ((code = d.cuModuleLoadData_fn(&r.module, ptx)) != CUDA_SUCCESS) status = {code, 5};
+     if (!status.code && (code = d.cuModuleGetFunction_fn(&r.kernel, r.module, "roundtrip")) != CUDA_SUCCESS) status = {code, 5};
+     if (!status.code && (code = d.cuModuleGetFunction_fn(&r.solver, r.module, "solver")) != CUDA_SUCCESS) status = {code, 5};
++    if (!status.code && (code = d.cuModuleGetFunction_fn(&r.spatial_sort, r.module, "spatial_sort")) != CUDA_SUCCESS) status = {code, 5};
+     // Pageable uploads may return before DMA finishes on the legacy stream.
+     // This private stream must inherit that dependency before reading the data.
+     if (!status.code && (code = d.cuStreamCreate_fn(&r.stream, CU_STREAM_DEFAULT)) != CUDA_SUCCESS) status = {code, 6};
+@@ -266,7 +268,7 @@
+         return {CUDA_ERROR_INVALID_VALUE,7};
+     std::uint64_t n=settings.count;
+     std::uint64_t required[14]={n*12,n*12,n*12,n*12,n*4,n*4,n*4,n*12,n*12,
+-        static_cast<std::uint64_t>(settings.planes)*16,static_cast<std::uint64_t>(settings.padded)*32,
++        static_cast<std::uint64_t>(settings.planes)*16,static_cast<std::uint64_t>(settings.padded)*64,
+         settings.entries*4,n*4,(n+1)*8};
+     for (unsigned int slot=0;slot<14;++slot) if (required[slot]>r.capacities[slot]) return {CUDA_ERROR_INVALID_VALUE,7};
+     if (diagnostic && !r.diagnostic_clear) return {CUDA_ERROR_INVALID_VALUE,7};
+@@ -293,12 +295,12 @@
+         const bool sort=operation==13;
+         unsigned int kernel_operation=sort ? 3 : operation;
+         void *args[]={&buffers,&settings,&kernel_operation};
+-        std::uint64_t count=(operation==2 || kernel_operation==3) ? settings.padded : settings.count;
++        std::uint64_t count=(operation==2 || sort || kernel_operation==3) ? settings.padded : settings.count;
+         auto launch=[&]() -> Status {
+             // Conservatively mark before submission: even an immediate error
+             // must pass through the completion/poisoning boundary.
+             r.pending=true;
+-            auto code=r.driver.cuLaunchKernel_fn(r.solver,static_cast<unsigned int>((count+threads-1)/threads),
++            auto code=r.driver.cuLaunchKernel_fn(sort ? r.spatial_sort : r.solver,static_cast<unsigned int>((count+threads-1)/threads),
+                 1,1,threads,1,1,0,r.stream,args,nullptr);
+             return {code,code==CUDA_SUCCESS ? 0 : 9};
+         };
+@@ -318,15 +320,21 @@
+             }
+             return {0,0};
+         }
+-        // These integer-only passes have no host observations or cancellation
+-        // polls between them. Stream order supplies their global dependency;
+-        // the next observation drains the batch; immediate failures drain it here.
+-        for (std::uint64_t span=2;span<=settings.padded;span*=2) {
+-            settings.span=static_cast<unsigned int>(span);
+-            for (settings.stride=settings.span/2;settings.stride;settings.stride/=2) {
+-                auto status=launch();
+-                if (status.code) return status;
+-            }
++        if (settings.padded==1) return {0,0};
++        // Choose the tile output buffer so the final merge always lands at the
++        // public cell base. No copy-back, extra stream or per-step allocation.
++        unsigned int merges=0;
++        for (std::uint64_t width=threads;width<settings.padded;width*=2) ++merges;
++        settings.stride=merges&1U;
++        kernel_operation=19;
++        auto status=launch();
++        if (status.code) return status;
++        for (std::uint64_t width=threads;width<settings.padded;width*=2) {
++            settings.span=static_cast<unsigned int>(width);
++            kernel_operation=20;
++            status=launch();
++            if (status.code) return status;
++            settings.stride^=1U;
+         }
+         return {0,0};
+     },diagnostic ? records : nullptr,passes);
+--- a/native/solver.cu
++++ b/native/solver.cu
+@@ -61,6 +61,15 @@
+     return separation(b.position[i],b.position[j],c,18) < s.radius;
+ }
+ #include "neighbours.cuh"
++#include "spatial_sort.cuh"
++
++// Sorting has its own entry point so its shared tile does not reduce occupancy
++// for the numerical solver kernels.
++extern "C" __global__ void spatial_sort(SolverBuffers b, SolverSettings s, unsigned int operation) {
++    __shared__ Cell tile[256];
++    if (operation==19) sort_cell_tile(b.cells,s.padded,s.stride,tile);
++    else merge_cell_tile(b.cells,s.padded,s.span,s.stride,tile);
++}
+ 
+ extern "C" __global__ void solver(SolverBuffers b, SolverSettings s, unsigned int operation) {
+     const auto lane=static_cast<std::uint64_t>(blockIdx.x)*blockDim.x+threadIdx.x;
+--- /dev/null
++++ b/native/spatial_sort.cuh
+@@ -0,0 +1,70 @@
++// Keep full signed cell coordinates and the particle-index tie-breaker. Tiles
++// sort in shared memory; each later launch merges adjacent runs into disjoint
++// output tiles. Ping-pong storage stays inside the context-owned cell allocation.
++#pragma once
++
++__device__ void sort_cell_tile(Cell *cells, unsigned int padded, unsigned int output, Cell *tile) {
++    const unsigned int lane=threadIdx.x;
++    const auto index=static_cast<std::uint64_t>(blockIdx.x)*blockDim.x+lane;
++    tile[lane]=index<padded ? cells[index] : Cell{LLONG_MAX,LLONG_MAX,LLONG_MAX,UINT_MAX,0};
++    __syncthreads();
++    for (unsigned int span=2;span<=blockDim.x;span*=2) {
++        for (unsigned int stride=span/2;stride;stride/=2) {
++            const auto other=lane^stride;
++            if (other>lane) {
++                const Cell a=tile[lane], b=tile[other];
++                if (less(b,a)==((lane&span)==0)) { tile[lane]=b;tile[other]=a; }
++            }
++            __syncthreads();
++        }
++    }
++    if (index<padded) cells[static_cast<std::uint64_t>(output)*padded+index]=tile[lane];
++}
++
++// Partition the merged output at a diagonal, taking the left run first on equal
++// keys. That convention also keeps duplicate padding sentinels in distinct slots.
++__device__ unsigned int cell_merge_path(const Cell *left, const Cell *right,
++        unsigned int length, unsigned int diagonal) {
++    unsigned int lo=diagonal>length ? diagonal-length : 0;
++    unsigned int hi=diagonal<length ? diagonal : length;
++    while (lo<hi) {
++        const auto mid=lo+(hi-lo)/2, j=diagonal-mid;
++        if (j && mid<length && !less(right[j-1],left[mid])) lo=mid+1;
++        else hi=mid;
++    }
++    return lo;
++}
++
++__device__ void merge_cell_tile(Cell *cells, unsigned int padded,
++        unsigned int width, unsigned int input, Cell *tile) {
++    __shared__ unsigned int left_start, right_start, left_count;
++    const unsigned int lane=threadIdx.x;
++    const auto start=static_cast<std::uint64_t>(blockIdx.x)*blockDim.x;
++    const auto frame=start/(2ULL*width)*(2ULL*width);
++    const auto diagonal=static_cast<unsigned int>(start-frame);
++    const Cell *source=cells+static_cast<std::uint64_t>(input)*padded;
++    const Cell *left=source+frame, *right=left+width;
++    if (!lane) {
++        left_start=cell_merge_path(left,right,width,diagonal);
++        const auto left_stop=cell_merge_path(left,right,width,diagonal+blockDim.x);
++        right_start=diagonal-left_start;
++        left_count=left_stop-left_start;
++    }
++    __syncthreads();
++    tile[lane]=lane<left_count ? left[left_start+lane] : right[right_start+lane-left_count];
++    __syncthreads();
++    const Cell value=tile[lane];
++    const bool from_left=lane<left_count;
++    unsigned int lo=from_left ? left_count : 0;
++    unsigned int hi=from_left ? blockDim.x : left_count;
++    const auto offset=lo;
++    while (lo<hi) {
++        const auto mid=lo+(hi-lo)/2;
++        // Left keys use lower_bound in the right tile, right keys upper_bound
++        // in the left tile. Equal sentinels therefore never race an output slot.
++        if (from_left ? less(tile[mid],value) : !less(value,tile[mid])) lo=mid+1;
++        else hi=mid;
++    }
++    const auto own=from_left ? lane : lane-left_count;
++    cells[static_cast<std::uint64_t>(input^1U)*padded+start+own+lo-offset]=value;
++}
+--- a/native/tests.cpp
++++ b/native/tests.cpp
+@@ -53,7 +53,7 @@
+     d.cuCtxPopCurrent_fn = [](CUcontext *context) { ++observed.pops; *context = nullptr; return fault(16); };
+     d.cuModuleLoadData_fn = [](CUmodule *module, const void *) { *module = reinterpret_cast<CUmodule>(1); return fault(5); };
+     d.cuModuleGetFunction_fn = [](CUfunction *function, CUmodule, const char *name) {
+-        *function = reinterpret_cast<CUfunction>(std::strcmp(name,"solver")==0 ? 2 : 1);
++        *function = reinterpret_cast<CUfunction>(std::strcmp(name,"solver")==0 ? 2 : std::strcmp(name,"spatial_sort")==0 ? 3 : 1);
+         return CUDA_SUCCESS;
+     };
+     d.cuStreamCreate_fn = [](CUstream *stream, unsigned int flags) {
+@@ -134,20 +134,16 @@
+         Resource r;ready(r);
+         SolverSettings settings{};settings.count=5;settings.padded=8;
+         for (unsigned int slot=0;slot<14;++slot)
+-            assert(maelstrom_cuda_storage(&r,slot,nullptr,256,0).code==0);
++            assert(maelstrom_cuda_storage(&r,slot,nullptr,512,0).code==0);
+         const auto before=observed.completions;
+         observed.record_solver=true;
+         // Deliberately invalid incoming pass fields must be replaced by the
+         // complete network, rather than inherited from the caller.
+         settings.stride=17;settings.span=19;
+         assert(maelstrom_cuda_solver(&r,settings,13,threads).code==0);
+-        const unsigned int expected[][2]={{1,2},{2,4},{1,4},{4,8},{2,8},{1,8}};
+-        assert(observed.launches.size()==6 && observed.completions==before && r.pending);
+-        for (unsigned int i=0;i<6;++i) {
+-            const auto &pass=observed.launches[i];
+-            assert(pass.operation==3 && pass.stride==expected[i][0] && pass.span==expected[i][1]);
+-            assert(pass.grid==1 && pass.block==threads);
+-        }
++        assert(observed.launches.size()==1 && observed.completions==before && r.pending);
++        const auto &pass=observed.launches[0];
++        assert(pass.operation==19 && pass.stride==0 && pass.grid==1 && pass.block==threads);
+         observed.launches.clear();settings.count=1;settings.padded=1;
+         assert(maelstrom_cuda_solver(&r,settings,13,threads).code==0);
+         assert(observed.launches.empty());
+@@ -163,9 +159,9 @@
+     for (auto failure : {9,10,13,16}) {
+         observed={};
+         Resource r;ready(r);
+-        SolverSettings settings{};settings.count=5;settings.padded=8;
++        SolverSettings settings{};settings.count=1025;settings.padded=2048;
+         for (unsigned int slot=0;slot<14;++slot)
+-            assert(maelstrom_cuda_storage(&r,slot,nullptr,256,0).code==0);
++            assert(maelstrom_cuda_storage(&r,slot,nullptr,2048*64,0).code==0);
+         observed.record_solver=true;
+         observed.fail_launch=3;
+         observed.fail=failure==9 ? 0 : failure;
+@@ -181,6 +177,33 @@
+     }
+ }
+ 
++static void merge_sort_submissions() {
++    for (auto threads : {32U,64U,128U,256U}) {
++        unsigned int merges=0;
++        for (unsigned int width=threads;width<512;width*=2) ++merges;
++        for (unsigned int failure=0;failure<=merges+1;++failure) {
++            observed={};Resource r;ready(r);
++            SolverSettings s{};s.count=257;s.padded=512;
++            for (unsigned int slot=0;slot<14;++slot)
++                assert(maelstrom_cuda_storage(&r,slot,nullptr,512*64,0).code==0);
++            observed.record_solver=true;observed.fail_launch=static_cast<int>(failure);
++            const auto status=maelstrom_cuda_solver(&r,s,13,threads);
++            assert(status.stage==(failure ? 9 : 0) && r.poisoned==(failure!=0));
++            const auto submitted=failure ? failure : merges+1;
++            assert(observed.launches.size()==submitted);
++            assert(observed.completions==(failure ? 1 : 0));
++            for (unsigned int pass=0;pass<submitted;++pass) {
++                const auto &launch=observed.launches[pass];
++                assert(launch.operation==(pass ? 20U : 19U));
++                const auto selector=pass ? ((merges&1U)^((pass-1)&1U)) : (merges&1U);
++                assert(launch.stride==selector && launch.block==threads && launch.grid==512/threads);
++                if (pass) assert(launch.span==(threads<<(pass-1)));
++            }
++            if (failure) assert(maelstrom_cuda_solver(&r,s,13,threads).stage==14);
++        }
++    }
++}
++
+ static void checked_groups() {
+     for (auto first : {5U,9U}) for (auto threads : {32U,64U,128U,256U}) {
+         const auto passes=first==5 ? 4U : 2U;
+@@ -188,7 +211,7 @@
+             observed={};Resource r;ready(r);
+             SolverSettings s{};s.count=5;s.padded=8;
+             for (unsigned int slot=0;slot<14;++slot)
+-                assert(maelstrom_cuda_storage(&r,slot,nullptr,256,0).code==0);
++                assert(maelstrom_cuda_storage(&r,slot,nullptr,512,0).code==0);
+             assert(maelstrom_cuda_begin_attempt(&r).code==0);
+             observed.record_solver=true;
+             if (fail_at<passes) {
+@@ -224,7 +247,7 @@
+         observed={};Resource r;ready(r);
+         SolverSettings s{};s.count=5;s.padded=8;
+         for (unsigned int slot=0;slot<14;++slot)
+-            assert(maelstrom_cuda_storage(&r,slot,nullptr,256,0).code==0);
++            assert(maelstrom_cuda_storage(&r,slot,nullptr,512,0).code==0);
+         assert(maelstrom_cuda_begin_attempt(&r).code==0);
+         observed.record_solver=true;
+         observed.fail=failure==9 ? 0 : failure;
+@@ -246,7 +269,7 @@
+     observed={};Resource r;ready(r);
+     SolverSettings s{};s.count=1;s.padded=1;
+     for (unsigned int slot=0;slot<14;++slot)
+-        assert(maelstrom_cuda_storage(&r,slot,nullptr,256,0).code==0);
++        assert(maelstrom_cuda_storage(&r,slot,nullptr,512,0).code==0);
+     assert(maelstrom_cuda_begin_attempt(&r).code==0);
+     observed.fail=11;
+     std::uint64_t result=17;
+@@ -295,7 +318,7 @@
+         Resource r;ready(r);
+         SolverSettings settings{};settings.count=5;settings.padded=8;
+         for (unsigned int slot=0;slot<14;++slot)
+-            assert(maelstrom_cuda_storage(&r,slot,nullptr,256,0).code==0);
++            assert(maelstrom_cuda_storage(&r,slot,nullptr,512,0).code==0);
+         std::uint32_t errors[]={0,0,52,1,0};
+         assert(maelstrom_cuda_storage(&r,12,errors,sizeof(errors),1).code==0);
+         assert(maelstrom_cuda_begin_attempt(&r).code==0);
+@@ -405,14 +428,14 @@
+         observed={};Resource r;ready(r);
+         SolverSettings s{};s.count=5;s.padded=8;s.width=1;
+         for (unsigned int slot=0;slot<14;++slot)
+-            assert(maelstrom_cuda_storage(&r,slot,nullptr,256,0).code==0);
++            assert(maelstrom_cuda_storage(&r,slot,nullptr,512,0).code==0);
+         assert(observed.completions==0);
+         assert(maelstrom_cuda_begin_attempt(&r).code==0 && r.pending);
+         assert(maelstrom_cuda_solver(&r,s,2,128).code==0);
+         assert(maelstrom_cuda_solver(&r,s,13,128).code==0);
+         assert(observed.completions==0);
+         // No-op reservation/empty transfer must preserve the pending batch.
+-        assert(maelstrom_cuda_storage(&r,0,nullptr,256,0).code==0);
++        assert(maelstrom_cuda_storage(&r,0,nullptr,512,0).code==0);
+         assert(maelstrom_cuda_storage(&r,0,nullptr,0,2).code==0);
+         assert(observed.completions==0 && r.pending);
+         Vector value{};
+@@ -420,7 +443,7 @@
+         if (action==3)
+             assert(maelstrom_cuda_checked_solver(&r,s,4,128,&diagnostic).code==0 && diagnostic==UINT64_MAX);
+         else
+-            assert(maelstrom_cuda_storage(&r,0,action ? &value : nullptr,action ? 12 : 512,action).code==0);
++            assert(maelstrom_cuda_storage(&r,0,action ? &value : nullptr,action ? 12 : 1024,action).code==0);
+         assert(observed.completions==1 && !r.pending);
+         assert(maelstrom_cuda_storage(&r,0,&value,12,2).code==0);
+         assert(observed.completions==1); // Synchronous copy adds no empty wait.
+@@ -442,7 +465,7 @@
+     for (auto failure : {0,10}) {
+         observed={};Resource r;ready(r);
+         SolverSettings s{};s.padded=1;
+-        assert(maelstrom_cuda_storage(&r,10,nullptr,32,0).code==0);
++        assert(maelstrom_cuda_storage(&r,10,nullptr,64,0).code==0);
+         assert(maelstrom_cuda_storage(&r,13,nullptr,8,0).code==0);
+         assert(maelstrom_cuda_begin_attempt(&r).code==0);
+         assert(maelstrom_cuda_accept(&r).stage==7);
+@@ -469,6 +492,7 @@
+     submission_boundaries();
+     accepted_vectors();
+     sort_batches();
++    merge_sort_submissions();
+     row_sort_batches();
+     checked_solver();
+     checked_groups();
+@@ -541,7 +565,7 @@
+         {
+             Resource r;ready(r);
+             SolverSettings settings{};settings.count=1;settings.padded=1;
+-            std::size_t sizes[14]={12,12,12,12,4,4,4,12,12,0,32,0,4,16};
++            std::size_t sizes[14]={12,12,12,12,4,4,4,12,12,0,64,0,4,16};
+             for (unsigned int slot=0;slot<14;++slot) assert(maelstrom_cuda_storage(&r,slot,nullptr,sizes[slot],0).code==0);
+             const auto allocations=observed.memory.size();
+             assert(maelstrom_cuda_storage(&r,0,nullptr,12,0).code==0);
+--- a/src/cuda/solver.rs
++++ b/src/cuda/solver.rs
+@@ -118,7 +118,7 @@
+         n * 12,
+         n * 12,
+         u128::from(s.planes) * 16,
+-        u128::from(s.padded) * 32,
++        u128::from(s.padded) * 64,
+         u128::from(s.entries) * 4,
+         n * 4,
+         (n + 1) * 8,
+@@ -471,3 +471,7 @@
+ #[cfg(test)]
+ #[path = "vorticity_tests.rs"]
+ mod vorticity_tests;
++
++#[cfg(test)]
++#[path = "spatial_sort_tests.rs"]
++mod spatial_sort_tests;
+--- a/src/cuda/solver_tests.rs
++++ b/src/cuda/solver_tests.rs
+@@ -502,7 +502,9 @@
+     let configuration = crate::config::resolve_effective_configuration(None, None, None).unwrap();
+     for threads in [32, 64, 128, 256] {
+         let mut gpu = CudaSolver::new(0, threads).unwrap();
+-        for count in [1, 3, 9, 129, 257] {
++        for count in [
++            1, 3, 9, 31, 32, 33, 127, 128, 129, 255, 256, 257, 1025, 8193,
++        ] {
+             // Integral coordinates make the expected unit-width cell keys
+             // independent of the device's floating-point cell calculation.
+             let keys: Vec<_> = (0..count)
+--- /dev/null
++++ b/src/cuda/spatial_sort_tests.rs
+@@ -0,0 +1,63 @@
++//! Raw cell keys exercise the complete signed ordering independently of floating
++//! point cell construction. Padding duplicates must survive every merge boundary.
++
++use super::*;
++
++#[test]
++#[ignore = "requires an explicitly selected CUDA hardware test run"]
++fn hardware_spatial_sort_preserves_full_keys_padding_and_reused_storage() {
++    let config = crate::config::resolve_effective_configuration(None, None, None).unwrap();
++    for threads in [32, 64, 128, 256] {
++        let mut gpu = CudaSolver::new(0, threads).unwrap();
++        for count in [0, 1, 2, 127, 128, 129, 257, 1025, 4097, 129] {
++            let particles = vec![
++                Particle {
++                    identity: 0,
++                    position_m: Vec3::ZERO,
++                    velocity_m_s: Vec3::ZERO,
++                };
++                count
++            ];
++            let s = settings(&config, count, 0).unwrap();
++            gpu.prepare(s, &particles, &[]).unwrap();
++            let coordinates = [i64::MIN, -(1_i64 << 52), -1, 0, 1, 1_i64 << 52, i64::MAX];
++            let mut keys: Vec<_> = (0..count)
++                .map(|i| {
++                    (
++                        coordinates[(i * 13) % coordinates.len()],
++                        coordinates[(i / 3) % coordinates.len()],
++                        coordinates[(i / 11) % coordinates.len()],
++                        i as u32,
++                    )
++                })
++                .collect();
++            keys.reverse();
++            let mut packed: Vec<u64> = keys
++                .iter()
++                .flat_map(|&(x, y, z, index)| [x as u64, y as u64, z as u64, u64::from(index)])
++                .collect();
++            let sentinel = [
++                i64::MAX as u64,
++                i64::MAX as u64,
++                i64::MAX as u64,
++                u32::MAX as u64,
++            ];
++            for _ in count..s.padded as usize {
++                packed.extend(sentinel);
++            }
++            gpu.context.inner.upload(10, &packed).unwrap();
++            gpu.context.inner.launch(s, 13, threads).unwrap();
++            let sorted: Vec<u64> = gpu.context.inner.download(10, packed.len()).unwrap();
++            keys.sort_unstable();
++            let actual: Vec<_> = sorted
++                .chunks_exact(4)
++                .take(count)
++                .map(|c| (c[0] as i64, c[1] as i64, c[2] as i64, c[3] as u32))
++                .collect();
++            assert_eq!(actual, keys, "count {count}, block {threads}");
++            for padding in sorted.chunks_exact(4).skip(count) {
++                assert_eq!(padding, sentinel);
++            }
++        }
++    }
++}

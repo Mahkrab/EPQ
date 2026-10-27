@@ -1,0 +1,16 @@
+{
+  "base_commit": "87145510a9e5d812066138c35f1fac82e4f593b0",
+  "control_tree_sha256": "0383da2a3781bfe8e7a4e1518fa38e258611a2502d7194c822a0ad9236b1c4e0",
+  "probe_tree_sha256": "f7a88dd6ef9ddc422572f226bfad7121163a97f589635a5772211f6efadabc2c",
+  "files_per_export": 180,
+  "base_plus_control_patch_matches": true,
+  "control_plus_diagnostic_patch_matches": true,
+  "current_normal_source_matches_control": true,
+  "probe_changes": [
+    "src/cuda/solver.rs"
+  ],
+  "current_overlay_after_rustfmt_matches_measured_patch": true,
+  "generator_sha256": "630cf5706b21253bcd9358a54e61fe3e1ff6080b6c02e29701254e2bdef11d49",
+  "generator_note": "A duplicate-application guard was added after export; the formatted generated Rust still matches the measured patch exactly.",
+  "checkpoint_status": "uncommitted exports; no gitlink or tags changed"
+}

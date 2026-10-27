@@ -1,0 +1,306 @@
+{
+  "date": "2026-10-26",
+  "kind": "source audit and read-only reconstruction of retained PC evidence; no new runtime campaign",
+  "epq_base_commit": "3d043355c9744dee9355b5e045217e3c46a9124d",
+  "maelstrom_base_commit": "87145510a9e5d812066138c35f1fac82e4f593b0",
+  "control_tree_sha256": "0383da2a3781bfe8e7a4e1518fa38e258611a2502d7194c822a0ad9236b1c4e0",
+  "all_180_control_file_hashes_matched": true,
+  "reconstruction": "../host-coordination-v1/source-reconstruction.json and control.patch against the stated base",
+  "reviewed_files": {
+    "Cargo.toml": {
+      "sha256": "7fed9c1b0cf486b26f60189a8217ba35f4ee4e8d5997bca8d5eb6aa11d47be6c",
+      "lines": 33
+    },
+    "build.rs": {
+      "sha256": "21a2eb2e185638bd2cbca9af095a4dc5c989675af98d72c56888ec59b57a927f",
+      "lines": 234
+    },
+    "native/bridge.cpp": {
+      "sha256": "2ca425b31ae5182cc1a97be63fb770791fc7419588e2b1c9ee88ef628e5b047e",
+      "lines": 346
+    },
+    "native/kernels.cu": {
+      "sha256": "0ec2d7009e58fcf6cc7b5aac032a731bb77f0d514df40424cd0dc317d81dee8f",
+      "lines": 3
+    },
+    "native/neighbours.cuh": {
+      "sha256": "065164918fff0feaf67131942a842956ecd70f6c06f505786311f810d374fda1",
+      "lines": 74
+    },
+    "native/power-LICENSE": {
+      "sha256": "296abd795697343af2ef7b707e3d3a8bd2d4fe93f86bb6b54ae2c9553f1f7d16",
+      "lines": 22
+    },
+    "native/power.cuh": {
+      "sha256": "4624aa70eeb7b247a413de770d1e7047bf9f4a8ba980fd47c4e8645207645b0d",
+      "lines": 67
+    },
+    "native/probe.h": {
+      "sha256": "b715638ad1326c8241157b1b9335c4bf3d9ffa255343dbb290a7f9dad7a070f2",
+      "lines": 23
+    },
+    "native/roundtrip.cu": {
+      "sha256": "bb3aa7c294671099db5f3ae77171a762bbe05d00a1586659670902f0138f4b6f",
+      "lines": 12
+    },
+    "native/row_sort.cuh": {
+      "sha256": "233607e3f241bd2fd2d858fbaba734c7d5792b208a07cf15189f4ee241d091ac",
+      "lines": 69
+    },
+    "native/solver.cu": {
+      "sha256": "8aa0b0a1e9ac457c03481368699129eee668cf135601b030c7bdd6c755de7d2f",
+      "lines": 258
+    },
+    "native/solver.h": {
+      "sha256": "81985c1d350ec49ace6af4949d36f2e80b496c1ed50de35b5943b5d9ea3b76ca",
+      "lines": 35
+    },
+    "native/tests.cpp": {
+      "sha256": "fc6ee99e0fc4c33dc16923e3e0f5466dd3088244866b63bbc2a6dfce2c33a375",
+      "lines": 461
+    },
+    "src/application/mod.rs": {
+      "sha256": "27dd216cfea7cff16504b7dfa1c7ce783c5bca3275ce25eecba00001b04fc67e",
+      "lines": 446
+    },
+    "src/application/worker.rs": {
+      "sha256": "243c50cec13c20c74efa14ee933c94c3b265ff94606c3a9118f49605c5fbde3e",
+      "lines": 277
+    },
+    "src/boundary.rs": {
+      "sha256": "1b997f8705ebdaf71c42564d94e5b6d11d6840e194b04b2403cca741bc0a704e",
+      "lines": 174
+    },
+    "src/cli/pacing.rs": {
+      "sha256": "a75bbba2936adf985cdbe785ad3be599b895c3cea67cfc0bab6830211dce4df0",
+      "lines": 48
+    },
+    "src/cli/selection.rs": {
+      "sha256": "d6705dc389e9b6a3d36a9da704ed7bcb946bfb5f0e1c55becd2fffc4a84c4ca6",
+      "lines": 131
+    },
+    "src/config/resolved.rs": {
+      "sha256": "4dc5df7f61e5bc106deba1d30b4ac3ee25484d1dee769f33746060d164f4e419",
+      "lines": 551
+    },
+    "src/config/validation.rs": {
+      "sha256": "23e6c46fc711728e3e6595d7e406a0140fc0a1f49907faa61ed37526ffefed28",
+      "lines": 230
+    },
+    "src/cuda/correction_tests.rs": {
+      "sha256": "5a5f727d4a7aaa2b1dc946ba1e06cdbde0b43e799f2518fc61ca2a77bb477b8a",
+      "lines": 90
+    },
+    "src/cuda/mod.rs": {
+      "sha256": "acd8a98fc52401f202f80827ff8c0ba2ef76472fd6e3a1acd3b0057f59596735",
+      "lines": 310
+    },
+    "src/cuda/native.rs": {
+      "sha256": "583a7afe74411f76072f36e93785d3c96092a2118a7f5ab6cb5a5896c7818472",
+      "lines": 384
+    },
+    "src/cuda/search_tests.rs": {
+      "sha256": "35f31c95145359ef1c14ce11adf865fad2c0109c517d26050c4967cfcc44b413",
+      "lines": 58
+    },
+    "src/cuda/solver.rs": {
+      "sha256": "795664539b651f56286ee93d1bf49865b2ac2a1afa8f0692616660be551e0133",
+      "lines": 450
+    },
+    "src/cuda/solver_tests.rs": {
+      "sha256": "30cfbb1b36553ece49b10764b3fc45952145acd1b88c56fa99c6cd7976cc6a3d",
+      "lines": 1136
+    },
+    "src/cuda/vorticity_tests.rs": {
+      "sha256": "b2726edade533cdc5bd3a12cadacee051586046cd991922969be52c9006abcfe",
+      "lines": 130
+    },
+    "src/diagnostics.rs": {
+      "sha256": "ed82807aac915b16ceebe44a0a021c53b6f70eafbe0eceb2402013d6ef585bb1",
+      "lines": 131
+    },
+    "src/error.rs": {
+      "sha256": "e3c4a45a20c00ec4d25702808e58cec302ca1829eab41c45947b6aac2121b86a",
+      "lines": 170
+    },
+    "src/execution.rs": {
+      "sha256": "15dd026c4f306b43b4c2ab772b57fc3bee637ab53ec976bb8e2b3a017e613232",
+      "lines": 282
+    },
+    "src/export/mod.rs": {
+      "sha256": "657658c6a39190c773ad20a7558af0e998b79a44478241eb86d9be824dde4839",
+      "lines": 380
+    },
+    "src/export/offscreen.rs": {
+      "sha256": "a614e914a694174fd094106b8c8f345864a7fda45dc914fc69b256d2fcbe976a",
+      "lines": 230
+    },
+    "src/export/source.rs": {
+      "sha256": "c069586c67cb53161a1b2b6dda92bc7b6172b7758609478fe851004b5fdd7c97",
+      "lines": 228
+    },
+    "src/fluid.rs": {
+      "sha256": "1a1977691b9503524c8fde2be77e99383ac7dd99eddebe5aae58476ad12dbfc7",
+      "lines": 770
+    },
+    "src/integration.rs": {
+      "sha256": "feb1350c8f0214360fa3789da7a32a0ca1cf779d7bc739c7c666fd11b18ee430",
+      "lines": 81
+    },
+    "src/kernel.rs": {
+      "sha256": "9d19f2726abeadb1aa2ec4ed91f55d4539acff8fe6ecd1676523cc3e9e4d79a6",
+      "lines": 75
+    },
+    "src/math.rs": {
+      "sha256": "b14c7152d642257261ca2f6f320103c1b9c7cd7d14d5bb5154e7044ee386b3ac",
+      "lines": 121
+    },
+    "src/neighbours.rs": {
+      "sha256": "87f9d984101ce8e1f6fef90dd0a0c05e20dca44c3991e4ee123cb71cb65bb6f1",
+      "lines": 169
+    },
+    "src/presentation/colours.rs": {
+      "sha256": "48e143a28e7b669aabf40282f4dad330ba9845f7e8025764807ebb84d3fdb644",
+      "lines": 111
+    },
+    "src/render/gpu.rs": {
+      "sha256": "9e301f062c14db37fda1224d85538c7723ec13ee14c3f797fb9b6cc9a607e3da",
+      "lines": 547
+    },
+    "src/simulation/error.rs": {
+      "sha256": "ad23775a17571ddde09d372d68c89d9205896d2a8070778db39770b92f4deeb0",
+      "lines": 128
+    },
+    "src/simulation/mod.rs": {
+      "sha256": "6d7fb7f9098009f943f1999042e8d3c05076beca27526363116cd13562f97bbd",
+      "lines": 501
+    },
+    "src/simulation/state.rs": {
+      "sha256": "8d293dff304087d601df33fa44b33bdf90eab651b73a6d12ab64329831a34d30",
+      "lines": 58
+    },
+    "src/simulation/timing.rs": {
+      "sha256": "8fc76597cd3deed950f724ce315afa960a2a89ec91ffdad5ed5cdd41deb5a33c",
+      "lines": 79
+    },
+    "src/validation.rs": {
+      "sha256": "198364992fae5a9390fce38aa9da8e090af704bd36e18852e6e732871aac2313",
+      "lines": 62
+    },
+    "src/velocity.rs": {
+      "sha256": "db31524ed603e4dc7c0660520980e20661195585cf31882a9ac272ed98d663d4",
+      "lines": 103
+    },
+    "src/velocity/vorticity.rs": {
+      "sha256": "ac94c4ee7ce7ec9b6fb0f7f46bcb0308bddd47c859ec8c3dcb00fb80e55fcb8b",
+      "lines": 174
+    },
+    "src/workflow/measurement.rs": {
+      "sha256": "b46b7c527ee75ef5dce6546544ab9a745989ab4f39b4c66ea2377e2891a0c7be",
+      "lines": 49
+    },
+    "src/workflow/mod.rs": {
+      "sha256": "6194d2afbcb889bc5429a1178badfc5a3fd3a5e5e3a6dd45f6ce3703978620bc",
+      "lines": 698
+    },
+    "src/workflow/output.rs": {
+      "sha256": "972a1aa443cfae5dbd95ad3e4b70969c813066527f9b7034e10caf2005404901",
+      "lines": 302
+    },
+    "src/workflow/record.rs": {
+      "sha256": "7ffd81368cfa41790830377a1dc0c984fd20d8888e33e5ce5990c3bc27995546",
+      "lines": 470
+    }
+  },
+  "coverage": {
+    "file_review_entries": 51,
+    "all_native_files": true,
+    "all_rust_cuda_files": true,
+    "all_rust_simulation_files": true,
+    "limits": "Shared numerical and application boundaries reviewed for CUDA effects; not a full application/parser/UI audit or line coverage certification."
+  },
+  "evidence": {
+    "source_campaign": "host-coordination-v1",
+    "normal_control_binary_sha256": "82fa102b0fead98ba493c3946c919fc39ab3caa9d2dc1281e44afb8c7bb99570",
+    "primary_median_solver_s": 8.67476121,
+    "particles": 110592,
+    "steps": 480,
+    "jacobi_iterations": 8,
+    "timestep_s": "binary32(0.008333334) / 4",
+    "rendering": false,
+    "checkpoint_audits": false,
+    "warning_steps": 259,
+    "primary_timing_scope": "solver call; not GPU trace or complete command"
+  },
+  "trace": {
+    "window_s": 8.887821425,
+    "device_busy_union_s": 6.744198693,
+    "idle_gap_s": 2.143622732,
+    "device_busy_fraction": 0.7588134786360202,
+    "components": {
+      "neighbour_construction": {
+        "device_s": 2.049762227,
+        "window_fraction": 0.2306259463353248
+      },
+      "correction": {
+        "device_s": 2.566349399,
+        "window_fraction": 0.2887489831626539
+      },
+      "density_multipliers": {
+        "device_s": 1.394925321,
+        "window_fraction": 0.15694794644234203
+      },
+      "active_distance_validation": {
+        "device_s": 0.497803527,
+        "window_fraction": 0.056009622965618934
+      }
+    },
+    "cell_sort_passes_per_step": 153,
+    "cell_sort_launches": 73440,
+    "total_kernels": 99840,
+    "stream_completions": 24481,
+    "ordinary_completions_per_step": 51,
+    "initial_diagnostic_reset_completions": 1,
+    "transfers": {
+      "host_to_device": {
+        "calls": 1920,
+        "bytes": 1698743040
+      },
+      "device_to_host": {
+        "calls": 12480,
+        "bytes": 2972920320
+      }
+    },
+    "ideal_window_speedup_removing_all_idle": 1.3178469125212648,
+    "ideal_window_speedup_removing_all_correction": 1.4059733853831342,
+    "bounds_note": "Unrealistic removal ceilings for this trace only; not expected gains or primary timing ratios.",
+    "independent_trace_audit": {
+      "kernel_count": 99840,
+      "completion_count": 24481,
+      "windows": {
+        "1-120": {
+          "count_s": 0.085891828,
+          "fill_sort_s": 0.098165394
+        },
+        "121-240": {
+          "count_s": 0.153540709,
+          "fill_sort_s": 0.17838031
+        },
+        "241-480": {
+          "count_s": 0.48850349,
+          "fill_sort_s": 0.528317396
+        }
+      }
+    }
+  },
+  "new_checks_not_performed": [
+    "fresh runtime benchmarking",
+    "Rust test suite",
+    "native sanitiser",
+    "device memory sanitiser",
+    "hardware counters",
+    "native Linux comparison",
+    "Windows CUDA port",
+    "hosted CI"
+  ]
+}

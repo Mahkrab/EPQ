@@ -1,0 +1,139 @@
+{
+  "physical_runs": 50,
+  "exact_groups": 10,
+  "solver": {
+    "110592": {
+      "median_s": {
+        "control": 7.897791906,
+        "candidate": 7.487535831
+      },
+      "speedup": 1.0547918680136998,
+      "reduction_percent": 5.194566783765553,
+      "paired_reduction_percent": [
+        6.0533564911579685,
+        7.487548107264564,
+        6.692941850949019,
+        4.366728529221076,
+        3.7564080752310103
+      ]
+    },
+    "110592-effects": {
+      "median_s": {
+        "control": 8.319624532,
+        "candidate": 7.85758017
+      },
+      "speedup": 1.058802373250237,
+      "reduction_percent": 5.55366844047861,
+      "paired_reduction_percent": [
+        7.125812180248614,
+        7.473783998405093,
+        4.721811509684992,
+        4.178870371627264,
+        3.9468901437185067
+      ]
+    },
+    "8000": {
+      "median_s": {
+        "control": 1.445242883,
+        "candidate": 1.39382115
+      },
+      "speedup": 1.0368926336065427,
+      "reduction_percent": 3.5579993926875497,
+      "paired_reduction_percent": [
+        2.306957575043944,
+        3.4069427069442937,
+        8.339891450575854,
+        6.316403203074272,
+        3.133643374762962
+      ]
+    }
+  },
+  "traces": {
+    "8000": {
+      "control": {
+        "kernels_per_step": 62,
+        "kernel_counts": {
+          "solver": 440,
+          "spatial_sort": 56
+        },
+        "htod": {
+          "count": 11,
+          "bytes": 704160
+        },
+        "dtoh": {
+          "count": 208,
+          "bytes": 3587456
+        },
+        "bytes_per_steady_step": 512440,
+        "transfers_per_steady_step": 27,
+        "synchronisations_per_step": 21,
+        "initial_htod_bytes": 192096
+      },
+      "candidate": {
+        "kernels_per_step": 65,
+        "kernel_counts": {
+          "observe_state": 16,
+          "prefix_counts": 24,
+          "solver": 424,
+          "spatial_sort": 56
+        },
+        "htod": {
+          "count": 3,
+          "bytes": 192096
+        },
+        "dtoh": {
+          "count": 208,
+          "bytes": 1571840
+        },
+        "bytes_per_steady_step": 196480,
+        "transfers_per_steady_step": 26,
+        "synchronisations_per_step": 21,
+        "initial_htod_bytes": 192096
+      },
+      "byte_reduction_percent": 61.6579501990477
+    },
+    "110592": {
+      "control": {
+        "kernels_per_step": 66,
+        "kernel_counts": {
+          "solver": 440,
+          "spatial_sort": 88
+        },
+        "htod": {
+          "count": 11,
+          "bytes": 9732256
+        },
+        "dtoh": {
+          "count": 208,
+          "bytes": 49548672
+        },
+        "bytes_per_steady_step": 7078328,
+        "transfers_per_steady_step": 27,
+        "synchronisations_per_step": 21,
+        "initial_htod_bytes": 2654304
+      },
+      "candidate": {
+        "kernels_per_step": 69,
+        "kernel_counts": {
+          "observe_state": 16,
+          "prefix_counts": 24,
+          "solver": 424,
+          "spatial_sort": 88
+        },
+        "htod": {
+          "count": 3,
+          "bytes": 2654304
+        },
+        "dtoh": {
+          "count": 208,
+          "bytes": 21679616
+        },
+        "bytes_per_steady_step": 2709952,
+        "transfers_per_steady_step": 26,
+        "synchronisations_per_step": 21,
+        "initial_htod_bytes": 2654304
+      },
+      "byte_reduction_percent": 61.71480044439873
+    }
+  }
+}

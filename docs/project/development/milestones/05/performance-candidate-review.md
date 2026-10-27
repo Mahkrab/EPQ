@@ -1,5 +1,9 @@
 # CUDA optimisation candidate review
 
+The subsequent [26 October code audit](/docs/project/development/milestones/05/performance-cuda-code-audit.md)
+reviews the current complete CUDA path and its Rust/application boundaries, with a separate
+file-by-file assessment. The earlier findings below retain their dated source and trial context.
+
 Reviewed on 24 October 2026. This covers the device solver, neighbour builder, Rust
 orchestration, driver bridge, ordered CPU equations, regression tests and compilation
 boundary. The current Maelstrom files match the retained 152-file
@@ -173,6 +177,42 @@ itself is unchanged; the separate large-manifest playback repair changes present
 The subsequent [entry-point trial](/docs/project/development/milestones/05/performance-kernel-specialisation.md)
 tested both complete specialisation and a numerical-pass-only follow-up. Neither is retained;
 the current plan now prioritises cooperative integer sorting and cross-loop reuse.
+
+## Follow-up on 26 October
+
+The [fresh prefix reassessment](/docs/project/development/milestones/05/performance-gradient-reassessment.md)
+retains ordered reuse after scene usability, with exact results and consistent primary-PC gains
+at the larger workloads, including both fluid effects enabled. Its disqualified initial build
+comparison remains separate. The subsequent
+[cooperative sorting trial](/docs/project/development/milestones/05/performance-cooperative-sort.md)
+also retains its change, with a bounded warp network and unrestricted dense-row fallback.
+Further trials must compare against both retained changes. The subsequent
+[host-coordination attribution](/docs/project/development/milestones/05/performance-coordination.md)
+measured CPU bounds, CFL and prefix calculations at about 2% of the large disabled-effect run;
+their surrounding downloads, repacking, reservation and offset upload raised the bound to about 5%.
+Replacement device work would consume part of that opportunity. Standalone reductions/scans are
+deferred for now on measured benefit and implementation cost, without an automatic percentage veto.
+A fresh full-motion trace still ranked correction highest, at 2.566 s in an 8.888 s diagnostic window.
+Next inspect its generated arithmetic and invariant coefficients before introducing a pair cache
+or storage rewrite. Preserve floating-point order, failure handling and the existing retained changes.
+
+The subsequent [compilation and block-size follow-up](/docs/project/development/milestones/05/performance-compilation-profile.md)
+adds disjoint export timings and fresh same-executable controls. Block 32 led the disabled-effect
+requests; 256 led the large enabled-effect request. The default remains 128 in this measurement step.
+For 110,592 particles, full compilation spent about 30 s in frame hashes/snapshot JSON and 11 s in
+PNG encoding. Snapshot capture was below 0.1 s. Prioritise bounded CPU frame preparation overlap
+over copy removal for application throughput. Solver and graphics intervals also grew with every-step
+images; trace that interaction rather than assigning a cause from utilisation alone. For solver
+throughput, scope residency/batched submission and neighbour indexing as the audit recommends;
+bounded correction work remains useful alongside them. These are next comparisons, not measured gains.
+
+The first [accepted-buffer residency comparison](/docs/project/development/milestones/05/performance-resident-state.md)
+is retained. Warm attempts keep accepted device vectors and static planes, with promotion after final
+host checks. Five pairs per workload give modest gains without changed physical results; separate
+traces remove 9,580 completions and most uploads while retaining all 99,840 launches and final readbacks.
+The remaining device work now makes cell-run indexing a more useful next comparison than further
+upload-only tuning. Full residency, observation materialisation and larger submission segments remain
+open design work; the current snapshot and cancellation contracts are preserved.
 
 ## References used
 

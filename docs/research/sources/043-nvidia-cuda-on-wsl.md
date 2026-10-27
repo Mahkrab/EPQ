@@ -23,6 +23,9 @@ This is NVIDIA's official product documentation for CUDA on WSL and is authorita
 - The Windows NVIDIA driver is exposed inside WSL 2 as `libcuda.so`.
 - NVIDIA instructs WSL users not to install a separate Linux display driver.
 - A Linux CUDA Toolkit is still required to compile CUDA applications inside WSL.
+- Re-read §§5.1–5.2 of the [13.3 archive](https://docs.nvidia.com/cuda/archive/13.3.0/wsl-user-guide/index.html)
+  on 26 October 2026. Pinned-memory limits and unsupported OpenGL/CUDA interoperability constrain
+  proposed staging/sharing designs; they do not quantify Maelstrom's current overhead.
 
 #### Date added
 

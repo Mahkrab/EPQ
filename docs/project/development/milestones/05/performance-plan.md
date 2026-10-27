@@ -30,6 +30,21 @@ retention decisions. The implementing agent must assess correctness, paired meas
 uncertainty, regressions and implementation cost, then explain whether to retain the change.
 Reports describe the evidence; they do not impose automatic percentage or range-overlap vetoes.
 
+The [26 October CUDA code audit](/docs/project/development/milestones/05/performance-cuda-code-audit.md)
+reviews the current source across timestep ownership, device algorithms and compilation. It
+recommends broader residency/submission and neighbour-construction comparisons alongside bounded
+arithmetic work; those recommendations do not claim an implemented change or a new benchmark.
+
+The [timing follow-up](/docs/project/development/milestones/05/performance-compilation-profile.md)
+establishes fresh same-source block-size controls and a complete compilation boundary. It retains
+export instrumentation, with no numerical or block-default change. Its headless and image-producing
+measurements remain separate; compilation's JSON/hash and graphics interaction are application costs.
+
+The first [accepted-device-buffer comparison](/docs/project/development/milestones/05/performance-resident-state.md)
+retains accepted vectors and static planes across timesteps. It preserves current host snapshots and
+all cancellation polls, with exact results and modest matched PC gains. This is a residency foundation,
+not completion of device-owned execution or the real-time target.
+
 ## What the external targets actually mean
 
 The original PBF paper reports Armadillo Splash at 128k particles, two steps per 16 ms frame,
@@ -135,12 +150,23 @@ records the matched PC gain from grouped submissions at the existing Jacobi and 
 cancellation boundaries, with deterministic numerical failure handling.
 The [multiplier-prefix reuse experiment](/docs/project/development/milestones/05/performance-gradient-reuse.md)
 records a rejected register-only arithmetic trial: measured kernel savings did not meet
-its prospective whole-solver admission criterion. The original multiplier remains active.
-That outcome belongs to the historical policy. Its roughly 3% savings warrant a fresh
-assessment against the current implementation, without relabelling the original result.
+its prospective whole-solver admission criterion, so that trial restored the original multiplier.
+That outcome belongs to the historical policy and remains unchanged.
+The subsequent [prefix reassessment](/docs/project/development/milestones/05/performance-gradient-reassessment.md)
+retains reuse after scene usability: fresh primary-PC comparisons improved both larger workloads,
+including a separately identified case with both fluid effects enabled. Its record also preserves
+a disqualified first campaign and the native-build verification that corrected it.
+The [cooperative sorting experiment](/docs/project/development/milestones/05/performance-cooperative-sort.md)
+then retains warp-per-row integer sorting for bounded rows, with unrestricted heapsort fallback.
+Its matched comparisons include the extra kernel and preserve the prefix implementation in both variants.
+The [host-coordination attribution](/docs/project/development/milestones/05/performance-coordination.md)
+then separates bounds, CFL and prefix calculations from transfers and packing. Their small measured
+share and the fresh correction ranking defer standalone device reductions/scans for now.
 The [reused-reservation investigation](/docs/project/development/milestones/05/performance-reservation-reuse.md)
 records a rejected host-only fast path: removing empty driver waits produced no clear
-matched PC runtime gain. The original reservation boundary is restored.
+matched PC runtime gain. That trial restored the original reservation boundary. The later
+accepted-buffer comparison changes fixed-lifetime preparation and state ownership together;
+it does not relabel that earlier outcome.
 The [correction-cost investigation](/docs/project/development/milestones/05/performance-correction-profile.md)
 adds full early/evolved profiles and records a rejected power-table placement trial.
 The [host-acceptance investigation](/docs/project/development/milestones/05/performance-host-acceptance.md)
@@ -171,6 +197,8 @@ offset/index lists or another justified local representation; account for count/
 growth, dense cells and overflow. Never silently cap neighbours. Retain prediction-time membership,
 strict support, self-contribution rules and identity-ordered arithmetic. Spatially reordered storage
 must map back to stable identities without silently changing summation order.
+Use separate build directories and verify embedded CUDA code against each source export;
+source and executable hashes alone do not establish that the intended native code was rebuilt.
 
 If the timeline supports it, retain accepted/candidate state on the device, avoid unchanged uploads,
 reduce error transfers to the required deterministic result, and enqueue dependent work without a
@@ -193,16 +221,22 @@ experiments to assess, not a requirement to apply every technique or a promise o
 | Candidate | Intended first experiment |
 | --- | --- |
 | Dedicated operation kernels | Full and targeted trials completed without a useful larger-workload gain; reconsider only with a new operation-specific hypothesis |
-| Pair geometry reuse | Reassess ordered gradient-prefix reuse; local correction-distance sharing is already present in the inspected generated PTX |
+| Pair geometry reuse | Ordered gradient-prefix reuse is retained; further fusion or suffix reuse needs a separate hypothesis. Local correction-distance sharing is already present in the inspected generated PTX |
 | Neighbour-loop fusion | Consider partial density/owner fusion or ordered prefix/suffix reuse; preserve the owner's insertion point and error precedence |
 | Device component [SoA](https://en.wikipedia.org/wiki/AoS_and_SoA) | Compare hot position storage first, including packing/gather/readback costs; a whole-application representation rewrite is not required |
-| Warp-cooperative row work | Assess integer identity sorting against the now-attributed cost, preserving tail masks, arbitrary row lengths and overflow behaviour |
+| Warp-cooperative row work | Cooperative identity sorting is retained through 256 entries, with larger rows keeping heapsort; other cooperative work needs a separate access-pattern hypothesis |
 | Shared-memory tiles | Establish repeated block-local neighbour access before adding staging, barriers and shared storage |
 | Validation efficiency | Prove individual redundancies or unused diagnostic writes; disabling production `Checked` changes failure handling and needs a separately revised contract |
 
-Attribution, initial instruction inspection and the entry-point trial are complete. Prioritise
-cooperative integer sorting and cross-loop arithmetic reuse as separate implementation comparisons;
-the existing prefix trial makes the latter a concrete candidate. Choose layout and cooperative-memory work from the measured
+Attribution, initial instruction inspection, the entry-point trial, prefix reassessment, cooperative
+integer sorting, host-coordination attribution, compilation/block-size measurement and the first
+accepted-buffer residency comparison are complete. Next prioritise a separate device cell-run indexing
+comparison against repeated neighbour searches. Broader residency and larger checked submissions still
+need explicit observation, rollback, cancellation, allocation and error boundaries before implementation.
+Continue bounded correction-arithmetic and invariant-coefficient inspection alongside them. Keep retained
+sorting, prefix reuse and accepted-buffer ownership in the control. Standalone device reductions/scans
+remain deferred; this does not rule out their use within a broader residency change.
+Choose further arithmetic reuse, layout and cooperative-memory work from the measured
 access and sorting costs. Do not use shuffle reductions to change floating-point summation order.
 
 Keep device-side bounds, checked integer prefixes and state residency in view: the current path
@@ -211,7 +245,9 @@ offsets. Preserve allocation/error decisions and explicitly qualify any accepted
 change. Inspect invariant kernel coefficients before introducing a full per-pair cache.
 
 Compilation snapshot copies and image-pipeline overlap are separate application-throughput
-candidates in the review; their gains cannot be reported as solver-only improvements.
+candidates in the review; their gains cannot be reported as solver-only improvements. The fresh
+profile makes bounded CPU frame preparation overlap more promising than snapshot-copy removal.
+Trace the increased solver/graphics cost with every-step images before attributing its cause.
 
 The [compiler assessment](/docs/project/development/milestones/05/performance-compiler-assessment.md)
 confirms optimised release/device builds and records a separate ThinLTO/one-unit trial.

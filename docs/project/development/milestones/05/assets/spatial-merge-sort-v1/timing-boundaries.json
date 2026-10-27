@@ -1,0 +1,6 @@
+{
+  "primary": "sum of internal completed solver step total_s; construction, teardown, audits and output excluded",
+  "sort_stage": "private-stream CUDA event interval around operation13 only; no added completion wait",
+  "submit": "steady_clock around submission and two event records; overlaps device interval",
+  "raw_process_wall_s": "collector interval including gzip output storage; not invocation-only time and not used in timing comparisons"
+}

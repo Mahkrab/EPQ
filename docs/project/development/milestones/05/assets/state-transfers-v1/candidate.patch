@@ -1,0 +1,1031 @@
+--- a/build.rs
++++ b/build.rs
+@@ -59,6 +59,7 @@
+         "native/neighbours.cuh",
+         "native/row_sort.cuh",
+         "native/spatial_sort.cuh",
++        "native/state_observation.cuh",
+         "native/kernels.cu",
+         "native/power.cuh",
+     ] {
+--- a/docs/cuda.md
++++ b/docs/cuda.md
+@@ -67,8 +67,11 @@
+ discarding them.
+ 
+ Fixed prediction membership uses contiguous u32 neighbour indices and `N + 1` u64
+-row offsets. A counting pass determines exact row lengths; checked host prefixes
+-size reusable storage before the fill pass. A stream-ordered integer sorting kernel
++row offsets. A counting pass determines exact row lengths, followed on the same stream by
++checked integer prefix kernels. Block scans, a scan of block totals and carry addition produce
++the exact exclusive row offsets. Counts are checked against the row bound before use; only the
++final u64 total returns for checked host allocation of reusable storage before filling. Offsets
++stay on device. These kernels reuse correction scratch after the bounds summary is consumed. A stream-ordered integer sorting kernel
+ then orders each row by identity. Rows of up to 256 entries use a complete warp;
+ larger rows retain heapsort. Fill and sorting share one completion and diagnostic readback.
+ Traversal visits those indices, inserting self once at its ordered position where
+@@ -76,8 +79,12 @@
+ input can still require quadratic space and is never silently capped or truncated.
+ 
+ The first attempt uploads accepted state and static planes and reserves fixed storage.
+-Later attempts reuse accepted device vectors, returning velocities for the host CFL diagnostic
+-and predictions for bounds checks while retaining iterative working arrays on device.
++Later attempts reuse accepted device vectors. Acceleration and prediction emit compact block
++summaries into finished correction scratch: checked speed maxima for CFL and coordinate extrema
++for spatial bounds. Only these summaries return for host decisions; particle vectors remain
++on device until final snapshot download. CFL lengths use the existing ordered binary32 dot
++product and round-to-nearest square root. The host retains the shared limit/warning arithmetic.
++Acceleration and CFL errors occupy separate diagnostic slots so stage priority is unchanged.
+ Failing lanes select the first particle's checked quantity with an integer atomic
+ minimum instead of returning the complete error array. Each Jacobi calculation and
+ candidate/projection pair is submitted as a stream-ordered group, with one result
+@@ -108,7 +115,9 @@
+ validates a complete step and passes its final cancellation poll before exchanging accepted
+ and working device vectors and installing the host snapshot. Promotion makes no driver calls.
+ Scratch never becomes accepted state merely because a kernel finished. Host snapshots remain
+-current after every accepted step; this does not eliminate final downloads or host validation.
++current after every accepted step, with the same identity, finiteness and plane checks before
++acceptance. Final position/velocity downloads remain necessary for the borrowed, infallible
++snapshot API; this change does not introduce lazy snapshots or thread-shared device storage.
+ 
+ Ordered binary32 sums, denormals, round-to-nearest division/square root and disabled
+ contraction preserve the supported arithmetic. Native power alternatives diverged on
+--- a/native/bridge.cpp
++++ b/native/bridge.cpp
+@@ -8,6 +8,7 @@
+ #include <new>
+ #include <cmath>
+ #include <utility>
++#include <algorithm>
+ 
+ #if CUDA_VERSION < 13000
+ #error "The CUDA bridge requires CUDA 13 headers; see docs/cuda.md"
+@@ -58,6 +59,8 @@
+     CUfunction kernel = nullptr;
+     CUfunction solver = nullptr;
+     CUfunction spatial_sort = nullptr;
++    CUfunction observe_state = nullptr;
++    CUfunction prefix_counts = nullptr;
+     CUdeviceptr diagnostic = 0;
+     bool diagnostic_clear = false;
+     bool attempt_open = false;
+@@ -102,6 +105,8 @@
+     if (!status.code && (code = d.cuModuleGetFunction_fn(&r.kernel, r.module, "roundtrip")) != CUDA_SUCCESS) status = {code, 5};
+     if (!status.code && (code = d.cuModuleGetFunction_fn(&r.solver, r.module, "solver")) != CUDA_SUCCESS) status = {code, 5};
+     if (!status.code && (code = d.cuModuleGetFunction_fn(&r.spatial_sort, r.module, "spatial_sort")) != CUDA_SUCCESS) status = {code, 5};
++    if (!status.code && (code = d.cuModuleGetFunction_fn(&r.observe_state, r.module, "observe_state")) != CUDA_SUCCESS) status = {code, 5};
++    if (!status.code && (code = d.cuModuleGetFunction_fn(&r.prefix_counts, r.module, "prefix_counts")) != CUDA_SUCCESS) status = {code, 5};
+     // Pageable uploads may return before DMA finishes on the legacy stream.
+     // This private stream must inherit that dependency before reading the data.
+     if (!status.code && (code = d.cuStreamCreate_fn(&r.stream, CU_STREAM_DEFAULT)) != CUDA_SUCCESS) status = {code, 6};
+@@ -227,12 +232,13 @@
+ }
+ 
+ extern "C" Status maelstrom_cuda_storage(void *handle, unsigned int slot,
+-                                          void *host, std::size_t bytes, unsigned int action) {
++                                          void *host, std::size_t bytes, unsigned int action, std::size_t offset=0) {
+     auto &r=*static_cast<Resource *>(handle);
+     if (r.poisoned) return {-3,14};
+     if (slot>=14 || action>2 || bytes>static_cast<std::size_t>(PTRDIFF_MAX) ||
++        offset>static_cast<std::size_t>(PTRDIFF_MAX) || (!action && offset) ||
+         (action && bytes && !host)) return {CUDA_ERROR_INVALID_VALUE,7};
+-    if (action && bytes>r.capacities[slot]) return {CUDA_ERROR_INVALID_VALUE,7};
++    if (action && (offset>r.capacities[slot] || bytes>r.capacities[slot]-offset)) return {CUDA_ERROR_INVALID_VALUE,7};
+     // Reservations within capacity and empty transfers neither submit work nor
+     // expose device data. In particular, a Rust upload's reserve is usually free.
+     if ((!action && bytes<=r.capacities[slot]) || (action && !bytes)) return {0,0};
+@@ -249,17 +255,23 @@
+             }
+             r.slots[slot]=replacement;
+             r.capacities[slot]=bytes;
+-        } else if (action==1 && bytes) code=d.cuMemcpyHtoD_fn(r.slots[slot],host,bytes);
+-        else if (action==2 && bytes) code=d.cuMemcpyDtoH_fn(host,r.slots[slot],bytes);
++        } else if (action==1 && bytes) code=d.cuMemcpyHtoD_fn(r.slots[slot]+offset,host,bytes);
++        else if (action==2 && bytes) code=d.cuMemcpyDtoH_fn(host,r.slots[slot]+offset,bytes);
+         return {code,code==CUDA_SUCCESS ? 0 : (action==1 ? 8 : 11)};
+     });
+ }
+ 
++enum class Observation { None, State, CountPrefix, Prefix };
+ static Status solver(Resource &r, SolverSettings settings, unsigned int operation,
+-        unsigned int threads, std::uint64_t *diagnostic=nullptr, bool grouped=false) {
+-    if (r.poisoned) return {-3,14};
+-    if ((grouped && (!diagnostic || (operation!=5 && operation!=9))) ||
+-        operation>17 || ((operation==2 || operation==4 || operation==12) && (!std::isfinite(settings.width) || settings.width<=0)) ||
++        unsigned int threads, std::uint64_t *diagnostic=nullptr, bool grouped=false,
++        Observation observation=Observation::None) {
++    if (r.poisoned) return {-3,14};
++    const bool state=observation==Observation::State;
++    const bool prefix=observation==Observation::CountPrefix || observation==Observation::Prefix;
++    if ((observation!=Observation::None && (!diagnostic || grouped)) ||
++        (state && operation>1) || (prefix && operation!=4) ||
++        (grouped && (!diagnostic || (operation!=5 && operation!=9))) ||
++        operation>17 || ((operation==2 || (operation==4 && observation!=Observation::Prefix) || operation==12) && (!std::isfinite(settings.width) || settings.width<=0)) ||
+         (threads!=32 && threads!=64 && threads!=128 && threads!=256) ||
+         settings.padded==0 || (settings.padded&(settings.padded-1)) ||
+         settings.count>settings.padded || settings.entries>static_cast<std::uint64_t>(PTRDIFF_MAX)/4 ||
+@@ -267,21 +279,25 @@
+         (settings.stride&(settings.stride-1)) || (settings.span&(settings.span-1)) || settings.span>settings.padded)))
+         return {CUDA_ERROR_INVALID_VALUE,7};
+     std::uint64_t n=settings.count;
+-    std::uint64_t required[14]={n*12,n*12,n*12,n*12,n*4,n*4,n*4,n*12,n*12,
++    std::uint64_t required[14]={n*12,n*12,n*12,n*12,n*4,n*4,n*4,n ? std::max<std::uint64_t>(n*12,32) : (prefix ? 32 : 0),n*12,
+         static_cast<std::uint64_t>(settings.planes)*16,static_cast<std::uint64_t>(settings.padded)*64,
+         settings.entries*4,n*4,(n+1)*8};
+     for (unsigned int slot=0;slot<14;++slot) if (required[slot]>r.capacities[slot]) return {CUDA_ERROR_INVALID_VALUE,7};
+     if (diagnostic && !r.diagnostic_clear) return {CUDA_ERROR_INVALID_VALUE,7};
+-    if (!settings.count) {
++    if (!settings.count && !prefix) {
+         // Empty observations still complete an attempt's queued reset, so
+         // acceptance and deferred driver errors obey the non-empty contract.
+         const auto status=diagnostic ? solver_call(r,Boundary::Observe,[]() -> Status {
+             return {0,0};
+         }) : Status{0,0};
+-        if (diagnostic && !status.code) *diagnostic=UINT64_MAX;
++        if (diagnostic && !status.code) {
++            *diagnostic=UINT64_MAX;
++            if (state) diagnostic[1]=UINT64_MAX;
++        }
+         return status;
+     }
+     const unsigned int passes=grouped ? (operation==5 ? 4 : 2) : 1;
++    const unsigned int record_count=prefix || (state && operation==0) ? 2 : passes;
+     std::uint64_t records[4]={UINT64_MAX,UINT64_MAX,UINT64_MAX,UINT64_MAX};
+     if (diagnostic) r.diagnostic_clear=false;
+     const auto status=solver_call(r,diagnostic ? Boundary::Observe : Boundary::Submit,[&]() -> Status {
+@@ -296,16 +312,17 @@
+         unsigned int kernel_operation=sort ? 3 : operation;
+         void *args[]={&buffers,&settings,&kernel_operation};
+         std::uint64_t count=(operation==2 || sort || kernel_operation==3) ? settings.padded : settings.count;
++        CUfunction function=state ? r.observe_state : (sort ? r.spatial_sort : r.solver);
+         auto launch=[&]() -> Status {
+             // Conservatively mark before submission: even an immediate error
+             // must pass through the completion/poisoning boundary.
+             r.pending=true;
+-            auto code=r.driver.cuLaunchKernel_fn(sort ? r.spatial_sort : r.solver,static_cast<unsigned int>((count+threads-1)/threads),
++            auto code=r.driver.cuLaunchKernel_fn(function,static_cast<unsigned int>((count+threads-1)/threads),
+                 1,1,threads,1,1,0,r.stream,args,nullptr);
+             return {code,code==CUDA_SUCCESS ? 0 : 9};
+         };
+         if (!sort) {
+-            for (unsigned int pass=0;pass<passes;++pass) {
++            for (unsigned int pass=0;observation!=Observation::Prefix && (!prefix || settings.count) && pass<passes;++pass) {
+                 kernel_operation=operation+pass;
+                 auto status=launch();
+                 if (status.code) return status;
+@@ -315,6 +332,16 @@
+                     kernel_operation=18;
+                     count=static_cast<std::uint64_t>(settings.count)*32;
+                     status=launch();
++                    if (status.code) return status;
++                }
++            }
++            if (prefix) {
++                function=r.prefix_counts;
++                settings.stride=observation==Observation::CountPrefix;
++                settings.span=static_cast<unsigned int>((static_cast<std::uint64_t>(settings.count)+threads)/threads);
++                for (kernel_operation=21;kernel_operation<=23;++kernel_operation) {
++                    count=kernel_operation==22 ? threads : static_cast<std::uint64_t>(settings.count)+1;
++                    const auto status=launch();
+                     if (status.code) return status;
+                 }
+             }
+@@ -337,14 +364,19 @@
+             settings.stride^=1U;
+         }
+         return {0,0};
+-    },diagnostic ? records : nullptr,passes);
++    },diagnostic ? records : nullptr,record_count);
+     if (diagnostic && !status.code) {
+         // Stage order precedes particle/expression order, even when a later
+         // stage would fail at an earlier particle. Never select by packet value.
+         *diagnostic=UINT64_MAX;
+-        for (unsigned int pass=0;pass<passes;++pass)
+-            if (records[pass]!=UINT64_MAX) { *diagnostic=records[pass];break; }
+-        r.diagnostic_clear=*diagnostic==UINT64_MAX;
++        if (state) {
++            diagnostic[0]=records[0];diagnostic[1]=records[1];
++            r.diagnostic_clear=records[0]==UINT64_MAX && records[1]==UINT64_MAX;
++        } else {
++            for (unsigned int pass=0;pass<record_count;++pass)
++                if (records[pass]!=UINT64_MAX) { *diagnostic=records[pass];break; }
++            r.diagnostic_clear=*diagnostic==UINT64_MAX;
++        }
+     }
+     return status;
+ }
+@@ -398,3 +430,17 @@
+         unsigned int first_operation, unsigned int threads, std::uint64_t *diagnostic) {
+     return solver(*static_cast<Resource *>(handle),settings,first_operation,threads,diagnostic,true);
+ }
++
++extern "C" Status maelstrom_cuda_observe(void *handle, SolverSettings settings,
++        unsigned int operation, unsigned int threads, std::uint64_t *records) {
++    return solver(*static_cast<Resource *>(handle),settings,operation,threads,records,false,Observation::State);
++}
++
++extern "C" Status maelstrom_cuda_prefix(void *handle, SolverSettings settings,
++        unsigned int threads, unsigned int count_rows, std::uint64_t *diagnostic) {
++    auto &r=*static_cast<Resource *>(handle);
++    if (r.poisoned) return {-3,14};
++    if (count_rows>1) return {CUDA_ERROR_INVALID_VALUE,7};
++    return solver(r,settings,4,threads,diagnostic,false,
++        count_rows ? Observation::CountPrefix : Observation::Prefix);
++}
+--- a/native/solver.cu
++++ b/native/solver.cu
+@@ -3,6 +3,7 @@
+ #include "solver.h"
+ #include <cmath>
+ #include <climits>
++#include <cfloat>
+ #include "power.cuh"
+ 
+ // Error numbers map to enduring checked quantities in src/cuda/solver.rs.
+@@ -70,6 +71,8 @@
+     if (operation==19) sort_cell_tile(b.cells,s.padded,s.stride,tile);
+     else merge_cell_tile(b.cells,s.padded,s.span,s.stride,tile);
+ }
++
++#include "state_observation.cuh"
+ 
+ extern "C" __global__ void solver(SolverBuffers b, SolverSettings s, unsigned int operation) {
+     const auto lane=static_cast<std::uint64_t>(blockIdx.x)*blockDim.x+threadIdx.x;
+--- /dev/null
++++ b/native/state_observation.cuh
+@@ -0,0 +1,106 @@
++// Summaries replace bulk observations, while particle vectors stay in their
++// working allocations. Maxima and extrema reorder no floating-point sums.
++#pragma once
++struct StateSummary { float scalar; Vector lower, upper; float reserved; };
++static_assert(sizeof(StateSummary)==32);
++
++extern "C" __global__ void observe_state(SolverBuffers b, SolverSettings s, unsigned int operation) {
++    __shared__ StateSummary values[256];
++    const auto lane=threadIdx.x;
++    const auto i=static_cast<std::uint64_t>(blockIdx.x)*blockDim.x+lane;
++    StateSummary value{0,{FLT_MAX,FLT_MAX,FLT_MAX},{-FLT_MAX,-FLT_MAX,-FLT_MAX},0};
++    if (i<s.count) {
++        Checked c;
++        if (operation==0) {
++            Vector delta=c.vector(mul(s.acceleration,s.timestep),19);
++            b.velocity[i]=c.vector(add(b.old_velocity[i],delta),20);
++            // Acceleration errors precede every CFL error, regardless of the
++            // particle index. Each stage therefore owns a separate result slot.
++            Checked speed;
++            value.scalar=length(b.velocity[i],speed);
++            if (speed.error) {
++                atomicMin(b.diagnostic+1,(static_cast<unsigned long long>(i)<<32)|speed.error);
++                value.scalar=0;
++            }
++        } else {
++            Vector delta=c.vector(mul(b.velocity[i],s.timestep),21);
++            Vector p=c.vector(add(b.old_position[i],delta),22);
++            b.position[i]=p;
++            value.scalar=fmaxf(fabsf(p.x),fmaxf(fabsf(p.y),fabsf(p.z)));
++            value.lower=p;value.upper=p;
++        }
++        b.errors[i]=c.error;
++        if (c.error) atomicMin(b.diagnostic,(static_cast<unsigned long long>(i)<<32)|c.error);
++    }
++    values[lane]=value;
++    __syncthreads();
++    for (unsigned int offset=blockDim.x/2;offset;offset/=2) {
++        if (lane<offset) {
++            auto &a=values[lane];const auto other=values[lane+offset];
++            a.scalar=fmaxf(a.scalar,other.scalar);
++            if (operation==1) {
++                a.lower={fminf(a.lower.x,other.lower.x),fminf(a.lower.y,other.lower.y),fminf(a.lower.z,other.lower.z)};
++                a.upper={fmaxf(a.upper.x,other.upper.x),fmaxf(a.upper.y,other.upper.y),fmaxf(a.upper.z,other.upper.z)};
++            }
++        }
++        __syncthreads();
++    }
++    if (!lane) reinterpret_cast<StateSummary *>(b.correction)[blockIdx.x]=values[0];
++}
++
++// Both levels scan integers in shared memory. The read barrier prevents a
++// faster lane from overwriting a value its neighbour still needs this round.
++__device__ void inclusive_block_prefix(std::uint64_t *scan) {
++    const auto lane=threadIdx.x;
++    __syncthreads();
++    for (unsigned int offset=1;offset<blockDim.x;offset*=2) {
++        const auto previous=lane>=offset ? scan[lane-offset] : 0;
++        __syncthreads();
++        scan[lane]+=previous;
++        __syncthreads();
++    }
++}
++
++// Counted rows have at most count-1 entries. With the checked power-of-two u32
++// dimension, their complete sum fits u64. Invalid counts are diagnosed before
++// later kernels may use the resulting offsets or allocate neighbour storage.
++extern "C" __global__ void prefix_counts(SolverBuffers b, SolverSettings s, unsigned int operation) {
++    if (b.diagnostic[0]!=ULLONG_MAX) return;
++    const auto lane=threadIdx.x;
++    __shared__ std::uint64_t scan[256];
++    const auto n=static_cast<std::uint64_t>(s.count)+1;
++    auto *totals=reinterpret_cast<std::uint64_t *>(b.correction);
++    if (operation==22) {
++        if (b.diagnostic[1]!=ULLONG_MAX || blockIdx.x) return;
++        // Each lane scans one contiguous slice of block totals, then the block
++        // scan supplies its carry. This supports any row count without a fixed
++        // shared-memory ceiling or a serial pass over every total.
++        const auto chunk=(s.span+blockDim.x-1)/blockDim.x;
++        const auto start=lane*chunk;
++        const auto stop=min(start+chunk,s.span);
++        std::uint64_t sum=0;
++        for (auto block=start;block<stop;++block) sum+=totals[block];
++        scan[lane]=sum;
++        inclusive_block_prefix(scan);
++        auto carry=lane ? scan[lane-1] : 0;
++        for (auto block=start;block<stop;++block) {
++            const auto value=totals[block];totals[block]=carry;carry+=value;
++        }
++        return;
++    }
++    const auto i=static_cast<std::uint64_t>(blockIdx.x)*blockDim.x+lane;
++    if (operation==23) {
++        if (i<n && b.diagnostic[1]==ULLONG_MAX) b.offsets[i]+=totals[blockIdx.x];
++        return;
++    }
++    std::uint64_t value=i<n && (s.count || !s.stride) ? b.offsets[i] : 0;
++    if (i<n && ((!i && value) || (i && value>s.count-1))) {
++        const auto particle=i ? i-1 : 0;
++        atomicMin(b.diagnostic+1,(static_cast<unsigned long long>(particle)<<32)|52);
++        value=0;
++    }
++    scan[lane]=value;
++    inclusive_block_prefix(scan);
++    if (i<n) b.offsets[i]=scan[lane];
++    if (lane==blockDim.x-1) totals[blockIdx.x]=scan[lane];
++}
+--- a/native/tests.cpp
++++ b/native/tests.cpp
+@@ -25,7 +25,7 @@
+     struct Launch { unsigned int operation, stride, span, grid, block; };
+     std::vector<Launch> launches;
+     std::map<unsigned int,std::pair<unsigned int,std::uint32_t>> numerical_failures;
+-    CUdeviceptr next=1;
++    CUdeviceptr next=4096;
+     std::map<CUdeviceptr,std::vector<unsigned char>> memory;
+ } observed;
+ 
+@@ -53,7 +53,7 @@
+     d.cuCtxPopCurrent_fn = [](CUcontext *context) { ++observed.pops; *context = nullptr; return fault(16); };
+     d.cuModuleLoadData_fn = [](CUmodule *module, const void *) { *module = reinterpret_cast<CUmodule>(1); return fault(5); };
+     d.cuModuleGetFunction_fn = [](CUfunction *function, CUmodule, const char *name) {
+-        *function = reinterpret_cast<CUfunction>(std::strcmp(name,"solver")==0 ? 2 : std::strcmp(name,"spatial_sort")==0 ? 3 : 1);
++        *function = reinterpret_cast<CUfunction>(std::strcmp(name,"solver")==0 ? 2 : std::strcmp(name,"spatial_sort")==0 ? 3 : std::strcmp(name,"observe_state")==0 ? 4 : std::strcmp(name,"prefix_counts")==0 ? 5 : 1);
+         return CUDA_SUCCESS;
+     };
+     d.cuStreamCreate_fn = [](CUstream *stream, unsigned int flags) {
+@@ -62,10 +62,16 @@
+     };
+     d.cuMemAlloc_fn = [](CUdeviceptr *buffer, std::size_t bytes) {
+         if (observed.fail == 7) return CUDA_ERROR_OUT_OF_MEMORY;
+-        *buffer=observed.next++; observed.memory[*buffer].resize(bytes); return CUDA_SUCCESS;
++        *buffer=observed.next;observed.next+=bytes+4096; observed.memory[*buffer].resize(bytes); return CUDA_SUCCESS;
+     };
+     d.cuMemFree_fn = [](CUdeviceptr pointer) { assert(!observed.work_pending); ++observed.frees; if (!observed.fail) observed.memory.erase(pointer); return fault(12); };
+-    d.cuMemcpyHtoD_fn = [](CUdeviceptr pointer, const void *data, std::size_t bytes) { assert(!observed.work_pending); ++observed.uploads;assert(bytes<=observed.memory.at(pointer).size());std::memcpy(observed.memory.at(pointer).data(), data, bytes); return fault(8); };
++    d.cuMemcpyHtoD_fn = [](CUdeviceptr pointer, const void *data, std::size_t bytes) {
++        assert(!observed.work_pending);++observed.uploads;
++        auto allocation=observed.memory.upper_bound(pointer);assert(allocation!=observed.memory.begin());--allocation;
++        const auto offset=pointer-allocation->first;
++        assert(offset<=allocation->second.size() && bytes<=allocation->second.size()-offset);
++        std::memcpy(allocation->second.data()+offset,data,bytes);return fault(8);
++    };
+     d.cuMemsetD8Async_fn = [](CUdeviceptr pointer, unsigned char value, std::size_t bytes, CUstream) {
+         observed.work_pending=true;
+         ++observed.resets;
+@@ -109,6 +115,17 @@
+                 std::memcpy(records.data()+pass*sizeof(result),&result,sizeof(result));
+             }
+         }
++        if (function==reinterpret_cast<CUfunction>(4) || function==reinterpret_cast<CUfunction>(5)) {
++            const auto buffers=*static_cast<SolverBuffers *>(args[0]);
++            const auto operation=*static_cast<unsigned int *>(args[2]);
++            const auto output=reinterpret_cast<CUdeviceptr>(buffers.diagnostic);
++            const auto failure=observed.numerical_failures.find(operation);
++            if (failure!=observed.numerical_failures.end()) {
++                const auto slot=function==reinterpret_cast<CUfunction>(5) ? 1 : 0;
++                const auto record=(static_cast<std::uint64_t>(failure->second.first)<<32)|failure->second.second;
++                std::memcpy(observed.memory.at(output).data()+slot*sizeof(record),&record,sizeof(record));
++            }
++        }
+         if (observed.record_solver) {
+             auto settings=*static_cast<SolverSettings *>(args[1]);
+             observed.launches.push_back({*static_cast<unsigned int *>(args[2]),
+@@ -118,7 +135,13 @@
+         return fault(9);
+     };
+     d.cuStreamSynchronize_fn = [](CUstream) { ++observed.completions; if (observed.fail!=10) observed.work_pending=false; return fault(10); };
+-    d.cuMemcpyDtoH_fn = [](void *data, CUdeviceptr pointer, std::size_t bytes) { assert(!observed.work_pending); ++observed.downloads;assert(bytes<=observed.memory.at(pointer).size()); std::memcpy(data, observed.memory.at(pointer).data(), bytes); return fault(11); };
++    d.cuMemcpyDtoH_fn = [](void *data, CUdeviceptr pointer, std::size_t bytes) {
++        assert(!observed.work_pending);++observed.downloads;
++        auto allocation=observed.memory.upper_bound(pointer);assert(allocation!=observed.memory.begin());--allocation;
++        const auto offset=pointer-allocation->first;
++        assert(offset<=allocation->second.size() && bytes<=allocation->second.size()-offset);
++        std::memcpy(data,allocation->second.data()+offset,bytes);return fault(11);
++    };
+ }
+ 
+ static void ready(Resource &r) {
+@@ -488,7 +511,54 @@
+     assert(maelstrom_cuda_storage(&r,0,nullptr,24,0).code==0 && r.capacities[0]==24);
+ }
+ 
++static void compact_observation_failures() {
++    for (auto prefix : {false,true}) for (auto failure : {0,9,10,11,13,16}) {
++        const auto passes=prefix ? 4 : 1;
++        for (int launch=1;launch<=passes;++launch) {
++            observed={};Resource r;ready(r);
++            SolverSettings s{};s.count=5;s.padded=8;s.width=1;
++            for (unsigned int slot=0;slot<14;++slot)
++                assert(maelstrom_cuda_storage(&r,slot,nullptr,512,0).code==0);
++            assert(maelstrom_cuda_begin_attempt(&r).code==0);
++            observed.record_solver=true;
++            observed.fail=failure==9 ? 0 : failure;
++            observed.fail_launch=failure==9 ? launch : 0;
++            std::uint64_t results[]={17,19};
++            const auto status=prefix ? maelstrom_cuda_prefix(&r,s,128,1,results) :
++                                      maelstrom_cuda_observe(&r,s,0,128,results);
++            const auto expected=failure==16 ? 13 : failure;
++            assert(status.stage==expected && r.poisoned==(failure!=0));
++            assert(observed.completions==(failure==13 ? 0 : 1));
++            assert(observed.downloads==((failure==0 || failure==11 || failure==16) ? 1 : 0));
++            if (failure) assert(results[0]==17 && results[1]==19);
++            else {
++                assert(results[0]==UINT64_MAX);
++                if (!prefix) assert(results[1]==UINT64_MAX);
++                assert(observed.launches.size()==static_cast<unsigned int>(passes));
++                if (prefix) {
++                    assert(observed.launches[0].operation==4);
++                    for (int pass=1;pass<4;++pass)
++                        assert(observed.launches[pass].operation==20U+pass);
++                }
++            }
++            if (failure) assert(maelstrom_cuda_prefix(&r,s,128,1,results).stage==14);
++        }
++    }
++    // Offset reads must be bounded before forming a pointer or touching host data.
++    observed={};Resource r;ready(r);
++    std::uint64_t values[]={11,13},out=0;
++    assert(maelstrom_cuda_storage(&r,13,nullptr,sizeof(values),0).code==0);
++    assert(maelstrom_cuda_storage(&r,13,values,sizeof(values),1).code==0);
++    assert(maelstrom_cuda_storage(&r,13,&out,8,2,8).code==0 && out==13);
++    const auto reads=observed.downloads;
++    assert(maelstrom_cuda_storage(&r,13,&out,8,2,9).stage==7);
++    assert(maelstrom_cuda_storage(&r,13,nullptr,0,2,17).stage==7);
++    assert(maelstrom_cuda_storage(&r,13,nullptr,0,0,1).stage==7);
++    assert(observed.downloads==reads && !r.poisoned);
++}
++
+ int main() {
++    compact_observation_failures();
+     submission_boundaries();
+     accepted_vectors();
+     sort_batches();
+@@ -565,7 +635,7 @@
+         {
+             Resource r;ready(r);
+             SolverSettings settings{};settings.count=1;settings.padded=1;
+-            std::size_t sizes[14]={12,12,12,12,4,4,4,12,12,0,64,0,4,16};
++            std::size_t sizes[14]={12,12,12,12,4,4,4,32,12,0,64,0,4,16};
+             for (unsigned int slot=0;slot<14;++slot) assert(maelstrom_cuda_storage(&r,slot,nullptr,sizes[slot],0).code==0);
+             const auto allocations=observed.memory.size();
+             assert(maelstrom_cuda_storage(&r,0,nullptr,12,0).code==0);
+--- a/src/cuda/native.rs
++++ b/src/cuda/native.rs
+@@ -79,6 +79,7 @@
+         host: *mut c_void,
+         bytes: usize,
+         action: u32,
++        offset: usize,
+     ) -> Status;
+     fn maelstrom_cuda_solver(
+         handle: *mut c_void,
+@@ -91,6 +92,20 @@
+         settings: Settings,
+         operation: u32,
+         threads: u32,
++        diagnostic: *mut u64,
++    ) -> Status;
++    fn maelstrom_cuda_observe(
++        handle: *mut c_void,
++        settings: Settings,
++        operation: u32,
++        threads: u32,
++        records: *mut u64,
++    ) -> Status;
++    fn maelstrom_cuda_prefix(
++        handle: *mut c_void,
++        settings: Settings,
++        threads: u32,
++        count_rows: u32,
+         diagnostic: *mut u64,
+     ) -> Status;
+     fn maelstrom_cuda_begin_attempt(handle: *mut c_void) -> Status;
+@@ -109,6 +124,7 @@
+ pub(super) trait Transfer: Copy + Default {}
+ impl Transfer for [f32; 3] {}
+ impl Transfer for [f32; 4] {}
++impl Transfer for [f32; 8] {}
+ impl Transfer for f32 {}
+ impl Transfer for u32 {}
+ impl Transfer for u64 {}
+@@ -151,7 +167,7 @@
+         let handle = self.handle.ok_or(CudaError::Poisoned)?;
+         // SAFETY: The unique thread-local handle is live. Action zero allocates
+         // context-owned storage and never dereferences the null host pointer.
+-        unsafe { maelstrom_cuda_storage(handle.as_ptr(), slot, std::ptr::null_mut(), bytes, 0) }
++        unsafe { maelstrom_cuda_storage(handle.as_ptr(), slot, std::ptr::null_mut(), bytes, 0, 0) }
+             .result()
+     }
+ 
+@@ -168,6 +184,7 @@
+                 values.as_ptr().cast_mut().cast(),
+                 bytes,
+                 1,
++                0,
+             )
+         }
+         .result()
+@@ -178,6 +195,19 @@
+         slot: u32,
+         count: usize,
+     ) -> Result<Vec<T>, CudaError> {
++        self.download_at(slot, 0, count)
++    }
++
++    pub(super) fn download_at<T: Transfer>(
++        &mut self,
++        slot: u32,
++        offset: usize,
++        count: usize,
++    ) -> Result<Vec<T>, CudaError> {
++        let offset = offset
++            .checked_mul(size_of::<T>())
++            .filter(|&n| n <= isize::MAX as usize)
++            .ok_or(CudaError::Capacity)?;
+         let bytes = count
+             .checked_mul(size_of::<T>())
+             .filter(|&n| n <= isize::MAX as usize)
+@@ -189,9 +219,17 @@
+         values.resize(count, T::default());
+         let handle = self.handle.ok_or(CudaError::Poisoned)?;
+         // SAFETY: Action two writes only the allocated, initialised plain-number
+-        // slice and finishes before returning. Native code checks slot capacity.
+-        unsafe {
+-            maelstrom_cuda_storage(handle.as_ptr(), slot, values.as_mut_ptr().cast(), bytes, 2)
++        // slice and finishes before returning. Native code checks offset and length
++        // against slot capacity before forming the device address.
++        unsafe {
++            maelstrom_cuda_storage(
++                handle.as_ptr(),
++                slot,
++                values.as_mut_ptr().cast(),
++                bytes,
++                2,
++                offset,
++            )
+         }
+         .result()?;
+         Ok(values)
+@@ -257,6 +295,57 @@
+         }
+         .result()?;
+         Ok(diagnostic)
++    }
++
++    pub(super) fn observe(
++        &mut self,
++        settings: Settings,
++        operation: u32,
++        threads: u32,
++    ) -> Result<[u64; 2], CudaError> {
++        let handle = self.handle.ok_or(CudaError::Poisoned)?;
++        let mut records = [u64::MAX; 2];
++        // SAFETY: Settings has the checked C layout and records owns two u64s.
++        // Native code accepts only acceleration/prediction, validates scratch,
++        // completes the stream and copies results before ending this borrow.
++        // Summaries remain in context-owned scratch until a synchronous download.
++        unsafe {
++            maelstrom_cuda_observe(
++                handle.as_ptr(),
++                settings,
++                operation,
++                threads,
++                records.as_mut_ptr(),
++            )
++        }
++        .result()?;
++        Ok(records)
++    }
++
++    pub(super) fn prefix(
++        &mut self,
++        settings: Settings,
++        threads: u32,
++        count_rows: bool,
++    ) -> Result<u64, CudaError> {
++        let handle = self.handle.ok_or(CudaError::Poisoned)?;
++        let mut record = u64::MAX;
++        // SAFETY: The unique handle owns offsets and scratch. Native code checks
++        // capacities and launch sizes, orders count/scan kernels on its stream,
++        // and completes diagnostic readback before this scalar borrow ends.
++        // Without counting, slot 13 supplies count+1 checked row lengths with
++        // zero first; malformed values are diagnosed before offsets are used.
++        unsafe {
++            maelstrom_cuda_prefix(
++                handle.as_ptr(),
++                settings,
++                threads,
++                u32::from(count_rows),
++                &mut record,
++            )
++        }
++        .result()?;
++        Ok(record)
+     }
+ 
+     pub fn new(ordinal: u32) -> Result<Self, CudaError> {
+--- /dev/null
++++ b/src/cuda/observation_tests.rs
+@@ -0,0 +1,186 @@
++//! Compact observations must agree with the CPU's binary32 diagnostics and leave
++//! accepted vectors untouched. Prefix fixtures are independent of neighbour search.
++
++use super::*;
++use crate::diagnostics::cfl_diagnostic;
++
++#[test]
++#[ignore = "requires an explicitly selected CUDA hardware test run"]
++fn hardware_compact_summaries_keep_lengths_extrema_and_stage_priority() {
++    let config = crate::config::resolve_effective_configuration(None, None, None).unwrap();
++    for threads in [32, 64, 128, 256] {
++        let mut gpu = CudaSolver::new(0, threads).unwrap();
++        for count in [0, 1, 2, 31, 32, 33, 127, 128, 129, 1003] {
++            let values = [
++                0.0_f32,
++                -0.0,
++                f32::from_bits(1),
++                1.0e-20,
++                -0.125,
++                0.75,
++                1.0e19,
++            ];
++            let particles: Vec<_> = (0..count)
++                .map(|i| Particle {
++                    identity: i as u64,
++                    position_m: Vec3::new((i as f32 - 7.0) * 1.0e30, -0.0, 0.25),
++                    velocity_m_s: Vec3::new(values[i % values.len()], 0.0, 0.0),
++                })
++                .collect();
++            let mut s = settings(&config, count, 0).unwrap();
++            s.acceleration = [0.0; 3];
++            gpu.prepare(s, &particles, &[]).unwrap();
++            let records = gpu.context.inner.observe(s, 0, threads).unwrap();
++            assert_eq!(records, [u64::MAX; 2]);
++            let velocities: Vec<_> = particles.iter().map(|p| p.velocity_m_s).collect();
++            let cpu = cfl_diagnostic(
++                &velocities,
++                s.timestep,
++                config.derived.particle_diameter_m,
++                config.numerical.cfl_factor,
++            )
++            .unwrap();
++            let blocks = count.div_ceil(threads as usize);
++            let observed: Vec<[f32; 8]> = gpu.context.inner.download(7, blocks).unwrap();
++            let maximum = observed.iter().map(|s| s[0]).fold(0.0_f32, f32::max);
++            assert_eq!(maximum.to_bits(), cpu.maximum_speed.to_bits());
++            assert_eq!(
++                cfl_from_maximum_speed(
++                    maximum,
++                    s.timestep,
++                    config.derived.particle_diameter_m,
++                    config.numerical.cfl_factor
++                )
++                .unwrap(),
++                cpu
++            );
++            assert_eq!(
++                gpu.context.inner.observe(s, 1, threads).unwrap(),
++                [u64::MAX; 2]
++            );
++            let predicted: Vec<_> = particles
++                .iter()
++                .map(|p| p.position_m + p.velocity_m_s * s.timestep)
++                .collect();
++            let summaries: Vec<[f32; 8]> = gpu.context.inner.download(7, blocks).unwrap();
++            for (summary, points) in summaries.iter().zip(predicted.chunks(threads as usize)) {
++                let maximum = points
++                    .iter()
++                    .map(|p| p.x.abs().max(p.y.abs()).max(p.z.abs()))
++                    .fold(0.0_f32, f32::max);
++                assert_eq!(summary[0].to_bits(), maximum.to_bits());
++                for axis in 0..3 {
++                    let minimum = points
++                        .iter()
++                        .map(|p| array(*p)[axis])
++                        .fold(f32::MAX, f32::min);
++                    let maximum = points
++                        .iter()
++                        .map(|p| array(*p)[axis])
++                        .fold(-f32::MAX, f32::max);
++                    assert_eq!(summary[axis + 1], minimum);
++                    assert_eq!(summary[axis + 4], maximum);
++                }
++            }
++            let accepted: Vec<[f32; 3]> = gpu.context.inner.download(1, count).unwrap();
++            assert_eq!(
++                accepted,
++                particles
++                    .iter()
++                    .map(|p| array(p.velocity_m_s))
++                    .collect::<Vec<_>>()
++            );
++        }
++        // An acceleration error at a later particle must beat an earlier CFL
++        // squared-length overflow. The two error slots must survive readback.
++        let particles = vec![
++            Particle {
++                identity: 0,
++                position_m: Vec3::ZERO,
++                velocity_m_s: Vec3::ZERO,
++            },
++            Particle {
++                identity: 1,
++                position_m: Vec3::ZERO,
++                velocity_m_s: Vec3::new(f32::MAX, 0.0, 0.0),
++            },
++        ];
++        let mut s = settings(&config, 2, 0).unwrap();
++        s.timestep = 1.0;
++        s.acceleration = [f32::MAX / 2.0, 0.0, 0.0];
++        gpu.prepare(s, &particles, &[]).unwrap();
++        let records = gpu.context.inner.observe(s, 0, threads).unwrap();
++        assert_eq!(records, [(1_u64 << 32) | 20, 2]);
++        assert!(gpu.accept().is_err());
++        gpu.context.inner.begin_attempt().unwrap();
++        s.acceleration = [0.0; 3];
++        let records = gpu.context.inner.observe(s, 0, threads).unwrap();
++        assert_eq!(records, [u64::MAX, (1_u64 << 32) | 2]);
++        assert!(gpu.accept().is_err());
++    }
++}
++
++#[test]
++#[ignore = "requires an explicitly selected CUDA hardware test run"]
++fn hardware_checked_prefix_matches_integer_oracle_and_rejects_bad_counts() {
++    let config = crate::config::resolve_effective_configuration(None, None, None).unwrap();
++    for threads in [32, 64, 128, 256] {
++        let mut gpu = CudaSolver::new(0, threads).unwrap();
++        for count in [
++            0, 1, 2, 31, 32, 33, 127, 128, 129, 255, 256, 257, 4097, 110592, 33,
++        ] {
++            let particles = vec![
++                Particle {
++                    identity: 0,
++                    position_m: Vec3::ZERO,
++                    velocity_m_s: Vec3::ZERO
++                };
++                count
++            ];
++            let s = settings(&config, count, 0).unwrap();
++            gpu.prepare(s, &particles, &[]).unwrap();
++            let mut counts = vec![0_u64];
++            counts.extend((0..count).map(|i| ((i * 7) % count) as u64));
++            let mut expected = Vec::with_capacity(count + 1);
++            let mut sum = 0;
++            for value in &counts {
++                sum += value;
++                expected.push(sum);
++            }
++            gpu.context.inner.upload(13, &counts).unwrap();
++            assert_eq!(
++                gpu.context.inner.prefix(s, threads, false).unwrap(),
++                u64::MAX
++            );
++            let actual: Vec<u64> = gpu.context.inner.download(13, count + 1).unwrap();
++            assert_eq!(actual, expected, "count {count}, block {threads}");
++            assert_eq!(
++                gpu.context.inner.download_at::<u64>(13, count, 1).unwrap(),
++                vec![sum]
++            );
++        }
++        let empty = settings(&config, 0, 0).unwrap();
++        gpu.prepare(empty, &[], &[]).unwrap();
++        gpu.context.inner.upload(13, &[1_u64]).unwrap();
++        assert_eq!(gpu.context.inner.prefix(empty, threads, false).unwrap(), 52);
++        let count = 33;
++        let particles = vec![
++            Particle {
++                identity: 0,
++                position_m: Vec3::ZERO,
++                velocity_m_s: Vec3::ZERO
++            };
++            count
++        ];
++        let s = settings(&config, count, 0).unwrap();
++        for index in [0, 1, 17, 33] {
++            gpu.prepare(s, &particles, &[]).unwrap();
++            let mut counts = vec![0_u64; count + 1];
++            counts[index] = u64::MAX;
++            gpu.context.inner.upload(13, &counts).unwrap();
++            let record = gpu.context.inner.prefix(s, threads, false).unwrap();
++            assert_eq!(record, ((index.saturating_sub(1) as u64) << 32) | 52);
++            assert!(gpu.accept().is_err());
++        }
++    }
++}
+--- a/src/cuda/solver.rs
++++ b/src/cuda/solver.rs
+@@ -7,7 +7,7 @@
+     NumericalError,
+     boundary::Plane,
+     config::ResolvedConfiguration,
+-    diagnostics::{CflDiagnostic, cfl_diagnostic},
++    diagnostics::{CflDiagnostic, cfl_from_maximum_speed},
+     math::Vec3,
+     scene::Particle,
+     simulation::{
+@@ -115,7 +115,7 @@
+         n * 4,
+         n * 4,
+         n * 4,
+-        n * 12,
++        (n * 12).max(32),
+         n * 12,
+         u128::from(s.planes) * 16,
+         u128::from(s.padded) * 64,
+@@ -134,6 +134,7 @@
+ }
+ 
+ /// Replace independently counted row lengths with checked exclusive offsets.
++#[cfg(test)]
+ fn prefix_offsets(counts: &mut [u64], particles: u32) -> Result<u64, CudaError> {
+     if counts.len() != particles as usize + 1 || counts.first() != Some(&0) {
+         return Err(CudaError::NeighbourStorage { particle: 0 });
+@@ -245,12 +246,8 @@
+         diagnostic_error(record, s.count)
+     }
+ 
++    #[cfg(test)]
+     fn discover(&mut self, s: &mut Settings, positions: &[Vec3]) -> Result<(), StepError> {
+-        s.entries = 0;
+-        if s.count == 0 {
+-            self.context.inner.upload(13, &[0_u64])?;
+-            return Ok(());
+-        }
+         let mut largest = 0.0_f64;
+         let mut lower = Vec3::new(f32::MAX, f32::MAX, f32::MAX);
+         let mut upper = Vec3::new(-f32::MAX, -f32::MAX, -f32::MAX);
+@@ -268,15 +265,27 @@
+         while s.width < minimum {
+             s.width *= 2.0;
+         }
+-        // Cell generation, sorting and counting share the private stream. Only
+-        // the checked count observes completion before host prefix calculation.
++        self.discover_with_width(s)
++    }
++
++    fn discover_with_width(&mut self, s: &mut Settings) -> Result<(), StepError> {
++        s.entries = 0;
++        if s.count == 0 {
++            self.context.inner.upload(13, &[0_u64])?;
++            return Ok(());
++        }
++        // Cell generation, sorting, counting and checked prefix formation share
++        // the stream. The host needs only the total before allocating row storage.
+         self.operation(*s, 2)?;
+         if s.padded > 1 {
+             self.context.inner.launch(*s, 13, self.threads)?;
+         }
+-        self.operation(*s, 4)?;
+-        let mut offsets: Vec<u64> = self.context.inner.download(13, s.count as usize + 1)?;
+-        s.entries = prefix_offsets(&mut offsets, s.count)?;
++        let record = self.context.inner.prefix(*s, self.threads, true)?;
++        diagnostic_error(record, s.count)?;
++        s.entries = self
++            .context
++            .inner
++            .download_at::<u64>(13, s.count as usize, 1)?[0];
+         let required = storage_sizes(*s)?[11];
+         // Membership changes as the block moves. Geometric growth avoids a
+         // device reallocation for every small increase, without capping a row.
+@@ -291,7 +300,6 @@
+         };
+         self.context.inner.reserve(11, capacity)?;
+         self.neighbour_capacity = capacity;
+-        self.context.inner.upload(13, &offsets)?;
+         self.operation(*s, 12)
+     }
+ 
+@@ -313,33 +321,53 @@
+             // a failed attempt can overwrite scratch but never these inputs.
+             self.context.inner.begin_attempt()?;
+         }
+-        self.operation(s, 0)?;
+-        let velocities = host_values(
+-            self.context
+-                .inner
+-                .download(3, particles.len())?
+-                .into_iter()
+-                .map(vector),
+-        )?;
+-        let cfl = cfl_diagnostic(
+-            &velocities,
++        let records = self.context.inner.observe(s, 0, self.threads)?;
++        diagnostic_error(records[0], s.count)?;
++        let blocks = particles.len().div_ceil(self.threads as usize);
++        let summaries: Vec<[f32; 8]> = self.context.inner.download(7, blocks)?;
++        // Preserve the old ordering: acceleration diagnostics, completed host
++        // observation, then CFL errors, then the first cancellation poll.
++        diagnostic_error(records[1], s.count)?;
++        let maximum_speed = summaries.iter().map(|s| s[0]).fold(0.0_f32, f32::max);
++        let cfl = cfl_from_maximum_speed(
++            maximum_speed,
+             s.timestep,
+             configuration.derived.particle_diameter_m,
+             configuration.numerical.cfl_factor,
+         )?;
+         check_cancellation(cancelled)?;
+         clock.mark(Stage::ValidationAndAcceleration);
+-        self.operation(s, 1)?;
++        let records = self.context.inner.observe(s, 1, self.threads)?;
++        diagnostic_error(records[0], s.count)?;
+         check_cancellation(cancelled)?;
+         clock.mark(Stage::Prediction);
+-        let positions = host_values(
+-            self.context
+-                .inner
+-                .download(2, particles.len())?
+-                .into_iter()
+-                .map(vector),
+-        )?;
+-        self.discover(&mut s, &positions)?;
++        let summaries: Vec<[f32; 8]> = self.context.inner.download(7, blocks)?;
++        let mut largest = 0.0_f64;
++        let mut lower = Vec3::new(f32::MAX, f32::MAX, f32::MAX);
++        let mut upper = Vec3::new(-f32::MAX, -f32::MAX, -f32::MAX);
++        for summary in summaries {
++            largest = largest.max(f64::from(summary[0]));
++            lower = Vec3::new(
++                lower.x.min(summary[1]),
++                lower.y.min(summary[2]),
++                lower.z.min(summary[3]),
++            );
++            upper = Vec3::new(
++                upper.x.max(summary[4]),
++                upper.y.max(summary[5]),
++                upper.z.max(summary[6]),
++            );
++        }
++        s.validate_pairs =
++            u32::from(particles.len() > 1 && !(upper - lower).length_squared().is_finite());
++        let minimum = f64::from(s.radius)
++            .max(2.0_f64.powi(-72))
++            .max(largest * 2.0_f64.powi(-50));
++        s.width = 2.0_f64.powi(-72);
++        while s.width < minimum {
++            s.width *= 2.0;
++        }
++        self.discover_with_width(&mut s)?;
+         check_cancellation(cancelled)?;
+         clock.mark(Stage::NeighbourSearch);
+         for _ in 0..configuration.numerical.solver_iterations {
+@@ -475,3 +503,7 @@
+ #[cfg(test)]
+ #[path = "spatial_sort_tests.rs"]
+ mod spatial_sort_tests;
++
++#[cfg(test)]
++#[path = "observation_tests.rs"]
++mod observation_tests;
+--- a/src/diagnostics.rs
++++ b/src/diagnostics.rs
+@@ -109,6 +109,22 @@
+         }
+     }
+ 
++    cfl_from_maximum_speed(maximum_speed, timestep, particle_diameter, cfl_factor)
++}
++
++/// Finish the shared CFL calculation from a finite non-negative speed maximum.
++/// CUDA supplies an exact maximum of checked binary32 per-particle lengths;
++/// the ratio and warning calculation stays on the host for both backends.
++pub(crate) fn cfl_from_maximum_speed(
++    maximum_speed: f32,
++    timestep: f32,
++    particle_diameter: f32,
++    cfl_factor: f32,
++) -> Result<CflDiagnostic, NumericalError> {
++    validation::positive_scalar("timestep", timestep)?;
++    validation::positive_scalar("particle diameter", particle_diameter)?;
++    validation::positive_scalar("CFL factor", cfl_factor)?;
++    validation::non_negative_scalar("maximum speed", maximum_speed)?;
+     if maximum_speed == 0.0 {
+         return Ok(CflDiagnostic {
+             maximum_speed,

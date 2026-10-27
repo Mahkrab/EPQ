@@ -24,6 +24,9 @@ require hardware checks. Documentation alone cannot establish cleanup after real
 
 ## Reading notes
 
+- Re-read context management on 26 October 2026 for the code audit. Flags zero select automatic
+  wait scheduling, which can spin; pushing/popping a thread's current context is not itself
+  evidence of a GPU scheduler context switch. Actual waiting cost needs measurement.
 - Context management describes creating an isolated context, pushing/popping the calling thread's
   current context, and destroying the context with its associated resources.
 - Stream management distinguishes launch submission from completion through stream synchronisation.

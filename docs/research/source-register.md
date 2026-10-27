@@ -58,6 +58,8 @@
 | [S065](sources/065-nvidia-cuda-best-practices-13-3.md) | NVIDIA (n.d.) | Official technical documentation | GPU memory access, shared-memory reuse and kernel resource trade-offs. | [CUDA 13.3 archive](https://docs.nvidia.com/cuda/archive/13.3.0/cuda-c-best-practices-guide/index.html) |
 | [S066](sources/066-cargo-profiles.md) | Rust Project Developers (n.d.) | Official software documentation | Release defaults, ThinLTO and code-generation trade-offs. | [Cargo profiles](https://doc.rust-lang.org/cargo/reference/profiles.html) |
 | [S067](sources/067-rustc-codegen-options.md) | Rust Project Developers (n.d.) | Official software documentation | Processor targeting and code-generation portability. | [rustc options](https://doc.rust-lang.org/rustc/codegen-options/index.html) |
+| [S068](sources/068-nvidia-wsl-launch-performance.md) | Boissel and Sundaram (2021) | Vendor engineering article | Historical CUDA launch/completion and pipelining behaviour on WSL2; not a current performance baseline. | [NVIDIA article](https://developer.nvidia.com/blog/leveling-up-cuda-performance-on-wsl2-with-new-enhancements/) |
+| [S069](sources/069-microsoft-wslg-architecture.md) | Microsoft (n.d.) | Official implementation documentation | Windows presentation transport and distinction from headless CUDA/offscreen output. | [Upstream README](https://github.com/microsoft/wslg) |
 
 ## Documentation standards
 

@@ -1,0 +1,137 @@
+--- a/docs/cuda.md
++++ b/docs/cuda.md
+@@ -127,6 +127,11 @@
+ the retained trajectories. The narrow positive-base/exponent implementation in
+ `native/power.cuh` follows the tested host approximation using binary64 intermediates;
+ its Arm-derived code retains the MIT licence in `native/power-LICENSE`.
++For exponent four, a guarded binary64 quartic returns the same binary32 result.
++Inputs near a rounding midpoint, subnormal or extreme outputs, and other exponents
++use the retained approximation. This preserves its bits rather than substituting a
++different `powf` result. `native/power_exhaustive.cu` compares every non-negative
++binary32 word with the reference and demonstrates why an unguarded quartic differs.
+ This does not promise agreement with every libm or permit blanket fast-math.
+ 
+ Enabled XSPH uses a separate complete velocity pass and a subsequent replacement pass. Rows read
+@@ -168,3 +173,15 @@
+ passes. Disabled or zero-strength effects launch none of their passes. Both effects retain ordered
+ fixed neighbour rows and strict final-distance support; no extra discovery or device allocation is
+ introduced. Strengths and numerical revisions are part of recorded physical inputs.
++
++The exhaustive power check is a standalone CUDA test, separate from the Driver API
++solver and its production dependencies. It uses the toolkit's Runtime API only for
++test setup, launches and counters. Build it with the solver's precise flags; its
++optional argument selects 32, 64, 128 or 256 threads:
++
++```sh
++/usr/local/cuda/bin/nvcc --std=c++17 --fmad=false --ftz=false --prec-div=true \
++  --prec-sqrt=true -O3 --gpu-architecture=compute_89 native/power_exhaustive.cu \
++  -o /tmp/maelstrom-power-exhaustive
++/tmp/maelstrom-power-exhaustive 128
++```
+--- a/native/power.cuh
++++ b/native/power.cuh
+@@ -35,7 +35,7 @@
+  0x3fef5818dcfba487,0x3fef7c97337b9b5f,0x3fefa4afa2a490da,0x3fefd0765b6e4540
+ };
+ 
+-__device__ float ordered_power(float x,float exponent) {
++__device__ float ordered_power_reference(float x,float exponent) {
+     if (x==0 || !isfinite(x)) return x;
+     auto ix=__float_as_uint(x);
+     if (ix<0x00800000) { ix=__float_as_uint(x*0x1p23f); ix-=23u<<23; }
+@@ -65,3 +65,26 @@
+     y=z*r2+y;
+     return static_cast<float>(y*scale);
+ }
++
++// Only accept the quartic away from binary32 rounding boundaries. The retained
++// approximation handles the remaining inputs and all other exponents. The
++// complete non-negative binary32 domain is checked by power_exhaustive.cu.
++__device__ bool try_power_four(float x, float &result) {
++    if (!(x>0) || !isfinite(x)) return false;
++    double square=static_cast<double>(x)*static_cast<double>(x);
++    double fourth=square*square;
++    result=static_cast<float>(fourth);
++    const auto bits=__float_as_uint(result);
++    if (bits<=0x00800000U || bits>=0x7f7fffffU) return false;
++    // Binary64 has 29 more fraction bits. Bit 28 is the binary32
++    // rounding midpoint; retain the reference near either side of it.
++    const auto tail=static_cast<unsigned long long>(__double_as_longlong(fourth))&0x1fffffffULL;
++    const auto distance=tail>0x10000000ULL ? tail-0x10000000ULL : 0x10000000ULL-tail;
++    return distance>0x200000ULL;
++}
++
++__device__ float ordered_power(float x,float exponent) {
++    float result;
++    if (exponent==4.0f && try_power_four(x,result)) return result;
++    return ordered_power_reference(x,exponent);
++}
+--- a/native/power_exhaustive.cu
++++ b/native/power_exhaustive.cu
+@@ -0,0 +1,66 @@
++// Qualify the guarded exponent-four path against every non-negative binary32
++// word. Bounded batches avoid a single long-running watchdog-sensitive kernel.
++#include <cuda_runtime.h>
++#include <cmath>
++#include <cstdint>
++#include <cstdio>
++#include <chrono>
++#include <cstdlib>
++#include "power.cuh"
++
++__global__ void compare_words(std::uint64_t begin, std::uint64_t count,
++                              unsigned long long *counters) {
++    const auto lane=static_cast<std::uint64_t>(blockIdx.x)*blockDim.x+threadIdx.x;
++    const auto stride=static_cast<std::uint64_t>(gridDim.x)*blockDim.x;
++    unsigned long long mismatches=0, first=~0ULL, guarded=0, raw_mismatches=0, raw_first=~0ULL;
++    for (auto index=lane;index<count;index+=stride) {
++        auto bits=static_cast<unsigned int>(begin+index);
++        float x=__uint_as_float(bits), candidate;
++        guarded+=try_power_four(x,candidate);
++        const auto expected=__float_as_uint(ordered_power_reference(x,4.0f));
++        const auto actual=__float_as_uint(ordered_power(x,4.0f));
++        if (actual!=expected) { ++mismatches; if (bits<first) first=bits; }
++        if (bits<0x7f800000U) {
++            double square=static_cast<double>(x)*static_cast<double>(x);
++            const auto raw=__float_as_uint(static_cast<float>(square*square));
++            if (raw>=0x00800000U && raw<0x7f800000U && raw!=expected) {
++                ++raw_mismatches;
++                if (bits<raw_first) raw_first=bits;
++            }
++        }
++    }
++    if (mismatches) { atomicAdd(counters,mismatches);atomicMin(counters+1,first); }
++    if (guarded) atomicAdd(counters+2,guarded);
++    if (raw_mismatches) { atomicAdd(counters+3,raw_mismatches);atomicMin(counters+4,raw_first); }
++}
++
++static bool checked(cudaError_t result, const char *operation) {
++    if (result==cudaSuccess) return true;
++    std::fprintf(stderr,"%s: %s\n",operation,cudaGetErrorString(result));
++    return false;
++}
++int main(int argc, char **argv) {
++    unsigned int threads=128;
++    if (argc==2) {
++        char *end=nullptr;
++        const auto parsed=std::strtoul(argv[1],&end,10);
++        if (!end || *end || (parsed!=32 && parsed!=64 && parsed!=128 && parsed!=256)) return 1;
++        threads=static_cast<unsigned int>(parsed);
++    } else if (argc!=1) return 1;
++    const auto start=std::chrono::steady_clock::now();
++    unsigned long long *device=nullptr, counters[5]={0,~0ULL,0,0,~0ULL};
++    if (!checked(cudaSetDevice(0),"device") ||
++        !checked(cudaMalloc(reinterpret_cast<void **>(&device),sizeof(counters)),"allocation") ||
++        !checked(cudaMemcpy(device,counters,sizeof(counters),cudaMemcpyHostToDevice),"initialise")) return 1;
++    constexpr std::uint64_t total=1ULL<<31, batch=1ULL<<24;
++    for (std::uint64_t begin=0;begin<total;begin+=batch) {
++        compare_words<<<1024,threads>>>(begin,batch,device);
++        if (!checked(cudaGetLastError(),"launch") || !checked(cudaDeviceSynchronize(),"completion")) return 1;
++    }
++    if (!checked(cudaMemcpy(counters,device,sizeof(counters),cudaMemcpyDeviceToHost),"download") ||
++        !checked(cudaFree(device),"release")) return 1;
++    const double elapsed=std::chrono::duration<double>(std::chrono::steady_clock::now()-start).count();
++    std::printf("{\"threads\":%u,\"input_words\":%llu,\"mismatches\":%llu,\"first_mismatch_word\":%llu,\"guarded_words\":%llu,\"raw_quartic_mismatches\":%llu,\"raw_first_mismatch_word\":%llu,\"elapsed_s\":%.9f}\n",
++        threads,static_cast<unsigned long long>(total),counters[0],counters[1],counters[2],counters[3],counters[4],elapsed);
++    return counters[0] || !counters[3] ? 2 : 0;
++}

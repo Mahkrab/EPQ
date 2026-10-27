@@ -24,14 +24,14 @@ from .contract import arguments
 from .timeline import union
 
 
-def launch_index(particles: int, step: int, iteration: int) -> int:
+def launch_index(particles: int, step: int, iteration: int, *, row_sort: bool = False) -> int:
     """Return the zero-based launch of a correction, with one-based step/iteration."""
     if (any(type(v) is not int for v in (particles, step, iteration))
             or not 1 <= particles <= 1_000_000 or not 1 <= step <= 480 or not 1 <= iteration <= 8):
         raise ValueError("positive bounded particle/step counts and iteration 1..8 are required")
     bits = (particles - 1).bit_length()
     sorting = bits * (bits + 1) // 2
-    return (step - 1) * (54 + sorting) + 7 + sorting + (iteration - 1) * 6
+    return (step - 1) * (54 + sorting + row_sort) + 7 + sorting + row_sort + (iteration - 1) * 6
 
 
 def metric_rows(text: str) -> list[dict[str, str]]:
@@ -47,9 +47,10 @@ def metric_rows(text: str) -> list[dict[str, str]]:
     return rows
 
 
-def windows(directory: Path, particles: int, *, entry_names: tuple[str, ...] | None = None) -> dict:
+def windows(directory: Path, particles: int, *, entry_names: tuple[str, ...] | None = None,
+            row_sort: bool = False, resident: bool = False) -> dict:
     """Partition a validated full trace at kernel boundaries, retaining overlap."""
-    whole = analyse(directory, particles, 480, "compact-stages", entry_names=entry_names)
+    whole = analyse(directory, particles, 480, "compact-resident" if resident else "compact-stages", entry_names=entry_names, row_sort=row_sort)
     with sqlite3.connect(f"file:{directory / 'cuda.sqlite'}?mode=ro", uri=True) as db:
         db.row_factory = sqlite3.Row
         kernels = list(db.execute("SELECT * FROM CUPTI_ACTIVITY_KIND_KERNEL ORDER BY start"))
@@ -60,6 +61,9 @@ def windows(directory: Path, particles: int, *, entry_names: tuple[str, ...] | N
     bits = (particles - 1).bit_length()
     sorting = bits * (bits + 1) // 2
     sequence = [0, 1, 2] + [3] * sorting + [4, 12] + list(range(5, 11)) * 8 + [11]
+    if row_sort:
+        sequence.insert(sequence.index(12) + 1, 18)
+    operation_ids = (*range(13), 18) if row_sort else tuple(range(13))
     result = {}
     for first, last in ((1, 120), (121, 240), (241, 480)):
         begin, end = (first - 1) * len(sequence), last * len(sequence)
@@ -69,7 +73,7 @@ def windows(directory: Path, particles: int, *, entry_names: tuple[str, ...] | N
         busy = union([(max(start, r["start"]), min(stop, r["end"]))
                       for r in [*selected, *copies, *memsets] if r["start"] < stop and r["end"] > start])
         operations = {str(op): sum(r["end"] - r["start"] for index, r in enumerate(selected)
-                                  if sequence[index % len(sequence)] == op) / 1e9 for op in range(13)}
+                                  if sequence[index % len(sequence)] == op) / 1e9 for op in operation_ids}
         result[f"{first}-{last}"] = {"window_s": (stop - start) / 1e9,
             "device_busy_union_s": busy / 1e9, "idle_gap_s": (stop - start - busy) / 1e9,
             "kernel_s": sum(r["end"] - r["start"] for r in selected) / 1e9,
@@ -77,7 +81,7 @@ def windows(directory: Path, particles: int, *, entry_names: tuple[str, ...] | N
     # These offsets also identify the targeted counter captures in the trace.
     for step in (1, 241):
         for iteration in (1, 8):
-            if sequence[launch_index(particles, step, iteration) % len(sequence)] != 7:
+            if sequence[launch_index(particles, step, iteration, row_sort=row_sort) % len(sequence)] != 7:
                 raise ValueError("counter target is not a correction launch")
     return {"primary_timing": False, "boundary": "first acceleration launch to next window's first acceleration launch; final window ends at last completion",
             "whole": whole, "windows": result}

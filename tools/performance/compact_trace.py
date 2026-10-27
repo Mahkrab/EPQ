@@ -19,7 +19,7 @@ from .timeline import LABELS, union
 
 def completion_count(particles: int, steps: int, layout: str, *, allocation_calls: int | None = None) -> int:
     """Model only explicit stream completions; kernel count is unchanged by batching."""
-    if type(particles) is not int or type(steps) is not int or particles < 1 or steps < 1 or layout not in ("compact", "bitset", "compact-batched", "compact-diagnostic", "compact-atomic", "compact-stages", "compact-reserved"):
+    if type(particles) is not int or type(steps) is not int or particles < 1 or steps < 1 or layout not in ("compact", "bitset", "compact-batched", "compact-diagnostic", "compact-atomic", "compact-stages", "compact-reserved", "compact-resident"):
         raise ValueError("positive particles/steps and a known storage layout are required")
     bits = (particles - 1).bit_length()
     passes = bits * (bits + 1) // 2
@@ -30,6 +30,9 @@ def completion_count(particles: int, steps: int, layout: str, *, allocation_call
         # Nineteen reservations per nonempty step; real growth retains a wait.
         # One allocation belongs to initial diagnostics, not storage growth.
         return (base + min(passes, 1) - 53 - 32 - 19) * steps + allocation_calls
+    if layout == "compact-resident":
+        # Fixed reservations and three upload/reserve pairs occur only once.
+        return (base + min(passes, 1) - 53 - 32) * steps + 1 - 20 * (steps - 1)
     if layout == "compact-diagnostic":
         return (base + min(passes, 1) - 53) * steps
     if layout == "compact-atomic":
@@ -40,7 +43,9 @@ def completion_count(particles: int, steps: int, layout: str, *, allocation_call
 
 
 def analyse(directory: Path, particles: int, steps: int, layout: str = "compact", *,
-            entry_names: tuple[str, ...] | None = None) -> dict:
+            entry_names: tuple[str, ...] | None = None, row_sort: bool = False) -> dict:
+    if row_sort and (layout not in ("compact-stages", "compact-resident") or entry_names is not None):
+        raise ValueError("cooperative row sorting requires the shared staged entry")
     if entry_names is not None and (len(entry_names) != 13 or any(not isinstance(n, str) or not n for n in entry_names)):
         raise ValueError("thirteen non-empty solver entry names are required")
     database = directory / "cuda.sqlite"
@@ -50,7 +55,7 @@ def analyse(directory: Path, particles: int, steps: int, layout: str = "compact"
         kernels = list(connection.execute("SELECT * FROM CUPTI_ACTIVITY_KIND_KERNEL ORDER BY start"))
         apis = list(connection.execute("SELECT a.*,s.value AS name FROM CUPTI_ACTIVITY_KIND_RUNTIME a JOIN StringIds s ON s.id=a.nameId ORDER BY a.start"))
         copies = list(connection.execute("SELECT * FROM CUPTI_ACTIVITY_KIND_MEMCPY ORDER BY start"))
-        memsets = list(connection.execute("SELECT * FROM CUPTI_ACTIVITY_KIND_MEMSET ORDER BY start")) if layout in ("compact-atomic", "compact-stages", "compact-reserved") else []
+        memsets = list(connection.execute("SELECT * FROM CUPTI_ACTIVITY_KIND_MEMSET ORDER BY start")) if layout in ("compact-atomic", "compact-stages", "compact-reserved", "compact-resident") else []
         allocations = list(connection.execute("SELECT * FROM CUDA_GPU_MEMORY_USAGE_EVENTS ORDER BY start"))
         memory_names = {r["id"]: r["label"] for r in connection.execute("SELECT * FROM ENUM_CUDA_DEV_MEM_EVENT_OPER")}
         kernel_names = dict(connection.execute("SELECT id,value FROM StringIds"))
@@ -59,8 +64,10 @@ def analyse(directory: Path, particles: int, steps: int, layout: str = "compact"
     bits = (particles - 1).bit_length()
     compact = layout != "bitset"
     sequence = [0, 1, 2] + [3] * (bits * (bits + 1) // 2) + ([4, 12] if compact else [4]) + list(range(5, 11)) * 8 + [11]
-    staged = layout in ("compact-stages", "compact-reserved")
-    diagnostic = layout in ("compact-diagnostic", "compact-atomic", "compact-stages", "compact-reserved")
+    if row_sort:
+        sequence.insert(sequence.index(12) + 1, 18)
+    staged = layout in ("compact-stages", "compact-reserved", "compact-resident")
+    diagnostic = layout in ("compact-diagnostic", "compact-atomic", "compact-stages", "compact-reserved", "compact-resident")
     if layout == "compact-diagnostic":
         sequence = [item for operation in sequence for item in ((operation, 14) if operation not in (2, 3) else (operation,))]
     launches = [r for r in apis if r["name"] == "cuLaunchKernel"]
@@ -73,7 +80,7 @@ def analyse(directory: Path, particles: int, steps: int, layout: str = "compact"
     if len(syncs) != expected_completions:
         raise ValueError("compact trace completion count differs")
     reset = None
-    if layout in ("compact-atomic", "compact-stages", "compact-reserved"):
+    if layout in ("compact-atomic", "compact-stages", "compact-reserved", "compact-resident"):
         resets = [r for r in apis if r["name"] == "cuMemsetD8Async"]
         reset_bytes = 32 if staged else 8
         if len(resets) != 1 or len(memsets) != 1 or memsets[0]["bytes"] != reset_bytes:
@@ -88,7 +95,7 @@ def analyse(directory: Path, particles: int, steps: int, layout: str = "compact"
         expected_name = "first_error" if operation == 14 else entry_names[operation] if entry_names is not None else "solver"
         if diagnostic and kernel_names[kernel["shortName"]] != expected_name:
             raise ValueError("diagnostic kernel identity differs")
-        lanes = 128 if operation == 14 else (1 << bits) if operation in (2, 3) else particles
+        lanes = 32 * particles if operation == 18 else 128 if operation == 14 else (1 << bits) if operation in (2, 3) else particles
         if kernel["blockX"] != 128 or kernel["gridX"] != (lanes + 127) // 128:
             raise ValueError("compact launch dimensions differ")
         row = groups[operation]
@@ -102,7 +109,11 @@ def analyse(directory: Path, particles: int, steps: int, layout: str = "compact"
                      (2, "device_to_host", 56, 256 * particles)]
     for kind, name, count, size in specification:
         rows = [r for r in copies if r["copyKind"] == kind]
-        if len(rows) != count * steps or sum(r["bytes"] for r in rows) != size * steps:
+        total_count, total_size = count * steps, size * steps
+        if layout == "compact-resident" and kind == 1:
+            total_count -= 3 * (steps - 1)
+            total_size -= (24 * particles + 96) * (steps - 1)
+        if len(rows) != total_count or sum(r["bytes"] for r in rows) != total_size:
             raise ValueError("compact transfer counts/bytes differ")
         transfers[name] = {"calls": len(rows), "bytes": sum(r["bytes"] for r in rows)}
     live = peak = 0
@@ -122,7 +133,7 @@ def analyse(directory: Path, particles: int, steps: int, layout: str = "compact"
             "tracked_allocation_peak_bytes": peak, "memory_scope": "traced allocations including transient growth/module constants, not total driver/context memory",
             "transfers": transfers,
             **({"diagnostic_reset": reset} if reset is not None else {}),
-            "operations": [{"operation": op, "name": "first-error" if op==14 else "neighbour-count" if compact and op==4 else "neighbour-fill-sort" if op==12 else LABELS[op],
+            "operations": [{"operation": op, "name": "neighbour-row-sort" if op==18 else "first-error" if op==14 else "neighbour-count" if compact and op==4 else ("neighbour-fill" if row_sort else "neighbour-fill-sort") if op==12 else LABELS[op],
                             "calls": v["calls"], "device_s": v["device_ns"]/1e9,
                             "launch_to_next_s": v["launch_to_next_ns"]/1e9} for op,v in sorted(groups.items())]}
 
@@ -132,10 +143,11 @@ def main() -> int:
     parser.add_argument("directory", type=Path)
     parser.add_argument("--particles", type=int, required=True)
     parser.add_argument("--steps", type=int, required=True)
-    parser.add_argument("--layout", choices=("compact", "bitset", "compact-batched", "compact-diagnostic", "compact-atomic", "compact-stages", "compact-reserved"), default="compact")
+    parser.add_argument("--layout", choices=("compact", "bitset", "compact-batched", "compact-diagnostic", "compact-atomic", "compact-stages", "compact-reserved", "compact-resident"), default="compact")
+    parser.add_argument("--row-sort", action="store_true", help="include the separate cooperative row-sort launch")
     args = parser.parse_args()
     try:
-        print(json.dumps(analyse(args.directory, args.particles, args.steps, args.layout), indent=2))
+        print(json.dumps(analyse(args.directory, args.particles, args.steps, args.layout, row_sort=args.row_sort), indent=2))
     except (OSError, ValueError, KeyError, sqlite3.Error) as error:
         print(f"Compact trace: {error}", file=sys.stderr)
         return 1

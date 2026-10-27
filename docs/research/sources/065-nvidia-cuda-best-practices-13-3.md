@@ -24,6 +24,9 @@ the project's workloads and generated code need separate measurement.
 
 - Read §§10.2.1, 10.2.3, 11.1 and 13.1 on 24 October 2026. Access patterns, data reuse,
   resource limits and control flow inform the candidate review; higher occupancy alone is not a result.
+- Re-read memory, execution-configuration and arithmetic guidance in §§10–12 on 26 October 2026
+  for the code audit. Block-size and layout choices require workload measurements; source structure
+  alone does not establish occupancy, achieved bandwidth or remaining arithmetic cost.
 
 #### Date added
 

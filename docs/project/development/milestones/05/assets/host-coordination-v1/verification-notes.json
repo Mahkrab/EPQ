@@ -1,0 +1,27 @@
+{
+  "initial_local_test_invocation": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/performance",
+      "-t",
+      "."
+    ],
+    "exit_code": 1,
+    "diagnostic_excerpt": "ImportError: Start directory is not importable: [EPQ]/tests/performance",
+    "cause": "The explicit package root requires an importable start directory; this namespace directory is discovered directly instead.",
+    "corrected_command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/performance"
+    ],
+    "corrected_result": "73 tests passed; full result in verification archive"
+  },
+  "packaging_note": "After all three archives were produced, the remote packaging script failed to copy diagnostic.patch because that patch existed only in the original laptop export. The original patch was copied locally alongside the archives. Both source exports were independently reconstructed; no measurement or archived observation changed."
+}
