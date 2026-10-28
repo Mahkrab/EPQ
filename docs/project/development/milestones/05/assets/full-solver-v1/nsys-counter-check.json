@@ -1,0 +1,34 @@
+[
+  {
+    "name": "ordinary",
+    "command": [
+      "nsys",
+      "profile",
+      "--gpu-metrics-devices=help"
+    ],
+    "exit": 0,
+    "wall_s": 0.3405486879928503,
+    "stdout": "GPU Metrics: None of the installed GPUs are supported:\n\tAda AD104 | NVIDIA GeForce RTX 4070 PCI[0000:01:00.0] - Insufficient privilege, see https://developer.nvidia.com/ERR_NVGPUCTRPERM\nSee the user guide: https://docs.nvidia.com/nsight-systems/UserGuide/index.html#gpu-metrics\n",
+    "stderr": "",
+    "stdout_sha256": "54b8f376bae4cb482b1c2790bef86672b65b65ad70e29397454628b5bccedfe6",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "wsl-root",
+    "command": [
+      "/mnt/c/Windows/System32/wsl.exe",
+      "--user",
+      "root",
+      "--exec",
+      "/opt/nvidia/nsight-systems/2026.1.3/target-linux-x64/nsys",
+      "profile",
+      "--gpu-metrics-devices=help"
+    ],
+    "exit": 0,
+    "wall_s": 0.36404796797432937,
+    "stdout": "GPU Metrics: None of the installed GPUs are supported:\n\tAda AD104 | NVIDIA GeForce RTX 4070 PCI[0000:01:00.0] - Insufficient privilege, see https://developer.nvidia.com/ERR_NVGPUCTRPERM\nSee the user guide: https://docs.nvidia.com/nsight-systems/UserGuide/index.html#gpu-metrics\n",
+    "stderr": "",
+    "stdout_sha256": "54b8f376bae4cb482b1c2790bef86672b65b65ad70e29397454628b5bccedfe6",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

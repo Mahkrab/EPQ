@@ -1,0 +1,247 @@
+--- a/build.rs
++++ b/build.rs
+@@ -107,6 +107,8 @@
+                 "-std=c++17",
+                 "-O2",
+                 "-fPIC",
++                "-g",
++                "-fno-omit-frame-pointer",
+                 "-Wall",
+                 "-Wextra",
+                 "-Werror",
+--- a/native/bridge.cpp
++++ b/native/bridge.cpp
+@@ -77,6 +77,31 @@
+         if (context) driver.cuCtxDestroy_fn(context);
+     }
+ };
++
++#include "/opt/nvidia/nsight-systems/2026.1.3/target-linux-x64/nvtx/include/nvtx3/nvToolsExt.h"
++#include <cstdio>
++extern "C" void maelstrom_profile_push(const char *name) { nvtxRangePushA(name); }
++extern "C" void maelstrom_profile_pop() { nvtxRangePop(); }
++struct ProfileRange {
++    explicit ProfileRange(const char *name) { nvtxRangePushA(name); }
++    ~ProfileRange() { nvtxRangePop(); }
++};
++static const char *kernel_label(unsigned int operation) {
++    switch(operation) {
++    case 0:return "k_acceleration_cfl";case 1:return "k_prediction_bounds";
++    case 2:return "k_cells";case 4:return "k_neighbor_count";
++    case 5:return "k_density_lambda_validation";case 6:return "k_publish";
++    case 7:return "k_correction";case 8:return "k_mass_check";
++    case 9:return "k_candidate";case 10:return "k_projection";
++    case 11:return "k_velocity";case 12:return "k_neighbor_fill";
++    case 14:return "k_xsph";case 15:return "k_velocity_replace";
++    case 16:return "k_curl";case 17:return "k_confinement";
++    case 18:return "k_row_sort";case 19:return "k_sort_tile";
++    case 20:return "k_sort_merge";case 21:return "k_prefix_block";
++    case 22:return "k_prefix_total";case 23:return "k_prefix_carry";case 24:return "k_velocity_planes";
++    default:return "k_other";
++    }
++}
+ 
+ // Stage codes are the C ABI shared with src/cuda/native.rs. A failure before
+ // context creation publishes no handle. After creation, destruction owns cleanup.
+@@ -205,6 +230,7 @@
+ enum class Boundary { Submit, HostAccess, Observe };
+ static Status complete(Resource &r) {
+     if (!r.pending) return {0,0};
++    ProfileRange range("driver-stream-completion");
+     auto code=r.driver.cuStreamSynchronize_fn(r.stream);
+     if (code!=CUDA_SUCCESS) return {code,10};
+     r.pending=false;
+@@ -230,6 +256,7 @@
+     if (!status.code && diagnostic) {
+         // Only read after successful completion. The device mirror has no CPU
+         // readers or writers while checked kernels can update it.
++        ProfileRange readback("host-diagnostic-observation");
+         __builtin_memcpy(diagnostic,r.host_diagnostic,diagnostic_count*sizeof(*diagnostic));
+     }
+     if (status.code && !(status.stage==7 && status.code==CUDA_ERROR_OUT_OF_MEMORY)) r.poisoned=true;
+@@ -250,6 +277,9 @@
+     // Reservations within capacity and empty transfers neither submit work nor
+     // expose device data. In particular, a Rust upload's reserve is usually free.
+     if ((!action && bytes<=r.capacities[slot]) || (action && !bytes)) return {0,0};
++    char label[80];
++    std::snprintf(label,sizeof(label),"storage-%s-slot%u",action==2 ? "download" : action==1 ? "upload" : "grow",slot);
++    ProfileRange range(label);
+     return solver_call(r,Boundary::HostAccess,[&]() -> Status {
+         auto &d=r.driver;
+         CUresult code=CUDA_SUCCESS;
+@@ -326,6 +356,7 @@
+             // Conservatively mark before submission: even an immediate error
+             // must pass through the completion/poisoning boundary.
+             r.pending=true;
++            ProfileRange range(kernel_label(kernel_operation));
+             auto code=r.driver.cuLaunchKernel_fn(function,static_cast<unsigned int>((count+threads-1)/threads),
+                 1,1,threads,1,1,0,r.stream,args,nullptr);
+             return {code,code==CUDA_SUCCESS ? 0 : 9};
+--- a/src/cuda/mod.rs
++++ b/src/cuda/mod.rs
+@@ -308,3 +308,6 @@
+         }
+     }
+ }
++
++#[cfg(feature = "cuda")]
++pub(crate) use native::ProfileRange;
+--- a/src/cuda/native.rs
++++ b/src/cuda/native.rs
+@@ -483,3 +483,23 @@
+         assert_eq!(Status { code: 0, stage: 0 }.result(), Ok(()));
+     }
+ }
++
++unsafe extern "C" {
++    fn maelstrom_profile_push(name: *const std::ffi::c_char);
++    fn maelstrom_profile_pop();
++}
++/// Diagnostic-only thread-local timeline range, dropped on success and error.
++pub(crate) struct ProfileRange;
++impl ProfileRange {
++    pub(crate) fn new(name: &'static std::ffi::CStr) -> Self {
++        // SAFETY: the C string is static and the native marker retains no borrow.
++        unsafe { maelstrom_profile_push(name.as_ptr()) };
++        Self
++    }
++}
++impl Drop for ProfileRange {
++    fn drop(&mut self) {
++        // SAFETY: each guard balances one push on this solver's owning thread.
++        unsafe { maelstrom_profile_pop() };
++    }
++}
+--- a/src/cuda/solver.rs
++++ b/src/cuda/solver.rs
+@@ -320,7 +320,9 @@
+         cancelled: &mut impl FnMut() -> bool,
+         clock: &mut StageClock<PROFILE>,
+     ) -> Result<CudaStepOutput, StepError> {
++        let _range = crate::cuda::ProfileRange::new(c"cuda-step");
+         let mut s = settings(configuration, particles.len(), planes.len())?;
++        let preparation = crate::cuda::ProfileRange::new(c"cuda-preparation");
+         if !self.resident {
+             self.prepare(s, particles, planes)?;
+             self.resident = true;
+@@ -330,6 +332,8 @@
+             // a failed attempt can overwrite scratch but never these inputs.
+             self.context.inner.begin_attempt()?;
+         }
++        drop(preparation);
++        let acceleration = crate::cuda::ProfileRange::new(c"acceleration-cfl");
+         let records = self.context.inner.observe(s, 0, self.threads)?;
+         diagnostic_error(records[0], s.count)?;
+         let blocks = particles.len().div_ceil(self.threads as usize);
+@@ -346,10 +350,14 @@
+         )?;
+         check_cancellation(cancelled)?;
+         clock.mark(Stage::ValidationAndAcceleration);
++        drop(acceleration);
++        let prediction = crate::cuda::ProfileRange::new(c"prediction");
+         let records = self.context.inner.observe(s, 1, self.threads)?;
+         diagnostic_error(records[0], s.count)?;
+         check_cancellation(cancelled)?;
+         clock.mark(Stage::Prediction);
++        drop(prediction);
++        let bounds = crate::cuda::ProfileRange::new(c"bounds-host-reduction");
+         let summaries: Vec<[f32; 8]> = self.context.inner.download(7, blocks)?;
+         let mut largest = 0.0_f64;
+         let mut lower = Vec3::new(f32::MAX, f32::MAX, f32::MAX);
+@@ -376,17 +384,25 @@
+         while s.width < minimum {
+             s.width *= 2.0;
+         }
++        drop(bounds);
++        let discovery = crate::cuda::ProfileRange::new(c"neighbor-pipeline");
+         self.discover_with_width(&mut s)?;
+         check_cancellation(cancelled)?;
+         clock.mark(Stage::NeighbourSearch);
++        drop(discovery);
+         for _ in 0..configuration.numerical.solver_iterations {
++            let jacobi = crate::cuda::ProfileRange::new(c"jacobi-group");
+             self.group(s, 5)?;
+             check_cancellation(cancelled)?;
+             clock.mark(Stage::Jacobi);
++            drop(jacobi);
++            let projection = crate::cuda::ProfileRange::new(c"projection-group");
+             self.group(s, 9)?;
+             check_cancellation(cancelled)?;
+             clock.mark(Stage::Projection);
+-        }
++            drop(projection);
++        }
++        let velocity = crate::cuda::ProfileRange::new(c"velocity-and-effects");
+         self.operation(s, 24)?;
+         if s.vorticity != 0.0 {
+             check_cancellation(cancelled)?;
+@@ -402,6 +418,8 @@
+             check_cancellation(cancelled)?;
+             self.operation(s, 15)?;
+         }
++        drop(velocity);
++        let download = crate::cuda::ProfileRange::new(c"final-vector-downloads");
+         let positions: Vec<[f32; 3]> = self.context.inner.download(2, particles.len())?;
+         // The trailer is initialized by projection, survives velocity effects,
+         // and returns in the same completed copy as the numerical velocities.
+@@ -425,6 +443,8 @@
+                 f32::from_bits(v[2]),
+             ]
+         });
++        drop(download);
++        let _materialise = crate::cuda::ProfileRange::new(c"host-particle-materialisation");
+         let output = host_values(particles.iter().zip(positions).zip(velocities).map(
+             |((old, p), v)| Particle {
+                 identity: old.identity,
+--- a/src/simulation/mod.rs
++++ b/src/simulation/mod.rs
+@@ -268,8 +268,14 @@
+         cancelled: &mut impl FnMut() -> bool,
+         clock: &mut StageClock<PROFILE>,
+     ) -> Result<StepOutcome, StepError> {
++        #[cfg(feature = "cuda")]
++        let _profile_step = crate::cuda::ProfileRange::new(c"solver-step");
+         check_cancellation(cancelled)?;
+-        validate_particles(&self.accepted.particles)?;
++        {
++            #[cfg(feature = "cuda")]
++            let _range = crate::cuda::ProfileRange::new(c"host-input-validation");
++            validate_particles(&self.accepted.particles)?;
++        }
+         let completed_steps = self
+             .accepted
+             .completed_steps
+@@ -285,7 +291,12 @@
+                 clock,
+             )?;
+             let particles = output.particles;
+-            validate_particles(&particles)?;
++            {
++                let _range = crate::cuda::ProfileRange::new(c"host-output-validation");
++                validate_particles(&particles)?;
++            }
++            {
++                let _range = crate::cuda::ProfileRange::new(c"host-plane-validation");
+             if !output.planes_checked {
+                 // Preserve the original host failure path and its particle,
+                 // plane and numerical error priority when the device flags it.
+@@ -300,12 +311,13 @@
+                     }
+                 }
+             }
+-            check_cancellation(cancelled)?;
+-            cuda.accept()?;
+-            self.accepted = Snapshot {
+-                completed_steps,
+-                particles,
+-            };
++            }
++            check_cancellation(cancelled)?;
++            { let _range = crate::cuda::ProfileRange::new(c"device-accept"); cuda.accept()?; }
++            {
++                let _range = crate::cuda::ProfileRange::new(c"host-snapshot-install");
++                self.accepted = Snapshot { completed_steps, particles };
++            }
+             clock.mark(Stage::Acceptance);
+             return Ok(StepOutcome {
+                 completed_steps,

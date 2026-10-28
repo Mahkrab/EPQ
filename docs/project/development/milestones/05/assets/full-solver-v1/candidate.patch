@@ -1,0 +1,578 @@
+--- a/docs/cuda.md
++++ b/docs/cuda.md
+@@ -210,3 +210,18 @@
+   -o /tmp/maelstrom-power-exhaustive
+ /tmp/maelstrom-power-exhaustive 128
+ ```
++
++Final plane containment is checked alongside velocity reconstruction, using the same
++binary32 dot-product and subtraction order as the host predicate. A private 16-byte
++trailer in each velocity allocation contains an aligned earliest particle/plane
++failure record. Projection resets it before reconstruction; velocity effects touch
++only the numerical vector prefix. The existing final velocity download returns
++the trailer too, adding 16 bytes without another launch, transfer or stream wait.
++Both allocations retain their trailer when accepted and working buffers swap.
++
++The host still validates particle identities and finite state before acceptance.
++A failed containment certificate runs the original host particle/plane loop at its
++original boundary, preserving numerical errors, first-failure ordering and the
++priority of earlier velocity-effect failures. Successful certificates avoid that
++second traversal. Cancellation polling and accepted-state promotion are unchanged.
++The empty-particle case allocates and reads no trailer.
+--- a/native/bridge.cpp
++++ b/native/bridge.cpp
+@@ -271,7 +271,7 @@
+     if ((observation!=Observation::None && (!diagnostic || grouped)) ||
+         (state && operation>1) || (prefix && operation!=4) ||
+         (grouped && (!diagnostic || (operation!=5 && operation!=9))) ||
+-        operation>17 || ((operation==2 || (operation==4 && observation!=Observation::Prefix) || operation==12) && (!std::isfinite(settings.width) || settings.width<=0)) ||
++        (operation>17 && operation!=24) || ((operation==2 || (operation==4 && observation!=Observation::Prefix) || operation==12) && (!std::isfinite(settings.width) || settings.width<=0)) ||
+         (threads!=32 && threads!=64 && threads!=128 && threads!=256) ||
+         settings.padded==0 || (settings.padded&(settings.padded-1)) ||
+         settings.count>settings.padded || settings.entries>static_cast<std::uint64_t>(PTRDIFF_MAX)/4 ||
+@@ -279,7 +279,8 @@
+         (settings.stride&(settings.stride-1)) || (settings.span&(settings.span-1)) || settings.span>settings.padded)))
+         return {CUDA_ERROR_INVALID_VALUE,7};
+     std::uint64_t n=settings.count;
+-    std::uint64_t required[14]={n*12,n*12,n*12,n*12,n*4,n*4,n*4,n ? std::max<std::uint64_t>(n*12,32) : (prefix ? 32 : 0),n*(grouped && operation==5 ? sizeof(PendingJacobi) : sizeof(Vector)),
++    const auto velocity_bytes=n ? n*12+velocity_observation_bytes : 0;
++    std::uint64_t required[14]={n*12,velocity_bytes,n*12,velocity_bytes,n*4,n*4,n*4,n ? std::max<std::uint64_t>(n*12,32) : (prefix ? 32 : 0),n*(grouped && operation==5 ? sizeof(PendingJacobi) : sizeof(Vector)),
+         static_cast<std::uint64_t>(settings.planes)*16,static_cast<std::uint64_t>(settings.padded)*64,
+         settings.entries*4,n*4,(n+1)*8};
+     for (unsigned int slot=0;slot<14;++slot) if (required[slot]>r.capacities[slot]) return {CUDA_ERROR_INVALID_VALUE,7};
+@@ -422,7 +423,7 @@
+         unsigned int operation, unsigned int threads, std::uint64_t *diagnostic) {
+     auto &r=*static_cast<Resource *>(handle);
+     if (r.poisoned) return {-3,14};
+-    if (!diagnostic || operation==2 || operation==3 || operation==13 || operation>17) return {CUDA_ERROR_INVALID_VALUE,7};
++    if (!diagnostic || operation==2 || operation==3 || operation==13 || (operation>17 && operation!=24)) return {CUDA_ERROR_INVALID_VALUE,7};
+     return solver(r,settings,operation,threads,diagnostic);
+ }
+ 
+--- a/native/solver.cu
++++ b/native/solver.cu
+@@ -240,10 +240,16 @@
+             }
+         }
+         b.position[i]=point;
+-    } else if (operation==11) {
++        // The complete projection launch precedes final observation. No lane
++        // reads this private trailer until the following stream-ordered pass.
++        if (i==0) reset_plane_observation(b,s);
++    } else if (operation==11 || operation==24) {
+         Vector displacement=c.vector(sub(b.position[i],b.old_position[i]),49);
+         float reciprocal=c.scalar(__fdiv_rn(1.0f,s.timestep),50);
+         b.velocity[i]=c.vector(mul(displacement,reciprocal),51);
++        // The containment result is deferred until effects and host state
++        // validation finish. It cannot replace an earlier numerical error.
++        if (operation==24) observe_final_planes(b,s,i);
+     } else if (operation==14) {
+         // Every row reads reconstructed velocity; candidate is a separate output.
+         Vector sum{0,0,0};
+--- a/native/solver.h
++++ b/native/solver.h
+@@ -9,6 +9,9 @@
+ // Private Jacobi results occupy candidate scratch until distance validation has
+ // completed globally. Projection and velocity effects later reuse that storage.
+ struct PendingJacobi { float density, constraint, multiplier; std::uint32_t error; };
++// Each velocity allocation includes an aligned containment result and padding.
++// Both buffers keep the trailer when accepted and working vectors are exchanged.
++constexpr std::size_t velocity_observation_bytes=16;
+ struct SolverSettings {
+     std::uint32_t count, padded, planes, validate_pairs;
+     float timestep, radius, rest_density, relaxation;
+--- a/native/state_observation.cuh
++++ b/native/state_observation.cuh
+@@ -3,6 +3,31 @@
+ #pragma once
+ struct StateSummary { float scalar; Vector lower, upper; float reserved; };
+ static_assert(sizeof(StateSummary)==32);
++
++__device__ unsigned long long *plane_observation(SolverBuffers b, SolverSettings s) {
++    // A Vector is 12 bytes; odd counts need one u32 before the aligned record.
++    auto tail=reinterpret_cast<std::uint32_t *>(b.velocity+s.count);
++    return reinterpret_cast<unsigned long long *>(tail+(s.count&1U));
++}
++
++__device__ void reset_plane_observation(SolverBuffers b, SolverSettings s) {
++    auto tail=reinterpret_cast<std::uint32_t *>(b.velocity+s.count);
++    for (unsigned int k=0;k<velocity_observation_bytes/sizeof(*tail);++k) tail[k]=0;
++    *plane_observation(b,s)=ULLONG_MAX;
++}
++
++__device__ void observe_final_planes(SolverBuffers b, SolverSettings s, unsigned int i) {
++    const auto point=b.position[i];
++    for (unsigned int k=0;k<s.planes;++k) {
++        const auto plane=b.planes[k];
++        const float product=dot(plane.normal,point), constraint=product-plane.offset;
++        if (!isfinite(point.x) || !isfinite(point.y) || !isfinite(point.z) ||
++            !isfinite(product) || !isfinite(constraint) || constraint<0.0f) {
++            atomicMin(plane_observation(b,s),(static_cast<unsigned long long>(i)<<32)|k);
++            break;
++        }
++    }
++}
+ 
+ extern "C" __global__ void observe_state(SolverBuffers b, SolverSettings s, unsigned int operation) {
+     __shared__ StateSummary values[256];
+--- a/native/tests.cpp
++++ b/native/tests.cpp
+@@ -224,6 +224,25 @@
+             }
+             if (failure) assert(maelstrom_cuda_solver(&r,s,13,threads).stage==14);
+         }
++    }
++}
++
++static void containment_storage() {
++    // The aligned certificate must fit in both velocity allocations before any
++    // submission, including after accepted/working buffers exchange ownership.
++    for (auto slot : {1U,3U}) for (auto count : {1U,2U,3U}) {
++        observed={};Resource r;ready(r);
++        SolverSettings s{};s.count=count;s.padded=4;
++        for (unsigned int index=0;index<14;++index)
++            assert(maelstrom_cuda_storage(&r,index,nullptr,index==slot ? count*12 : 512,0).code==0);
++        assert(maelstrom_cuda_begin_attempt(&r).code==0);
++        observed.record_solver=true;
++        std::uint64_t result=17;
++        assert(maelstrom_cuda_checked_solver(&r,s,24,128,&result).stage==7);
++        assert(result==17 && observed.launches.empty() && !r.poisoned);
++        assert(maelstrom_cuda_storage(&r,slot,nullptr,count*12+velocity_observation_bytes,0).code==0);
++        assert(maelstrom_cuda_checked_solver(&r,s,24,128,&result).code==0);
++        assert(result==UINT64_MAX && observed.launches.size()==1 && observed.launches[0].operation==24);
+     }
+ }
+ 
+@@ -580,6 +599,7 @@
+     merge_sort_submissions();
+     row_sort_batches();
+     checked_solver();
++    containment_storage();
+     checked_groups();
+     for (int stage : {2, 3, 4, 5, 6, 7, 16}) {
+         observed = {};
+@@ -650,7 +670,7 @@
+         {
+             Resource r;ready(r);
+             SolverSettings settings{};settings.count=1;settings.padded=1;
+-            std::size_t sizes[14]={12,12,12,12,4,4,4,32,12,0,64,0,4,16};
++            std::size_t sizes[14]={12,12+velocity_observation_bytes,12,12+velocity_observation_bytes,4,4,4,32,12,0,64,0,4,16};
+             for (unsigned int slot=0;slot<14;++slot) assert(maelstrom_cuda_storage(&r,slot,nullptr,sizes[slot],0).code==0);
+             const auto allocations=observed.memory.size();
+             assert(maelstrom_cuda_storage(&r,0,nullptr,12,0).code==0);
+--- /dev/null
++++ b/src/cuda/plane_tests.rs
+@@ -0,0 +1,257 @@
++//! Containment certificates must agree with the host predicate and remain private
++//! until velocity effects, host state validation and cancellation reach acceptance.
++
++use super::*;
++use crate::{execution::ExecutionMode, neighbours::SearchBackend, simulation::Simulation};
++
++fn trailer(gpu: &mut CudaSolver, count: usize) -> (u64, Vec<u32>) {
++    let words = if count == 0 { 0 } else { 3 * count + 4 };
++    let values = gpu.context.inner.download::<u32>(3, words).unwrap();
++    let index = 3 * count + (count & 1);
++    let record = if count == 0 {
++        u64::MAX
++    } else {
++        u64::from(values[index]) | (u64::from(values[index + 1]) << 32)
++    };
++    (record, values)
++}
++
++#[test]
++#[ignore = "requires an explicitly selected CUDA hardware test run"]
++fn hardware_plane_certificate_matches_host_and_survives_velocity_replacement() {
++    let config = crate::config::resolve_effective_configuration(None, None, None).unwrap();
++    let plane_sets = [
++        vec![
++            Plane::new(Vec3::new(1., 0., 0.), 0., 0.).unwrap(),
++            Plane::new(Vec3::new(-1., 0., 0.), -1., 0.).unwrap(),
++        ],
++        vec![
++            Plane::new(Vec3::new(0.6, 0.8, 0.), 0., 1e-6).unwrap(),
++            Plane::new(Vec3::new(-0.6, -0.8, 0.), -1., 1e-6).unwrap(),
++        ],
++        vec![Plane::new(Vec3::new(1., 0., 0.), -f32::MAX, 0.).unwrap()],
++    ];
++    for threads in [32, 64, 128, 256] {
++        let mut gpu = CudaSolver::new(0, threads).unwrap();
++        for count in [0, 1, 2, 3, 31, 32, 33, 257, 513, 17] {
++            for planes in &plane_sets {
++                for mode in [0, 1, 2, 0] {
++                    let points: Vec<_> = (0..count)
++                        .map(|i| match mode {
++                            0 => Vec3::new(-0.0, 0.0, 0.0),
++                            2 if i + 1 == count => Vec3::new(f32::MAX, f32::MAX, 0.),
++                            2 => Vec3::ZERO,
++                            _ => match i % 5 {
++                                0 => Vec3::new(-f32::from_bits(1), 0., 0.),
++                                1 => Vec3::new(f32::from_bits(1.0_f32.to_bits() + 1), 0., 0.),
++                                2 => Vec3::new(-0.8, 0.6, 0.),
++                                3 => Vec3::new(0.8, -0.6, 0.),
++                                _ => Vec3::new(0.5, 0., 0.),
++                            },
++                        })
++                        .collect();
++                    let particles: Vec<_> = points
++                        .iter()
++                        .enumerate()
++                        .map(|(i, &p)| Particle {
++                            identity: (3 * i + 7) as u64,
++                            position_m: p,
++                            velocity_m_s: Vec3::ZERO,
++                        })
++                        .collect();
++                    let mut s = settings(&config, count, planes.len()).unwrap();
++                    s.timestep = 1.;
++                    s.xsph = 0.01;
++                    s.vorticity = 0.1;
++                    gpu.prepare(s, &particles, planes).unwrap();
++                    if count != 0 {
++                        gpu.context
++                            .inner
++                            .upload(3, &vec![0xdeadbeef_u32; 3 * count + 4])
++                            .unwrap();
++                    }
++                    gpu.context
++                        .inner
++                        .upload(8, &vec![[0.0_f32; 3]; count])
++                        .unwrap();
++                    gpu.operation(s, 10).unwrap();
++                    gpu.context
++                        .inner
++                        .upload(2, &points.iter().copied().map(array).collect::<Vec<_>>())
++                        .unwrap();
++                    gpu.context
++                        .inner
++                        .upload(13, &vec![0_u64; count + 1])
++                        .unwrap();
++                    let mut expected = u64::MAX;
++                    for (i, &point) in points.iter().enumerate() {
++                        for (k, &plane) in planes.iter().enumerate() {
++                            if !matches!(plane.contains(point), Ok(true)) {
++                                expected = ((i as u64) << 32) | k as u64;
++                                break;
++                            }
++                        }
++                        if expected != u64::MAX {
++                            break;
++                        }
++                    }
++                    assert_eq!(
++                        gpu.context.inner.checked_launch(s, 24, threads).unwrap(),
++                        u64::MAX
++                    );
++                    let (actual, words) = trailer(&mut gpu, count);
++                    assert_eq!(
++                        actual, expected,
++                        "block {threads}, count {count}, mode {mode}"
++                    );
++                    assert_eq!(&words[..3 * count], vec![0_u32; 3 * count]);
++                    if count != 0 {
++                        let record_offset = count & 1;
++                        for (index, &value) in words[3 * count..].iter().enumerate() {
++                            if index != record_offset && index != record_offset + 1 {
++                                assert_eq!(value, 0);
++                            }
++                        }
++                    }
++                    for operation in [16, 17, 15, 14, 15] {
++                        gpu.operation(s, operation).unwrap();
++                        assert_eq!(trailer(&mut gpu, count).0, expected);
++                    }
++                    let replacement = vec![[3.0_f32, -4.0, 1.0]; count];
++                    gpu.context.inner.upload(8, &replacement).unwrap();
++                    gpu.operation(s, 15).unwrap();
++                    assert_eq!(trailer(&mut gpu, count).0, expected);
++                    assert_eq!(
++                        gpu.context.inner.download::<[f32; 3]>(3, count).unwrap(),
++                        replacement
++                    );
++                    assert_eq!(
++                        gpu.context.inner.download::<u32>(2, 3 * count).unwrap(),
++                        points
++                            .iter()
++                            .copied()
++                            .map(array)
++                            .flat_map(|v| v.map(f32::to_bits))
++                            .collect::<Vec<_>>()
++                    );
++                }
++            }
++        }
++    }
++}
++
++#[test]
++#[ignore = "requires an explicitly selected CUDA hardware test run"]
++fn hardware_deferred_plane_failures_keep_error_priority_cancellation_and_retry() {
++    for threads in [32, 64, 128, 256] {
++        for effects in [false, true] {
++            for case in 0..4 {
++                let timestep = if case == 3 { 0.5 } else { 1.0 };
++                let text = format!(
++                    "[numerical]\nsolver_iterations=1\nfixed_timestep_s={timestep}\nexternal_acceleration_m_s2=[0.0,0.0,0.0]\nxsph_viscosity_enabled={effects}\nxsph_viscosity_coefficient=0.01\nvorticity_confinement_enabled={effects}\nvorticity_confinement_strength_m_s=0.1\n"
++                );
++                let overlay = crate::config::parse_configuration_overlay(&text).unwrap();
++                let config =
++                    crate::config::resolve_effective_configuration(None, Some(&overlay), None)
++                        .unwrap();
++                let planes = match case {
++                    0 => vec![
++                        Plane::new(Vec3::new(1., 0., 0.), 1., 0.).unwrap(),
++                        Plane::new(Vec3::new(-1., 0., 0.), 0., 0.).unwrap(),
++                    ],
++                    2 => vec![
++                        Plane::new(Vec3::new(1., 0., 0.), -f32::MAX, 0.).unwrap(),
++                        Plane::new(Vec3::new(1., 0., 0.), f32::MAX, 0.).unwrap(),
++                    ],
++                    _ => vec![
++                        Plane::new(Vec3::new(0.6, 0.8, 0.), 0., 1e-6).unwrap(),
++                        Plane::new(Vec3::new(1., 0., 0.), f32::MAX, 0.).unwrap(),
++                        Plane::new(Vec3::new(0., 1., 0.), f32::MAX, 0.).unwrap(),
++                    ],
++                };
++                let expected = match case {
++                    0 => StepError::OutsidePlane {
++                        identity: 7,
++                        plane: 0,
++                    },
++                    1 => NumericalError::NonFiniteResult {
++                        quantity: "plane dot product",
++                    }
++                    .into(),
++                    2 => NumericalError::NonFiniteResult {
++                        quantity: "plane constraint",
++                    }
++                    .into(),
++                    _ => NumericalError::NonFiniteResult {
++                        quantity: "reconstructed velocity",
++                    }
++                    .into(),
++                };
++                let particles = vec![
++                    Particle {
++                        identity: 49,
++                        position_m: Vec3::ZERO,
++                        velocity_m_s: Vec3::ZERO,
++                    },
++                    Particle {
++                        identity: 7,
++                        position_m: Vec3::ZERO,
++                        velocity_m_s: Vec3::ZERO,
++                    },
++                ];
++                let mut cpu = Simulation::new_with_backend(
++                    &config,
++                    particles.clone(),
++                    planes.clone(),
++                    SearchBackend::UniformGrid,
++                )
++                .unwrap();
++                assert_eq!(
++                    format!("{:?}", cpu.step().unwrap_err()),
++                    format!("{expected:?}")
++                );
++                let mut gpu = Simulation::new_with_execution(
++                    &config,
++                    particles,
++                    planes,
++                    SearchBackend::UniformGrid,
++                    ExecutionMode::Cuda { device: 0, threads },
++                )
++                .unwrap();
++                let before = gpu.snapshot().clone();
++                for _ in 0..2 {
++                    assert_eq!(
++                        format!("{:?}", gpu.step().unwrap_err()),
++                        format!("{expected:?}")
++                    );
++                    assert_eq!(gpu.snapshot(), &before);
++                }
++                if case != 3 {
++                    let last_poll = if effects { 11 } else { 6 };
++                    for cancel_at in 1..=last_poll + 1 {
++                        let mut polls = 0;
++                        let result = gpu.step_with_cancellation(|| {
++                            polls += 1;
++                            polls == cancel_at
++                        });
++                        if cancel_at <= last_poll {
++                            assert!(matches!(result, Err(StepError::Cancelled)));
++                            assert_eq!(polls, cancel_at);
++                        } else {
++                            assert_eq!(
++                                format!("{:?}", result.unwrap_err()),
++                                format!("{expected:?}")
++                            );
++                            assert_eq!(polls, last_poll);
++                        }
++                        assert_eq!(gpu.snapshot(), &before);
++                    }
++                    assert_eq!(
++                        format!("{:?}", gpu.step().unwrap_err()),
++                        format!("{expected:?}")
++                    );
++                }
++            }
++        }
++    }
++}
+--- a/src/cuda/residency_tests.rs
++++ b/src/cuda/residency_tests.rs
+@@ -54,7 +54,7 @@
+                         &mut StageClock::<false>::new(),
+                     )
+                     .unwrap()
+-                    .0;
++                    .particles;
+                 let _ = cpu.step().unwrap();
+                 assert_eq!(bits(&output), bits(cpu.snapshot().particles()));
+                 assert_eq!(
+--- a/src/cuda/solver.rs
++++ b/src/cuda/solver.rs
+@@ -51,6 +51,12 @@
+     threads: u32,
+     neighbour_capacity: usize,
+     resident: bool,
++}
++
++pub(crate) struct CudaStepOutput {
++    pub(crate) particles: Vec<Particle>,
++    pub(crate) cfl: CflDiagnostic,
++    pub(crate) planes_checked: bool,
+ }
+ 
+ fn array(v: Vec3) -> [f32; 3] {
+@@ -107,11 +113,12 @@
+ 
+ fn storage_sizes(s: Settings) -> Result<[usize; 14], CudaError> {
+     let n = u128::from(s.count);
++    let velocity = if n == 0 { 0 } else { n * 12 + 16 };
+     let sizes = [
+         n * 12,
++        velocity,
+         n * 12,
+-        n * 12,
+-        n * 12,
++        velocity,
+         n * 4,
+         n * 4,
+         n * 4,
+@@ -312,7 +319,7 @@
+         planes: &[Plane],
+         cancelled: &mut impl FnMut() -> bool,
+         clock: &mut StageClock<PROFILE>,
+-    ) -> Result<(Vec<Particle>, CflDiagnostic), StepError> {
++    ) -> Result<CudaStepOutput, StepError> {
+         let mut s = settings(configuration, particles.len(), planes.len())?;
+         if !self.resident {
+             self.prepare(s, particles, planes)?;
+@@ -380,7 +387,7 @@
+             check_cancellation(cancelled)?;
+             clock.mark(Stage::Projection);
+         }
+-        self.operation(s, 11)?;
++        self.operation(s, 24)?;
+         if s.vorticity != 0.0 {
+             check_cancellation(cancelled)?;
+             self.operation(s, 16)?;
+@@ -396,7 +403,28 @@
+             self.operation(s, 15)?;
+         }
+         let positions: Vec<[f32; 3]> = self.context.inner.download(2, particles.len())?;
+-        let velocities: Vec<[f32; 3]> = self.context.inner.download(3, particles.len())?;
++        // The trailer is initialized by projection, survives velocity effects,
++        // and returns in the same completed copy as the numerical velocities.
++        let words = particles
++            .len()
++            .checked_mul(3)
++            .and_then(|n| n.checked_add(if particles.is_empty() { 0 } else { 4 }))
++            .ok_or(CudaError::Capacity)?;
++        let velocities: Vec<u32> = self.context.inner.download(3, words)?;
++        let planes_checked = if particles.is_empty() {
++            true
++        } else {
++            let index = 3 * particles.len() + (particles.len() & 1);
++            let record = u64::from(velocities[index]) | (u64::from(velocities[index + 1]) << 32);
++            record == u64::MAX
++        };
++        let velocities = velocities.chunks_exact(3).take(particles.len()).map(|v| {
++            [
++                f32::from_bits(v[0]),
++                f32::from_bits(v[1]),
++                f32::from_bits(v[2]),
++            ]
++        });
+         let output = host_values(particles.iter().zip(positions).zip(velocities).map(
+             |((old, p), v)| Particle {
+                 identity: old.identity,
+@@ -404,7 +432,11 @@
+                 velocity_m_s: vector(v),
+             },
+         ))?;
+-        Ok((output, cfl))
++        Ok(CudaStepOutput {
++            particles: output,
++            cfl,
++            planes_checked,
++        })
+     }
+ }
+ 
+@@ -517,3 +549,7 @@
+ #[cfg(test)]
+ #[path = "density_tests.rs"]
+ mod density_tests;
++
++#[cfg(test)]
++#[path = "plane_tests.rs"]
++mod plane_tests;
+--- a/src/simulation/mod.rs
++++ b/src/simulation/mod.rs
+@@ -277,21 +277,26 @@
+             .ok_or(StepError::StepCountOverflow)?;
+         #[cfg(feature = "cuda")]
+         if let Some(cuda) = &mut self.cuda {
+-            let (particles, cfl) = cuda.step(
++            let output = cuda.step(
+                 &self.configuration,
+                 &self.accepted.particles,
+                 &self.planes,
+                 cancelled,
+                 clock,
+             )?;
++            let particles = output.particles;
+             validate_particles(&particles)?;
+-            for particle in &particles {
+-                for (index, plane) in self.planes.iter().enumerate() {
+-                    if !plane.contains(particle.position_m)? {
+-                        return Err(StepError::OutsidePlane {
+-                            identity: particle.identity,
+-                            plane: index,
+-                        });
++            if !output.planes_checked {
++                // Preserve the original host failure path and its particle,
++                // plane and numerical error priority when the device flags it.
++                for particle in &particles {
++                    for (index, plane) in self.planes.iter().enumerate() {
++                        if !plane.contains(particle.position_m)? {
++                            return Err(StepError::OutsidePlane {
++                                identity: particle.identity,
++                                plane: index,
++                            });
++                        }
+                     }
+                 }
+             }
+@@ -304,7 +309,7 @@
+             clock.mark(Stage::Acceptance);
+             return Ok(StepOutcome {
+                 completed_steps,
+-                cfl,
++                cfl: output.cfl,
+             });
+         }
+         let model = &self.configuration.numerical;

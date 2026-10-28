@@ -1,0 +1,22 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--manifest-path",
+    "Maelstrom/Cargo.toml",
+    "--release",
+    "--no-default-features"
+  ],
+  "environment": {
+    "XDG_CONFIG_HOME": "/tmp/maelstrom-fullprofile-20261028/local-isolated-config",
+    "MAELSTROM_SCENES_DIR": "/tmp/maelstrom-fullprofile-20261028/local-isolated-scenes",
+    "MAELSTROM_RUNS_DIR": "/tmp/maelstrom-fullprofile-20261028/local-isolated-runs"
+  },
+  "exit": 0,
+  "passed": 290,
+  "ignored": 0,
+  "elapsed_s": null,
+  "receipt_written_after_check": true,
+  "log_sha256": "7b46a348a6f04f64302c9d8c51d684b0939855ffa7497ccc8257f1c18d9edf10",
+  "rust_version": "rustc 1.98.1 (48a229cea 2026-09-01)\nbinary: rustc\ncommit-hash: 48a229ceaefd4985c50990b14116b6d856af0985\ncommit-date: 2026-09-01\nhost: x86_64-unknown-linux-gnu\nrelease: 1.98.1\nLLVM version: 22.1.8\n"
+}

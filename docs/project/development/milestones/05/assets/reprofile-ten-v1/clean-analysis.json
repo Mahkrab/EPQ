@@ -1,0 +1,1014 @@
+{
+  "8000": {
+    "wall_partition_ms_per_step": {
+      "gpu_acceleration_cfl": 0.0018550854166666665,
+      "gpu_prediction_bounds": 0.0021464645833333333,
+      "gpu_cells": 0.003378,
+      "gpu_spatial_sort": 0.042637125,
+      "gpu_neighbor_count": 0.13646563333333334,
+      "gpu_prefix_block": 0.0017804124999999998,
+      "gpu_prefix_total": 0.0016929770833333335,
+      "gpu_prefix_carry": 0.00126095,
+      "gpu_neighbor_fill": 0.14340789583333335,
+      "gpu_row_sort": 0.006824266666666666,
+      "gpu_density_lambda_validation": 0.27056586041666664,
+      "gpu_publication": 0.0114698125,
+      "gpu_correction": 0.30643509583333334,
+      "gpu_physical_density_check": 0.012176654166666667,
+      "gpu_candidate": 0.011470472916666667,
+      "gpu_projection": 0.017087477083333334,
+      "gpu_velocity": 0.002259835416666667,
+      "gpu_upload": 2.3558333333333334e-05,
+      "gpu_download": 0.011492054166666666,
+      "gpu_memset": 1.6020833333333334e-06,
+      "driver_allocation_gpu_idle": 0.0009675291666666666,
+      "driver_copy_gpu_idle": 0.17554110625000002,
+      "driver_other_gpu_idle": 0.0013062479166666668,
+      "driver_launch_gpu_idle": 0.13058525625,
+      "driver_sync_gpu_idle": 1.015497525,
+      "cpu_host-input-validation": 0.00879125625,
+      "cpu_cuda-preparation": 0.0005120791666666666,
+      "cpu_host-diagnostic-observation": 0.0025247395833333337,
+      "cpu_bounds-host-reduction": 0.0020649333333333333,
+      "cpu_host-particle-materialisation": 0.009613258333333333,
+      "cpu_host-output-validation": 0.00994919375,
+      "cpu_host-plane-validation": 0.00022011458333333334,
+      "cpu_device-accept": 0.00031594166666666667,
+      "cpu_host-snapshot-install": 0.00046777499999999997,
+      "host_framework_and_instrumentation": 0.08264324166666667,
+      "wall": 2.42543143125
+    },
+    "ranked_wall_contributions": [
+      {
+        "category": "driver_sync_gpu_idle",
+        "ms_per_step": 1.015497525,
+        "percent": 41.86873773943965
+      },
+      {
+        "category": "gpu_correction",
+        "ms_per_step": 0.30643509583333334,
+        "percent": 12.634251040253288
+      },
+      {
+        "category": "gpu_density_lambda_validation",
+        "ms_per_step": 0.27056586041666664,
+        "percent": 11.155370419077341
+      },
+      {
+        "category": "driver_copy_gpu_idle",
+        "ms_per_step": 0.17554110625000002,
+        "percent": 7.237520879307274
+      },
+      {
+        "category": "gpu_neighbor_fill",
+        "ms_per_step": 0.14340789583333335,
+        "percent": 5.912675740308391
+      },
+      {
+        "category": "gpu_neighbor_count",
+        "ms_per_step": 0.13646563333333334,
+        "percent": 5.626447797083372
+      },
+      {
+        "category": "driver_launch_gpu_idle",
+        "ms_per_step": 0.13058525625,
+        "percent": 5.384001154083337
+      },
+      {
+        "category": "host_framework_and_instrumentation",
+        "ms_per_step": 0.08264324166666667,
+        "percent": 3.4073625253579993
+      },
+      {
+        "category": "gpu_spatial_sort",
+        "ms_per_step": 0.042637125,
+        "percent": 1.7579192077190988
+      },
+      {
+        "category": "gpu_projection",
+        "ms_per_step": 0.017087477083333334,
+        "percent": 0.7045128904974618
+      },
+      {
+        "category": "gpu_physical_density_check",
+        "ms_per_step": 0.012176654166666667,
+        "percent": 0.5020407507620678
+      },
+      {
+        "category": "gpu_download",
+        "ms_per_step": 0.011492054166666666,
+        "percent": 0.47381484459216316
+      },
+      {
+        "category": "gpu_candidate",
+        "ms_per_step": 0.011470472916666667,
+        "percent": 0.4729250544409373
+      },
+      {
+        "category": "gpu_publication",
+        "ms_per_step": 0.0114698125,
+        "percent": 0.47289782560823734
+      },
+      {
+        "category": "cpu_host-output-validation",
+        "ms_per_step": 0.00994919375,
+        "percent": 0.4102030517874695
+      },
+      {
+        "category": "cpu_host-particle-materialisation",
+        "ms_per_step": 0.009613258333333333,
+        "percent": 0.3963525090618178
+      },
+      {
+        "category": "cpu_host-input-validation",
+        "ms_per_step": 0.00879125625,
+        "percent": 0.362461545469015
+      },
+      {
+        "category": "gpu_row_sort",
+        "ms_per_step": 0.006824266666666666,
+        "percent": 0.281363001185716
+      },
+      {
+        "category": "gpu_cells",
+        "ms_per_step": 0.003378,
+        "percent": 0.13927419082959078
+      },
+      {
+        "category": "cpu_host-diagnostic-observation",
+        "ms_per_step": 0.0025247395833333337,
+        "percent": 0.10409445308590533
+      },
+      {
+        "category": "gpu_velocity",
+        "ms_per_step": 0.002259835416666667,
+        "percent": 0.09317251304449412
+      },
+      {
+        "category": "gpu_prediction_bounds",
+        "ms_per_step": 0.0021464645833333333,
+        "percent": 0.08849825872946263
+      },
+      {
+        "category": "cpu_bounds-host-reduction",
+        "ms_per_step": 0.0020649333333333333,
+        "percent": 0.08513674337390457
+      },
+      {
+        "category": "gpu_acceleration_cfl",
+        "ms_per_step": 0.0018550854166666665,
+        "percent": 0.07648476030965787
+      },
+      {
+        "category": "gpu_prefix_block",
+        "ms_per_step": 0.0017804124999999998,
+        "percent": 0.07340601251639692
+      },
+      {
+        "category": "gpu_prefix_total",
+        "ms_per_step": 0.0016929770833333335,
+        "percent": 0.06980106967859405
+      },
+      {
+        "category": "driver_other_gpu_idle",
+        "ms_per_step": 0.0013062479166666668,
+        "percent": 0.053856311905443675
+      },
+      {
+        "category": "gpu_prefix_carry",
+        "ms_per_step": 0.00126095,
+        "percent": 0.05198868884741637
+      },
+      {
+        "category": "driver_allocation_gpu_idle",
+        "ms_per_step": 0.0009675291666666666,
+        "percent": 0.03989101296374431
+      },
+      {
+        "category": "cpu_cuda-preparation",
+        "ms_per_step": 0.0005120791666666666,
+        "percent": 0.02111291047311757
+      },
+      {
+        "category": "cpu_host-snapshot-install",
+        "ms_per_step": 0.00046777499999999997,
+        "percent": 0.019286259507197107
+      },
+      {
+        "category": "cpu_device-accept",
+        "ms_per_step": 0.00031594166666666667,
+        "percent": 0.013026204847351182
+      },
+      {
+        "category": "cpu_host-plane-validation",
+        "ms_per_step": 0.00022011458333333334,
+        "percent": 0.009075275453979435
+      },
+      {
+        "category": "gpu_upload",
+        "ms_per_step": 2.3558333333333334e-05,
+        "percent": 0.0009713048585831191
+      },
+      {
+        "category": "gpu_memset",
+        "ms_per_step": 1.6020833333333334e-06,
+        "percent": 6.605354052444451e-05
+      }
+    ],
+    "api_inclusive_ms_per_step": {
+      "cuMemAlloc_v2": 0.0009619416666666668,
+      "cuMemcpyHtoD_v2": 0.00029426666666666665,
+      "cuMemsetD8Async": 0.00130785,
+      "cuLaunchKernel": 0.19538663750000002,
+      "cuStreamSynchronize": 1.8801710041666666,
+      "cuMemcpyDtoH_v2": 0.18859486875,
+      "cuMemFree_v2": 9.925e-06
+    },
+    "sync_gpu_overlap_ms_per_step": 0.8646734791666666,
+    "scheduler_on_core_ms_per_step": 2.4217180520833335,
+    "scheduler_off_core_ms_per_step": 0.0037133791666666667,
+    "host_named_range_ms_per_step": {
+      "host-input-validation": 0.00879125625,
+      "cuda-preparation": 0.002322935416666667,
+      "host-diagnostic-observation": 0.005173008333333333,
+      "bounds-host-reduction": 0.03373443541666667,
+      "host-particle-materialisation": 0.012271860416666667,
+      "host-output-validation": 0.00994919375,
+      "host-plane-validation": 0.00022011458333333334,
+      "device-accept": 0.00031594166666666667,
+      "host-snapshot-install": 0.00046777499999999997
+    },
+    "kernel_launches_per_step": 65
+  },
+  "110592": {
+    "wall_partition_ms_per_step": {
+      "gpu_acceleration_cfl": 0.004041204166666667,
+      "gpu_prediction_bounds": 0.006562470833333334,
+      "gpu_cells": 0.0178863625,
+      "gpu_spatial_sort": 0.2146182541666667,
+      "gpu_neighbor_count": 0.5412477395833334,
+      "gpu_prefix_block": 0.0035037854166666666,
+      "gpu_prefix_total": 0.0023355541666666667,
+      "gpu_prefix_carry": 0.0021470604166666666,
+      "gpu_neighbor_fill": 0.5927610375,
+      "gpu_row_sort": 0.07916523125,
+      "gpu_density_lambda_validation": 1.8460977854166667,
+      "gpu_publication": 0.024122597916666665,
+      "gpu_correction": 1.7132431625000002,
+      "gpu_physical_density_check": 0.021662974999999998,
+      "gpu_candidate": 0.026566835416666663,
+      "gpu_projection": 0.0359595,
+      "gpu_velocity": 0.005589314583333334,
+      "gpu_upload": 0.00022364583333333335,
+      "gpu_download": 0.11191397291666666,
+      "gpu_memset": 1.5333333333333334e-06,
+      "driver_allocation_gpu_idle": 0.011276629166666668,
+      "driver_copy_gpu_idle": 0.29534641875,
+      "driver_other_gpu_idle": 0.0005630458333333333,
+      "driver_launch_gpu_idle": 0.16320252708333333,
+      "driver_sync_gpu_idle": 1.1769253354166667,
+      "cpu_host-input-validation": 0.12115743541666665,
+      "cpu_cuda-preparation": 0.0010913166666666667,
+      "cpu_host-diagnostic-observation": 0.0029763166666666664,
+      "cpu_bounds-host-reduction": 0.004264083333333333,
+      "cpu_host-particle-materialisation": 0.21540148333333334,
+      "cpu_host-output-validation": 0.12303727708333334,
+      "cpu_host-plane-validation": 0.00026594791666666667,
+      "cpu_device-accept": 0.0003448854166666667,
+      "cpu_host-snapshot-install": 0.0010241624999999999,
+      "host_framework_and_instrumentation": 0.13604040625,
+      "wall": 7.50256729375
+    },
+    "ranked_wall_contributions": [
+      {
+        "category": "gpu_density_lambda_validation",
+        "ms_per_step": 1.8460977854166667,
+        "percent": 24.606214288201787
+      },
+      {
+        "category": "gpu_correction",
+        "ms_per_step": 1.7132431625000002,
+        "percent": 22.835425467322555
+      },
+      {
+        "category": "driver_sync_gpu_idle",
+        "ms_per_step": 1.1769253354166667,
+        "percent": 15.686968064879634
+      },
+      {
+        "category": "gpu_neighbor_fill",
+        "ms_per_step": 0.5927610375,
+        "percent": 7.900776018281082
+      },
+      {
+        "category": "gpu_neighbor_count",
+        "ms_per_step": 0.5412477395833334,
+        "percent": 7.214167076304918
+      },
+      {
+        "category": "driver_copy_gpu_idle",
+        "ms_per_step": 0.29534641875,
+        "percent": 3.936604727238339
+      },
+      {
+        "category": "cpu_host-particle-materialisation",
+        "ms_per_step": 0.21540148333333334,
+        "percent": 2.871037005063229
+      },
+      {
+        "category": "gpu_spatial_sort",
+        "ms_per_step": 0.2146182541666667,
+        "percent": 2.860597523003279
+      },
+      {
+        "category": "driver_launch_gpu_idle",
+        "ms_per_step": 0.16320252708333333,
+        "percent": 2.17528908030307
+      },
+      {
+        "category": "host_framework_and_instrumentation",
+        "ms_per_step": 0.13604040625,
+        "percent": 1.8132513968029078
+      },
+      {
+        "category": "cpu_host-output-validation",
+        "ms_per_step": 0.12303727708333334,
+        "percent": 1.6399356682322506
+      },
+      {
+        "category": "cpu_host-input-validation",
+        "ms_per_step": 0.12115743541666665,
+        "percent": 1.6148796894843802
+      },
+      {
+        "category": "gpu_download",
+        "ms_per_step": 0.11191397291666666,
+        "percent": 1.4916756962632831
+      },
+      {
+        "category": "gpu_row_sort",
+        "ms_per_step": 0.07916523125,
+        "percent": 1.0551752240322916
+      },
+      {
+        "category": "gpu_projection",
+        "ms_per_step": 0.0359595,
+        "percent": 0.4792959342058284
+      },
+      {
+        "category": "gpu_candidate",
+        "ms_per_step": 0.026566835416666663,
+        "percent": 0.3541032606105129
+      },
+      {
+        "category": "gpu_publication",
+        "ms_per_step": 0.024122597916666665,
+        "percent": 0.32152457914988586
+      },
+      {
+        "category": "gpu_physical_density_check",
+        "ms_per_step": 0.021662974999999998,
+        "percent": 0.28874082899657966
+      },
+      {
+        "category": "gpu_cells",
+        "ms_per_step": 0.0178863625,
+        "percent": 0.23840322651821066
+      },
+      {
+        "category": "driver_allocation_gpu_idle",
+        "ms_per_step": 0.011276629166666668,
+        "percent": 0.15030360575453475
+      },
+      {
+        "category": "gpu_prediction_bounds",
+        "ms_per_step": 0.006562470833333334,
+        "percent": 0.08746966973292179
+      },
+      {
+        "category": "gpu_velocity",
+        "ms_per_step": 0.005589314583333334,
+        "percent": 0.07449869310721813
+      },
+      {
+        "category": "cpu_bounds-host-reduction",
+        "ms_per_step": 0.004264083333333333,
+        "percent": 0.056834989496002526
+      },
+      {
+        "category": "gpu_acceleration_cfl",
+        "ms_per_step": 0.004041204166666667,
+        "percent": 0.05386428416354472
+      },
+      {
+        "category": "gpu_prefix_block",
+        "ms_per_step": 0.0035037854166666666,
+        "percent": 0.046701152811858
+      },
+      {
+        "category": "cpu_host-diagnostic-observation",
+        "ms_per_step": 0.0029763166666666664,
+        "percent": 0.03967064272980373
+      },
+      {
+        "category": "gpu_prefix_total",
+        "ms_per_step": 0.0023355541666666667,
+        "percent": 0.031130066218963418
+      },
+      {
+        "category": "gpu_prefix_carry",
+        "ms_per_step": 0.0021470604166666666,
+        "percent": 0.028617676224714058
+      },
+      {
+        "category": "cpu_cuda-preparation",
+        "ms_per_step": 0.0010913166666666667,
+        "percent": 0.014545909739134043
+      },
+      {
+        "category": "cpu_host-snapshot-install",
+        "ms_per_step": 0.0010241624999999999,
+        "percent": 0.013650827242205168
+      },
+      {
+        "category": "driver_other_gpu_idle",
+        "ms_per_step": 0.0005630458333333333,
+        "percent": 0.007504708872153371
+      },
+      {
+        "category": "cpu_device-accept",
+        "ms_per_step": 0.0003448854166666667,
+        "percent": 0.004596898676989846
+      },
+      {
+        "category": "cpu_host-plane-validation",
+        "ms_per_step": 0.00026594791666666667,
+        "percent": 0.003544758830596749
+      },
+      {
+        "category": "gpu_upload",
+        "ms_per_step": 0.00022364583333333335,
+        "percent": 0.002980924056751095
+      },
+      {
+        "category": "gpu_memset",
+        "ms_per_step": 1.5333333333333334e-06,
+        "percent": 2.043744858657481e-05
+      }
+    ],
+    "api_inclusive_ms_per_step": {
+      "cuMemAlloc_v2": 0.007883295833333333,
+      "cuMemcpyHtoD_v2": 0.00064825625,
+      "cuMemsetD8Async": 0.00056458125,
+      "cuLaunchKernel": 0.24763151666666666,
+      "cuStreamSynchronize": 6.155250743750001,
+      "cuMemcpyDtoH_v2": 0.4145599395833333,
+      "cuMemFree_v2": 0.0033988687500000002
+    },
+    "sync_gpu_overlap_ms_per_step": 4.978325408333333,
+    "scheduler_on_core_ms_per_step": 7.492215620833334,
+    "scheduler_off_core_ms_per_step": 0.010351672916666667,
+    "host_named_range_ms_per_step": {
+      "host-input-validation": 0.12115743541666665,
+      "cuda-preparation": 0.007967235416666666,
+      "host-diagnostic-observation": 0.006760504166666666,
+      "bounds-host-reduction": 0.040127333333333334,
+      "host-particle-materialisation": 0.21540148333333334,
+      "host-output-validation": 0.12303727708333334,
+      "host-plane-validation": 0.00026594791666666667,
+      "device-accept": 0.0003448854166666667,
+      "host-snapshot-install": 0.0010241624999999999
+    },
+    "kernel_launches_per_step": 69
+  },
+  "8000-effects": {
+    "wall_partition_ms_per_step": {
+      "gpu_acceleration_cfl": 0.001789475,
+      "gpu_prediction_bounds": 0.0020232375,
+      "gpu_cells": 0.00266236875,
+      "gpu_spatial_sort": 0.04075636875,
+      "gpu_neighbor_count": 0.12726443541666665,
+      "gpu_prefix_block": 0.0016884125,
+      "gpu_prefix_total": 0.0016019333333333334,
+      "gpu_prefix_carry": 0.0012097291666666667,
+      "gpu_neighbor_fill": 0.13373502708333332,
+      "gpu_row_sort": 0.0064706166666666665,
+      "gpu_density_lambda_validation": 0.25552600625,
+      "gpu_publication": 0.010922222916666667,
+      "gpu_correction": 0.29238800625,
+      "gpu_physical_density_check": 0.011667920833333333,
+      "gpu_candidate": 0.01073993125,
+      "gpu_projection": 0.01620984791666667,
+      "gpu_velocity": 0.002079054166666667,
+      "gpu_curl": 0.028751147916666664,
+      "gpu_confinement": 0.026928739583333333,
+      "gpu_velocity_replace": 0.0026049270833333337,
+      "gpu_xsph": 0.02138745833333333,
+      "gpu_upload": 2.2327083333333335e-05,
+      "gpu_download": 0.011234610416666667,
+      "gpu_memset": 1.9395833333333333e-06,
+      "driver_allocation_gpu_idle": 0.0008673479166666667,
+      "driver_copy_gpu_idle": 0.1568215875,
+      "driver_other_gpu_idle": 0.00046925208333333337,
+      "driver_launch_gpu_idle": 0.12428981041666666,
+      "driver_sync_gpu_idle": 0.8434954083333334,
+      "cpu_host-input-validation": 0.008737866666666667,
+      "cpu_cuda-preparation": 0.00041333958333333333,
+      "cpu_host-diagnostic-observation": 0.003365170833333333,
+      "cpu_bounds-host-reduction": 0.0019552104166666666,
+      "cpu_host-particle-materialisation": 0.00874258125,
+      "cpu_host-output-validation": 0.0089832,
+      "cpu_host-plane-validation": 0.00015414375000000002,
+      "cpu_device-accept": 0.0002654375,
+      "cpu_host-snapshot-install": 0.00026940416666666663,
+      "host_framework_and_instrumentation": 0.06647902916666666,
+      "wall": 2.2349745333333333
+    },
+    "ranked_wall_contributions": [
+      {
+        "category": "driver_sync_gpu_idle",
+        "ms_per_step": 0.8434954083333334,
+        "percent": 37.740716762231266
+      },
+      {
+        "category": "gpu_correction",
+        "ms_per_step": 0.29238800625,
+        "percent": 13.08238648312115
+      },
+      {
+        "category": "gpu_density_lambda_validation",
+        "ms_per_step": 0.25552600625,
+        "percent": 11.43306120221862
+      },
+      {
+        "category": "driver_copy_gpu_idle",
+        "ms_per_step": 0.1568215875,
+        "percent": 7.016705790652111
+      },
+      {
+        "category": "gpu_neighbor_fill",
+        "ms_per_step": 0.13373502708333332,
+        "percent": 5.9837382971820885
+      },
+      {
+        "category": "gpu_neighbor_count",
+        "ms_per_step": 0.12726443541666665,
+        "percent": 5.694223066911605
+      },
+      {
+        "category": "driver_launch_gpu_idle",
+        "ms_per_step": 0.12428981041666666,
+        "percent": 5.5611287092070665
+      },
+      {
+        "category": "host_framework_and_instrumentation",
+        "ms_per_step": 0.06647902916666666,
+        "percent": 2.974487099301176
+      },
+      {
+        "category": "gpu_spatial_sort",
+        "ms_per_step": 0.04075636875,
+        "percent": 1.823571953153948
+      },
+      {
+        "category": "gpu_curl",
+        "ms_per_step": 0.028751147916666664,
+        "percent": 1.2864194865695413
+      },
+      {
+        "category": "gpu_confinement",
+        "ms_per_step": 0.026928739583333333,
+        "percent": 1.2048790347141316
+      },
+      {
+        "category": "gpu_xsph",
+        "ms_per_step": 0.02138745833333333,
+        "percent": 0.9569441626448958
+      },
+      {
+        "category": "gpu_projection",
+        "ms_per_step": 0.01620984791666667,
+        "percent": 0.725281101637012
+      },
+      {
+        "category": "gpu_physical_density_check",
+        "ms_per_step": 0.011667920833333333,
+        "percent": 0.5220605720250115
+      },
+      {
+        "category": "gpu_download",
+        "ms_per_step": 0.011234610416666667,
+        "percent": 0.502672860433488
+      },
+      {
+        "category": "gpu_publication",
+        "ms_per_step": 0.010922222916666667,
+        "percent": 0.4886956318189815
+      },
+      {
+        "category": "gpu_candidate",
+        "ms_per_step": 0.01073993125,
+        "percent": 0.4805393121854513
+      },
+      {
+        "category": "cpu_host-output-validation",
+        "ms_per_step": 0.0089832,
+        "percent": 0.40193746577515066
+      },
+      {
+        "category": "cpu_host-particle-materialisation",
+        "ms_per_step": 0.00874258125,
+        "percent": 0.3911714035041354
+      },
+      {
+        "category": "cpu_host-input-validation",
+        "ms_per_step": 0.008737866666666667,
+        "percent": 0.3909604577746419
+      },
+      {
+        "category": "gpu_row_sort",
+        "ms_per_step": 0.0064706166666666665,
+        "percent": 0.28951634885146194
+      },
+      {
+        "category": "cpu_host-diagnostic-observation",
+        "ms_per_step": 0.003365170833333333,
+        "percent": 0.15056864331757636
+      },
+      {
+        "category": "gpu_cells",
+        "ms_per_step": 0.00266236875,
+        "percent": 0.11912300164016783
+      },
+      {
+        "category": "gpu_velocity_replace",
+        "ms_per_step": 0.0026049270833333337,
+        "percent": 0.11655287541233132
+      },
+      {
+        "category": "gpu_velocity",
+        "ms_per_step": 0.002079054166666667,
+        "percent": 0.09302361774860492
+      },
+      {
+        "category": "gpu_prediction_bounds",
+        "ms_per_step": 0.0020232375,
+        "percent": 0.09052619928435873
+      },
+      {
+        "category": "cpu_bounds-host-reduction",
+        "ms_per_step": 0.0019552104166666666,
+        "percent": 0.08748244722728832
+      },
+      {
+        "category": "gpu_acceleration_cfl",
+        "ms_per_step": 0.001789475,
+        "percent": 0.0800669078466457
+      },
+      {
+        "category": "gpu_prefix_block",
+        "ms_per_step": 0.0016884125,
+        "percent": 0.07554504424181657
+      },
+      {
+        "category": "gpu_prefix_total",
+        "ms_per_step": 0.0016019333333333334,
+        "percent": 0.07167568620766984
+      },
+      {
+        "category": "gpu_prefix_carry",
+        "ms_per_step": 0.0012097291666666667,
+        "percent": 0.05412720138973694
+      },
+      {
+        "category": "driver_allocation_gpu_idle",
+        "ms_per_step": 0.0008673479166666667,
+        "percent": 0.03880795524649975
+      },
+      {
+        "category": "driver_other_gpu_idle",
+        "ms_per_step": 0.00046925208333333337,
+        "percent": 0.020995858178011157
+      },
+      {
+        "category": "cpu_cuda-preparation",
+        "ms_per_step": 0.00041333958333333333,
+        "percent": 0.01849415182001477
+      },
+      {
+        "category": "cpu_host-snapshot-install",
+        "ms_per_step": 0.00026940416666666663,
+        "percent": 0.012054015052460851
+      },
+      {
+        "category": "cpu_device-accept",
+        "ms_per_step": 0.0002654375,
+        "percent": 0.011876533537235234
+      },
+      {
+        "category": "cpu_host-plane-validation",
+        "ms_per_step": 0.00015414375000000002,
+        "percent": 0.006896890667031612
+      },
+      {
+        "category": "gpu_upload",
+        "ms_per_step": 2.2327083333333335e-05,
+        "percent": 0.0009989860287147791
+      },
+      {
+        "category": "gpu_memset",
+        "ms_per_step": 1.9395833333333333e-06,
+        "percent": 8.678324090076135e-05
+      }
+    ],
+    "api_inclusive_ms_per_step": {
+      "cuMemAlloc_v2": 0.0008616604166666668,
+      "cuMemcpyHtoD_v2": 0.0003108958333333333,
+      "cuMemsetD8Async": 0.00047078958333333335,
+      "cuLaunchKernel": 0.19513057083333332,
+      "cuStreamSynchronize": 1.72853074375,
+      "cuMemcpyDtoH_v2": 0.16988930416666667,
+      "cuMemFree_v2": 9.897916666666667e-06
+    },
+    "sync_gpu_overlap_ms_per_step": 0.8850353354166667,
+    "scheduler_on_core_ms_per_step": 2.2323521166666667,
+    "scheduler_off_core_ms_per_step": 0.0026224166666666666,
+    "host_named_range_ms_per_step": {
+      "host-input-validation": 0.008737866666666667,
+      "cuda-preparation": 0.0012956187500000002,
+      "host-diagnostic-observation": 0.005583752083333334,
+      "bounds-host-reduction": 0.029973747916666668,
+      "host-particle-materialisation": 0.010738266666666666,
+      "host-output-validation": 0.0089832,
+      "host-plane-validation": 0.00015414375000000002,
+      "device-accept": 0.0002654375,
+      "host-snapshot-install": 0.00026940416666666663
+    },
+    "kernel_launches_per_step": 70
+  },
+  "110592-effects": {
+    "wall_partition_ms_per_step": {
+      "gpu_acceleration_cfl": 0.003954018750000001,
+      "gpu_prediction_bounds": 0.006453325,
+      "gpu_cells": 0.016148247916666667,
+      "gpu_spatial_sort": 0.2141555625,
+      "gpu_neighbor_count": 0.4951612791666667,
+      "gpu_prefix_block": 0.0034872395833333335,
+      "gpu_prefix_total": 0.002323289583333333,
+      "gpu_prefix_carry": 0.0019382729166666666,
+      "gpu_neighbor_fill": 0.53800585625,
+      "gpu_row_sort": 0.07211595208333334,
+      "gpu_density_lambda_validation": 1.7867967895833332,
+      "gpu_publication": 0.023822925,
+      "gpu_correction": 1.5081416208333334,
+      "gpu_physical_density_check": 0.021187381249999998,
+      "gpu_candidate": 0.025351516666666667,
+      "gpu_projection": 0.035759306250000004,
+      "gpu_velocity": 0.0049230354166666665,
+      "gpu_curl": 0.19966829375,
+      "gpu_confinement": 0.16284857708333333,
+      "gpu_velocity_replace": 0.00571706875,
+      "gpu_xsph": 0.19513420625,
+      "gpu_upload": 0.00022302083333333334,
+      "gpu_download": 0.11017695416666666,
+      "gpu_memset": 1.4645833333333334e-06,
+      "driver_allocation_gpu_idle": 0.011676585416666666,
+      "driver_copy_gpu_idle": 0.26586108541666664,
+      "driver_other_gpu_idle": 0.0005806791666666666,
+      "driver_launch_gpu_idle": 0.15056988958333334,
+      "driver_sync_gpu_idle": 1.0180137520833332,
+      "cpu_host-input-validation": 0.12064741875,
+      "cpu_cuda-preparation": 0.0011669833333333333,
+      "cpu_host-diagnostic-observation": 0.003183539583333333,
+      "cpu_bounds-host-reduction": 0.0039722604166666665,
+      "cpu_host-particle-materialisation": 0.15470422083333332,
+      "cpu_host-output-validation": 0.12144956666666666,
+      "cpu_host-plane-validation": 0.00020794999999999999,
+      "cpu_device-accept": 0.00028266875,
+      "cpu_host-snapshot-install": 0.00120021875,
+      "host_framework_and_instrumentation": 0.11536342291666667,
+      "wall": 7.402375445833334
+    },
+    "ranked_wall_contributions": [
+      {
+        "category": "gpu_density_lambda_validation",
+        "ms_per_step": 1.7867967895833332,
+        "percent": 24.138154064977748
+      },
+      {
+        "category": "gpu_correction",
+        "ms_per_step": 1.5081416208333334,
+        "percent": 20.37375207281927
+      },
+      {
+        "category": "driver_sync_gpu_idle",
+        "ms_per_step": 1.0180137520833332,
+        "percent": 13.752527949070124
+      },
+      {
+        "category": "gpu_neighbor_fill",
+        "ms_per_step": 0.53800585625,
+        "percent": 7.2680163305258185
+      },
+      {
+        "category": "gpu_neighbor_count",
+        "ms_per_step": 0.4951612791666667,
+        "percent": 6.689221355901155
+      },
+      {
+        "category": "driver_copy_gpu_idle",
+        "ms_per_step": 0.26586108541666664,
+        "percent": 3.59156445606005
+      },
+      {
+        "category": "gpu_spatial_sort",
+        "ms_per_step": 0.2141555625,
+        "percent": 2.8930653959269845
+      },
+      {
+        "category": "gpu_curl",
+        "ms_per_step": 0.19966829375,
+        "percent": 2.697354318368028
+      },
+      {
+        "category": "gpu_xsph",
+        "ms_per_step": 0.19513420625,
+        "percent": 2.6361025278694505
+      },
+      {
+        "category": "gpu_confinement",
+        "ms_per_step": 0.16284857708333333,
+        "percent": 2.1999502494161916
+      },
+      {
+        "category": "cpu_host-particle-materialisation",
+        "ms_per_step": 0.15470422083333332,
+        "percent": 2.089926699413951
+      },
+      {
+        "category": "driver_launch_gpu_idle",
+        "ms_per_step": 0.15056988958333334,
+        "percent": 2.0340752868470955
+      },
+      {
+        "category": "cpu_host-output-validation",
+        "ms_per_step": 0.12144956666666666,
+        "percent": 1.6406836907337425
+      },
+      {
+        "category": "cpu_host-input-validation",
+        "ms_per_step": 0.12064741875,
+        "percent": 1.6298473325601217
+      },
+      {
+        "category": "host_framework_and_instrumentation",
+        "ms_per_step": 0.11536342291666667,
+        "percent": 1.558464897664745
+      },
+      {
+        "category": "gpu_download",
+        "ms_per_step": 0.11017695416666666,
+        "percent": 1.4883999733988544
+      },
+      {
+        "category": "gpu_row_sort",
+        "ms_per_step": 0.07211595208333334,
+        "percent": 0.9742271600655723
+      },
+      {
+        "category": "gpu_projection",
+        "ms_per_step": 0.035759306250000004,
+        "percent": 0.4830787969573778
+      },
+      {
+        "category": "gpu_candidate",
+        "ms_per_step": 0.025351516666666667,
+        "percent": 0.34247812546358464
+      },
+      {
+        "category": "gpu_publication",
+        "ms_per_step": 0.023822925,
+        "percent": 0.32182811010227136
+      },
+      {
+        "category": "gpu_physical_density_check",
+        "ms_per_step": 0.021187381249999998,
+        "percent": 0.2862240831343674
+      },
+      {
+        "category": "gpu_cells",
+        "ms_per_step": 0.016148247916666667,
+        "percent": 0.2181495390882427
+      },
+      {
+        "category": "driver_allocation_gpu_idle",
+        "ms_per_step": 0.011676585416666666,
+        "percent": 0.15774105896289292
+      },
+      {
+        "category": "gpu_prediction_bounds",
+        "ms_per_step": 0.006453325,
+        "percent": 0.08717910956046498
+      },
+      {
+        "category": "gpu_velocity_replace",
+        "ms_per_step": 0.00571706875,
+        "percent": 0.07723289357361679
+      },
+      {
+        "category": "gpu_velocity",
+        "ms_per_step": 0.0049230354166666665,
+        "percent": 0.06650615674239756
+      },
+      {
+        "category": "cpu_bounds-host-reduction",
+        "ms_per_step": 0.0039722604166666665,
+        "percent": 0.0536619689954065
+      },
+      {
+        "category": "gpu_acceleration_cfl",
+        "ms_per_step": 0.003954018750000001,
+        "percent": 0.053415539091922815
+      },
+      {
+        "category": "gpu_prefix_block",
+        "ms_per_step": 0.0034872395833333335,
+        "percent": 0.047109736716964806
+      },
+      {
+        "category": "cpu_host-diagnostic-observation",
+        "ms_per_step": 0.003183539583333333,
+        "percent": 0.043006999666914916
+      },
+      {
+        "category": "gpu_prefix_total",
+        "ms_per_step": 0.002323289583333333,
+        "percent": 0.03138573016640316
+      },
+      {
+        "category": "gpu_prefix_carry",
+        "ms_per_step": 0.0019382729166666666,
+        "percent": 0.026184471874601906
+      },
+      {
+        "category": "cpu_host-snapshot-install",
+        "ms_per_step": 0.00120021875,
+        "percent": 0.01621396751330118
+      },
+      {
+        "category": "cpu_cuda-preparation",
+        "ms_per_step": 0.0011669833333333333,
+        "percent": 0.0157649843874132
+      },
+      {
+        "category": "driver_other_gpu_idle",
+        "ms_per_step": 0.0005806791666666666,
+        "percent": 0.007844497633439017
+      },
+      {
+        "category": "cpu_device-accept",
+        "ms_per_step": 0.00028266875,
+        "percent": 0.0038186221716045117
+      },
+      {
+        "category": "gpu_upload",
+        "ms_per_step": 0.00022302083333333334,
+        "percent": 0.003012827908625843
+      },
+      {
+        "category": "cpu_host-plane-validation",
+        "ms_per_step": 0.00020794999999999999,
+        "percent": 0.002809233353829025
+      },
+      {
+        "category": "gpu_memset",
+        "ms_per_step": 1.4645833333333334e-06,
+        "percent": 1.978531545786051e-05
+      }
+    ],
+    "api_inclusive_ms_per_step": {
+      "cuMemAlloc_v2": 0.008433202083333334,
+      "cuMemcpyHtoD_v2": 0.000585475,
+      "cuMemsetD8Async": 0.00058214375,
+      "cuLaunchKernel": 0.2672278,
+      "cuStreamSynchronize": 6.140939354166667,
+      "cuMemcpyDtoH_v2": 0.38524457500000003,
+      "cuMemFree_v2": 0.0032488395833333334
+    },
+    "sync_gpu_overlap_ms_per_step": 5.122925602083334,
+    "scheduler_on_core_ms_per_step": 7.392498147916666,
+    "scheduler_off_core_ms_per_step": 0.009877297916666666,
+    "host_named_range_ms_per_step": {
+      "host-input-validation": 0.12064741875,
+      "cuda-preparation": 0.008146116666666666,
+      "host-diagnostic-observation": 0.006840297916666667,
+      "bounds-host-reduction": 0.03594023958333334,
+      "host-particle-materialisation": 0.15470422083333332,
+      "host-output-validation": 0.12144956666666666,
+      "host-plane-validation": 0.00020794999999999999,
+      "device-accept": 0.00028266875,
+      "host-snapshot-install": 0.00120021875
+    },
+    "kernel_launches_per_step": 74
+  }
+}

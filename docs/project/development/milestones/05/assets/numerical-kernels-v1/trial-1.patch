@@ -1,0 +1,93 @@
+--- a/native/solver.cu
++++ b/native/solver.cu
+@@ -59,6 +59,40 @@
+ __device__ Vector spiky(Vector displacement, float h, Checked &c) {
+     return spiky_at_distance(displacement,length(displacement,c),h,c);
+ }
++// Radius-only work is speculative. Its first errors are replayed at the same
++// logical use points, after support and distance-dependent checks.
++struct KernelFactors {
++    float h2, poly, gradient;
++    unsigned int poly_error, gradient_error;
++    __device__ explicit KernelFactors(float h) {
++        h2=h*h;
++        float h4=h2*h2, h8=h4*h4;
++        Checked p, g;
++        float h9=p.scalar(h*h8,7);
++        float pd=p.scalar((64.0f*0x1.921fb6p+1f)*h9,8);
++        poly=p.scalar(__fdiv_rn(315.0f,pd),9);
++        float h6=g.scalar(h2*h4,12);
++        float gd=g.scalar(0x1.921fb6p+1f*h6,13);
++        gradient=g.scalar(__fdiv_rn(-45.0f,gd),14);
++        poly_error=p.error;
++        gradient_error=g.error;
++    }
++    __device__ float weight(float d, float h, Checked &c) const {
++        if (d>=h) return 0.0f;
++        float hh=c.scalar(h2,4), d2=c.scalar(d*d,5);
++        float term=c.scalar(hh-d2,6);
++        if (!c.error) c.error=poly_error;
++        float cube=c.scalar(term*(term*term),10);
++        return c.scalar(poly*cube,11);
++    }
++    __device__ Vector direction(Vector displacement, float d, float h, Checked &c) const {
++        if (d==0.0f || d>=h) return {0,0,0};
++        if (!c.error) c.error=gradient_error;
++        float remain=c.scalar(h-d,15);
++        float scale=c.scalar(__fdiv_rn(gradient*(remain*remain),d),16);
++        return c.vector(mul(displacement,scale),17);
++    }
++};
+ __device__ bool active(SolverBuffers b, SolverSettings s, unsigned int i, unsigned int j, Checked &c) {
+     // Callers enumerate the fixed row; only current-distance filtering remains.
+     return separation(b.position[i],b.position[j],c,18) < s.radius;
+@@ -141,8 +175,9 @@
+         b.multiplier[i]=value.multiplier;
+         c.error=value.error;
+     } else if (operation==6 || staged) {
++        const KernelFactors factors(s.radius);
+         Checked validation;
+-        float self=poly6(0,s.radius,c), density=0;
++        float self=factors.weight(0,s.radius,c), density=0;
+         Vector owner{0,0,0};
+         // The reciprocal value is invariant. Its check stays after the complete
+         // density/constraint calculation, before any owner error is exposed.
+@@ -166,10 +201,10 @@
+             if (!c.error) c.error=geometry.error;
+             if (!owner_check.error) owner_check.error=geometry.error;
+             if (distance<s.radius) {
+-                density=c.scalar(density+poly6(distance,s.radius,c),23);
++                density=c.scalar(density+factors.weight(distance,s.radius,c),23);
+                 // Active geometry is finite; reuse exactly its checked RN
+                 // distance for Spiky instead of reading and rooting it again.
+-                Vector direction=spiky_at_distance(displacement,distance,s.radius,owner_check);
++                Vector direction=factors.direction(displacement,distance,s.radius,owner_check);
+                 owner=owner_check.vector(add(owner,direction),27);
+                 Vector dir=owner_check.vector(mul(neg(direction),reciprocal_value),29);
+                 if (j<i) sum=prefix.scalar(sum+prefix.scalar(dot(dir,dir),30),31);
+@@ -189,7 +224,7 @@
+         squared_row.cursor=suffix;
+         for (auto j=squared_row.next(s.count);j<s.count;j=squared_row.next(s.count)) {
+             if (active(b,s,i,j,c)) {
+-                Vector dir=c.vector(mul(neg(spiky(sub(b.position[i],b.position[j]),s.radius,c)),reciprocal),29);
++                Vector dir=c.vector(mul(neg(factors.direction(sub(b.position[i],b.position[j]),length(sub(b.position[i],b.position[j]),c),s.radius,c)),reciprocal),29);
+                 sum=c.scalar(sum+c.scalar(dot(dir,dir),30),31);
+             }
+         }
+@@ -202,13 +237,14 @@
+             c.error=validation.error;
+         } else b.multiplier[i]=multiplier;
+     } else if (operation==7) {
++        const KernelFactors factors(s.radius);
+         Vector sum{0,0,0};
+         Members correction_row(b,s,i);
+         for (auto j=correction_row.next(s.count);j<s.count;j=correction_row.next(s.count)) if (active(b,s,i,j,c)) {
+             Vector displacement=sub(b.position[i],b.position[j]);
+             float distance=separation(b.position[i],b.position[j],c,18);
+-            Vector direction=spiky(displacement,s.radius,c);
+-            float weight=poly6(distance,s.radius,c), pressure=0;
++            Vector direction=factors.direction(displacement,length(displacement,c),s.radius,c);
++            float weight=factors.weight(distance,s.radius,c), pressure=0;
+             if (weight!=0 && s.strength!=0) {
+                 float ratio=c.scalar(__fdiv_rn(weight,s.reference_weight),34);
+                 float shaped=c.scalar(ordered_power(ratio,s.exponent),35);

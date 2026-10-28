@@ -1,0 +1,23 @@
+{
+  "base_maelstrom_commit": "1e0085926d05c42949bb76b55d177d42a1f8f94f",
+  "epq_commit": "1f76097a218266822cdf344c38db75ed128628a8",
+  "control_matches_retained_active_candidate": true,
+  "control_files": 189,
+  "candidate_files": 189,
+  "candidate_equals_live": true,
+  "patches": [
+    {
+      "patch": "control.patch",
+      "exit": 0,
+      "stdout": "patching file docs/cuda.md\npatching file native/solver.cu\npatching file src/cuda/solver.rs\npatching file src/cuda/density_tests.rs\npatching file docs/cuda.md\npatching file native/bridge.cpp\npatching file native/solver.cu\npatching file native/solver.h\npatching file native/tests.cpp\npatching file src/cuda/active_tests.rs\npatching file src/cuda/solver.rs\n",
+      "stderr": ""
+    },
+    {
+      "patch": "candidate.patch",
+      "exit": 0,
+      "stdout": "patching file docs/cuda.md\npatching file native/power.cuh\npatching file native/power_exhaustive.cu\n",
+      "stderr": ""
+    }
+  ],
+  "all_probe_and_trial_patches_reconstruct": true
+}

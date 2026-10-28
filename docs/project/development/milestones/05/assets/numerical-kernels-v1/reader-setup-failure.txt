@@ -1,0 +1,7 @@
+The first extracted follow-up audit command exited 1 at its final source-hash check:
+python3 docs/project/development/milestones/05/assets/numerical-kernels-v1/followup-audit.py /tmp/numerical-kernel-readback
+
+Observed error excerpt from tool output:
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/numerical-kernel-readback/validation-only/control/.gitattributes'
+
+The extraction reader had verified the reconstructed source inside a temporary directory but did not copy it into the extraction tree. The corrected verify-evidence.py exports already verified control/candidate trees for these source checks. No numerical assertion was removed or weakened. final-verification.json records the corrected complete reproduction separately.

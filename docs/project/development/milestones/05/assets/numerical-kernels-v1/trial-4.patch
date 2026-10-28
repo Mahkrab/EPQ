@@ -1,0 +1,177 @@
+--- a/native/bridge.cpp
++++ b/native/bridge.cpp
+@@ -59,6 +59,7 @@
+     CUmodule module = nullptr;
+     CUfunction kernel = nullptr;
+     CUfunction solver = nullptr;
++    CUfunction validated_correction = nullptr;
+     CUfunction spatial_sort = nullptr;
+     CUfunction observe_state = nullptr;
+     CUfunction prefix_counts = nullptr;
+@@ -106,6 +107,7 @@
+     if ((code = d.cuModuleLoadData_fn(&r.module, ptx)) != CUDA_SUCCESS) status = {code, 5};
+     if (!status.code && (code = d.cuModuleGetFunction_fn(&r.kernel, r.module, "roundtrip")) != CUDA_SUCCESS) status = {code, 5};
+     if (!status.code && (code = d.cuModuleGetFunction_fn(&r.solver, r.module, "solver")) != CUDA_SUCCESS) status = {code, 5};
++    if (!status.code && (code = d.cuModuleGetFunction_fn(&r.validated_correction, r.module, "validated_correction")) != CUDA_SUCCESS) status = {code, 5};
+     if (!status.code && (code = d.cuModuleGetFunction_fn(&r.spatial_sort, r.module, "spatial_sort")) != CUDA_SUCCESS) status = {code, 5};
+     if (!status.code && (code = d.cuModuleGetFunction_fn(&r.observe_state, r.module, "observe_state")) != CUDA_SUCCESS) status = {code, 5};
+     if (!status.code && (code = d.cuModuleGetFunction_fn(&r.prefix_counts, r.module, "prefix_counts")) != CUDA_SUCCESS) status = {code, 5};
+@@ -326,7 +328,8 @@
+             // Conservatively mark before submission: even an immediate error
+             // must pass through the completion/poisoning boundary.
+             r.pending=true;
+-            auto code=r.driver.cuLaunchKernel_fn(function,static_cast<unsigned int>((count+threads-1)/threads),
++            auto selected=buffers.first_operation==5 && kernel_operation==7 ? r.validated_correction : function;
++            auto code=r.driver.cuLaunchKernel_fn(selected,static_cast<unsigned int>((count+threads-1)/threads),
+                 1,1,threads,1,1,0,r.stream,args,nullptr);
+             return {code,code==CUDA_SUCCESS ? 0 : 9};
+         };
+--- a/native/solver.cu
++++ b/native/solver.cu
+@@ -29,13 +29,16 @@
+ }
+ __device__ Vector neg(Vector a) { return {-a.x,-a.y,-a.z}; }
+ __device__ float dot(Vector a, Vector b) { return (a.x*b.x+a.y*b.y)+a.z*b.z; }
+-__device__ float length(Vector a, Checked &c) {
++template<class Check>
++__device__ float length(Vector a, Check &c) {
+     return c.scalar(__fsqrt_rn(c.scalar(dot(a,a), 2)), 3);
+ }
+-__device__ float separation(Vector a, Vector b, Checked &c, unsigned int quantity = 1) {
++template<class Check>
++__device__ float separation(Vector a, Vector b, Check &c, unsigned int quantity = 1) {
+     return length(c.vector(sub(a,b),quantity),c);
+ }
+-__device__ float poly6(float d, float h, Checked &c) {
++template<class Check>
++__device__ float poly6(float d, float h, Check &c) {
+     if (d >= h) return 0.0f;
+     float h2=c.scalar(h*h,4), d2=c.scalar(d*d,5);
+     float term=c.scalar(h2-d2,6);
+@@ -46,7 +49,8 @@
+     float cube=c.scalar(term*(term*term),10);
+     return c.scalar(coeff*cube,11);
+ }
+-__device__ Vector spiky_at_distance(Vector displacement, float d, float h, Checked &c) {
++template<class Check>
++__device__ Vector spiky_at_distance(Vector displacement, float d, float h, Check &c) {
+     if (d == 0.0f || d >= h) return {0,0,0};
+     float h2=h*h, h4=h2*h2;
+     float h6=c.scalar(h2*h4,12);
+@@ -56,16 +60,50 @@
+     float scale=c.scalar(__fdiv_rn(coeff*(remain*remain),d),16);
+     return c.vector(mul(displacement,scale),17);
+ }
+-__device__ Vector spiky(Vector displacement, float h, Checked &c) {
++template<class Check>
++__device__ Vector spiky(Vector displacement, float h, Check &c) {
+     return spiky_at_distance(displacement,length(displacement,c),h,c);
+ }
+-__device__ bool active(SolverBuffers b, SolverSettings s, unsigned int i, unsigned int j, Checked &c) {
++template<class Check>
++__device__ bool active(SolverBuffers b, SolverSettings s, unsigned int i, unsigned int j, Check &c) {
+     // Callers enumerate the fixed row; only current-distance filtering remains.
+     return separation(b.position[i],b.position[j],c,18) < s.radius;
+ }
+ #include "neighbours.cuh"
+ #include "spatial_sort.cuh"
+ 
++// Grouped density/lambda has checked every displacement, Poly6 value and
++// Spiky direction on this unchanged Jacobi snapshot. Repeating those checks in
++// correction cannot discover a new failure. Standalone correction still uses
++// Checked; pressure, multiplier pairs and correction sums always remain checked.
++struct ValidatedGeometry {
++    __device__ float scalar(float value, unsigned int) { return value; }
++    __device__ Vector vector(Vector value, unsigned int) { return value; }
++};
++template<class Geometry>
++__device__ void calculate_correction(SolverBuffers b, SolverSettings s, unsigned int i,
++                                     Checked &c, Geometry &geometry) {
++    Vector sum{0,0,0};
++    Members correction_row(b,s,i);
++    for (auto j=correction_row.next(s.count);j<s.count;j=correction_row.next(s.count)) if (active(b,s,i,j,geometry)) {
++        Vector displacement=sub(b.position[i],b.position[j]);
++        float distance=separation(b.position[i],b.position[j],geometry,18);
++        Vector direction=spiky(displacement,s.radius,geometry);
++        float weight=poly6(distance,s.radius,geometry), pressure=0;
++        if (weight!=0 && s.strength!=0) {
++        float ratio=c.scalar(__fdiv_rn(weight,s.reference_weight),34);
++        float shaped=c.scalar(ordered_power(ratio,s.exponent),35);
++        pressure=c.scalar(-s.strength*shaped,36);
++        }
++        float pair=c.scalar(b.multiplier[i]+b.multiplier[j],37);
++        float coefficient=c.scalar(pair+pressure,38);
++        Vector contribution=c.vector(mul(direction,coefficient),39);
++        sum=c.vector(add(sum,contribution),40);
++    }
++    Vector correction=c.vector(mul(sum,c.scalar(__fdiv_rn(1.0f,s.rest_density),26)),41);
++    b.correction[i]=s.correction_scale==1.0f ? correction : c.vector(mul(correction,s.correction_scale),42);
++}
++
+ // Sorting has its own entry point so its shared tile does not reduce occupancy
+ // for the numerical solver kernels.
+ extern "C" __global__ void spatial_sort(SolverBuffers b, SolverSettings s, unsigned int operation) {
+@@ -185,11 +223,12 @@
+         owner=c.vector(mul(owner,reciprocal),28);
+         if (!c.error) c.error=prefix.error;
+         sum=c.scalar(sum+c.scalar(dot(owner,owner),30),31);
++        ValidatedGeometry geometry;
+         Members squared_row(b,s,i);
+         squared_row.cursor=suffix;
+         for (auto j=squared_row.next(s.count);j<s.count;j=squared_row.next(s.count)) {
+-            if (active(b,s,i,j,c)) {
+-                Vector dir=c.vector(mul(neg(spiky(sub(b.position[i],b.position[j]),s.radius,c)),reciprocal),29);
++            if (active(b,s,i,j,geometry)) {
++                Vector dir=mul(neg(spiky(sub(b.position[i],b.position[j]),s.radius,geometry)),reciprocal);
+                 sum=c.scalar(sum+c.scalar(dot(dir,dir),30),31);
+             }
+         }
+@@ -202,25 +241,10 @@
+             c.error=validation.error;
+         } else b.multiplier[i]=multiplier;
+     } else if (operation==7) {
+-        Vector sum{0,0,0};
+-        Members correction_row(b,s,i);
+-        for (auto j=correction_row.next(s.count);j<s.count;j=correction_row.next(s.count)) if (active(b,s,i,j,c)) {
+-            Vector displacement=sub(b.position[i],b.position[j]);
+-            float distance=separation(b.position[i],b.position[j],c,18);
+-            Vector direction=spiky(displacement,s.radius,c);
+-            float weight=poly6(distance,s.radius,c), pressure=0;
+-            if (weight!=0 && s.strength!=0) {
+-                float ratio=c.scalar(__fdiv_rn(weight,s.reference_weight),34);
+-                float shaped=c.scalar(ordered_power(ratio,s.exponent),35);
+-                pressure=c.scalar(-s.strength*shaped,36);
+-            }
+-            float pair=c.scalar(b.multiplier[i]+b.multiplier[j],37);
+-            float coefficient=c.scalar(pair+pressure,38);
+-            Vector contribution=c.vector(mul(direction,coefficient),39);
+-            sum=c.vector(add(sum,contribution),40);
+-        }
+-        Vector correction=c.vector(mul(sum,c.scalar(__fdiv_rn(1.0f,s.rest_density),26)),41);
+-        b.correction[i]=s.correction_scale==1.0f ? correction : c.vector(mul(correction,s.correction_scale),42);
++        if (b.first_operation==5) {
++            ValidatedGeometry geometry;
++            calculate_correction(b,s,i,c,geometry);
++        } else calculate_correction(b,s,i,c,c);
+     } else if (operation==8) {
+         c.scalar(b.density[i]*s.mass,43);
+     } else if (operation==9) {
+@@ -307,3 +331,18 @@
+     // Checked already retained the first failing expression within that lane.
+     if (c.error && b.diagnostic) record_diagnostic(b,pass,(static_cast<unsigned long long>(i)<<32)|c.error);
+ }
++
++// This entry uses the same stream-wide proof as grouped correction. Its private
++// resource requirement is independent of discovery and density/lambda code.
++extern "C" __global__ void validated_correction(SolverBuffers b, SolverSettings s, unsigned int) {
++    const auto lane=static_cast<std::uint64_t>(blockIdx.x)*blockDim.x+threadIdx.x;
++    if (lane>=s.count) return;
++    for (unsigned int previous=0;previous<2;++previous)
++        if (b.diagnostic[previous]!=ULLONG_MAX) return;
++    const auto i=static_cast<unsigned int>(lane);
++    Checked c;
++    ValidatedGeometry geometry;
++    calculate_correction(b,s,i,c,geometry);
++    b.errors[i]=c.error;
++    if (c.error && b.diagnostic) record_diagnostic(b,2,(static_cast<unsigned long long>(i)<<32)|c.error);
++}

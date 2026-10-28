@@ -1,0 +1,1949 @@
+{
+  "all_solver_records": 146,
+  "cross_campaign_physical_groups": 11,
+  "primary_records": 62,
+  "physical_groups": 11,
+  "all_physical_outputs_exact": true,
+  "timing": {
+    "110592": {
+      "control_median_s": 3.63650958,
+      "candidate_median_s": 3.327306453,
+      "control_range_s": [
+        3.618937882,
+        3.696097279
+      ],
+      "candidate_range_s": [
+        3.295062784,
+        3.334108976
+      ],
+      "median_reduction_percent": 8.502744739091273,
+      "paired_reductions_percent": [
+        8.384202784665163,
+        9.389410050722313,
+        7.998344830390758,
+        9.977844146455439,
+        8.76845174813342
+      ],
+      "slower_pairs": 0
+    },
+    "110592-effects": {
+      "control_median_s": 3.998367149,
+      "candidate_median_s": 3.715594334,
+      "control_range_s": [
+        3.967902919,
+        4.022984239
+      ],
+      "candidate_range_s": [
+        3.700458319,
+        3.772464297
+      ],
+      "median_reduction_percent": 7.072207340206916,
+      "paired_reductions_percent": [
+        7.336382712933986,
+        7.82785805987346,
+        6.358738864094682,
+        5.649877652093527,
+        7.006607161047951
+      ],
+      "slower_pairs": 0
+    },
+    "8000": {
+      "control_median_s": 1.108611733,
+      "candidate_median_s": 1.084611014,
+      "control_range_s": [
+        1.098558721,
+        1.147517895
+      ],
+      "candidate_range_s": [
+        1.081089234,
+        1.214462967
+      ],
+      "median_reduction_percent": 2.1649346011386683,
+      "paired_reductions_percent": [
+        3.1317150722058873,
+        5.481995642429604,
+        1.5902187717464766,
+        -0.24955492282148217,
+        -9.548088915995612
+      ],
+      "slower_pairs": 2
+    },
+    "8000-effects": {
+      "control_median_s": 1.278020431,
+      "candidate_median_s": 1.267908001,
+      "control_range_s": [
+        1.255207589,
+        1.29282213
+      ],
+      "candidate_range_s": [
+        1.235475389,
+        1.418042337
+      ],
+      "median_reduction_percent": 0.7912573034601356,
+      "paired_reductions_percent": [
+        -10.95615552017728,
+        0.06556105641731813,
+        4.435779653617155,
+        1.787176054414874,
+        -0.2167104488403515
+      ],
+      "slower_pairs": 2
+    }
+  },
+  "diagnostics": {
+    "110592": {
+      "status": "completed_with_warnings",
+      "ordered_step_records": 480
+    },
+    "110592-effects": {
+      "status": "completed_with_warnings",
+      "ordered_step_records": 480
+    },
+    "8000": {
+      "status": "completed",
+      "ordered_step_records": 480
+    },
+    "8000-effects": {
+      "status": "completed",
+      "ordered_step_records": 480
+    },
+    "regression/1000": {
+      "status": "completed",
+      "ordered_step_records": 480
+    },
+    "regression/1728": {
+      "status": "completed",
+      "ordered_step_records": 480
+    },
+    "regression/216": {
+      "status": "completed",
+      "ordered_step_records": 480
+    },
+    "regression/4096": {
+      "status": "completed",
+      "ordered_step_records": 480
+    },
+    "regression/512": {
+      "status": "completed",
+      "ordered_step_records": 480
+    },
+    "regression/64": {
+      "status": "completed",
+      "ordered_step_records": 480
+    },
+    "regression/8000": {
+      "status": "completed",
+      "ordered_step_records": 480
+    }
+  },
+  "stage_attribution": {
+    "8000/control": {
+      "gpu_ms_per_step": {
+        "acceleration_cfl": 0.0017983770833333334,
+        "prediction_bounds": 0.0021220020833333333,
+        "cells": 0.00324169375,
+        "spatial_sort": 0.042685291666666667,
+        "neighbor_count": 0.13634720625,
+        "prefix_block": 0.0017331583333333332,
+        "prefix_total": 0.0017103041666666665,
+        "prefix_carry": 0.0012755770833333333,
+        "neighbor_fill": 0.14362600833333333,
+        "row_sort": 0.00682676875,
+        "density_lambda_validation": 0.2682294416666666,
+        "publication": 0.01162375625,
+        "correction": 0.30751654791666666,
+        "physical_density_check": 0.0122765375,
+        "candidate": 0.011281620833333332,
+        "projection": 0.016378291666666666,
+        "velocity": 0.0015454354166666666
+      },
+      "launches_per_step": 65,
+      "api_counts": {
+        "cuCtxCreate_v4": 1,
+        "cuCtxDestroy_v2": 1,
+        "cuLaunchKernel": 31200,
+        "cuMemAlloc_v2": 16,
+        "cuMemFree_v2": 1,
+        "cuMemcpyDtoH_v2": 12480,
+        "cuMemcpyHtoD_v2": 3,
+        "cuMemsetD8Async": 1,
+        "cuModuleLoadData": 1,
+        "cuStreamCreate": 1,
+        "cuStreamSynchronize": 10080
+      },
+      "copies": [
+        [
+          1,
+          3,
+          192096
+        ],
+        [
+          2,
+          12480,
+          94310400
+        ]
+      ],
+      "downloads_per_step": 26,
+      "download_bytes_per_step": 196480,
+      "stream_syncs_per_step": 21,
+      "stage_step_ranges_ms": {
+        "acceleration_cfl": {
+          "min": 0.001627,
+          "median": 0.001819,
+          "max": 0.002201
+        },
+        "prediction_bounds": {
+          "min": 0.001915,
+          "median": 0.002169,
+          "max": 0.002234
+        },
+        "cells": {
+          "min": 0.002775,
+          "median": 0.003286,
+          "max": 0.003765
+        },
+        "spatial_sort": {
+          "min": 0.03899,
+          "median": 0.04349,
+          "max": 0.044732
+        },
+        "neighbor_count": {
+          "min": 0.117703,
+          "median": 0.135794,
+          "max": 0.158384
+        },
+        "prefix_block": {
+          "min": 0.001563,
+          "median": 0.001755,
+          "max": 0.00185
+        },
+        "prefix_total": {
+          "min": 0.001563,
+          "median": 0.001754,
+          "max": 0.001819
+        },
+        "prefix_carry": {
+          "min": 0.001148,
+          "median": 0.001308,
+          "max": 0.001341
+        },
+        "neighbor_fill": {
+          "min": 0.124818,
+          "median": 0.143707,
+          "max": 0.166136
+        },
+        "row_sort": {
+          "min": 0.006126,
+          "median": 0.006732,
+          "max": 0.007849
+        },
+        "density_lambda_validation": {
+          "min": 0.186459,
+          "median": 0.2683325,
+          "max": 0.336007
+        },
+        "publication": {
+          "min": 0.010592,
+          "median": 0.011865500000000001,
+          "max": 0.01257
+        },
+        "correction": {
+          "min": 0.255889,
+          "median": 0.3011015,
+          "max": 0.369478
+        },
+        "physical_density_check": {
+          "min": 0.011229,
+          "median": 0.012508,
+          "max": 0.014708
+        },
+        "candidate": {
+          "min": 0.010208,
+          "median": 0.011454,
+          "max": 0.011932
+        },
+        "projection": {
+          "min": 0.015378,
+          "median": 0.016272,
+          "max": 0.017646
+        },
+        "velocity": {
+          "min": 0.001403,
+          "median": 0.001564,
+          "max": 0.001628
+        }
+      }
+    },
+    "8000/candidate": {
+      "gpu_ms_per_step": {
+        "acceleration_cfl": 0.0018316083333333334,
+        "prediction_bounds": 0.00215705,
+        "cells": 0.0033003645833333335,
+        "spatial_sort": 0.04344896041666667,
+        "neighbor_count": 0.13870780833333332,
+        "prefix_block": 0.0017694666666666667,
+        "prefix_total": 0.0017402145833333334,
+        "prefix_carry": 0.0012947333333333333,
+        "neighbor_fill": 0.14574066458333332,
+        "row_sort": 0.006958179166666667,
+        "density_lambda_validation": 0.27328450625,
+        "publication": 0.0118255375,
+        "correction": 0.31188970416666667,
+        "physical_density_check": 0.012491064583333333,
+        "candidate": 0.01146801875,
+        "projection": 0.017112868750000003,
+        "velocity": 0.0022493125
+      },
+      "launches_per_step": 65,
+      "api_counts": {
+        "cuCtxCreate_v4": 1,
+        "cuCtxDestroy_v2": 1,
+        "cuLaunchKernel": 31200,
+        "cuMemAlloc_v2": 16,
+        "cuMemFree_v2": 1,
+        "cuMemcpyDtoH_v2": 12480,
+        "cuMemcpyHtoD_v2": 3,
+        "cuMemsetD8Async": 1,
+        "cuModuleLoadData": 1,
+        "cuStreamCreate": 1,
+        "cuStreamSynchronize": 10080
+      },
+      "copies": [
+        [
+          1,
+          3,
+          192096
+        ],
+        [
+          2,
+          12480,
+          94318080
+        ]
+      ],
+      "downloads_per_step": 26,
+      "download_bytes_per_step": 196496,
+      "stream_syncs_per_step": 21,
+      "stage_step_ranges_ms": {
+        "acceleration_cfl": {
+          "min": 0.001634,
+          "median": 0.001891,
+          "max": 0.002243
+        },
+        "prediction_bounds": {
+          "min": 0.001923,
+          "median": 0.002211,
+          "max": 0.002244
+        },
+        "cells": {
+          "min": 0.002852,
+          "median": 0.003301,
+          "max": 0.003878
+        },
+        "spatial_sort": {
+          "min": 0.039199,
+          "median": 0.0446165,
+          "max": 0.045449
+        },
+        "neighbor_count": {
+          "min": 0.118206,
+          "median": 0.138094,
+          "max": 0.162725
+        },
+        "prefix_block": {
+          "min": 0.00157,
+          "median": 0.001827,
+          "max": 0.003911
+        },
+        "prefix_total": {
+          "min": 0.00157,
+          "median": 0.001795,
+          "max": 0.001827
+        },
+        "prefix_carry": {
+          "min": 0.001153,
+          "median": 0.001314,
+          "max": 0.001347
+        },
+        "neighbor_fill": {
+          "min": 0.125097,
+          "median": 0.145593,
+          "max": 0.170963
+        },
+        "row_sort": {
+          "min": 0.006058,
+          "median": 0.006891,
+          "max": 0.008141
+        },
+        "density_lambda_validation": {
+          "min": 0.187341,
+          "median": 0.26913699999999996,
+          "max": 0.345289
+        },
+        "publication": {
+          "min": 0.010641,
+          "median": 0.012149,
+          "max": 0.012309
+        },
+        "correction": {
+          "min": 0.257468,
+          "median": 0.3049855,
+          "max": 0.378752
+        },
+        "physical_density_check": {
+          "min": 0.011281,
+          "median": 0.012851,
+          "max": 0.012983
+        },
+        "candidate": {
+          "min": 0.010256,
+          "median": 0.01173,
+          "max": 0.01202
+        },
+        "projection": {
+          "min": 0.015864,
+          "median": 0.016797,
+          "max": 0.018653
+        },
+        "velocity": {
+          "min": 0.002019,
+          "median": 0.002308,
+          "max": 0.00234
+        }
+      }
+    },
+    "8000/candidate-diagnostic": {
+      "gpu_ms_per_step": {
+        "acceleration_cfl": 0.0017714291666666665,
+        "prediction_bounds": 0.0020871500000000003,
+        "cells": 0.0031812875,
+        "spatial_sort": 0.04204388541666666,
+        "neighbor_count": 0.1342645583333333,
+        "prefix_block": 0.0017077041666666666,
+        "prefix_total": 0.0016861958333333335,
+        "prefix_carry": 0.0012544875,
+        "neighbor_fill": 0.141039175,
+        "row_sort": 0.006700720833333334,
+        "density_lambda_validation": 0.2638414229166667,
+        "publication": 0.011437591666666667,
+        "correction": 0.30155399166666663,
+        "physical_density_check": 0.012082054166666667,
+        "candidate": 0.011104410416666667,
+        "projection": 0.016539577083333333,
+        "velocity": 0.0021787916666666666
+      },
+      "launches_per_step": 65,
+      "api_counts": {
+        "cuCtxCreate_v4": 1,
+        "cuCtxDestroy_v2": 1,
+        "cuLaunchKernel": 31200,
+        "cuMemAlloc_v2": 16,
+        "cuMemFree_v2": 1,
+        "cuMemcpyDtoH_v2": 12480,
+        "cuMemcpyHtoD_v2": 3,
+        "cuMemsetD8Async": 1,
+        "cuModuleLoadData": 1,
+        "cuStreamCreate": 1,
+        "cuStreamSynchronize": 10080
+      },
+      "copies": [
+        [
+          1,
+          3,
+          192096
+        ],
+        [
+          2,
+          12480,
+          94318080
+        ]
+      ],
+      "downloads_per_step": 26,
+      "download_bytes_per_step": 196496,
+      "stream_syncs_per_step": 21,
+      "stage_step_ranges_ms": {
+        "acceleration_cfl": {
+          "min": 0.001635,
+          "median": 0.001699,
+          "max": 0.002212
+        },
+        "prediction_bounds": {
+          "min": 0.001923,
+          "median": 0.001988,
+          "max": 0.002276
+        },
+        "cells": {
+          "min": 0.002853,
+          "median": 0.00327,
+          "max": 0.003816
+        },
+        "spatial_sort": {
+          "min": 0.039148,
+          "median": 0.0399025,
+          "max": 0.0454
+        },
+        "neighbor_count": {
+          "min": 0.111352,
+          "median": 0.132946,
+          "max": 0.160215
+        },
+        "prefix_block": {
+          "min": 0.001571,
+          "median": 0.001635,
+          "max": 0.00186
+        },
+        "prefix_total": {
+          "min": 0.001571,
+          "median": 0.001604,
+          "max": 0.001828
+        },
+        "prefix_carry": {
+          "min": 0.001154,
+          "median": 0.001187,
+          "max": 0.001347
+        },
+        "neighbor_fill": {
+          "min": 0.118887,
+          "median": 0.1396305,
+          "max": 0.169994
+        },
+        "row_sort": {
+          "min": 0.0059,
+          "median": 0.006445,
+          "max": 0.008144
+        },
+        "density_lambda_validation": {
+          "min": 0.187564,
+          "median": 0.26056999999999997,
+          "max": 0.34595
+        },
+        "publication": {
+          "min": 0.010643,
+          "median": 0.010775,
+          "max": 0.012793
+        },
+        "correction": {
+          "min": 0.256593,
+          "median": 0.290964,
+          "max": 0.378333
+        },
+        "physical_density_check": {
+          "min": 0.011283,
+          "median": 0.0114455,
+          "max": 0.012984
+        },
+        "candidate": {
+          "min": 0.010258,
+          "median": 0.010581,
+          "max": 0.013915
+        },
+        "projection": {
+          "min": 0.015773,
+          "median": 0.016416,
+          "max": 0.018629
+        },
+        "velocity": {
+          "min": 0.002019,
+          "median": 0.002084,
+          "max": 0.002341
+        }
+      }
+    },
+    "110592/control": {
+      "gpu_ms_per_step": {
+        "acceleration_cfl": 0.003874454166666667,
+        "prediction_bounds": 0.0064159375,
+        "cells": 0.017509633333333333,
+        "spatial_sort": 0.21299816458333334,
+        "neighbor_count": 0.4979925833333333,
+        "prefix_block": 0.0035174791666666666,
+        "prefix_total": 0.0023162479166666666,
+        "prefix_carry": 0.0019392104166666665,
+        "neighbor_fill": 0.5414201062499999,
+        "row_sort": 0.07170030833333334,
+        "density_lambda_validation": 1.78752195625,
+        "publication": 0.023814691666666665,
+        "correction": 1.514461275,
+        "physical_density_check": 0.020969847916666666,
+        "candidate": 0.02590073125,
+        "projection": 0.03510929166666667,
+        "velocity": 0.0036780854166666667
+      },
+      "launches_per_step": 69,
+      "api_counts": {
+        "cuCtxCreate_v4": 1,
+        "cuCtxDestroy_v2": 1,
+        "cuLaunchKernel": 33120,
+        "cuMemAlloc_v2": 17,
+        "cuMemFree_v2": 2,
+        "cuMemcpyDtoH_v2": 12480,
+        "cuMemcpyHtoD_v2": 3,
+        "cuMemsetD8Async": 1,
+        "cuModuleLoadData": 1,
+        "cuStreamCreate": 1,
+        "cuStreamSynchronize": 10080
+      },
+      "copies": [
+        [
+          1,
+          3,
+          2654304
+        ],
+        [
+          2,
+          12480,
+          1300776960
+        ]
+      ],
+      "downloads_per_step": 26,
+      "download_bytes_per_step": 2709952,
+      "stream_syncs_per_step": 21,
+      "stage_step_ranges_ms": {
+        "acceleration_cfl": {
+          "min": 0.003729,
+          "median": 0.003825,
+          "max": 0.004749
+        },
+        "prediction_bounds": {
+          "min": 0.006214,
+          "median": 0.006343,
+          "max": 0.007458
+        },
+        "cells": {
+          "min": 0.015744,
+          "median": 0.017306,
+          "max": 0.01992
+        },
+        "spatial_sort": {
+          "min": 0.201427,
+          "median": 0.214096,
+          "max": 0.229476
+        },
+        "neighbor_count": {
+          "min": 0.407029,
+          "median": 0.481449,
+          "max": 0.656677
+        },
+        "prefix_block": {
+          "min": 0.003346,
+          "median": 0.003474,
+          "max": 0.004016
+        },
+        "prefix_total": {
+          "min": 0.002231,
+          "median": 0.002263,
+          "max": 0.002582
+        },
+        "prefix_carry": {
+          "min": 0.001849,
+          "median": 0.001912,
+          "max": 0.002263
+        },
+        "neighbor_fill": {
+          "min": 0.433259,
+          "median": 0.5314224999999999,
+          "max": 0.700819
+        },
+        "row_sort": {
+          "min": 0.056858,
+          "median": 0.070037,
+          "max": 0.086467
+        },
+        "density_lambda_validation": {
+          "min": 0.942371,
+          "median": 1.834163,
+          "max": 2.687456
+        },
+        "publication": {
+          "min": 0.023202,
+          "median": 0.023617,
+          "max": 0.026709
+        },
+        "correction": {
+          "min": 1.040249,
+          "median": 1.5417275,
+          "max": 2.141499
+        },
+        "physical_density_check": {
+          "min": 0.020619,
+          "median": 0.02078,
+          "max": 0.023553
+        },
+        "candidate": {
+          "min": 0.025018,
+          "median": 0.0256575,
+          "max": 0.029608
+        },
+        "projection": {
+          "min": 0.033337,
+          "median": 0.035409,
+          "max": 0.038341
+        },
+        "velocity": {
+          "min": 0.003251,
+          "median": 0.003538,
+          "max": 0.004654
+        }
+      }
+    },
+    "110592/candidate": {
+      "gpu_ms_per_step": {
+        "acceleration_cfl": 0.003922166666666667,
+        "prediction_bounds": 0.006500016666666666,
+        "cells": 0.017715945833333337,
+        "spatial_sort": 0.2157001895833333,
+        "neighbor_count": 0.5045602604166667,
+        "prefix_block": 0.003551375,
+        "prefix_total": 0.0023386166666666667,
+        "prefix_carry": 0.00196371875,
+        "neighbor_fill": 0.5476013125,
+        "row_sort": 0.07256357708333333,
+        "density_lambda_validation": 1.8061510208333333,
+        "publication": 0.02422076875,
+        "correction": 1.5334383520833332,
+        "physical_density_check": 0.021328189583333334,
+        "candidate": 0.026003135416666667,
+        "projection": 0.036273581250000006,
+        "velocity": 0.005211783333333333
+      },
+      "launches_per_step": 69,
+      "api_counts": {
+        "cuCtxCreate_v4": 1,
+        "cuCtxDestroy_v2": 1,
+        "cuLaunchKernel": 33120,
+        "cuMemAlloc_v2": 17,
+        "cuMemFree_v2": 2,
+        "cuMemcpyDtoH_v2": 12480,
+        "cuMemcpyHtoD_v2": 3,
+        "cuMemsetD8Async": 1,
+        "cuModuleLoadData": 1,
+        "cuStreamCreate": 1,
+        "cuStreamSynchronize": 10080
+      },
+      "copies": [
+        [
+          1,
+          3,
+          2654304
+        ],
+        [
+          2,
+          12480,
+          1300784640
+        ]
+      ],
+      "downloads_per_step": 26,
+      "download_bytes_per_step": 2709968,
+      "stream_syncs_per_step": 21,
+      "stage_step_ranges_ms": {
+        "acceleration_cfl": {
+          "min": 0.003746,
+          "median": 0.003874,
+          "max": 0.004866
+        },
+        "prediction_bounds": {
+          "min": 0.006243,
+          "median": 0.006403,
+          "max": 0.007461
+        },
+        "cells": {
+          "min": 0.015849,
+          "median": 0.01777,
+          "max": 0.020139
+        },
+        "spatial_sort": {
+          "min": 0.203861,
+          "median": 0.215914,
+          "max": 0.232103
+        },
+        "neighbor_count": {
+          "min": 0.412042,
+          "median": 0.485749,
+          "max": 0.665307
+        },
+        "prefix_block": {
+          "min": 0.003394,
+          "median": 0.00349,
+          "max": 0.004035
+        },
+        "prefix_total": {
+          "min": 0.002241,
+          "median": 0.002305,
+          "max": 0.002594
+        },
+        "prefix_carry": {
+          "min": 0.001889,
+          "median": 0.001921,
+          "max": 0.002274
+        },
+        "neighbor_fill": {
+          "min": 0.434488,
+          "median": 0.535793,
+          "max": 0.717432
+        },
+        "row_sort": {
+          "min": 0.057664,
+          "median": 0.070648,
+          "max": 0.086897
+        },
+        "density_lambda_validation": {
+          "min": 0.979247,
+          "median": 1.848909,
+          "max": 2.70157
+        },
+        "publication": {
+          "min": 0.02347,
+          "median": 0.023917,
+          "max": 0.027856
+        },
+        "correction": {
+          "min": 1.054838,
+          "median": 1.5601349999999998,
+          "max": 2.151882
+        },
+        "physical_density_check": {
+          "min": 0.020813,
+          "median": 0.021034,
+          "max": 0.023854
+        },
+        "candidate": {
+          "min": 0.025069,
+          "median": 0.025647,
+          "max": 0.029329
+        },
+        "projection": {
+          "min": 0.034194,
+          "median": 0.036406,
+          "max": 0.03948
+        },
+        "velocity": {
+          "min": 0.004739,
+          "median": 0.005219,
+          "max": 0.006052
+        }
+      }
+    },
+    "110592/candidate-diagnostic": {
+      "gpu_ms_per_step": {
+        "acceleration_cfl": 0.003914714583333334,
+        "prediction_bounds": 0.006488462499999999,
+        "cells": 0.017691677083333333,
+        "spatial_sort": 0.2155109354166667,
+        "neighbor_count": 0.5044053770833333,
+        "prefix_block": 0.0035456416666666667,
+        "prefix_total": 0.0023382166666666665,
+        "prefix_carry": 0.0019611416666666668,
+        "neighbor_fill": 0.5478319916666667,
+        "row_sort": 0.07250994375,
+        "density_lambda_validation": 1.8082578062499999,
+        "publication": 0.024190964583333335,
+        "correction": 1.5333637083333334,
+        "physical_density_check": 0.021298720833333333,
+        "candidate": 0.025975991666666667,
+        "projection": 0.036252152083333336,
+        "velocity": 0.005201641666666666
+      },
+      "launches_per_step": 69,
+      "api_counts": {
+        "cuCtxCreate_v4": 1,
+        "cuCtxDestroy_v2": 1,
+        "cuLaunchKernel": 33120,
+        "cuMemAlloc_v2": 17,
+        "cuMemFree_v2": 2,
+        "cuMemcpyDtoH_v2": 12480,
+        "cuMemcpyHtoD_v2": 3,
+        "cuMemsetD8Async": 1,
+        "cuModuleLoadData": 1,
+        "cuStreamCreate": 1,
+        "cuStreamSynchronize": 10080
+      },
+      "copies": [
+        [
+          1,
+          3,
+          2654304
+        ],
+        [
+          2,
+          12480,
+          1300784640
+        ]
+      ],
+      "downloads_per_step": 26,
+      "download_bytes_per_step": 2709968,
+      "stream_syncs_per_step": 21,
+      "stage_step_ranges_ms": {
+        "acceleration_cfl": {
+          "min": 0.003782,
+          "median": 0.003879,
+          "max": 0.004809
+        },
+        "prediction_bounds": {
+          "min": 0.006252,
+          "median": 0.006411,
+          "max": 0.007469
+        },
+        "cells": {
+          "min": 0.015868,
+          "median": 0.017583500000000002,
+          "max": 0.020068
+        },
+        "spatial_sort": {
+          "min": 0.203917,
+          "median": 0.2166915,
+          "max": 0.232
+        },
+        "neighbor_count": {
+          "min": 0.410909,
+          "median": 0.487543,
+          "max": 0.667175
+        },
+        "prefix_block": {
+          "min": 0.003366,
+          "median": 0.003494,
+          "max": 0.004007
+        },
+        "prefix_total": {
+          "min": 0.002244,
+          "median": 0.0022925000000000003,
+          "max": 0.002597
+        },
+        "prefix_carry": {
+          "min": 0.001891,
+          "median": 0.001924,
+          "max": 0.002276
+        },
+        "neighbor_fill": {
+          "min": 0.43755,
+          "median": 0.538338,
+          "max": 0.712729
+        },
+        "row_sort": {
+          "min": 0.057511,
+          "median": 0.0707345,
+          "max": 0.087228
+        },
+        "density_lambda_validation": {
+          "min": 0.958927,
+          "median": 1.8519795000000001,
+          "max": 2.713294
+        },
+        "publication": {
+          "min": 0.023432,
+          "median": 0.023916,
+          "max": 0.027025
+        },
+        "correction": {
+          "min": 1.052919,
+          "median": 1.5620530000000001,
+          "max": 2.164442
+        },
+        "physical_density_check": {
+          "min": 0.020803,
+          "median": 0.021062,
+          "max": 0.023819
+        },
+        "candidate": {
+          "min": 0.0251,
+          "median": 0.025679,
+          "max": 0.029525
+        },
+        "projection": {
+          "min": 0.034236,
+          "median": 0.036513,
+          "max": 0.03943
+        },
+        "velocity": {
+          "min": 0.004744,
+          "median": 0.005193,
+          "max": 0.006058
+        }
+      }
+    },
+    "8000-effects/control": {
+      "gpu_ms_per_step": {
+        "acceleration_cfl": 0.0018372979166666667,
+        "prediction_bounds": 0.0021664291666666667,
+        "cells": 0.002845702083333333,
+        "spatial_sort": 0.04350989375,
+        "neighbor_count": 0.13561338333333334,
+        "prefix_block": 0.0017682145833333334,
+        "prefix_total": 0.0017462687499999999,
+        "prefix_carry": 0.0013000812499999999,
+        "neighbor_fill": 0.14293436458333333,
+        "row_sort": 0.006974758333333333,
+        "density_lambda_validation": 0.2738819666666667,
+        "publication": 0.0118427125,
+        "correction": 0.31388492291666664,
+        "physical_density_check": 0.012516279166666667,
+        "candidate": 0.01150365625,
+        "projection": 0.016894797916666666,
+        "velocity": 0.0015764041666666668,
+        "curl": 0.030834620833333333,
+        "confinement": 0.02887401875,
+        "velocity_replace": 0.00279301875,
+        "xsph": 0.022908927083333332
+      },
+      "launches_per_step": 70,
+      "api_counts": {
+        "cuCtxCreate_v4": 1,
+        "cuCtxDestroy_v2": 1,
+        "cuLaunchKernel": 33600,
+        "cuMemAlloc_v2": 16,
+        "cuMemFree_v2": 1,
+        "cuMemcpyDtoH_v2": 14880,
+        "cuMemcpyHtoD_v2": 3,
+        "cuMemsetD8Async": 1,
+        "cuModuleLoadData": 1,
+        "cuStreamCreate": 1,
+        "cuStreamSynchronize": 12480
+      },
+      "copies": [
+        [
+          1,
+          3,
+          192096
+        ],
+        [
+          2,
+          14880,
+          94329600
+        ]
+      ],
+      "downloads_per_step": 31,
+      "download_bytes_per_step": 196520,
+      "stream_syncs_per_step": 26,
+      "stage_step_ranges_ms": {
+        "acceleration_cfl": {
+          "min": 0.001658,
+          "median": 0.00185,
+          "max": 0.002232
+        },
+        "prediction_bounds": {
+          "min": 0.001945,
+          "median": 0.0022,
+          "max": 0.002233
+        },
+        "cells": {
+          "min": 0.002582,
+          "median": 0.00287,
+          "max": 0.003381
+        },
+        "spatial_sort": {
+          "min": 0.039446,
+          "median": 0.0440705,
+          "max": 0.044869
+        },
+        "neighbor_count": {
+          "min": 0.115882,
+          "median": 0.13528600000000002,
+          "max": 0.156093
+        },
+        "prefix_block": {
+          "min": 0.001594,
+          "median": 0.001786,
+          "max": 0.001818
+        },
+        "prefix_total": {
+          "min": 0.001562,
+          "median": 0.001754,
+          "max": 0.001818
+        },
+        "prefix_carry": {
+          "min": 0.001179,
+          "median": 0.001307,
+          "max": 0.00134
+        },
+        "neighbor_fill": {
+          "min": 0.124684,
+          "median": 0.143433,
+          "max": 0.162503
+        },
+        "row_sort": {
+          "min": 0.006218,
+          "median": 0.006919,
+          "max": 0.008068
+        },
+        "density_lambda_validation": {
+          "min": 0.186035,
+          "median": 0.2819875,
+          "max": 0.329436
+        },
+        "publication": {
+          "min": 0.010713,
+          "median": 0.011991,
+          "max": 0.012213
+        },
+        "correction": {
+          "min": 0.247641,
+          "median": 0.31233049999999996,
+          "max": 0.364421
+        },
+        "physical_density_check": {
+          "min": 0.011321,
+          "median": 0.0126905,
+          "max": 0.012883
+        },
+        "candidate": {
+          "min": 0.010298,
+          "median": 0.011638,
+          "max": 0.014478
+        },
+        "projection": {
+          "min": 0.016008,
+          "median": 0.017236,
+          "max": 0.01792
+        },
+        "velocity": {
+          "min": 0.001403,
+          "median": 0.001594,
+          "max": 0.001627
+        },
+        "curl": {
+          "min": 0.021939,
+          "median": 0.031744999999999995,
+          "max": 0.038489
+        },
+        "confinement": {
+          "min": 0.020568,
+          "median": 0.029943,
+          "max": 0.036225
+        },
+        "velocity_replace": {
+          "min": 0.002518,
+          "median": 0.002838,
+          "max": 0.00287
+        },
+        "xsph": {
+          "min": 0.016964,
+          "median": 0.0232305,
+          "max": 0.027552
+        }
+      }
+    },
+    "8000-effects/candidate": {
+      "gpu_ms_per_step": {
+        "acceleration_cfl": 0.00175510625,
+        "prediction_bounds": 0.0020363499999999997,
+        "cells": 0.0026733645833333336,
+        "spatial_sort": 0.04090203333333333,
+        "neighbor_count": 0.12756785625,
+        "prefix_block": 0.00166403125,
+        "prefix_total": 0.00164276875,
+        "prefix_carry": 0.0012224020833333333,
+        "neighbor_fill": 0.13402227083333335,
+        "row_sort": 0.0064934187499999995,
+        "density_lambda_validation": 0.25654413958333333,
+        "publication": 0.011153295833333333,
+        "correction": 0.2932557875,
+        "physical_density_check": 0.011769075,
+        "candidate": 0.010821591666666667,
+        "projection": 0.016320625,
+        "velocity": 0.0021216437500000004,
+        "curl": 0.028946941666666667,
+        "confinement": 0.027130170833333335,
+        "velocity_replace": 0.0026134708333333334,
+        "xsph": 0.021474254166666665
+      },
+      "launches_per_step": 70,
+      "api_counts": {
+        "cuCtxCreate_v4": 1,
+        "cuCtxDestroy_v2": 1,
+        "cuLaunchKernel": 33600,
+        "cuMemAlloc_v2": 16,
+        "cuMemFree_v2": 1,
+        "cuMemcpyDtoH_v2": 14880,
+        "cuMemcpyHtoD_v2": 3,
+        "cuMemsetD8Async": 1,
+        "cuModuleLoadData": 1,
+        "cuStreamCreate": 1,
+        "cuStreamSynchronize": 12480
+      },
+      "copies": [
+        [
+          1,
+          3,
+          192096
+        ],
+        [
+          2,
+          14880,
+          94337280
+        ]
+      ],
+      "downloads_per_step": 31,
+      "download_bytes_per_step": 196536,
+      "stream_syncs_per_step": 26,
+      "stage_step_ranges_ms": {
+        "acceleration_cfl": {
+          "min": 0.001663,
+          "median": 0.001728,
+          "max": 0.002208
+        },
+        "prediction_bounds": {
+          "min": 0.001919,
+          "median": 0.001984,
+          "max": 0.00224
+        },
+        "cells": {
+          "min": 0.002559,
+          "median": 0.002592,
+          "max": 0.003392
+        },
+        "spatial_sort": {
+          "min": 0.039099,
+          "median": 0.0397875,
+          "max": 0.04489
+        },
+        "neighbor_count": {
+          "min": 0.10645,
+          "median": 0.12457599999999999,
+          "max": 0.156876
+        },
+        "prefix_block": {
+          "min": 0.001567,
+          "median": 0.001632,
+          "max": 0.001856
+        },
+        "prefix_total": {
+          "min": 0.001567,
+          "median": 0.0016,
+          "max": 0.001824
+        },
+        "prefix_carry": {
+          "min": 0.001151,
+          "median": 0.001215,
+          "max": 0.001344
+        },
+        "neighbor_fill": {
+          "min": 0.113106,
+          "median": 0.13198300000000002,
+          "max": 0.16078
+        },
+        "row_sort": {
+          "min": 0.005919,
+          "median": 0.006367,
+          "max": 0.007423
+        },
+        "density_lambda_validation": {
+          "min": 0.186791,
+          "median": 0.2596635,
+          "max": 0.310296
+        },
+        "publication": {
+          "min": 0.010623,
+          "median": 0.010783,
+          "max": 0.01395
+        },
+        "correction": {
+          "min": 0.248639,
+          "median": 0.287547,
+          "max": 0.341139
+        },
+        "physical_density_check": {
+          "min": 0.01126,
+          "median": 0.011424,
+          "max": 0.012895
+        },
+        "candidate": {
+          "min": 0.010238,
+          "median": 0.0105905,
+          "max": 0.011966
+        },
+        "projection": {
+          "min": 0.01545,
+          "median": 0.0164445,
+          "max": 0.017213
+        },
+        "velocity": {
+          "min": 0.001983,
+          "median": 0.00208,
+          "max": 0.002336
+        },
+        "curl": {
+          "min": 0.022045,
+          "median": 0.029628,
+          "max": 0.035899
+        },
+        "confinement": {
+          "min": 0.02067,
+          "median": 0.027964,
+          "max": 0.033468
+        },
+        "velocity_replace": {
+          "min": 0.002495,
+          "median": 0.00256,
+          "max": 0.00288
+        },
+        "xsph": {
+          "min": 0.016925,
+          "median": 0.0215495,
+          "max": 0.02566
+        }
+      }
+    },
+    "8000-effects/candidate-diagnostic": {
+      "gpu_ms_per_step": {
+        "acceleration_cfl": 0.001806925,
+        "prediction_bounds": 0.002094725,
+        "cells": 0.0027526979166666663,
+        "spatial_sort": 0.042116668749999996,
+        "neighbor_count": 0.131296,
+        "prefix_block": 0.0017136104166666666,
+        "prefix_total": 0.00168903125,
+        "prefix_carry": 0.0012571937499999998,
+        "neighbor_fill": 0.13796184791666669,
+        "row_sort": 0.006723524999999999,
+        "density_lambda_validation": 0.26446923541666667,
+        "publication": 0.011464266666666667,
+        "correction": 0.3023285875,
+        "physical_density_check": 0.012107289583333333,
+        "candidate": 0.01112950625,
+        "projection": 0.016789,
+        "velocity": 0.0021859729166666666,
+        "curl": 0.029820297916666665,
+        "confinement": 0.027938016666666666,
+        "velocity_replace": 0.0026916520833333334,
+        "xsph": 0.022134935416666668
+      },
+      "launches_per_step": 70,
+      "api_counts": {
+        "cuCtxCreate_v4": 1,
+        "cuCtxDestroy_v2": 1,
+        "cuLaunchKernel": 33600,
+        "cuMemAlloc_v2": 16,
+        "cuMemFree_v2": 1,
+        "cuMemcpyDtoH_v2": 14880,
+        "cuMemcpyHtoD_v2": 3,
+        "cuMemsetD8Async": 1,
+        "cuModuleLoadData": 1,
+        "cuStreamCreate": 1,
+        "cuStreamSynchronize": 12480
+      },
+      "copies": [
+        [
+          1,
+          3,
+          192096
+        ],
+        [
+          2,
+          14880,
+          94337280
+        ]
+      ],
+      "downloads_per_step": 31,
+      "download_bytes_per_step": 196536,
+      "stream_syncs_per_step": 26,
+      "stage_step_ranges_ms": {
+        "acceleration_cfl": {
+          "min": 0.001666,
+          "median": 0.001762,
+          "max": 0.002211
+        },
+        "prediction_bounds": {
+          "min": 0.001922,
+          "median": 0.002019,
+          "max": 0.002275
+        },
+        "cells": {
+          "min": 0.002563,
+          "median": 0.002659,
+          "max": 0.003396
+        },
+        "spatial_sort": {
+          "min": 0.039054,
+          "median": 0.040654,
+          "max": 0.045141
+        },
+        "neighbor_count": {
+          "min": 0.108959,
+          "median": 0.129688,
+          "max": 0.156567
+        },
+        "prefix_block": {
+          "min": 0.00157,
+          "median": 0.001666,
+          "max": 0.001859
+        },
+        "prefix_total": {
+          "min": 0.001569,
+          "median": 0.001634,
+          "max": 0.001827
+        },
+        "prefix_carry": {
+          "min": 0.001153,
+          "median": 0.001218,
+          "max": 0.001346
+        },
+        "neighbor_fill": {
+          "min": 0.116039,
+          "median": 0.13627099999999998,
+          "max": 0.16118
+        },
+        "row_sort": {
+          "min": 0.006023,
+          "median": 0.006504,
+          "max": 0.008074
+        },
+        "density_lambda_validation": {
+          "min": 0.187002,
+          "median": 0.262418,
+          "max": 0.335047
+        },
+        "publication": {
+          "min": 0.010635,
+          "median": 0.0110375,
+          "max": 0.01224
+        },
+        "correction": {
+          "min": 0.248129,
+          "median": 0.2942655,
+          "max": 0.365356
+        },
+        "physical_density_check": {
+          "min": 0.011275,
+          "median": 0.011662,
+          "max": 0.01307
+        },
+        "candidate": {
+          "min": 0.010253,
+          "median": 0.010796,
+          "max": 0.011983
+        },
+        "projection": {
+          "min": 0.016178,
+          "median": 0.016786,
+          "max": 0.018102
+        },
+        "velocity": {
+          "min": 0.002018,
+          "median": 0.002115,
+          "max": 0.002371
+        },
+        "curl": {
+          "min": 0.022074,
+          "median": 0.030019,
+          "max": 0.038605
+        },
+        "confinement": {
+          "min": 0.020728,
+          "median": 0.028449,
+          "max": 0.036266
+        },
+        "velocity_replace": {
+          "min": 0.002498,
+          "median": 0.002596,
+          "max": 0.002884
+        },
+        "xsph": {
+          "min": 0.01698,
+          "median": 0.021881,
+          "max": 0.027713
+        }
+      }
+    },
+    "110592-effects/control": {
+      "gpu_ms_per_step": {
+        "acceleration_cfl": 0.003916060416666666,
+        "prediction_bounds": 0.006470866666666667,
+        "cells": 0.016183252083333332,
+        "spatial_sort": 0.21449048333333334,
+        "neighbor_count": 0.49514799375,
+        "prefix_block": 0.0035461125000000003,
+        "prefix_total": 0.0023389395833333334,
+        "prefix_carry": 0.001954479166666667,
+        "neighbor_fill": 0.5386008874999999,
+        "row_sort": 0.0723131625,
+        "density_lambda_validation": 1.78773038125,
+        "publication": 0.024055379166666665,
+        "correction": 1.5096653125,
+        "physical_density_check": 0.021169181250000002,
+        "candidate": 0.026140964583333336,
+        "projection": 0.0354399,
+        "velocity": 0.0037072604166666664,
+        "curl": 0.19948409166666667,
+        "confinement": 0.16369295,
+        "velocity_replace": 0.00577403125,
+        "xsph": 0.1945264729166667
+      },
+      "launches_per_step": 74,
+      "api_counts": {
+        "cuCtxCreate_v4": 1,
+        "cuCtxDestroy_v2": 1,
+        "cuLaunchKernel": 35520,
+        "cuMemAlloc_v2": 17,
+        "cuMemFree_v2": 2,
+        "cuMemcpyDtoH_v2": 14880,
+        "cuMemcpyHtoD_v2": 3,
+        "cuMemsetD8Async": 1,
+        "cuModuleLoadData": 1,
+        "cuStreamCreate": 1,
+        "cuStreamSynchronize": 12480
+      },
+      "copies": [
+        [
+          1,
+          3,
+          2654304
+        ],
+        [
+          2,
+          14880,
+          1300796160
+        ]
+      ],
+      "downloads_per_step": 31,
+      "download_bytes_per_step": 2709992,
+      "stream_syncs_per_step": 26,
+      "stage_step_ranges_ms": {
+        "acceleration_cfl": {
+          "min": 0.003782,
+          "median": 0.003879,
+          "max": 0.004713
+        },
+        "prediction_bounds": {
+          "min": 0.006251,
+          "median": 0.006412,
+          "max": 0.007501
+        },
+        "cells": {
+          "min": 0.015901,
+          "median": 0.016061,
+          "max": 0.018498
+        },
+        "spatial_sort": {
+          "min": 0.202735,
+          "median": 0.215559,
+          "max": 0.231044
+        },
+        "neighbor_count": {
+          "min": 0.406948,
+          "median": 0.478229,
+          "max": 0.638183
+        },
+        "prefix_block": {
+          "min": 0.003398,
+          "median": 0.003495,
+          "max": 0.004008
+        },
+        "prefix_total": {
+          "min": 0.002244,
+          "median": 0.002308,
+          "max": 0.002565
+        },
+        "prefix_carry": {
+          "min": 0.001859,
+          "median": 0.001924,
+          "max": 0.002276
+        },
+        "neighbor_fill": {
+          "min": 0.435575,
+          "median": 0.525996,
+          "max": 0.69685
+        },
+        "row_sort": {
+          "min": 0.057352,
+          "median": 0.07060849999999999,
+          "max": 0.087231
+        },
+        "density_lambda_validation": {
+          "min": 0.944053,
+          "median": 1.8324655,
+          "max": 2.693086
+        },
+        "publication": {
+          "min": 0.02337,
+          "median": 0.0238825,
+          "max": 0.026961
+        },
+        "correction": {
+          "min": 1.043751,
+          "median": 1.522141,
+          "max": 2.137836
+        },
+        "physical_density_check": {
+          "min": 0.020772,
+          "median": 0.020998,
+          "max": 0.024941
+        },
+        "candidate": {
+          "min": 0.025229,
+          "median": 0.025935,
+          "max": 0.02972
+        },
+        "projection": {
+          "min": 0.033596,
+          "median": 0.035713,
+          "max": 0.038597
+        },
+        "velocity": {
+          "min": 0.00327,
+          "median": 0.003558,
+          "max": 0.004681
+        },
+        "curl": {
+          "min": 0.098964,
+          "median": 0.2067115,
+          "max": 0.308849
+        },
+        "confinement": {
+          "min": 0.081716,
+          "median": 0.17314649999999998,
+          "max": 0.255376
+        },
+        "velocity_replace": {
+          "min": 0.005578,
+          "median": 0.005738,
+          "max": 0.006508
+        },
+        "xsph": {
+          "min": 0.09409,
+          "median": 0.20183849999999998,
+          "max": 0.306669
+        }
+      }
+    },
+    "110592-effects/candidate": {
+      "gpu_ms_per_step": {
+        "acceleration_cfl": 0.003927310416666666,
+        "prediction_bounds": 0.00647530625,
+        "cells": 0.01617375,
+        "spatial_sort": 0.21443509375,
+        "neighbor_count": 0.4954135333333333,
+        "prefix_block": 0.0035363687500000003,
+        "prefix_total": 0.002338347916666667,
+        "prefix_carry": 0.001959027083333333,
+        "neighbor_fill": 0.53845601875,
+        "row_sort": 0.07226458749999999,
+        "density_lambda_validation": 1.7838610458333335,
+        "publication": 0.02413368125,
+        "correction": 1.50841975,
+        "physical_density_check": 0.021247558333333333,
+        "candidate": 0.025908506249999998,
+        "projection": 0.03614734375,
+        "velocity": 0.0051929354166666665,
+        "curl": 0.19916152083333336,
+        "confinement": 0.16339908125,
+        "velocity_replace": 0.0057638604166666664,
+        "xsph": 0.19433938750000002
+      },
+      "launches_per_step": 74,
+      "api_counts": {
+        "cuCtxCreate_v4": 1,
+        "cuCtxDestroy_v2": 1,
+        "cuLaunchKernel": 35520,
+        "cuMemAlloc_v2": 17,
+        "cuMemFree_v2": 2,
+        "cuMemcpyDtoH_v2": 14880,
+        "cuMemcpyHtoD_v2": 3,
+        "cuMemsetD8Async": 1,
+        "cuModuleLoadData": 1,
+        "cuStreamCreate": 1,
+        "cuStreamSynchronize": 12480
+      },
+      "copies": [
+        [
+          1,
+          3,
+          2654304
+        ],
+        [
+          2,
+          14880,
+          1300803840
+        ]
+      ],
+      "downloads_per_step": 31,
+      "download_bytes_per_step": 2710008,
+      "stream_syncs_per_step": 26,
+      "stage_step_ranges_ms": {
+        "acceleration_cfl": {
+          "min": 0.003766,
+          "median": 0.003863,
+          "max": 0.004628
+        },
+        "prediction_bounds": {
+          "min": 0.006192,
+          "median": 0.006384,
+          "max": 0.007469
+        },
+        "cells": {
+          "min": 0.015831,
+          "median": 0.01599,
+          "max": 0.018353
+        },
+        "spatial_sort": {
+          "min": 0.203349,
+          "median": 0.21514250000000001,
+          "max": 0.230672
+        },
+        "neighbor_count": {
+          "min": 0.406347,
+          "median": 0.47738,
+          "max": 0.647454
+        },
+        "prefix_block": {
+          "min": 0.003383,
+          "median": 0.003479,
+          "max": 0.00399
+        },
+        "prefix_total": {
+          "min": 0.002266,
+          "median": 0.002298,
+          "max": 0.002586
+        },
+        "prefix_carry": {
+          "min": 0.001883,
+          "median": 0.001947,
+          "max": 0.002299
+        },
+        "neighbor_fill": {
+          "min": 0.438296,
+          "median": 0.5258635,
+          "max": 0.690161
+        },
+        "row_sort": {
+          "min": 0.057356,
+          "median": 0.070459,
+          "max": 0.086849
+        },
+        "density_lambda_validation": {
+          "min": 0.95993,
+          "median": 1.82687,
+          "max": 2.683435
+        },
+        "publication": {
+          "min": 0.02343,
+          "median": 0.023873,
+          "max": 0.026939
+        },
+        "correction": {
+          "min": 1.046748,
+          "median": 1.5214955,
+          "max": 2.122731
+        },
+        "physical_density_check": {
+          "min": 0.020779,
+          "median": 0.021001,
+          "max": 0.023715
+        },
+        "candidate": {
+          "min": 0.024992,
+          "median": 0.0256295,
+          "max": 0.029139
+        },
+        "projection": {
+          "min": 0.034152,
+          "median": 0.036355,
+          "max": 0.039068
+        },
+        "velocity": {
+          "min": 0.004723,
+          "median": 0.005202,
+          "max": 0.005969
+        },
+        "curl": {
+          "min": 0.100733,
+          "median": 0.20668399999999998,
+          "max": 0.313465
+        },
+        "confinement": {
+          "min": 0.082252,
+          "median": 0.172404,
+          "max": 0.254641
+        },
+        "velocity_replace": {
+          "min": 0.005522,
+          "median": 0.005682,
+          "max": 0.006608
+        },
+        "xsph": {
+          "min": 0.095434,
+          "median": 0.201705,
+          "max": 0.304625
+        }
+      }
+    },
+    "110592-effects/candidate-diagnostic": {
+      "gpu_ms_per_step": {
+        "acceleration_cfl": 0.003920889583333333,
+        "prediction_bounds": 0.00646113125,
+        "cells": 0.016147791666666664,
+        "spatial_sort": 0.21414779375,
+        "neighbor_count": 0.4945631,
+        "prefix_block": 0.003527266666666667,
+        "prefix_total": 0.00233193125,
+        "prefix_carry": 0.0019501791666666666,
+        "neighbor_fill": 0.5372290291666667,
+        "row_sort": 0.07218995,
+        "density_lambda_validation": 1.7823141999999998,
+        "publication": 0.024096985416666668,
+        "correction": 1.50594134375,
+        "physical_density_check": 0.021198360416666666,
+        "candidate": 0.025899818749999998,
+        "projection": 0.03610792291666667,
+        "velocity": 0.005182079166666667,
+        "curl": 0.19920810416666665,
+        "confinement": 0.16335838958333335,
+        "velocity_replace": 0.00576406875,
+        "xsph": 0.19437748958333334
+      },
+      "launches_per_step": 74,
+      "api_counts": {
+        "cuCtxCreate_v4": 1,
+        "cuCtxDestroy_v2": 1,
+        "cuLaunchKernel": 35520,
+        "cuMemAlloc_v2": 17,
+        "cuMemFree_v2": 2,
+        "cuMemcpyDtoH_v2": 14880,
+        "cuMemcpyHtoD_v2": 3,
+        "cuMemsetD8Async": 1,
+        "cuModuleLoadData": 1,
+        "cuStreamCreate": 1,
+        "cuStreamSynchronize": 12480
+      },
+      "copies": [
+        [
+          1,
+          3,
+          2654304
+        ],
+        [
+          2,
+          14880,
+          1300803840
+        ]
+      ],
+      "downloads_per_step": 31,
+      "download_bytes_per_step": 2710008,
+      "stream_syncs_per_step": 26,
+      "stage_step_ranges_ms": {
+        "acceleration_cfl": {
+          "min": 0.00378,
+          "median": 0.003877,
+          "max": 0.004741
+        },
+        "prediction_bounds": {
+          "min": 0.006279,
+          "median": 0.006407,
+          "max": 0.007464
+        },
+        "cells": {
+          "min": 0.015921,
+          "median": 0.016018,
+          "max": 0.018645
+        },
+        "spatial_sort": {
+          "min": 0.203587,
+          "median": 0.2144145,
+          "max": 0.231009
+        },
+        "neighbor_count": {
+          "min": 0.408423,
+          "median": 0.478998,
+          "max": 0.642348
+        },
+        "prefix_block": {
+          "min": 0.003396,
+          "median": 0.003492,
+          "max": 0.004004
+        },
+        "prefix_total": {
+          "min": 0.002242,
+          "median": 0.002307,
+          "max": 0.002595
+        },
+        "prefix_carry": {
+          "min": 0.001858,
+          "median": 0.001922,
+          "max": 0.002243
+        },
+        "neighbor_fill": {
+          "min": 0.434565,
+          "median": 0.5271955,
+          "max": 0.685084
+        },
+        "row_sort": {
+          "min": 0.05744,
+          "median": 0.07065450000000001,
+          "max": 0.087041
+        },
+        "density_lambda_validation": {
+          "min": 0.947166,
+          "median": 1.829368,
+          "max": 2.675272
+        },
+        "publication": {
+          "min": 0.023449,
+          "median": 0.023931,
+          "max": 0.026973
+        },
+        "correction": {
+          "min": 1.043723,
+          "median": 1.5238114999999999,
+          "max": 2.12195
+        },
+        "physical_density_check": {
+          "min": 0.020822,
+          "median": 0.021016,
+          "max": 0.023774
+        },
+        "candidate": {
+          "min": 0.025081,
+          "median": 0.025724,
+          "max": 0.029472
+        },
+        "projection": {
+          "min": 0.034309,
+          "median": 0.036408499999999996,
+          "max": 0.039244
+        },
+        "velocity": {
+          "min": 0.004741,
+          "median": 0.005158,
+          "max": 0.005927
+        },
+        "curl": {
+          "min": 0.099343,
+          "median": 0.20730300000000002,
+          "max": 0.311387
+        },
+        "confinement": {
+          "min": 0.081659,
+          "median": 0.172544,
+          "max": 0.257599
+        },
+        "velocity_replace": {
+          "min": 0.005542,
+          "median": 0.005734,
+          "max": 0.006663
+        },
+        "xsph": {
+          "min": 0.093673,
+          "median": 0.202001,
+          "max": 0.305845
+        }
+      }
+    }
+  },
+  "other_process_integrity": {
+    "baseline": {
+      "successful_processes": 28,
+      "failed_processes": []
+    },
+    "profiles": {
+      "successful_processes": 58,
+      "failed_processes": [
+        "profiles/trace/8000/diagnostic"
+      ]
+    },
+    "trial-results": {
+      "successful_processes": 22,
+      "failed_processes": []
+    },
+    "final-profiles": {
+      "successful_processes": 24,
+      "failed_processes": []
+    }
+  }
+}

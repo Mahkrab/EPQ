@@ -1,0 +1,41 @@
+{
+  "scope": "Complete CUDA solver profiling after eight retained optimisations, followed by one deferred containment candidate",
+  "baseline_files": 189,
+  "candidate_files": 190,
+  "head_epq": "1f76097a218266822cdf344c38db75ed128628a8",
+  "head_maelstrom": "1e0085926d05c42949bb76b55d177d42a1f8f94f",
+  "history_gitlinks_and_ordinary_pc_checkout_changed": false,
+  "all_performance_runs_start_new_simulations": true,
+  "no_driver_restart_reboot_or_clock_policy_change": true,
+  "registry_configuration": {
+    "three_originally_absent_values": [
+      {"key": "HKLM\\SOFTWARE\\NVIDIA Corporation\\GPUDebugger", "name": "EnableInterface", "after": 1},
+      {"key": "HKLM\\SYSTEM\\CurrentControlSet\\Services\\nvlddmkm", "name": "EnableDebugInterface", "after": 1},
+      {"key": "HKLM\\SYSTEM\\CurrentControlSet\\Services\\nvlddmkm\\Global\\NVTweak", "name": "RmProfilingAdminOnly", "after": 0}
+    ],
+    "incident": "An erroneous New-Item -Force command removed seven existing driver registry branches. Work stopped. Deleted data were recovered from the saved live hive, independently matched to the existing shadow backup, restored and verified before baseline collection. Registry hives, raw values and shadow copies are private scratch and excluded from retained evidence.",
+    "restored_keys": 233,
+    "restored_values": 501,
+    "restored_acl_and_raw_type_value_verification": true,
+    "recovery_hive_unloaded": true,
+    "temporary_owned_gui_process_and_scheduled_task_removed": true,
+    "rollback": "rollback-profiling-settings.ps1 removes only the three previously absent profiling values; installed profiling tools remain available"
+  },
+  "gpu_counters": "ERR_NVGPUCTRPERM persists for ordinary and WSL root invocation. No achieved occupancy, cache, bandwidth or memory-stall counters obtained. Driver restart was not performed.",
+  "device_leak_check": "Full leak checking reports live allocations at private-context destruction in both builds, reflecting the existing context-owned teardown policy. The 32-context public failure fixture reports 480 allocations in each build; candidate adds exactly 1024 requested bytes. Access checking without leak classification reports zero errors; race/sync/init checking of the new path also passes.",
+  "qualification_failures": [
+    "Initial CLI suite inherited an unrelated malformed installed scene; isolated configuration/scene/run directories pass the full suite without changing the installed scene.",
+    "New test draft failed to compile because StepError is not PartialEq and [u32;3] is not a Transfer type. Fixed test assertions and flattened bit downloads; no production contract changed.",
+    "Initial native fault-injection fixture retained 12-byte velocity capacities. Updated its setup for the new 16-byte trailer and reran both sanitized native builds successfully. Prequalification manifest and patch retained."
+  ],
+  "collector_bookkeeping": [
+    "Initial profile extraction used wrong SQL placeholder counts; corrected extraction reused existing completed raw captures.",
+    "Unsupported --sampling-frequency option was rejected before the diagnostic application ran; retained failed process, used supported --sampling-period=1000000 for subsequent captures.",
+    "Final trace extractor initially assumed CUPTI_ACTIVITY_KIND_DRIVER; corrected schema fallback reused the completed first trace.",
+    "CPU sample exporter was stopped and improved to bucket NVTX ranges by step; no solver measurement was repeated or replaced.",
+    "Independent reader corrected output schema lookup from nonexistent diagnostics to ordered steps; final reader checks 146 solver records across all campaigns."
+  ],
+  "trial_qualification_overlay": "After exploratory collection and source recheck, two new tests were run in a separate source overlay; the original trial export was restored and reverified, and overlay manifest/patch retained. Untouched CLI PTX equals final candidate PTX.",
+  "platform_microbenchmark": "Two separate same-source campaigns are retained. The second adds explicit compiler command/version receipts; report its own one-warm-up/five-pair samples, without pooling campaigns or extrapolating to full Windows solver performance.",
+  "profile_uncertainty": "Single full-trajectory traces explain stage costs; broad unchanged-kernel timing shifts and CPU/driver jitter are retained, not causal speedup claims. GPU-time and API/wait overlaps are removed only by interval partitioning, not added. Queue metrics overlap wall categories."
+}

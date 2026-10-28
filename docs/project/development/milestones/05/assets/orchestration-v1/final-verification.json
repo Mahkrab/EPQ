@@ -1,0 +1,65 @@
+{
+  "heads": {
+    "epq": "1f76097a218266822cdf344c38db75ed128628a8",
+    "maelstrom": "1e0085926d05c42949bb76b55d177d42a1f8f94f"
+  },
+  "parent_gitlink_unchanged": true,
+  "live_candidate_file_count": 191,
+  "live_candidate_matches_tested_export": true,
+  "control_matches_ninth_retained_candidate": true,
+  "delta_files": [
+    "docs/cuda.md",
+    "native/bridge.cpp",
+    "native/solver.cu",
+    "native/solver.h",
+    "native/state_observation.cuh",
+    "native/tests.cpp",
+    "src/cuda/mirror_tests.rs",
+    "src/cuda/solver.rs"
+  ],
+  "qualification": {
+    "release-suite": {
+      "passed": 292,
+      "failed": 0,
+      "ignored": 40
+    },
+    "hardware-components": {
+      "passed": 34,
+      "failed": 0,
+      "ignored": 0
+    },
+    "cuda_boundary": {
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    "cuda_execution": {
+      "passed": 7,
+      "failed": 0,
+      "ignored": 0
+    },
+    "sanitizer-memcheck": {
+      "exit": 0
+    },
+    "sanitizer-racecheck": {
+      "exit": 0
+    },
+    "sanitizer-synccheck": {
+      "exit": 0
+    },
+    "sanitizer-initcheck": {
+      "exit": 0
+    }
+  },
+  "local_cpu_tests_passed": 290,
+  "archive_members_verified": 1005,
+  "source_exports_reconstructed": 5,
+  "independent_audit_regenerated_exactly": true,
+  "solver_outputs_exact": 182,
+  "final_primary_and_regression_outputs": 62,
+  "primary_pairs_faster": 20,
+  "links_checked": 8,
+  "diff_checks_pass": true,
+  "no_staged_changes": true,
+  "no_history_or_remote_actions": true
+}

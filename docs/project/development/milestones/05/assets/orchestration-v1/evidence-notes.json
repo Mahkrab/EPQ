@@ -1,0 +1,27 @@
+{
+  "scope": "GPU idle time and host-side orchestration after nine retained CUDA optimisations",
+  "control_files": 190,
+  "candidate_files": 191,
+  "heads_unchanged": {"epq":"1f76097a218266822cdf344c38db75ed128628a8","maelstrom":"1e0085926d05c42949bb76b55d177d42a1f8f94f"},
+  "control_matches_previous_full_solver_candidate": true,
+  "no_commits_branches_tags_pushes_or_gitlink_changes": true,
+  "environment": {
+    "no_system_wide_driver_registry_or_security_changes": true,
+    "no_software_installation_reconfiguration_driver_reset_or_reboot": true,
+    "scope": "Task-owned source/build/input/trace/evidence files, per-process environment and instrumentation, ordinary context-owned CUDA allocations. Normal compiler and NVIDIA JIT caches may be populated; no cache policy changed."
+  },
+  "selection": "Fresh retained-build captures reproduce 1.621 ms/step GPU-idle wait/readback time at 110592 particles. Pinning/reordering/graph-copy prototypes show no convincing benefit; only mapped error observations proceed to production qualification and primary benchmarking.",
+  "recording_failures": [
+    "Graph diagnostic collector initially expected 288 records instead of 168 after a textual replacement. Completed raw output/exit/hash were retained and reused by the corrected reader; no diagnostic sample was rerun or replaced.",
+    "Initial mapped diagnostic C++ draft failed -Werror=misleading-indentation before any GPU measurement. Braces were fixed; its failed compiler output and the separate successful mirror-micro2 campaign are retained."
+  ],
+  "graph_trace_limit": "Default Nsight graph granularity omits graph-node kernel/copy activity. The micro API reader reports those GPU durations as unavailable, not zero. Graph decisions use ordinary wall measurements, not missing node timings.",
+  "all_api_followup": "Default CUDA tracing omits context binding. Four separate 16-step --cuda-trace-all-apis captures and an unprofiled binding probe quantify it; no full-trajectory performance claim is drawn from those short captures.",
+  "error_handling": "Removed diagnostic copy commands no longer have their own download-failure point. Remaining launch/completion/binding/data-copy failures retain precedence and poisoning. Native tests show an unused download fault does not affect mapped observation while a real subsequent data-copy fault still fails and poisons; private dirty mapped words never publish after failed completion or context-pop.",
+  "resource_lifetime": "Device packet gains8bytes for a mapped address; cuMemAllocHost requests32privatecontext-ownedbytes. cuCtxDestroy owns cleanup including uncertain completion. No borrowed host pointer is queued. Pin/page allocation granularity and real device-loss recovery are not qualified.",
+  "mapped_atomic_scope": "GPU threads alone reduce mapped minima; CPU accesses follow stream completion and do not compete. HostNativeAtomicSupported=0 is not CPU/GPU atomic interoperability support and is not relied upon. 1920 independent contention/reset/size cases pass per mapped probe run.",
+  "transfer_accounting": "Explicit CUDA copies only. Normal candidate steps remove21 diagnostic DtoH commands, or26 with effects; five data copies remain. Error-only mapped traffic is not a memcpy event and its bus transaction volume is unmeasured. One additional8byteHtoD setup upload is issued per context.",
+  "measurement_boundaries": "All 480 accepted-step work is timed; construction/teardown, requested checkpoint copies, JSON output and evidence audits/storage are separate. Child wall and construction/teardown medians are retained. Full-trajectory, short all-API, micro, perf and primary campaigns remain separate.",
+  "profiling_overlap": "GPU/API/host interval unions avoid double counting. Post-submission idle and queued latency overlap wall categories and are never added. Idle means absence of this solver's device activities, not measured device-wide inactivity.",
+  "remaining_limits": "GPU hardware counters remain permission-blocked. Existing permissions/settings were left untouched. Static resource attributes, WSL CPU counters and timelines do not establish achieved occupancy, GPU cache hits or in-kernel memory stalls."
+}

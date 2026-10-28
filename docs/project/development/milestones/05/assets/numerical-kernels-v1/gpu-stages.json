@@ -1,0 +1,426 @@
+{
+  "8000/control": {
+    "gpu_ms_per_step": {
+      "acceleration_cfl": 0.0017676979166666668,
+      "prediction_bounds": 0.0020300708333333335,
+      "cells": 0.0031611958333333332,
+      "spatial_sort": 0.04092917708333334,
+      "neighbor_count": 0.13063169166666666,
+      "prefix_block": 0.0016949729166666665,
+      "prefix_total": 0.0016254270833333333,
+      "prefix_carry": 0.00121705,
+      "neighbor_fill": 0.13720017916666666,
+      "row_sort": 0.0064737625,
+      "density_lambda_validation": 0.25635013125,
+      "publication": 0.011060385416666665,
+      "correction": 0.29259047708333336,
+      "physical_density_check": 0.011742766666666666,
+      "candidate": 0.01094739375,
+      "projection": 0.016168570833333333,
+      "velocity": 0.0020936541666666665
+    },
+    "launches_per_step": 65,
+    "stream_waits_per_step": 21,
+    "downloads_per_step": 5,
+    "download_bytes_per_step": 196056,
+    "all_copies": [
+      [
+        1,
+        4,
+        192104
+      ],
+      [
+        2,
+        2400,
+        94106880
+      ]
+    ],
+    "api_counts": {
+      "cuCtxCreate_v4": 1,
+      "cuCtxDestroy_v2": 1,
+      "cuLaunchKernel": 31200,
+      "cuMemAllocHost_v2": 1,
+      "cuMemAlloc_v2": 16,
+      "cuMemFree_v2": 1,
+      "cuMemcpyDtoH_v2": 2400,
+      "cuMemcpyHtoD_v2": 4,
+      "cuMemsetD8Async": 1,
+      "cuModuleLoadData": 1,
+      "cuStreamCreate": 1,
+      "cuStreamSynchronize": 10080
+    }
+  },
+  "8000/candidate": {
+    "gpu_ms_per_step": {
+      "acceleration_cfl": 0.0017648833333333335,
+      "prediction_bounds": 0.002029770833333333,
+      "cells": 0.0031333333333333335,
+      "spatial_sort": 0.04082646875,
+      "neighbor_count": 0.13093276875,
+      "prefix_block": 0.001665575,
+      "prefix_total": 0.00162874375,
+      "prefix_carry": 0.0012132083333333333,
+      "neighbor_fill": 0.13759456875,
+      "row_sort": 0.006485193750000001,
+      "density_lambda_validation": 0.2387431,
+      "publication": 0.01104061875,
+      "correction": 0.2739465020833333,
+      "physical_density_check": 0.011766197916666665,
+      "candidate": 0.010791697916666666,
+      "projection": 0.0160835,
+      "velocity": 0.00213380625
+    },
+    "launches_per_step": 65,
+    "stream_waits_per_step": 21,
+    "downloads_per_step": 5,
+    "download_bytes_per_step": 196056,
+    "all_copies": [
+      [
+        1,
+        4,
+        192104
+      ],
+      [
+        2,
+        2400,
+        94106880
+      ]
+    ],
+    "api_counts": {
+      "cuCtxCreate_v4": 1,
+      "cuCtxDestroy_v2": 1,
+      "cuLaunchKernel": 31200,
+      "cuMemAllocHost_v2": 1,
+      "cuMemAlloc_v2": 16,
+      "cuMemFree_v2": 1,
+      "cuMemcpyDtoH_v2": 2400,
+      "cuMemcpyHtoD_v2": 4,
+      "cuMemsetD8Async": 1,
+      "cuModuleLoadData": 1,
+      "cuStreamCreate": 1,
+      "cuStreamSynchronize": 10080
+    }
+  },
+  "110592/control": {
+    "gpu_ms_per_step": {
+      "acceleration_cfl": 0.003944385416666666,
+      "prediction_bounds": 0.006480741666666667,
+      "cells": 0.017660289583333336,
+      "spatial_sort": 0.2142792875,
+      "neighbor_count": 0.5094379833333333,
+      "prefix_block": 0.0034859895833333336,
+      "prefix_total": 0.002286358333333333,
+      "prefix_carry": 0.0019477145833333334,
+      "neighbor_fill": 0.55298906875,
+      "row_sort": 0.07469564791666666,
+      "density_lambda_validation": 1.8078886583333333,
+      "publication": 0.023967997916666667,
+      "correction": 1.5493724645833333,
+      "physical_density_check": 0.021203258333333336,
+      "candidate": 0.02529405208333333,
+      "projection": 0.035238824999999994,
+      "velocity": 0.005024320833333333
+    },
+    "launches_per_step": 69,
+    "stream_waits_per_step": 21,
+    "downloads_per_step": 5,
+    "download_bytes_per_step": 2709528,
+    "all_copies": [
+      [
+        1,
+        4,
+        2654312
+      ],
+      [
+        2,
+        2400,
+        1300573440
+      ]
+    ],
+    "api_counts": {
+      "cuCtxCreate_v4": 1,
+      "cuCtxDestroy_v2": 1,
+      "cuLaunchKernel": 33120,
+      "cuMemAllocHost_v2": 1,
+      "cuMemAlloc_v2": 17,
+      "cuMemFree_v2": 2,
+      "cuMemcpyDtoH_v2": 2400,
+      "cuMemcpyHtoD_v2": 4,
+      "cuMemsetD8Async": 1,
+      "cuModuleLoadData": 1,
+      "cuStreamCreate": 1,
+      "cuStreamSynchronize": 10080
+    }
+  },
+  "110592/candidate": {
+    "gpu_ms_per_step": {
+      "acceleration_cfl": 0.0038882854166666665,
+      "prediction_bounds": 0.006444720833333334,
+      "cells": 0.01765681041666667,
+      "spatial_sort": 0.21458673958333335,
+      "neighbor_count": 0.5031075875000001,
+      "prefix_block": 0.0034721791666666667,
+      "prefix_total": 0.0023006437500000003,
+      "prefix_carry": 0.0019275,
+      "neighbor_fill": 0.5483832458333333,
+      "row_sort": 0.07227185625,
+      "density_lambda_validation": 1.7853425166666665,
+      "publication": 0.023689239583333334,
+      "correction": 1.4997395416666668,
+      "physical_density_check": 0.021165258333333336,
+      "candidate": 0.025759864583333333,
+      "projection": 0.03567015208333334,
+      "velocity": 0.0049757625
+    },
+    "launches_per_step": 69,
+    "stream_waits_per_step": 21,
+    "downloads_per_step": 5,
+    "download_bytes_per_step": 2709528,
+    "all_copies": [
+      [
+        1,
+        4,
+        2654312
+      ],
+      [
+        2,
+        2400,
+        1300573440
+      ]
+    ],
+    "api_counts": {
+      "cuCtxCreate_v4": 1,
+      "cuCtxDestroy_v2": 1,
+      "cuLaunchKernel": 33120,
+      "cuMemAllocHost_v2": 1,
+      "cuMemAlloc_v2": 17,
+      "cuMemFree_v2": 2,
+      "cuMemcpyDtoH_v2": 2400,
+      "cuMemcpyHtoD_v2": 4,
+      "cuMemsetD8Async": 1,
+      "cuModuleLoadData": 1,
+      "cuStreamCreate": 1,
+      "cuStreamSynchronize": 10080
+    }
+  },
+  "8000-effects/control": {
+    "gpu_ms_per_step": {
+      "acceleration_cfl": 0.0018814937500000002,
+      "prediction_bounds": 0.002128375,
+      "cells": 0.0028013395833333334,
+      "spatial_sort": 0.04283695,
+      "neighbor_count": 0.13384332083333333,
+      "prefix_block": 0.0017744166666666668,
+      "prefix_total": 0.001686175,
+      "prefix_carry": 0.00127039375,
+      "neighbor_fill": 0.140678575,
+      "row_sort": 0.006866214583333334,
+      "density_lambda_validation": 0.26965473333333334,
+      "publication": 0.011536272916666666,
+      "correction": 0.30812317083333335,
+      "physical_density_check": 0.012298639583333333,
+      "candidate": 0.011252933333333333,
+      "projection": 0.01709021875,
+      "velocity": 0.00220853125,
+      "curl": 0.030319672916666665,
+      "confinement": 0.028407302083333332,
+      "velocity_replace": 0.0027117083333333333,
+      "xsph": 0.0225509625
+    },
+    "launches_per_step": 70,
+    "stream_waits_per_step": 26,
+    "downloads_per_step": 5,
+    "download_bytes_per_step": 196056,
+    "all_copies": [
+      [
+        1,
+        4,
+        192104
+      ],
+      [
+        2,
+        2400,
+        94106880
+      ]
+    ],
+    "api_counts": {
+      "cuCtxCreate_v4": 1,
+      "cuCtxDestroy_v2": 1,
+      "cuLaunchKernel": 33600,
+      "cuMemAllocHost_v2": 1,
+      "cuMemAlloc_v2": 16,
+      "cuMemFree_v2": 1,
+      "cuMemcpyDtoH_v2": 2400,
+      "cuMemcpyHtoD_v2": 4,
+      "cuMemsetD8Async": 1,
+      "cuModuleLoadData": 1,
+      "cuStreamCreate": 1,
+      "cuStreamSynchronize": 12480
+    }
+  },
+  "8000-effects/candidate": {
+    "gpu_ms_per_step": {
+      "acceleration_cfl": 0.00172695625,
+      "prediction_bounds": 0.001988689583333333,
+      "cells": 0.0026189812499999997,
+      "spatial_sort": 0.040047054166666665,
+      "neighbor_count": 0.12518864999999998,
+      "prefix_block": 0.00165698125,
+      "prefix_total": 0.0015970229166666666,
+      "prefix_carry": 0.0011879979166666667,
+      "neighbor_fill": 0.13156376250000001,
+      "row_sort": 0.006340614583333333,
+      "density_lambda_validation": 0.23375887708333332,
+      "publication": 0.010770633333333333,
+      "correction": 0.2685934395833333,
+      "physical_density_check": 0.011514829166666666,
+      "candidate": 0.010504758333333333,
+      "projection": 0.0159474125,
+      "velocity": 0.0020635875,
+      "curl": 0.028346502083333332,
+      "confinement": 0.026589366666666666,
+      "velocity_replace": 0.0025319916666666667,
+      "xsph": 0.02103129375
+    },
+    "launches_per_step": 70,
+    "stream_waits_per_step": 26,
+    "downloads_per_step": 5,
+    "download_bytes_per_step": 196056,
+    "all_copies": [
+      [
+        1,
+        4,
+        192104
+      ],
+      [
+        2,
+        2400,
+        94106880
+      ]
+    ],
+    "api_counts": {
+      "cuCtxCreate_v4": 1,
+      "cuCtxDestroy_v2": 1,
+      "cuLaunchKernel": 33600,
+      "cuMemAllocHost_v2": 1,
+      "cuMemAlloc_v2": 16,
+      "cuMemFree_v2": 1,
+      "cuMemcpyDtoH_v2": 2400,
+      "cuMemcpyHtoD_v2": 4,
+      "cuMemsetD8Async": 1,
+      "cuModuleLoadData": 1,
+      "cuStreamCreate": 1,
+      "cuStreamSynchronize": 12480
+    }
+  },
+  "110592-effects/control": {
+    "gpu_ms_per_step": {
+      "acceleration_cfl": 0.0039390833333333335,
+      "prediction_bounds": 0.006431052083333333,
+      "cells": 0.016111427083333334,
+      "spatial_sort": 0.21378035,
+      "neighbor_count": 0.49583328541666666,
+      "prefix_block": 0.0035183104166666666,
+      "prefix_total": 0.0022902854166666664,
+      "prefix_carry": 0.0019222625,
+      "neighbor_fill": 0.538200525,
+      "row_sort": 0.07244489583333333,
+      "density_lambda_validation": 1.7837704125,
+      "publication": 0.023619910416666667,
+      "correction": 1.5080303583333334,
+      "physical_density_check": 0.021106614583333332,
+      "candidate": 0.025661239583333332,
+      "projection": 0.03561136458333333,
+      "velocity": 0.00496315625,
+      "curl": 0.19834516666666666,
+      "confinement": 0.1628973145833333,
+      "velocity_replace": 0.005694733333333334,
+      "xsph": 0.19332735833333334
+    },
+    "launches_per_step": 74,
+    "stream_waits_per_step": 26,
+    "downloads_per_step": 5,
+    "download_bytes_per_step": 2709528,
+    "all_copies": [
+      [
+        1,
+        4,
+        2654312
+      ],
+      [
+        2,
+        2400,
+        1300573440
+      ]
+    ],
+    "api_counts": {
+      "cuCtxCreate_v4": 1,
+      "cuCtxDestroy_v2": 1,
+      "cuLaunchKernel": 35520,
+      "cuMemAllocHost_v2": 1,
+      "cuMemAlloc_v2": 17,
+      "cuMemFree_v2": 2,
+      "cuMemcpyDtoH_v2": 2400,
+      "cuMemcpyHtoD_v2": 4,
+      "cuMemsetD8Async": 1,
+      "cuModuleLoadData": 1,
+      "cuStreamCreate": 1,
+      "cuStreamSynchronize": 12480
+    }
+  },
+  "110592-effects/candidate": {
+    "gpu_ms_per_step": {
+      "acceleration_cfl": 0.0039286375,
+      "prediction_bounds": 0.006480935416666667,
+      "cells": 0.01628655625,
+      "spatial_sort": 0.2153079,
+      "neighbor_count": 0.49826836666666663,
+      "prefix_block": 0.003541679166666667,
+      "prefix_total": 0.0023126312499999998,
+      "prefix_carry": 0.0019356145833333332,
+      "neighbor_fill": 0.5423895875,
+      "row_sort": 0.0725698625,
+      "density_lambda_validation": 1.7656300270833334,
+      "publication": 0.023826141666666665,
+      "correction": 1.4811426541666666,
+      "physical_density_check": 0.021277977083333337,
+      "candidate": 0.025895818749999997,
+      "projection": 0.03590800833333333,
+      "velocity": 0.005000783333333334,
+      "curl": 0.19948217916666666,
+      "confinement": 0.16402724791666667,
+      "velocity_replace": 0.005741927083333333,
+      "xsph": 0.19452557083333333
+    },
+    "launches_per_step": 74,
+    "stream_waits_per_step": 26,
+    "downloads_per_step": 5,
+    "download_bytes_per_step": 2709528,
+    "all_copies": [
+      [
+        1,
+        4,
+        2654312
+      ],
+      [
+        2,
+        2400,
+        1300573440
+      ]
+    ],
+    "api_counts": {
+      "cuCtxCreate_v4": 1,
+      "cuCtxDestroy_v2": 1,
+      "cuLaunchKernel": 35520,
+      "cuMemAllocHost_v2": 1,
+      "cuMemAlloc_v2": 17,
+      "cuMemFree_v2": 2,
+      "cuMemcpyDtoH_v2": 2400,
+      "cuMemcpyHtoD_v2": 4,
+      "cuMemsetD8Async": 1,
+      "cuModuleLoadData": 1,
+      "cuStreamCreate": 1,
+      "cuStreamSynchronize": 12480
+    }
+  }
+}

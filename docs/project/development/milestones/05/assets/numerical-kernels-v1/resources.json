@@ -1,0 +1,875 @@
+[
+  {
+    "variant": "control",
+    "resources": {
+      "scope": "driver-loaded function resources, not achieved occupancy",
+      "functions": [
+        {
+          "name": "solver",
+          "registers": 52,
+          "local_bytes": 0,
+          "shared_bytes": 0,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 18
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 9
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 4
+            }
+          ]
+        },
+        {
+          "name": "spatial_sort",
+          "registers": 28,
+          "local_bytes": 0,
+          "shared_bytes": 8208,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        },
+        {
+          "name": "observe_state",
+          "registers": 26,
+          "local_bytes": 0,
+          "shared_bytes": 8192,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        },
+        {
+          "name": "prefix_counts",
+          "registers": 36,
+          "local_bytes": 0,
+          "shared_bytes": 2048,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 12
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        }
+      ]
+    },
+    "probe_sha256": "6b9baad995493930e83a28d514ae3621a2883d6ad31c068a6b5ca8e763dc0bb7"
+  },
+  {
+    "variant": "trial-0",
+    "resources": {
+      "scope": "driver-loaded function resources, not achieved occupancy",
+      "functions": [
+        {
+          "name": "solver",
+          "registers": 52,
+          "local_bytes": 0,
+          "shared_bytes": 0,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 18
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 9
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 4
+            }
+          ]
+        },
+        {
+          "name": "spatial_sort",
+          "registers": 28,
+          "local_bytes": 0,
+          "shared_bytes": 8208,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        },
+        {
+          "name": "observe_state",
+          "registers": 26,
+          "local_bytes": 0,
+          "shared_bytes": 8192,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        },
+        {
+          "name": "prefix_counts",
+          "registers": 36,
+          "local_bytes": 0,
+          "shared_bytes": 2048,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 12
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        }
+      ]
+    },
+    "probe_sha256": "6b9baad995493930e83a28d514ae3621a2883d6ad31c068a6b5ca8e763dc0bb7"
+  },
+  {
+    "variant": "trial-1",
+    "resources": {
+      "scope": "driver-loaded function resources, not achieved occupancy",
+      "functions": [
+        {
+          "name": "solver",
+          "registers": 52,
+          "local_bytes": 0,
+          "shared_bytes": 0,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 18
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 9
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 4
+            }
+          ]
+        },
+        {
+          "name": "spatial_sort",
+          "registers": 28,
+          "local_bytes": 0,
+          "shared_bytes": 8208,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        },
+        {
+          "name": "observe_state",
+          "registers": 26,
+          "local_bytes": 0,
+          "shared_bytes": 8192,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        },
+        {
+          "name": "prefix_counts",
+          "registers": 36,
+          "local_bytes": 0,
+          "shared_bytes": 2048,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 12
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        }
+      ]
+    },
+    "probe_sha256": "6b9baad995493930e83a28d514ae3621a2883d6ad31c068a6b5ca8e763dc0bb7"
+  },
+  {
+    "variant": "trial-2",
+    "resources": {
+      "scope": "driver-loaded function resources, not achieved occupancy",
+      "functions": [
+        {
+          "name": "solver",
+          "registers": 52,
+          "local_bytes": 0,
+          "shared_bytes": 0,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 18
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 9
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 4
+            }
+          ]
+        },
+        {
+          "name": "spatial_sort",
+          "registers": 28,
+          "local_bytes": 0,
+          "shared_bytes": 8208,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        },
+        {
+          "name": "observe_state",
+          "registers": 26,
+          "local_bytes": 0,
+          "shared_bytes": 8192,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        },
+        {
+          "name": "prefix_counts",
+          "registers": 36,
+          "local_bytes": 0,
+          "shared_bytes": 2048,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 12
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        }
+      ]
+    },
+    "probe_sha256": "6b9baad995493930e83a28d514ae3621a2883d6ad31c068a6b5ca8e763dc0bb7"
+  },
+  {
+    "variant": "trial-3",
+    "resources": {
+      "scope": "driver-loaded function resources, not achieved occupancy",
+      "functions": [
+        {
+          "name": "solver",
+          "registers": 52,
+          "local_bytes": 0,
+          "shared_bytes": 0,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 18
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 9
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 4
+            }
+          ]
+        },
+        {
+          "name": "spatial_sort",
+          "registers": 28,
+          "local_bytes": 0,
+          "shared_bytes": 8208,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        },
+        {
+          "name": "observe_state",
+          "registers": 26,
+          "local_bytes": 0,
+          "shared_bytes": 8192,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        },
+        {
+          "name": "prefix_counts",
+          "registers": 36,
+          "local_bytes": 0,
+          "shared_bytes": 2048,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 12
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        }
+      ]
+    },
+    "probe_sha256": "6b9baad995493930e83a28d514ae3621a2883d6ad31c068a6b5ca8e763dc0bb7"
+  },
+  {
+    "variant": "trial-4",
+    "resources": {
+      "scope": "driver-loaded function resources, not achieved occupancy",
+      "functions": [
+        {
+          "name": "solver",
+          "registers": 52,
+          "local_bytes": 0,
+          "shared_bytes": 0,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 18
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 9
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 4
+            }
+          ]
+        },
+        {
+          "name": "spatial_sort",
+          "registers": 28,
+          "local_bytes": 0,
+          "shared_bytes": 8208,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        },
+        {
+          "name": "observe_state",
+          "registers": 26,
+          "local_bytes": 0,
+          "shared_bytes": 8192,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        },
+        {
+          "name": "prefix_counts",
+          "registers": 36,
+          "local_bytes": 0,
+          "shared_bytes": 2048,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 12
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        },
+        {
+          "name": "validated_correction",
+          "registers": 44,
+          "local_bytes": 0,
+          "shared_bytes": 0,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 20
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 5
+            }
+          ]
+        }
+      ]
+    },
+    "probe_sha256": "50ff611670abda84f2983c60955f285bfad57e21092d0b358285ddb2d8da9cbc"
+  },
+  {
+    "variant": "candidate",
+    "resources": {
+      "scope": "driver-loaded function resources, not achieved occupancy",
+      "functions": [
+        {
+          "name": "solver",
+          "registers": 52,
+          "local_bytes": 0,
+          "shared_bytes": 0,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 18
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 9
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 4
+            }
+          ]
+        },
+        {
+          "name": "spatial_sort",
+          "registers": 28,
+          "local_bytes": 0,
+          "shared_bytes": 8208,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        },
+        {
+          "name": "observe_state",
+          "registers": 26,
+          "local_bytes": 0,
+          "shared_bytes": 8192,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 11
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        },
+        {
+          "name": "prefix_counts",
+          "registers": 36,
+          "local_bytes": 0,
+          "shared_bytes": 2048,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 12
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 6
+            }
+          ]
+        },
+        {
+          "name": "validated_correction",
+          "registers": 44,
+          "local_bytes": 0,
+          "shared_bytes": 0,
+          "max_threads": 1024,
+          "binary_version": 89,
+          "ptx_version": 89,
+          "theoretical_active_blocks": [
+            {
+              "threads": 32,
+              "blocks_per_sm": 24
+            },
+            {
+              "threads": 64,
+              "blocks_per_sm": 20
+            },
+            {
+              "threads": 128,
+              "blocks_per_sm": 10
+            },
+            {
+              "threads": 256,
+              "blocks_per_sm": 5
+            }
+          ]
+        }
+      ]
+    },
+    "probe_sha256": "50ff611670abda84f2983c60955f285bfad57e21092d0b358285ddb2d8da9cbc"
+  }
+]

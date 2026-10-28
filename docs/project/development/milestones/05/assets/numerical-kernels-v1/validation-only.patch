@@ -1,0 +1,277 @@
+--- a/docs/cuda.md
++++ b/docs/cuda.md
+@@ -98,6 +98,15 @@
+ position and velocity candidates afterwards. This removes one complete neighbour
+ traversal without a per-neighbour cache, additional launch or host boundary.
+ 
++The squared-gradient suffix reuses validation completed in the first traversal;
++its dot products and ordered additions remain checked. Grouped correction likewise
++reuses the preceding globally completed density/lambda checks of displacement,
++Poly6 and Spiky on the identical position snapshot. Pressure, multiplier pairs,
++contributions, ordered sums and correction scaling retain their checks. Standalone
++correction keeps full geometry checks. Earlier diagnostic slots still suppress
++dependent writes. This requires no geometry cache, new allocation, kernel entry,
++launch, transfer or cancellation boundary.
++
+ The first attempt uploads accepted state and static planes and reserves fixed storage.
+ Later attempts reuse accepted device vectors. Acceleration and prediction emit compact block
+ summaries into finished correction scratch: checked speed maxima for CFL and coordinate extrema
+--- a/native/solver.cu
++++ b/native/solver.cu
+@@ -29,13 +29,16 @@
+ }
+ __device__ Vector neg(Vector a) { return {-a.x,-a.y,-a.z}; }
+ __device__ float dot(Vector a, Vector b) { return (a.x*b.x+a.y*b.y)+a.z*b.z; }
+-__device__ float length(Vector a, Checked &c) {
++template<class Check>
++__device__ float length(Vector a, Check &c) {
+     return c.scalar(__fsqrt_rn(c.scalar(dot(a,a), 2)), 3);
+ }
+-__device__ float separation(Vector a, Vector b, Checked &c, unsigned int quantity = 1) {
++template<class Check>
++__device__ float separation(Vector a, Vector b, Check &c, unsigned int quantity = 1) {
+     return length(c.vector(sub(a,b),quantity),c);
+ }
+-__device__ float poly6(float d, float h, Checked &c) {
++template<class Check>
++__device__ float poly6(float d, float h, Check &c) {
+     if (d >= h) return 0.0f;
+     float h2=c.scalar(h*h,4), d2=c.scalar(d*d,5);
+     float term=c.scalar(h2-d2,6);
+@@ -46,7 +49,8 @@
+     float cube=c.scalar(term*(term*term),10);
+     return c.scalar(coeff*cube,11);
+ }
+-__device__ Vector spiky_at_distance(Vector displacement, float d, float h, Checked &c) {
++template<class Check>
++__device__ Vector spiky_at_distance(Vector displacement, float d, float h, Check &c) {
+     if (d == 0.0f || d >= h) return {0,0,0};
+     float h2=h*h, h4=h2*h2;
+     float h6=c.scalar(h2*h4,12);
+@@ -56,16 +60,50 @@
+     float scale=c.scalar(__fdiv_rn(coeff*(remain*remain),d),16);
+     return c.vector(mul(displacement,scale),17);
+ }
+-__device__ Vector spiky(Vector displacement, float h, Checked &c) {
++template<class Check>
++__device__ Vector spiky(Vector displacement, float h, Check &c) {
+     return spiky_at_distance(displacement,length(displacement,c),h,c);
+ }
+-__device__ bool active(SolverBuffers b, SolverSettings s, unsigned int i, unsigned int j, Checked &c) {
++template<class Check>
++__device__ bool active(SolverBuffers b, SolverSettings s, unsigned int i, unsigned int j, Check &c) {
+     // Callers enumerate the fixed row; only current-distance filtering remains.
+     return separation(b.position[i],b.position[j],c,18) < s.radius;
+ }
+ #include "neighbours.cuh"
+ #include "spatial_sort.cuh"
+ 
++// Grouped density/lambda has checked every displacement, Poly6 value and
++// Spiky direction on this unchanged Jacobi snapshot. Repeating those checks in
++// correction cannot discover a new failure. Standalone correction still uses
++// Checked; pressure, multiplier pairs and correction sums always remain checked.
++struct ValidatedGeometry {
++    __device__ float scalar(float value, unsigned int) { return value; }
++    __device__ Vector vector(Vector value, unsigned int) { return value; }
++};
++template<class Geometry>
++__device__ void calculate_correction(SolverBuffers b, SolverSettings s, unsigned int i,
++                                     Checked &c, Geometry &geometry) {
++    Vector sum{0,0,0};
++    Members correction_row(b,s,i);
++    for (auto j=correction_row.next(s.count);j<s.count;j=correction_row.next(s.count)) if (active(b,s,i,j,geometry)) {
++        Vector displacement=sub(b.position[i],b.position[j]);
++        float distance=separation(b.position[i],b.position[j],geometry,18);
++        Vector direction=spiky(displacement,s.radius,geometry);
++        float weight=poly6(distance,s.radius,geometry), pressure=0;
++        if (weight!=0 && s.strength!=0) {
++            float ratio=c.scalar(__fdiv_rn(weight,s.reference_weight),34);
++            float shaped=c.scalar(ordered_power(ratio,s.exponent),35);
++            pressure=c.scalar(-s.strength*shaped,36);
++        }
++        float pair=c.scalar(b.multiplier[i]+b.multiplier[j],37);
++        float coefficient=c.scalar(pair+pressure,38);
++        Vector contribution=c.vector(mul(direction,coefficient),39);
++        sum=c.vector(add(sum,contribution),40);
++    }
++    Vector correction=c.vector(mul(sum,c.scalar(__fdiv_rn(1.0f,s.rest_density),26)),41);
++    b.correction[i]=s.correction_scale==1.0f ? correction : c.vector(mul(correction,s.correction_scale),42);
++}
++
+ // Sorting has its own entry point so its shared tile does not reduce occupancy
+ // for the numerical solver kernels.
+ extern "C" __global__ void spatial_sort(SolverBuffers b, SolverSettings s, unsigned int operation) {
+@@ -185,11 +223,15 @@
+         owner=c.vector(mul(owner,reciprocal),28);
+         if (!c.error) c.error=prefix.error;
+         sum=c.scalar(sum+c.scalar(dot(owner,owner),30),31);
++        // The first traversal checked these same directions and their
++        // reciprocal scaling. Only the ordered dot products and additions can
++        // discover another failure after the preceding first-error selection.
++        ValidatedGeometry geometry;
+         Members squared_row(b,s,i);
+         squared_row.cursor=suffix;
+         for (auto j=squared_row.next(s.count);j<s.count;j=squared_row.next(s.count)) {
+-            if (active(b,s,i,j,c)) {
+-                Vector dir=c.vector(mul(neg(spiky(sub(b.position[i],b.position[j]),s.radius,c)),reciprocal),29);
++            if (active(b,s,i,j,geometry)) {
++                Vector dir=mul(neg(spiky(sub(b.position[i],b.position[j]),s.radius,geometry)),reciprocal);
+                 sum=c.scalar(sum+c.scalar(dot(dir,dir),30),31);
+             }
+         }
+@@ -202,25 +244,10 @@
+             c.error=validation.error;
+         } else b.multiplier[i]=multiplier;
+     } else if (operation==7) {
+-        Vector sum{0,0,0};
+-        Members correction_row(b,s,i);
+-        for (auto j=correction_row.next(s.count);j<s.count;j=correction_row.next(s.count)) if (active(b,s,i,j,c)) {
+-            Vector displacement=sub(b.position[i],b.position[j]);
+-            float distance=separation(b.position[i],b.position[j],c,18);
+-            Vector direction=spiky(displacement,s.radius,c);
+-            float weight=poly6(distance,s.radius,c), pressure=0;
+-            if (weight!=0 && s.strength!=0) {
+-                float ratio=c.scalar(__fdiv_rn(weight,s.reference_weight),34);
+-                float shaped=c.scalar(ordered_power(ratio,s.exponent),35);
+-                pressure=c.scalar(-s.strength*shaped,36);
+-            }
+-            float pair=c.scalar(b.multiplier[i]+b.multiplier[j],37);
+-            float coefficient=c.scalar(pair+pressure,38);
+-            Vector contribution=c.vector(mul(direction,coefficient),39);
+-            sum=c.vector(add(sum,contribution),40);
+-        }
+-        Vector correction=c.vector(mul(sum,c.scalar(__fdiv_rn(1.0f,s.rest_density),26)),41);
+-        b.correction[i]=s.correction_scale==1.0f ? correction : c.vector(mul(correction,s.correction_scale),42);
++        if (b.first_operation==5) {
++            ValidatedGeometry geometry;
++            calculate_correction(b,s,i,c,geometry);
++        } else calculate_correction(b,s,i,c,c);
+     } else if (operation==8) {
+         c.scalar(b.density[i]*s.mass,43);
+     } else if (operation==9) {
+--- /dev/null
++++ b/src/cuda/reuse_tests.rs
+@@ -0,0 +1,113 @@
++//! Completed density checks must justify later reuse without hiding errors in
++//! independent correction calls or changing a grouped stage's first diagnostic.
++
++use super::*;
++
++#[test]
++#[ignore = "requires an explicitly selected CUDA hardware test run"]
++fn completed_geometry_checks_preserve_grouped_and_standalone_results() {
++    let config = crate::config::resolve_effective_configuration(None, None, None).unwrap();
++    for threads in [32, 64, 128, 256] {
++        let mut grouped = CudaSolver::new(0, threads).unwrap();
++        let mut separate = CudaSolver::new(0, threads).unwrap();
++        for count in [1, 17, 33, 65] {
++            for case in 0..12 {
++                let particles: Vec<_> = (0..count)
++                    .map(|i| Particle {
++                        identity: (3 * i + 7) as u64,
++                        position_m: Vec3::new((i % 7) as f32 * 0.03, (i / 7) as f32 * 0.01, 0.0),
++                        velocity_m_s: Vec3::ZERO,
++                    })
++                    .collect();
++                let mut input: Vec<_> = particles.iter().map(|p| array(p.position_m)).collect();
++                let mut s = settings(&config, count, 0).unwrap();
++                s.radius = 0.2;
++                s.relaxation = 0.01;
++                s.strength = 0.1;
++                s.reference_weight = crate::kernel::poly6(0.04, 0.2).unwrap();
++                match case {
++                    0 => {}
++                    1 => input.fill([0.0, -0.0, 0.0]),
++                    2 => input[count - 1][0] = s.radius,
++                    3 => input[count - 1][0] = f32::from_bits(s.radius.to_bits() - 1),
++                    4 => input[count - 1][0] = f32::from_bits(s.radius.to_bits() + 1),
++                    5 => s.radius = 1.0e-10,
++                    6 => s.rest_density = 0.0,
++                    7 => s.reference_weight = 0.0,
++                    8 => s.strength = f32::MAX,
++                    9 => s.mass = f32::MAX,
++                    10 => s.radius = f32::MAX,
++                    _ => input[count - 1][0] = f32::MAX,
++                }
++                let mut indices = Vec::new();
++                let mut offsets = vec![0_u64];
++                // Deliberately retain inactive and coincident members. Both
++                // paths must filter the current snapshot, not assume discovery.
++                for i in 0..count {
++                    indices.extend((0..count).filter(|j| *j != i).map(|j| j as u32));
++                    offsets.push(indices.len() as u64);
++                }
++                s.entries = indices.len() as u64;
++                for gpu in [&mut grouped, &mut separate] {
++                    gpu.prepare(s, &particles, &[]).unwrap();
++                    gpu.context.inner.upload(2, &input).unwrap();
++                    gpu.context.inner.reserve(11, indices.len() * 4).unwrap();
++                    gpu.context.inner.upload(11, &indices).unwrap();
++                    gpu.context.inner.upload(13, &offsets).unwrap();
++                    gpu.context
++                        .inner
++                        .upload(7, &vec![[77.0_f32; 3]; count])
++                        .unwrap();
++                }
++                let actual = grouped.context.inner.checked_group(s, 5, threads).unwrap();
++                let mut expected = u64::MAX;
++                for operation in 5..=8 {
++                    expected = separate
++                        .context
++                        .inner
++                        .checked_launch(s, operation, threads)
++                        .unwrap();
++                    if expected != u64::MAX {
++                        break;
++                    }
++                }
++                assert_eq!(
++                    actual, expected,
++                    "block {threads}, count {count}, case {case}"
++                );
++                if actual == u64::MAX {
++                    for slot in [4, 5, 6] {
++                        let bits = |gpu: &mut CudaSolver| {
++                            gpu.context
++                                .inner
++                                .download::<f32>(slot, count)
++                                .unwrap()
++                                .into_iter()
++                                .map(f32::to_bits)
++                                .collect::<Vec<_>>()
++                        };
++                        assert_eq!(bits(&mut grouped), bits(&mut separate));
++                    }
++                    let bits = |gpu: &mut CudaSolver| {
++                        gpu.context
++                            .inner
++                            .download::<[f32; 3]>(7, count)
++                            .unwrap()
++                            .into_iter()
++                            .map(|v| v.map(f32::to_bits))
++                            .collect::<Vec<_>>()
++                    };
++                    assert_eq!(bits(&mut grouped), bits(&mut separate));
++                }
++                assert_eq!(
++                    grouped
++                        .context
++                        .inner
++                        .download::<[f32; 3]>(2, count)
++                        .unwrap(),
++                    input
++                );
++            }
++        }
++    }
++}
+--- a/src/cuda/solver.rs
++++ b/src/cuda/solver.rs
+@@ -557,3 +557,7 @@
+ #[cfg(test)]
+ #[path = "mirror_tests.rs"]
+ mod mirror_tests;
++
++#[cfg(test)]
++#[path = "reuse_tests.rs"]
++mod reuse_tests;

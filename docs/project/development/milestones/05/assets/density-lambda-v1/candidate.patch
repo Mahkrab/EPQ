@@ -1,0 +1,282 @@
+--- a/docs/cuda.md
++++ b/docs/cuda.md
+@@ -78,7 +78,12 @@
+ then orders each row by identity. Rows of up to 256 entries use a complete warp;
+ larger rows retain heapsort. Fill and sorting share one completion and diagnostic readback.
+ Traversal visits those indices, inserting self once at its ordered position where
+-required. Storage follows actual membership rather than an all-pairs matrix; dense
++required.
++Density and owner-gradient accumulation share a traversal and checked geometry. Each
++accumulator keeps its identity-ordered additions. Owner and prefix errors are deferred
++until the complete density/constraint and reciprocal checks have finished, preserving
++original diagnostic priority. The higher-identity squared-gradient suffix remains a
++separate traversal; no geometry survives a change of position snapshot. Storage follows actual membership rather than an all-pairs matrix; dense
+ input can still require quadratic space and is never silently capped or truncated.
+ 
+ The first attempt uploads accepted state and static planes and reserves fixed storage.
+--- a/native/solver.cu
++++ b/native/solver.cu
+@@ -46,8 +46,7 @@
+     float cube=c.scalar(term*(term*term),10);
+     return c.scalar(coeff*cube,11);
+ }
+-__device__ Vector spiky(Vector displacement, float h, Checked &c) {
+-    float d=length(displacement,c);
++__device__ Vector spiky_at_distance(Vector displacement, float d, float h, Checked &c) {
+     if (d == 0.0f || d >= h) return {0,0,0};
+     float h2=h*h, h4=h2*h2;
+     float h6=c.scalar(h2*h4,12);
+@@ -57,6 +56,9 @@
+     float scale=c.scalar(__fdiv_rn(coeff*(remain*remain),d),16);
+     return c.vector(mul(displacement,scale),17);
+ }
++__device__ Vector spiky(Vector displacement, float h, Checked &c) {
++    return spiky_at_distance(displacement,length(displacement,c),h,c);
++}
+ __device__ bool active(SolverBuffers b, SolverSettings s, unsigned int i, unsigned int j, Checked &c) {
+     // Callers enumerate the fixed row; only current-distance filtering remains.
+     return separation(b.position[i],b.position[j],c,18) < s.radius;
+@@ -132,32 +134,41 @@
+     } else if (operation==6) {
+         float self=poly6(0,s.radius,c), density=0;
+         Vector owner{0,0,0};
+-        // Density includes self at its identity-ordered position.
+-        Members density_row(b,s,i,true);
+-        for (auto j=density_row.next(s.count);j<s.count;j=density_row.next(s.count)) {
+-            if (i==j) density=c.scalar(density+self,23);
+-            else if (active(b,s,i,j,c)) density=c.scalar(density+poly6(separation(b.position[i],b.position[j],c,18),s.radius,c),23);
+-        }
+-        b.density[i]=density;
+-        float constraint=c.scalar(c.scalar(__fdiv_rn(density,s.rest_density),24)-1.0f,25);
+-        b.constraint[i]=constraint;
+-        float reciprocal=c.scalar(__fdiv_rn(1.0f,s.rest_density),26);
+-        Checked prefix;
++        // The reciprocal value is invariant. Its check stays after the complete
++        // density/constraint calculation, before any owner error is exposed.
++        float reciprocal_value=__fdiv_rn(1.0f,s.rest_density);
++        Checked owner_check, prefix;
+         float sum=0;
+-        Members owner_row(b,s,i);
+-        auto suffix=owner_row.stop;
+-        for (auto j=owner_row.next(s.count);j<s.count;j=owner_row.next(s.count)) {
+-            if (j>i && suffix==owner_row.stop) suffix=owner_row.cursor-1;
+-            if (active(b,s,i,j,c)) {
+-                Vector direction=spiky(sub(b.position[i],b.position[j]),s.radius,c);
+-                owner=c.vector(add(owner,direction),27);
+-                Vector dir=c.vector(mul(neg(direction),reciprocal),29);
+-                // These contributions precede self in the ordered sum. Keep
+-                // their original additions, but defer errors until all owner
+-                // checks finish, just as in the separate squared-row traversal.
++        Members row(b,s,i,true);
++        auto suffix=row.stop;
++        for (auto j=row.next(s.count);j<s.count;j=row.next(s.count)) {
++            if (i==j) {
++                density=c.scalar(density+self,23);
++                continue;
++            }
++            if (j>i && suffix==row.stop) suffix=row.cursor-1;
++            Checked geometry;
++            Vector displacement=geometry.vector(sub(b.position[i],b.position[j]),18);
++            float distance=length(displacement,geometry);
++            if (!c.error) c.error=geometry.error;
++            if (!owner_check.error) owner_check.error=geometry.error;
++            if (distance<s.radius) {
++                density=c.scalar(density+poly6(distance,s.radius,c),23);
++                // Active geometry is finite; reuse exactly its checked RN
++                // distance for Spiky instead of reading and rooting it again.
++                Vector direction=spiky_at_distance(displacement,distance,s.radius,owner_check);
++                owner=owner_check.vector(add(owner,direction),27);
++                Vector dir=owner_check.vector(mul(neg(direction),reciprocal_value),29);
+                 if (j<i) sum=prefix.scalar(sum+prefix.scalar(dot(dir,dir),30),31);
+             }
+         }
++        b.density[i]=density;
++        float constraint=c.scalar(c.scalar(__fdiv_rn(density,s.rest_density),24)-1.0f,25);
++        b.constraint[i]=constraint;
++        float reciprocal=c.scalar(reciprocal_value,26);
++        // These independent accumulators keep their original additions. Error
++        // selection still follows density, reciprocal, owner, then prefix.
++        if (!c.error) c.error=owner_check.error;
+         owner=c.vector(mul(owner,reciprocal),28);
+         if (!c.error) c.error=prefix.error;
+         sum=c.scalar(sum+c.scalar(dot(owner,owner),30),31);
+--- a/src/cuda/solver.rs
++++ b/src/cuda/solver.rs
+@@ -507,3 +507,7 @@
+ #[cfg(test)]
+ #[path = "observation_tests.rs"]
+ mod observation_tests;
++
++#[cfg(test)]
++#[path = "density_tests.rs"]
++mod density_tests;
+--- a/src/cuda/density_tests.rs
++++ b/src/cuda/density_tests.rs
+@@ -0,0 +1,167 @@
++//! Fused traversal must preserve each ordered reduction and the original error
++//! selection even when density, owner and prefix failures compete.
++
++use super::*;
++use crate::{fluid::PbfParameters, neighbours::brute_force};
++
++fn scalar_bits(values: Vec<f32>) -> Vec<u32> {
++    values.into_iter().map(f32::to_bits).collect()
++}
++
++#[test]
++#[ignore = "requires an explicitly selected CUDA hardware test run"]
++fn density_owner_fusion_matches_independent_intermediates_for_fixed_rows() {
++    let config = crate::config::resolve_effective_configuration(None, None, None).unwrap();
++    for threads in [32, 64, 128, 256] {
++        let mut gpu = CudaSolver::new(0, threads).unwrap();
++        for count in [0, 1, 33, 65, 257, 513, 17] {
++            let mut original: Vec<_> = (0..count)
++                .map(|i| {
++                    Vec3::new(
++                        (i % 11) as f32 * 0.015 - 0.08,
++                        ((i / 11) % 9) as f32 * 0.015 - 0.06,
++                        (i / 99) as f32 * 0.015 - 0.04,
++                    )
++                })
++                .collect();
++            original.reverse();
++            original.rotate_left(count / 3);
++            let fixed = brute_force(&original, 0.2).unwrap();
++            let particles: Vec<_> = original
++                .iter()
++                .enumerate()
++                .map(|(i, &position_m)| Particle {
++                    identity: (3 * i + 7) as u64,
++                    position_m,
++                    velocity_m_s: Vec3::ZERO,
++                })
++                .collect();
++            let mut s = settings(&config, count, 0).unwrap();
++            s.radius = 0.2;
++            s.relaxation = 0.01;
++            s.strength = 0.1;
++            s.reference_weight = crate::kernel::poly6(0.04, 0.2).unwrap();
++            s.correction_scale = 1.0;
++            gpu.prepare(s, &particles, &[]).unwrap();
++            gpu.context
++                .inner
++                .upload(2, &original.iter().copied().map(array).collect::<Vec<_>>())
++                .unwrap();
++            gpu.discover(&mut s, &original).unwrap();
++            for changed in [false, true, false] {
++                let mut positions = original.clone();
++                if changed {
++                    for (i, point) in positions.iter_mut().enumerate() {
++                        if i % 7 == 0 {
++                            point.x += 0.4;
++                        } else if i % 11 == 0 {
++                            *point = Vec3::new(-0.0, 0.0, 0.0);
++                        }
++                    }
++                }
++                let input: Vec<_> = positions.iter().copied().map(array).collect();
++                gpu.context.inner.upload(2, &input).unwrap();
++                for density in [3.0, 10_000.0] {
++                    s.rest_density = density;
++                    assert_eq!(
++                        gpu.context.inner.checked_group(s, 5, threads).unwrap(),
++                        u64::MAX
++                    );
++                    let expected = crate::fluid::compute_jacobi_stage(
++                        &positions,
++                        &fixed,
++                        PbfParameters::new(0.2, density, 0.01, 0.1, 0.04, 4.0).unwrap(),
++                    )
++                    .unwrap();
++                    for (slot, expected) in [
++                        (4, expected.normalised_densities),
++                        (5, expected.constraints),
++                        (6, expected.multipliers),
++                    ] {
++                        assert_eq!(
++                            scalar_bits(gpu.context.inner.download(slot, count).unwrap()),
++                            scalar_bits(expected),
++                            "block {threads}, count {count}, changed {changed}, slot {slot}"
++                        );
++                    }
++                    assert_eq!(
++                        gpu.context
++                            .inner
++                            .download::<[f32; 3]>(7, count)
++                            .unwrap()
++                            .into_iter()
++                            .map(|v| v.map(f32::to_bits))
++                            .collect::<Vec<_>>(),
++                        expected
++                            .corrections
++                            .into_iter()
++                            .map(array)
++                            .map(|v| v.map(f32::to_bits))
++                            .collect::<Vec<_>>()
++                    );
++                    assert_eq!(
++                        gpu.context.inner.download::<u32>(12, count).unwrap(),
++                        vec![0; count]
++                    );
++                    assert_eq!(
++                        gpu.context.inner.download::<[f32; 3]>(2, count).unwrap(),
++                        input
++                    );
++                }
++            }
++        }
++    }
++}
++
++#[test]
++#[ignore = "requires an explicitly selected CUDA hardware test run"]
++fn density_errors_precede_speculative_owner_and_reciprocal_checks() {
++    let config = crate::config::resolve_effective_configuration(None, None, None).unwrap();
++    for threads in [32, 64, 128, 256] {
++        let mut gpu = CudaSolver::new(0, threads).unwrap();
++        for (radius, density, distance, quantity) in [
++            (1.0, 2.0_f32.powi(-130), 0.5, 24),
++            (1.0e-10, 1.0, 0.0, 9),
++            (0.0, f32::from_bits(1), 0.0, 26),
++            (1.0, 1.0, f32::MAX, 2),
++        ] {
++            let mut s = settings(&config, 2, 0).unwrap();
++            s.radius = radius;
++            s.rest_density = density;
++            s.entries = 2;
++            let particles = [
++                Particle {
++                    identity: 0,
++                    position_m: Vec3::ZERO,
++                    velocity_m_s: Vec3::ZERO,
++                },
++                Particle {
++                    identity: 1,
++                    position_m: Vec3::new(distance, 0., 0.),
++                    velocity_m_s: Vec3::ZERO,
++                },
++            ];
++            gpu.prepare(s, &particles, &[]).unwrap();
++            gpu.context
++                .inner
++                .upload(2, &[[0.0, 0., 0.], [distance, 0., 0.]])
++                .unwrap();
++            gpu.context.inner.upload(13, &[0_u64, 1, 2]).unwrap();
++            gpu.context.inner.upload(11, &[1_u32, 0]).unwrap();
++            assert_eq!(
++                gpu.context.inner.checked_launch(s, 6, threads).unwrap(),
++                quantity,
++                "block {threads}, radius {radius}, density {density}"
++            );
++            assert_eq!(
++                gpu.context.inner.download::<u32>(12, 2).unwrap(),
++                vec![quantity as u32; 2]
++            );
++            assert!(gpu.accept().is_err());
++        }
++        assert_eq!(
++            tests::discovered(&mut gpu, &[Vec3::ZERO; 3], 0.1).unwrap(),
++            vec![vec![1, 2], vec![0, 2], vec![0, 1]]
++        );
++    }
++}

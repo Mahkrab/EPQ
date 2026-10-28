@@ -1,0 +1,516 @@
+--- a/docs/cuda.md
++++ b/docs/cuda.md
+@@ -17,7 +17,7 @@
+ Use CUDA 13 headers and nvcc, a toolkit-supported host compiler, C++17/libstdc++ and ar.
+ `CUDA_HOME` is an absolute toolkit path, defaulting to `/usr/local/cuda`, independent
+ of PATH. `MAELSTROM_CUDA_ARCH` selects the virtual capability, default 89. The runtime
+-device must support that target and the driver must accept the emitted PTX.
++device must support that target, mapped page-locked host memory and the emitted PTX.
+ `CXX` and `AR` select executables, not commands containing additional arguments.
+ No build step installs a toolkit or changes drivers.
+ 
+@@ -109,7 +109,16 @@
+ minimum instead of returning the complete error array. Each Jacobi calculation and
+ candidate/projection pair is submitted as a stream-ordered group, with one result
+ slot per pass. A kernel skips work if an earlier pass failed; later slots cannot
+-replace the earlier error. One readback returns the group's results in stage order.
++replace the earlier error. Device records remain the ordering authority. Winning
++error minima also update a private 32-byte mapped host packet; successful lanes
++never access host memory. The CPU reads that packet only after the existing
++stream completion, retaining stage order without a separate CUDA readback.
++CPU resets occur after previous checked calls completed. GPU-only atomics select
++the minima; the host never polls or competes with those updates. The device
++allocation gains an eight-byte mapped address, uploaded during context setup.
++The context owns both allocations and releases them at destruction, including
++when failed completion leaves access uncertain. No borrowed host pointer is
++retained by submitted work.
+ Successful passes leave their sentinels untouched; the four-slot record is reset for the first
+ attempt and after a numerical failure. Resets and unchecked kernel calls submit work without
+ waiting. The bridge tracks pending work on the private stream: diagnostic observations wait
+@@ -183,9 +192,9 @@
+ Ordinary feature-enabled tests do not imply that opt-in hardware checks ran. Native
+ injected-driver tests cover ownership, failure precedence, draining, retry, cleanup and
+ context restoration; they are not real device-fault recovery tests. Host ASan/UBSan
+-and device memory diagnostics establish different things. The retained PC Compute
+-Sanitizer attempt could not initialise its WDDM debugger interface, so no passing
+-device-memory diagnostic follows.
++and device memory diagnostics establish different things. Compute
++Sanitizer results must identify the actual tool and checks run; unavailable
++diagnostics and passing host tests do not establish device-memory coverage.
+ 
+ Measured step totals include required transfers, launches, synchronisation and atomic
+ acceptance. Context/module setup and teardown are separate; audits, output, graphics
+--- a/native/bridge.cpp
++++ b/native/bridge.cpp
+@@ -26,6 +26,7 @@
+     X(cuModuleLoadData, "cuModuleLoadData") X(cuModuleGetFunction, "cuModuleGetFunction") \
+     X(cuStreamCreate, "cuStreamCreate") X(cuStreamSynchronize, "cuStreamSynchronize") \
+     X(cuMemAlloc, "cuMemAlloc_v2") X(cuMemFree, "cuMemFree_v2") \
++    X(cuMemAllocHost, "cuMemAllocHost_v2") X(cuMemHostGetDevicePointer, "cuMemHostGetDevicePointer_v2") \
+     X(cuMemcpyHtoD, "cuMemcpyHtoD_v2") X(cuMemcpyDtoH, "cuMemcpyDtoH_v2") \
+     X(cuMemsetD8Async, "cuMemsetD8Async") \
+     X(cuLaunchKernel, "cuLaunchKernel")
+@@ -62,6 +63,7 @@
+     CUfunction observe_state = nullptr;
+     CUfunction prefix_counts = nullptr;
+     CUdeviceptr diagnostic = 0;
++    void *host_diagnostic = nullptr;
+     bool diagnostic_clear = false;
+     bool attempt_open = false;
+     CUdeviceptr slots[14]{};
+@@ -71,7 +73,7 @@
+     bool pending = false;
+     ~Resource() {
+         // Context destruction releases its module, stream and device storage,
+-        // including allocations retained after an uncertain completion failure.
++        // including mapped host storage retained after uncertain completion.
+         if (context) driver.cuCtxDestroy_fn(context);
+     }
+ };
+@@ -110,7 +112,11 @@
+     // Pageable uploads may return before DMA finishes on the legacy stream.
+     // This private stream must inherit that dependency before reading the data.
+     if (!status.code && (code = d.cuStreamCreate_fn(&r.stream, CU_STREAM_DEFAULT)) != CUDA_SUCCESS) status = {code, 6};
+-    if (!status.code && (code = d.cuMemAlloc_fn(&r.diagnostic, 4*sizeof(std::uint64_t))) != CUDA_SUCCESS) status = {code, 7};
++    if (!status.code && (code = d.cuMemAlloc_fn(&r.diagnostic, diagnostic_allocation_bytes)) != CUDA_SUCCESS) status = {code, 7};
++    if (!status.code && (code = d.cuMemAllocHost_fn(&r.host_diagnostic, diagnostic_records_bytes)) != CUDA_SUCCESS) status = {code, 7};
++    CUdeviceptr mapped = 0;
++    if (!status.code && (code = d.cuMemHostGetDevicePointer_fn(&mapped, r.host_diagnostic, 0)) != CUDA_SUCCESS) status = {code, 7};
++    if (!status.code && (code = d.cuMemcpyHtoD_fn(r.diagnostic+diagnostic_records_bytes, &mapped, sizeof(mapped))) != CUDA_SUCCESS) status = {code, 8};
+     CUcontext previous;
+     code = d.cuCtxPopCurrent_fn(&previous);
+     if (!status.code && code != CUDA_SUCCESS) status = {code, 13};
+@@ -184,7 +190,8 @@
+ extern "C" Status maelstrom_cuda_close(void *handle) {
+     auto *r = static_cast<Resource *>(handle);
+     // Destroying an isolated context is the final abandonment boundary. No
+-    // borrowed host storage is outstanding: transfers here are synchronous.
++    // borrowed host storage is outstanding. The mapped diagnostic packet is
++    // context-owned and remains valid until destruction quiesces device access.
+     const auto code = r->driver.cuCtxDestroy_fn(r->context);
+     r->context = nullptr;
+     delete r;
+@@ -221,8 +228,9 @@
+         if (completion.code) status=completion;
+     }
+     if (!status.code && diagnostic) {
+-        code=d.cuMemcpyDtoH_fn(diagnostic,r.diagnostic,diagnostic_count*sizeof(*diagnostic));
+-        if (code!=CUDA_SUCCESS) status={code,11};
++        // Only read after successful completion. The device mirror has no CPU
++        // readers or writers while checked kernels can update it.
++        __builtin_memcpy(diagnostic,r.host_diagnostic,diagnostic_count*sizeof(*diagnostic));
+     }
+     if (status.code && !(status.stage==7 && status.code==CUDA_ERROR_OUT_OF_MEMORY)) r.poisoned=true;
+     CUcontext previous;
+@@ -391,8 +399,12 @@
+     // attempt or after a numerical failure; never trust that flag after a driver
+     // fault. Stream order places the reset before all dependent kernels.
+     auto status=solver_call(r,Boundary::Submit,[&]() -> Status {
++        // Checked observations complete before every non-poisoned return.
++        // Unchecked submissions have no diagnostic pointer, so cannot race
++        // this reset after a rejected numerical attempt.
++        std::fill_n(static_cast<std::uint64_t *>(r.host_diagnostic),diagnostic_record_count,UINT64_MAX);
+         r.pending=true;
+-        auto code=r.driver.cuMemsetD8Async_fn(r.diagnostic,0xff,4*sizeof(std::uint64_t),r.stream);
++        auto code=r.driver.cuMemsetD8Async_fn(r.diagnostic,0xff,diagnostic_records_bytes,r.stream);
+         return {code,code==CUDA_SUCCESS ? 0 : 9};
+     });
+     if (!status.code) { r.diagnostic_clear=true; r.attempt_open=true; }
+--- a/native/solver.cu
++++ b/native/solver.cu
+@@ -305,5 +305,5 @@
+     b.errors[i]=c.error;
+     // Only failing lanes contend. The high word preserves particle precedence;
+     // Checked already retained the first failing expression within that lane.
+-    if (c.error && b.diagnostic) atomicMin(b.diagnostic+pass,(static_cast<unsigned long long>(i)<<32)|c.error);
+-}
++    if (c.error && b.diagnostic) record_diagnostic(b,pass,(static_cast<unsigned long long>(i)<<32)|c.error);
++}
+--- a/native/solver.h
++++ b/native/solver.h
+@@ -12,6 +12,11 @@
+ // Each velocity allocation includes an aligned containment result and padding.
+ // Both buffers keep the trailer when accepted and working vectors are exchanged.
+ constexpr std::size_t velocity_observation_bytes=16;
++// Device records remain the ordering authority. The extra word points at a
++// private mapped host mirror, accessed by the device only when an error wins.
++constexpr std::size_t diagnostic_record_count=4;
++constexpr std::size_t diagnostic_records_bytes=diagnostic_record_count*sizeof(std::uint64_t);
++constexpr std::size_t diagnostic_allocation_bytes=diagnostic_records_bytes+sizeof(std::uint64_t);
+ struct SolverSettings {
+     std::uint32_t count, padded, planes, validate_pairs;
+     float timestep, radius, rest_density, relaxation;
+--- a/native/state_observation.cuh
++++ b/native/state_observation.cuh
+@@ -3,6 +3,17 @@
+ #pragma once
+ struct StateSummary { float scalar; Vector lower, upper; float reserved; };
+ static_assert(sizeof(StateSummary)==32);
++
++__device__ void record_diagnostic(SolverBuffers b, unsigned int slot, unsigned long long value) {
++    const auto previous=atomicMin(b.diagnostic+slot,value);
++    if (value<previous) {
++        // Successful lanes never access host memory. Winning updates alone
++        // reduce PCIe traffic on failures; a second minimum tolerates their
++        // different arrival order. Host access waits for stream completion.
++        auto host=reinterpret_cast<unsigned long long *>(b.diagnostic[diagnostic_record_count]);
++        atomicMin(host+slot,value);
++    }
++}
+ 
+ __device__ unsigned long long *plane_observation(SolverBuffers b, SolverSettings s) {
+     // A Vector is 12 bytes; odd counts need one u32 before the aligned record.
+@@ -44,7 +55,7 @@
+             Checked speed;
+             value.scalar=length(b.velocity[i],speed);
+             if (speed.error) {
+-                atomicMin(b.diagnostic+1,(static_cast<unsigned long long>(i)<<32)|speed.error);
++                record_diagnostic(b,1,(static_cast<unsigned long long>(i)<<32)|speed.error);
+                 value.scalar=0;
+             }
+         } else {
+@@ -55,7 +66,7 @@
+             value.lower=p;value.upper=p;
+         }
+         b.errors[i]=c.error;
+-        if (c.error) atomicMin(b.diagnostic,(static_cast<unsigned long long>(i)<<32)|c.error);
++        if (c.error) record_diagnostic(b,0,(static_cast<unsigned long long>(i)<<32)|c.error);
+     }
+     values[lane]=value;
+     __syncthreads();
+@@ -121,7 +132,7 @@
+     std::uint64_t value=i<n && (s.count || !s.stride) ? b.offsets[i] : 0;
+     if (i<n && ((!i && value) || (i && value>s.count-1))) {
+         const auto particle=i ? i-1 : 0;
+-        atomicMin(b.diagnostic+1,(static_cast<unsigned long long>(particle)<<32)|52);
++        record_diagnostic(b,1,(static_cast<unsigned long long>(particle)<<32)|52);
+         value=0;
+     }
+     scan[lane]=value;
+--- a/native/tests.cpp
++++ b/native/tests.cpp
+@@ -7,6 +7,7 @@
+ #include <vector>
+ #include <map>
+ #include <algorithm>
++#include <memory>
+ 
+ struct Observed {
+     int fail = 0;
+@@ -22,6 +23,11 @@
+     int fail_launch = 0;
+     int resets = 0;
+     bool fail_reset = false;
++    bool fail_host_allocation = false;
++    bool fail_host_mapping = false;
++    int pinned_allocations = 0;
++    int pinned_releases = 0;
++    std::map<void *,std::unique_ptr<std::uint64_t[]>> host_memory;
+     struct Launch { unsigned int operation, stride, span, grid, block; };
+     std::vector<Launch> launches;
+     std::map<unsigned int,std::pair<unsigned int,std::uint32_t>> numerical_failures;
+@@ -48,7 +54,9 @@
+         if (observed.fail == 4) return CUDA_ERROR_OUT_OF_MEMORY;
+         *context = reinterpret_cast<CUcontext>(1); return CUDA_SUCCESS;
+     };
+-    d.cuCtxDestroy_fn = [](CUcontext) { ++observed.destroys; observed.work_pending=false; observed.memory.clear(); return fault(15); };
++    d.cuCtxDestroy_fn = [](CUcontext) { ++observed.destroys; observed.work_pending=false; observed.memory.clear();
++        observed.pinned_releases+=static_cast<int>(observed.host_memory.size());
++        observed.host_memory.clear();return fault(15); };
+     d.cuCtxPushCurrent_fn = [](CUcontext) { ++observed.pushes; return fault(13); };
+     d.cuCtxPopCurrent_fn = [](CUcontext *context) { ++observed.pops; *context = nullptr; return fault(16); };
+     d.cuModuleLoadData_fn = [](CUmodule *module, const void *) { *module = reinterpret_cast<CUmodule>(1); return fault(5); };
+@@ -63,6 +71,18 @@
+     d.cuMemAlloc_fn = [](CUdeviceptr *buffer, std::size_t bytes) {
+         if (observed.fail == 7) return CUDA_ERROR_OUT_OF_MEMORY;
+         *buffer=observed.next;observed.next+=bytes+4096; observed.memory[*buffer].resize(bytes); return CUDA_SUCCESS;
++    };
++    d.cuMemAllocHost_fn = [](void **pointer,std::size_t bytes) {
++        assert(bytes==diagnostic_records_bytes);
++        if (observed.fail_host_allocation) return CUDA_ERROR_OUT_OF_MEMORY;
++        auto memory=std::make_unique<std::uint64_t[]>(diagnostic_record_count);
++        *pointer=memory.get();observed.host_memory.emplace(*pointer,std::move(memory));
++        ++observed.pinned_allocations;return CUDA_SUCCESS;
++    };
++    d.cuMemHostGetDevicePointer_fn = [](CUdeviceptr *device,void *host,unsigned int flags) {
++        assert(!flags && observed.host_memory.count(host)==1);
++        if (observed.fail_host_mapping) return CUDA_ERROR_UNKNOWN;
++        *device=reinterpret_cast<CUdeviceptr>(host);return CUDA_SUCCESS;
+     };
+     d.cuMemFree_fn = [](CUdeviceptr pointer) { assert(!observed.work_pending); ++observed.frees; if (!observed.fail) observed.memory.erase(pointer); return fault(12); };
+     d.cuMemcpyHtoD_fn = [](CUdeviceptr pointer, const void *data, std::size_t bytes) {
+@@ -76,7 +96,7 @@
+         observed.work_pending=true;
+         ++observed.resets;
+         if (observed.fail_reset) return CUDA_ERROR_UNKNOWN;
+-        assert(bytes==32 && value==0xff && observed.memory.at(pointer).size()==bytes);
++        assert(bytes==32 && value==0xff && observed.memory.at(pointer).size()==diagnostic_allocation_bytes);
+         std::memset(observed.memory.at(pointer).data(),value,bytes);
+         return CUDA_SUCCESS;
+     };
+@@ -134,7 +154,23 @@
+         }
+         return fault(9);
+     };
+-    d.cuStreamSynchronize_fn = [](CUstream) { ++observed.completions; if (observed.fail!=10) observed.work_pending=false; return fault(10); };
++    d.cuStreamSynchronize_fn = [](CUstream) {
++        ++observed.completions;
++        // Publish the serial diagnostic oracle only at completion. A failing
++        // completion may still have changed private mapped storage; callers
++        // must not expose it until every completion/binding check succeeds.
++        for (auto &[pointer,memory]:observed.memory) {
++            (void)pointer;
++            if (memory.size()!=diagnostic_allocation_bytes) continue;
++            CUdeviceptr address=0;
++            std::memcpy(&address,memory.data()+diagnostic_records_bytes,sizeof(address));
++            const auto host=reinterpret_cast<void *>(address);
++            if (observed.host_memory.count(host))
++                std::memcpy(host,memory.data(),diagnostic_records_bytes);
++        }
++        if (observed.fail!=10) observed.work_pending=false;
++        return fault(10);
++    };
+     d.cuMemcpyDtoH_fn = [](void *data, CUdeviceptr pointer, std::size_t bytes) {
+         assert(!observed.work_pending);++observed.downloads;
+         auto allocation=observed.memory.upper_bound(pointer);assert(allocation!=observed.memory.begin());--allocation;
+@@ -279,7 +315,7 @@
+             std::uint64_t result=0;
+             assert(maelstrom_cuda_checked_group(&r,s,first,threads,&result).code==0);
+             assert(result==(fail_at==passes ? UINT64_MAX : (std::uint64_t{4}<<32)|22));
+-            assert(observed.completions==waits+1 && observed.downloads==copies+1);
++            assert(observed.completions==waits+1 && observed.downloads==copies);
+             assert(observed.launches.size()==passes);
+             for (unsigned int pass=0;pass<passes;++pass) {
+                 assert(observed.launches[pass].operation==first+pass && observed.launches[pass].block==threads);
+@@ -313,7 +349,7 @@
+         auto waits=observed.completions;
+         std::uint64_t result=17;
+         auto status=maelstrom_cuda_checked_group(&r,s,5,128,&result);
+-        // Readback is never attempted after submission failure. A completion
++        // Results are never published after submission failure. A completion
+         // fault supersedes that failure; context-pop failure supersedes both.
+         auto expected=failure==11 ? 9 : failure==16 ? 13 : failure;
+         assert(status.stage==expected && r.poisoned && result==17);
+@@ -322,7 +358,8 @@
+         assert(maelstrom_cuda_checked_group(&r,s,5,128,&result).stage==14);
+         assert(maelstrom_cuda_begin_attempt(&r).stage==14);
+     }
+-    // A readback fault after an otherwise completed group is also fatal.
++    // Diagnostic observation submits no transfer. A subsequent data-copy fault
++    // still poisons the resource and leaves the caller output untouched.
+     observed={};Resource r;ready(r);
+     SolverSettings s{};s.count=1;s.padded=1;
+     for (unsigned int slot=0;slot<14;++slot)
+@@ -330,7 +367,10 @@
+     assert(maelstrom_cuda_begin_attempt(&r).code==0);
+     observed.fail=11;
+     std::uint64_t result=17;
+-    assert(maelstrom_cuda_checked_group(&r,s,9,128,&result).stage==11 && r.poisoned && result==17);
++    assert(maelstrom_cuda_checked_group(&r,s,9,128,&result).code==0 && result==UINT64_MAX);
++    assert(observed.downloads==0 && !r.poisoned);
++    std::uint64_t output=17;
++    assert(maelstrom_cuda_storage(&r,0,&output,sizeof(output),2).stage==11 && r.poisoned);
+ }
+ 
+ static void row_sort_batches() {
+@@ -350,7 +390,7 @@
+             const auto status=maelstrom_cuda_checked_solver(&r,s,12,threads,&result);
+             assert(status.stage==(fail_at ? 9 : 0) && r.poisoned==(fail_at!=0));
+             assert(observed.completions==waits+1);
+-            assert(observed.downloads==downloads+(fail_at ? 0 : 1));
++            assert(observed.downloads==downloads);
+             assert(observed.launches.size()==static_cast<unsigned int>(fail_at ? fail_at : 2));
+             assert(observed.launches[0].operation==12 && observed.launches[0].grid==(count+threads-1)/threads);
+             if (observed.launches.size()==2)
+@@ -370,7 +410,7 @@
+ }
+ 
+ static void checked_solver() {
+-    for (int failure : {0,9,10,11,13,16}) {
++    for (int failure : {0,9,10,13,16}) {
+         observed={};
+         Resource r;ready(r);
+         SolverSettings settings{};settings.count=5;settings.padded=8;
+@@ -391,7 +431,7 @@
+         const auto expected=failure==16 ? 13 : failure;
+         assert(status.stage==expected && r.poisoned==(failure!=0));
+         assert(observed.completions==completions+(failure==13 ? 0 : 1));
+-        assert(observed.downloads==downloads+((failure==0 || failure==11 || failure==16) ? 1 : 0));
++        assert(observed.downloads==downloads);
+         assert(observed.pops==pops+(failure==13 ? 0 : 1));
+         if (!failure) {
+             assert(result==((std::uint64_t{2}<<32)|52));
+@@ -546,7 +586,7 @@
+ }
+ 
+ static void compact_observation_failures() {
+-    for (auto prefix : {false,true}) for (auto failure : {0,9,10,11,13,16}) {
++    for (auto prefix : {false,true}) for (auto failure : {0,9,10,13,16}) {
+         const auto passes=prefix ? 4 : 1;
+         for (int launch=1;launch<=passes;++launch) {
+             observed={};Resource r;ready(r);
+@@ -563,7 +603,7 @@
+             const auto expected=failure==16 ? 13 : failure;
+             assert(status.stage==expected && r.poisoned==(failure!=0));
+             assert(observed.completions==(failure==13 ? 0 : 1));
+-            assert(observed.downloads==((failure==0 || failure==11 || failure==16) ? 1 : 0));
++            assert(observed.downloads==0);
+             if (failure) assert(results[0]==17 && results[1]==19);
+             else {
+                 assert(results[0]==UINT64_MAX);
+@@ -591,7 +631,59 @@
+     assert(observed.downloads==reads && !r.poisoned);
+ }
+ 
++static void mapped_observation_lifetimes() {
++    for (unsigned int failure=0;failure<3;++failure) {
++        observed={};
++        {
++            Resource r;fake_driver(r.driver);
++            observed.fail_host_allocation=failure==0;
++            observed.fail_host_mapping=failure==1;
++            observed.fail=failure==2 ? 8 : 0;
++            DeviceInfo info{};
++            assert(initialise(r,0,"unused",89,&info).stage==(failure==2 ? 8 : 7));
++        }
++        assert(observed.destroys==1 && observed.memory.empty() && observed.host_memory.empty());
++        assert(observed.pinned_allocations==(failure==0 ? 0 : 1));
++        assert(observed.pinned_releases==observed.pinned_allocations);
++    }
++    for (auto failure : {0,9,10,13,16}) {
++        observed={};
++        auto *r=new Resource;ready(*r);
++        SolverSettings s{};s.count=5;s.padded=8;
++        for (unsigned int slot=0;slot<14;++slot)
++            assert(maelstrom_cuda_storage(r,slot,nullptr,512,0).code==0);
++        assert(maelstrom_cuda_begin_attempt(r).code==0);
++        std::uint32_t errors[]={0,0,52,1,0};
++        assert(maelstrom_cuda_storage(r,12,errors,sizeof(errors),1).code==0);
++        const auto host=r->host_diagnostic;
++        observed.fail=failure;
++        std::uint64_t result=17;
++        const auto status=maelstrom_cuda_checked_solver(r,s,0,128,&result);
++        assert(status.stage==(failure==16 ? 13 : failure));
++        assert(result==(failure ? 17 : (std::uint64_t{2}<<32)|52));
++        assert(observed.downloads==0 && observed.host_memory.count(host)==1);
++        // A bad completion can already have changed mapped storage. Its
++        // lifetime extends past this return until context abandonment.
++        if (failure==10) assert(static_cast<std::uint64_t *>(host)[0]==((std::uint64_t{2}<<32)|52));
++        if (!failure) {
++            CUdeviceptr mapped=0;
++            std::memcpy(&mapped,observed.memory.at(r->diagnostic).data()+diagnostic_records_bytes,sizeof(mapped));
++            assert(mapped==reinterpret_cast<CUdeviceptr>(host));
++            assert(maelstrom_cuda_begin_attempt(r).code==0);
++            for (unsigned int k=0;k<diagnostic_record_count;++k)
++                assert(static_cast<std::uint64_t *>(host)[k]==UINT64_MAX);
++            CUdeviceptr after=0;
++            std::memcpy(&after,observed.memory.at(r->diagnostic).data()+diagnostic_records_bytes,sizeof(after));
++            assert(after==mapped); // Reset cannot overwrite the device address.
++        }
++        observed.fail=0;
++        assert(maelstrom_cuda_close(r).code==0);
++        assert(observed.pinned_releases==1 && observed.host_memory.empty() && observed.memory.empty());
++    }
++}
++
+ int main() {
++    mapped_observation_lifetimes();
+     compact_observation_failures();
+     submission_boundaries();
+     accepted_vectors();
+@@ -601,7 +693,7 @@
+     checked_solver();
+     containment_storage();
+     checked_groups();
+-    for (int stage : {2, 3, 4, 5, 6, 7, 16}) {
++    for (int stage : {2, 3, 4, 5, 6, 7, 8, 16}) {
+         observed = {};
+         {
+             Resource r;
+--- /dev/null
++++ b/src/cuda/mirror_tests.rs
+@@ -0,0 +1,74 @@
++//! Mapped error observations must preserve both record slots across contention,
++//! failed attempts and resets. Expected records come from the injected rows.
++
++use super::*;
++
++#[test]
++#[ignore = "requires an explicitly selected CUDA hardware test run"]
++fn hardware_mapped_diagnostics_keep_minima_slots_and_reset_after_rejection() {
++    let config = crate::config::resolve_effective_configuration(None, None, None).unwrap();
++    for threads in [32, 64, 128, 256] {
++        let mut gpu = CudaSolver::new(0, threads).unwrap();
++        for count in [0, 1, 2, 31, 32, 33, 257, 513, 8000] {
++            let particles: Vec<_> = (0..count)
++                .map(|i| Particle {
++                    identity: i as u64,
++                    position_m: Vec3::ZERO,
++                    velocity_m_s: Vec3::ZERO,
++                })
++                .collect();
++            let mut s = settings(&config, count, 0).unwrap();
++            s.acceleration = [0.; 3];
++            s.timestep = 2.;
++            gpu.prepare(s, &particles, &[]).unwrap();
++            for first in [count / 3, 0, count.saturating_sub(1)] {
++                let mut velocities = vec![[0.0_f32; 3]; count];
++                for velocity in &mut velocities[first..] {
++                    *velocity = [f32::MAX, 0., 0.];
++                }
++                gpu.context.inner.upload(1, &velocities).unwrap();
++                let result = gpu.context.inner.observe(s, 0, threads).unwrap();
++                let expected = if count == 0 {
++                    u64::MAX
++                } else {
++                    ((first as u64) << 32) | 2
++                };
++                assert_eq!(result, [u64::MAX, expected]);
++                gpu.context.inner.begin_attempt().unwrap();
++                let mut position = vec![[0.0_f32; 3]; count];
++                if count != 0 {
++                    position[first] = [f32::NAN, 0., 0.];
++                }
++                gpu.context.inner.upload(0, &position).unwrap();
++                gpu.context
++                    .inner
++                    .upload(3, &vec![[0.0_f32; 3]; count])
++                    .unwrap();
++                let result = gpu.context.inner.observe(s, 1, threads).unwrap();
++                let expected = if count == 0 {
++                    u64::MAX
++                } else {
++                    ((first as u64) << 32) | 22
++                };
++                assert_eq!(result, [expected, u64::MAX]);
++                gpu.context.inner.begin_attempt().unwrap();
++                gpu.context
++                    .inner
++                    .upload(0, &vec![[0.0_f32; 3]; count])
++                    .unwrap();
++                gpu.context
++                    .inner
++                    .upload(1, &vec![[0.0_f32; 3]; count])
++                    .unwrap();
++                assert_eq!(
++                    gpu.context.inner.observe(s, 0, threads).unwrap(),
++                    [u64::MAX; 2]
++                );
++                assert_eq!(
++                    gpu.context.inner.observe(s, 1, threads).unwrap(),
++                    [u64::MAX; 2]
++                );
++            }
++        }
++    }
++}
+--- a/src/cuda/solver.rs
++++ b/src/cuda/solver.rs
+@@ -553,3 +553,7 @@
+ #[cfg(test)]
+ #[path = "plane_tests.rs"]
+ mod plane_tests;
++
++#[cfg(test)]
++#[path = "mirror_tests.rs"]
++mod mirror_tests;
