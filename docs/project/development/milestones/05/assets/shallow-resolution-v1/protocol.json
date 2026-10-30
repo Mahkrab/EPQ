@@ -1,0 +1,105 @@
+{
+  "created_utc": "2026-10-28T23:28:45.559529+00:00",
+  "scope": "Isolated spatial/depth study of C2 PBF; production unchanged. CPU reference costs only, measured on primary PC.",
+  "physical_geometry": {
+    "box_upper_m": [
+      1.2,
+      1.2,
+      0.8
+    ],
+    "left_block_min_m": [
+      0.1,
+      0.375,
+      0.2
+    ],
+    "right_block_min_m": [
+      0.8,
+      0.375,
+      0.2
+    ],
+    "block_extent_m": [
+      0.3,
+      0.3,
+      0.3
+    ],
+    "block_velocities_m_s": [
+      [
+        0.5,
+        0,
+        0
+      ],
+      [
+        -0.5,
+        0,
+        0
+      ]
+    ],
+    "total_mass_kg": 52.23230175835605,
+    "physical_rest_density_kg_m3": 1000,
+    "settled_depth_m": 0.05440864766495422,
+    "initial_geometric_volume_m3": 0.054,
+    "initial_density_ratio": 0.9672648473769639
+  },
+  "refinement": {
+    "block_samples_per_axis": [
+      6,
+      12,
+      18,
+      24
+    ],
+    "dx_m": ".3/n",
+    "particle_count": "2*n^3",
+    "particle_mass_kg": "fixed total mass/(2*n^3)",
+    "support_m": "2*dx",
+    "collision_inset_m": "0.5*dx",
+    "separation_target_m": "0.51*dx",
+    "relaxation_per_m2": ".02/h^2",
+    "dt_s": "(1/240)*(dx/.05)",
+    "scale": 0.5,
+    "iterations": 8,
+    "artificial_pressure": 0,
+    "duration_s": 6,
+    "settled_window_s": [
+      5,
+      6
+    ],
+    "observation_interval_s": 0.05
+  },
+  "depth_controls": {
+    "fixed_dx_m": 0.025,
+    "hydrostatic_depths_m": [
+      0.025,
+      0.05,
+      0.075,
+      0.1
+    ],
+    "box_unchanged": true,
+    "mass": "density*area*depth; consistent equal particle masses, record unavoidable sample-count choices explicitly"
+  },
+  "criteria": {
+    "transient_p95_compression_max": 0.05,
+    "transient_max_compression_max": 0.25,
+    "minimum_separation_fraction_dx": 0.5,
+    "plane_violation_max_m": 1e-06,
+    "settled_centroid_relative_error_max": 0.05,
+    "settled_height_relative_error_max": 0.1,
+    "settled_reconstructed_volume_relative_error_max": 0.1,
+    "settled_kinetic_J_kg_max": 0.00125,
+    "settled_interparticle_density_absolute_error_p95_max": 0.1,
+    "convergence": "Successive spatial changes in centroid/height decrease and are <=5%/10% of independent target at the two finest tested spacings; temporal/iteration controls must not materially reverse the conclusion."
+  },
+  "volume_measurements": [
+    "exact M/rho reference",
+    "height-map geometric volume (label reconstruction and wetting sensitivity)",
+    "independent wall-normalized C2 field 0.5 isosurface volume; threshold sensitivity .45/.55 and sampling sensitivity reported"
+  ],
+  "controls": [
+    "inset 0 versus .25dx versus .5dx at fixed other controls",
+    "boundary density on/off at fixed other controls",
+    "flat tank with the same geometry and mass as collision at each spatial resolution",
+    "same dx across a fluid-depth ladder",
+    "half dt and increased iterations on admitted/refutation endpoints"
+  ],
+  "evidence": "Immutable per-run requests, complete scheduled raw p/v/wall streams, fsync, gzip/readback SHA256, local durable directory and primary home mirror; retain unsuccessful cases.",
+  "alternative_gate": "Only investigate a simple isolated volume-aware free-surface alternative if properly controlled refinement does not recover physical accuracy; no complex thin-film method without evidence."
+}

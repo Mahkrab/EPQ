@@ -1,0 +1,28 @@
+{
+  "label": "translation-muscl-n128",
+  "grid": {
+    "nx": 128,
+    "ny": 64,
+    "lx": 0.2,
+    "ly": 0.1,
+    "periodic_y": true,
+    "rho_liquid": 1000.0,
+    "rho_gas": 1.2
+  },
+  "duration": 2.0,
+  "steps": 640,
+  "dt": 0.003125,
+  "gravity": 0.0,
+  "integrator": "midpoint",
+  "interface_method": "muscl",
+  "transport_only": true,
+  "speed": 0.1,
+  "shear": 0.0,
+  "source_sha256": {
+    "coupled_campaign.py": "beeeb4c5ccd4b6cfd2d2af9fe141bd9b71d1e3e2e1a512dbd1ffaa12175dcc66",
+    "coupled_grid.py": "34cda514186416ec5c4882b8397d6465ec906bd627a920eefc84cd321b2f7fb3",
+    "coupled_model.py": "330cfa6c4933116e6c5b6871891df69ec6903759331fbf468cafd8869119c374",
+    "coupled_reference.py": "0eb628e9598b3831ed53da3234a99787939915fe58d54c5907f96e48c2b00bb0",
+    "coupled_transport.py": "7a2bb4ab58ecef8cb8aae5c5e8a8fbb4a54fbf9554498c218c1e0f067da7e65d"
+  }
+}

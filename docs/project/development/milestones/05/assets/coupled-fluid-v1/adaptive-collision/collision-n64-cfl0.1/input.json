@@ -1,0 +1,32 @@
+{
+  "label": "collision-n64-cfl0.1",
+  "grid": {
+    "nx": 64,
+    "ny": 32,
+    "lx": 0.2,
+    "ly": 0.1,
+    "periodic_y": false,
+    "rho_liquid": 1000.0,
+    "rho_gas": 1.2
+  },
+  "duration": 0.15,
+  "steps": 48,
+  "dt": 0.0031249999999999997,
+  "adaptive_cfl": 0.1,
+  "gravity": 0.0,
+  "integrator": "midpoint",
+  "interface_method": "geometric",
+  "transport_only": false,
+  "speed": 0.1,
+  "shear": 0.0,
+  "source_sha256": {
+    "coupled_audit.py": "6180d90ed6c270d614971ab7c318f1e318e9d48800e933b9b46e162f9cff20c9",
+    "coupled_campaign.py": "4fd0cde578d134675604ed6730a73b5b67271047f6c399a67a5f449a227823c2",
+    "coupled_collision.py": "28ec75ebf77e55364ce5f535a0f7083a3c6c560f758d0f532cdf9eb440d332b8",
+    "coupled_grid.py": "34cda514186416ec5c4882b8397d6465ec906bd627a920eefc84cd321b2f7fb3",
+    "coupled_interface_control.py": "dff42fab08071cb7bf6acbfe8d693e3b7599552d19bf764696bee118ea3541f8",
+    "coupled_model.py": "330cfa6c4933116e6c5b6871891df69ec6903759331fbf468cafd8869119c374",
+    "coupled_reference.py": "d2c2f51e3336217ab92107d47eca317a1bd632a3a9827039d7420ca8e10ee929",
+    "coupled_transport.py": "76c18b9df59b5fae3bd403a947ed3089f14ac0de3c33b63c7faa3ac29dee34a1"
+  }
+}

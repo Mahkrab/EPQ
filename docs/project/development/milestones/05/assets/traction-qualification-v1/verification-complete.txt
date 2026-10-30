@@ -1,0 +1,60 @@
+test_boundary_identity_is_explicit_for_instrumented_and_unknown_sources (tests.performance.test_traction.ContinuumOperatorTests.test_boundary_identity_is_explicit_for_instrumented_and_unknown_sources) ... ok
+test_continuum_halfspace_has_half_kernel_mass_at_surface (tests.performance.test_traction.ContinuumOperatorTests.test_continuum_halfspace_has_half_kernel_mass_at_surface) ... ok
+test_edge_strain_removes_nodal_checkerboard_null_mode (tests.performance.test_traction.ContinuumOperatorTests.test_edge_strain_removes_nodal_checkerboard_null_mode) ... ok
+test_incomplete_prefix_is_retained_without_a_full_run_pass (tests.performance.test_traction.ContinuumOperatorTests.test_incomplete_prefix_is_retained_without_a_full_run_pass) ... ok
+test_mixed_wall_traction_excludes_misleading_two_layer_pass (tests.performance.test_traction.ContinuumOperatorTests.test_mixed_wall_traction_excludes_misleading_two_layer_pass) ... ok
+test_one_natural_layer_is_rejected (tests.performance.test_traction.ContinuumOperatorTests.test_one_natural_layer_is_rejected) ... ok
+test_periodic_tree_density_matches_brute_minimum_image (tests.performance.test_traction.ContinuumOperatorTests.test_periodic_tree_density_matches_brute_minimum_image) ... ok
+test_prefix_reader_rejects_truncated_header (tests.performance.test_traction.ContinuumOperatorTests.test_prefix_reader_rejects_truncated_header) ... ok
+test_same_physical_horizontal_mode_is_accurate_at_two_layers (tests.performance.test_traction.ContinuumOperatorTests.test_same_physical_horizontal_mode_is_accurate_at_two_layers) ... ok
+test_vertical_modes_require_resolved_depth (tests.performance.test_traction.ContinuumOperatorTests.test_vertical_modes_require_resolved_depth) ... ok
+test_actual_mirror_constraint_jacobian_matches_finite_differences (tests.performance.test_traction.NativeOperatorTests.test_actual_mirror_constraint_jacobian_matches_finite_differences) ... ok
+test_adjoint_conserves_internal_impulses_and_removes_energy (tests.performance.test_traction.NativeOperatorTests.test_adjoint_conserves_internal_impulses_and_removes_energy) ... ok
+test_affine_strain_uses_physical_constitutive_power (tests.performance.test_traction.NativeOperatorTests.test_affine_strain_uses_physical_constitutive_power) ... ok
+test_mirrored_pressure_removes_flat_bed_tangential_pressure_impulse (tests.performance.test_traction.NativeOperatorTests.test_mirrored_pressure_removes_flat_bed_tangential_pressure_impulse) ... ok
+test_rigid_motion_is_not_arbitrarily_damped_on_disordered_cloud (tests.performance.test_traction.NativeOperatorTests.test_rigid_motion_is_not_arbitrarily_damped_on_disordered_cloud) ... ok
+test_bulk_viscosity_success_does_not_hide_shallow_free_slip_error (tests.performance.test_qualification.QualificationTests.test_bulk_viscosity_success_does_not_hide_shallow_free_slip_error) ... ok
+test_calibrated_pressure_removes_initial_energy_source_and_scales_with_dt (tests.performance.test_qualification.QualificationTests.test_calibrated_pressure_removes_initial_energy_source_and_scales_with_dt) ... raw-480 0 {'completed_steps': 24, 'particles': 432, 'solver_s': 0.15704174300000007, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 0.0013026141018901427}
+raw-960 0 {'completed_steps': 48, 'particles': 432, 'solver_s': 0.27999220099999994, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 0.0012324778146075577}
+self-480 0 {'completed_steps': 24, 'particles': 432, 'solver_s': 0.166028013, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 7.983392131660771e-05}
+self-960 0 {'completed_steps': 48, 'particles': 432, 'solver_s': 0.33570363200000003, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 3.911351512209116e-05}
+ok
+test_calibration_is_exact_at_physical_rest_lattice_and_scales (tests.performance.test_qualification.QualificationTests.test_calibration_is_exact_at_physical_rest_lattice_and_scales) ... ok
+test_calibration_keeps_mass_and_initial_geometry_fixed (tests.performance.test_qualification.QualificationTests.test_calibration_keeps_mass_and_initial_geometry_fixed) ... raw 0 {'completed_steps': 12, 'particles': 432, 'solver_s': 0.12484456299999999, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 1.7763568394002505e-15}
+self 0 {'completed_steps': 12, 'particles': 432, 'solver_s': 0.13244546100000001, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 0}
+ok
+test_failed_request_retains_diagnostics_and_cannot_overwrite (tests.performance.test_qualification.QualificationTests.test_failed_request_retains_diagnostics_and_cannot_overwrite) ... failed 1 None
+ok
+test_fault_in_stage_work_is_detected_by_independent_closure (tests.performance.test_qualification.QualificationTests.test_fault_in_stage_work_is_detected_by_independent_closure) ... corrupt 0 {'completed_steps': 12, 'particles': 432, 'solver_s': 0.13382136700000002, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 1.7763568394002505e-15}
+ok
+test_freefall_energy_and_velocity_reconstruction_close_independently (tests.performance.test_qualification.QualificationTests.test_freefall_energy_and_velocity_reconstruction_close_independently) ... ballistic 0 {'completed_steps': 12, 'particles': 432, 'solver_s': 0.08060079199999999, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 1.5765166949677223e-14}
+ok
+test_geometric_mass_control_changes_reference_without_changing_points (tests.performance.test_qualification.QualificationTests.test_geometric_mass_control_changes_reference_without_changing_points) ... inherited 0 {'completed_steps': 0, 'particles': 432, 'solver_s': 0, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 0}
+geometric 0 {'completed_steps': 0, 'particles': 432, 'solver_s': 0, 'threads': 1, 'calibration_bias_kg_m3': 33.843008677310756, 'calibration_ratio': 1.0338430086773107, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 0}
+ok
+test_raw_instrumentation_preserves_prior_observations_exactly (tests.performance.test_qualification.QualificationTests.test_raw_instrumentation_preserves_prior_observations_exactly) ... raw 0 {'completed_steps': 12, 'particles': 432, 'solver_s': 0.126142441, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 1.7763568394002505e-15}
+ok
+test_shear_decay_refines_to_physical_viscosity_without_amplitude_fit (tests.performance.test_qualification.QualificationTests.test_shear_decay_refines_to_physical_viscosity_without_amplitude_fit) ... ok
+test_slab_viscosity_refines_at_fixed_physical_geometry (tests.performance.test_qualification.QualificationTests.test_slab_viscosity_refines_at_fixed_physical_geometry) ... ok
+test_unresolved_viscous_quadrature_cannot_pass_physical_gate (tests.performance.test_qualification.QualificationTests.test_unresolved_viscous_quadrature_cannot_pass_physical_gate) ... ok
+test_viscous_stage_dissipates_without_internal_linear_or_angular_impulse (tests.performance.test_qualification.QualificationTests.test_viscous_stage_dissipates_without_internal_linear_or_angular_impulse) ... viscous 0 {'completed_steps': 24, 'particles': 3456, 'solver_s': 1.965216546, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 0.010955651501756813}
+ok
+test_window_work_excludes_interval_before_lower_endpoint (tests.performance.test_qualification.QualificationTests.test_window_work_excludes_interval_before_lower_endpoint) ... window 0 {'completed_steps': 252, 'particles': 432, 'solver_s': 3.5677722479999985, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 8.032721607192613}
+ok
+test_boundary_quadrature_has_correct_full_and_corner_volume (tests.performance.test_spatial.SpatialReferenceTests.test_boundary_quadrature_has_correct_full_and_corner_volume) ... ok
+test_fitted_flat_sampler_respects_extent_without_shifting_mass_centre (tests.performance.test_spatial.SpatialReferenceTests.test_fitted_flat_sampler_respects_extent_without_shifting_mass_centre) ... ok
+test_flattening_preserves_mass_and_initial_geometric_volume (tests.performance.test_spatial.SpatialReferenceTests.test_flattening_preserves_mass_and_initial_geometric_volume) ... ok
+test_initial_collision_follows_ballistic_centre_of_mass (tests.performance.test_spatial.SpatialReferenceTests.test_initial_collision_follows_ballistic_centre_of_mass) ... ok
+test_kd_density_includes_self_and_current_support (tests.performance.test_spatial.SpatialReferenceTests.test_kd_density_includes_self_and_current_support) ... ok
+test_lattice_point_density_is_distinct_from_geometric_mass_density (tests.performance.test_spatial.SpatialReferenceTests.test_lattice_point_density_is_distinct_from_geometric_mass_density) ... ok
+test_off_grid_depth_keeps_equal_particle_volumes (tests.performance.test_spatial.SpatialReferenceTests.test_off_grid_depth_keeps_equal_particle_volumes) ... ok
+test_readback_rejects_wrong_schedule_with_valid_count_and_endpoint (tests.performance.test_spatial.SpatialReferenceTests.test_readback_rejects_wrong_schedule_with_valid_count_and_endpoint) ... ok
+test_reconstructed_thickness_counts_detached_segments (tests.performance.test_spatial.SpatialReferenceTests.test_reconstructed_thickness_counts_detached_segments) ... ok
+test_refinement_preserves_geometry_mass_and_consistent_scales (tests.performance.test_spatial.SpatialReferenceTests.test_refinement_preserves_geometry_mass_and_consistent_scales) ... ok
+test_thread_count_cannot_change_jacobi_observations (tests.performance.test_spatial.SpatialReferenceTests.test_thread_count_cannot_change_jacobi_observations) ... ok
+test_unrepresentable_aligned_strata_are_rejected_before_stepping (tests.performance.test_spatial.SpatialReferenceTests.test_unrepresentable_aligned_strata_are_rejected_before_stepping) ... ok
+
+----------------------------------------------------------------------
+Ran 41 tests in 34.855s
+
+OK

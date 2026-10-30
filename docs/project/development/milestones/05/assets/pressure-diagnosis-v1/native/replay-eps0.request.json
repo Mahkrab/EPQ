@@ -1,0 +1,44 @@
+{
+  "parameters": {
+    "n": 4,
+    "gamma": null,
+    "eps": 0.0,
+    "iterations": 24,
+    "refresh": 1,
+    "dt": 0.0020833333333333333,
+    "support": 2,
+    "gravity": 9.81,
+    "replay": "docs/project/development/milestones/05/assets/traction-qualification-v1/coupled/mirror-mixed-n4-g9.81.raw.gz"
+  },
+  "command": [
+    "/home/mahkrab/.local/share/maelstrom-experiments/pressure-probe",
+    "channel-mixed",
+    "4",
+    "0",
+    "0.0020833333333333333",
+    "0.0020833333333333333",
+    "24",
+    "1",
+    ".5",
+    "4",
+    "self",
+    "1",
+    "0",
+    "0",
+    "1",
+    "9.81",
+    "/home/mahkrab/documents/programs/EPQ/docs/project/development/milestones/05/assets/pressure-diagnosis-v1/native/replay-eps0.ledger",
+    "/home/mahkrab/documents/programs/EPQ/docs/project/development/milestones/05/assets/pressure-diagnosis-v1/native/replay-eps0.initial",
+    "1",
+    "2",
+    "2",
+    "geometric",
+    "0.0",
+    "1"
+  ],
+  "binary_sha256": "85511282ddd653f5c5237f5e7f6e9a3d12f134bfb7bbe3321e0aa74b76f043d0",
+  "initial_sha256": "6444aea99007ec44274324941f48763ed7b0937e48be8b77b90f0e249a4fd719",
+  "environment": {
+    "OMP_WAIT_POLICY": "PASSIVE"
+  }
+}

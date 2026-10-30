@@ -1,0 +1,99 @@
+{
+  "heads": {
+    "EPQ": "814f88a7f4122b1b24ea645b210d89e1200a0c44",
+    "Maelstrom": "250932784790ba26cdc55fc38a877ccefacbf054"
+  },
+  "expected_heads": {
+    "EPQ": "814f88a7f4122b1b24ea645b210d89e1200a0c44",
+    "Maelstrom": "250932784790ba26cdc55fc38a877ccefacbf054"
+  },
+  "native_source_identities": {
+    "spatial_sort.cuh": {
+      "sha256": "9db7cdb4d9671d3cf105ad89241414df1d77d6b0e965589f9aac4308671fdcf7",
+      "previous_expected_sha256": "9db7cdb4d9671d3cf105ad89241414df1d77d6b0e965589f9aac4308671fdcf7",
+      "match": true
+    },
+    "power.cuh": {
+      "sha256": "255aac4535d59a9d74d912960428b6681b6ae564909ea34cdb87ead71bf405d8",
+      "previous_expected_sha256": "255aac4535d59a9d74d912960428b6681b6ae564909ea34cdb87ead71bf405d8",
+      "match": true
+    },
+    "power_exhaustive.cu": {
+      "sha256": "82cde6d20690c2657e20164499a371b2cf1adb74d83a343a97370de14e478e5b",
+      "previous_expected_sha256": "82cde6d20690c2657e20164499a371b2cf1adb74d83a343a97370de14e478e5b",
+      "match": true
+    },
+    "neighbours.cuh": {
+      "sha256": "25c013791467057b68c47bf7b57fa65e1f8377bdec35f1f73de62fb0474e667f",
+      "previous_expected_sha256": "25c013791467057b68c47bf7b57fa65e1f8377bdec35f1f73de62fb0474e667f",
+      "match": true
+    },
+    "solver.h": {
+      "sha256": "4302b0ed260c1357ff8505a37782f63aa109411fc83d3f8fbf2af200be728229",
+      "previous_expected_sha256": "4302b0ed260c1357ff8505a37782f63aa109411fc83d3f8fbf2af200be728229",
+      "match": true
+    },
+    "row_sort.cuh": {
+      "sha256": "233607e3f241bd2fd2d858fbaba734c7d5792b208a07cf15189f4ee241d091ac",
+      "previous_expected_sha256": "233607e3f241bd2fd2d858fbaba734c7d5792b208a07cf15189f4ee241d091ac",
+      "match": true
+    },
+    "bridge.cpp": {
+      "sha256": "5481c4a6ea29353f4848470b1a46d616586d8c4b6c07ef9e0557e61e5beb5042",
+      "previous_expected_sha256": "5481c4a6ea29353f4848470b1a46d616586d8c4b6c07ef9e0557e61e5beb5042",
+      "match": true
+    },
+    "solver.cu": {
+      "sha256": "b13d44290b80aad7de5e6669aea1d0c5f1b4f150b653969568a65655a0eb1744",
+      "previous_expected_sha256": "b13d44290b80aad7de5e6669aea1d0c5f1b4f150b653969568a65655a0eb1744",
+      "match": true
+    },
+    "kernels.cu": {
+      "sha256": "0ec2d7009e58fcf6cc7b5aac032a731bb77f0d514df40424cd0dc317d81dee8f",
+      "previous_expected_sha256": "0ec2d7009e58fcf6cc7b5aac032a731bb77f0d514df40424cd0dc317d81dee8f",
+      "match": true
+    },
+    "power-LICENSE": {
+      "sha256": "296abd795697343af2ef7b707e3d3a8bd2d4fe93f86bb6b54ae2c9553f1f7d16",
+      "previous_expected_sha256": "296abd795697343af2ef7b707e3d3a8bd2d4fe93f86bb6b54ae2c9553f1f7d16",
+      "match": true
+    },
+    "roundtrip.cu": {
+      "sha256": "bb3aa7c294671099db5f3ae77171a762bbe05d00a1586659670902f0138f4b6f",
+      "previous_expected_sha256": "bb3aa7c294671099db5f3ae77171a762bbe05d00a1586659670902f0138f4b6f",
+      "match": true
+    },
+    "probe.h": {
+      "sha256": "b715638ad1326c8241157b1b9335c4bf3d9ffa255343dbb290a7f9dad7a070f2",
+      "previous_expected_sha256": "b715638ad1326c8241157b1b9335c4bf3d9ffa255343dbb290a7f9dad7a070f2",
+      "match": true
+    },
+    "state_observation.cuh": {
+      "sha256": "85399e7b353756c719bc2b69609456044302fc410a66214b48e3153fcd98c106",
+      "previous_expected_sha256": "85399e7b353756c719bc2b69609456044302fc410a66214b48e3153fcd98c106",
+      "match": true
+    }
+  },
+  "Maelstrom_existing_dirty_state_matches": true,
+  "Maelstrom_status": " D native/tests.cpp\n D src/cuda/active_tests.rs\n D src/cuda/correction_tests.rs\n D src/cuda/density_tests.rs\n D src/cuda/mirror_tests.rs\n D src/cuda/observation_tests.rs\n D src/cuda/plane_tests.rs\n D src/cuda/residency_tests.rs\n D src/cuda/search_tests.rs\n M src/cuda/solver.rs\n D src/cuda/solver_tests.rs\n D src/cuda/spatial_sort_tests.rs\n D src/cuda/vorticity_tests.rs\n?? tests/native/\n?? tests/unit/\n",
+  "EPQ_status": " m Maelstrom\n M docs/project/development/milestones/05/performance-cuda-file-review.md\n M docs/project/development/milestones/05/performance-plan.md\n M docs/research/references.bib\n M docs/research/source-register.md\n?? docs/project/development/milestones/05/assets/architecture-v1/\n?? docs/project/development/milestones/05/assets/calibration-motion-v1/\n?? docs/project/development/milestones/05/assets/physical-accuracy-v1/\n?? docs/project/development/milestones/05/assets/physical-convergence-v2/\n?? docs/project/development/milestones/05/assets/shallow-resolution-v1/\n?? docs/project/development/milestones/05/assets/traction-qualification-v1/\n?? docs/project/development/milestones/05/calibration-motion.md\n?? docs/project/development/milestones/05/performance-architecture.md\n?? docs/project/development/milestones/05/performance-physical-accuracy.md\n?? docs/project/development/milestones/05/physical-convergence.md\n?? docs/project/development/milestones/05/shallow-resolution.md\n?? docs/project/development/milestones/05/viscosity-traction.md\n?? docs/research/sources/070-barnden-cuda-pbf.md\n?? docs/research/sources/071-dehnen-aly-sph-convergence.md\n?? docs/research/sources/072-koschier-sph-viscosity.md\n?? docs/research/sources/073-iapws-liquid-water-viscosity.md\n?? docs/research/sources/074-bonet-lok-variational-sph.md\n?? docs/research/sources/075-mit-viscous-diffusion.md\n?? tests/performance/audit_architecture.py\n?? tests/performance/test_architecture_quality.py\n?? tests/performance/test_convergence.py\n?? tests/performance/test_physical_accuracy.py\n?? tests/performance/test_qualification.py\n?? tests/performance/test_spatial.py\n?? tests/performance/test_traction.py\n?? tools/performance/architecture.py\n?? tools/performance/architecture_driver.cu\n?? tools/performance/architecture_external.cu\n?? tools/performance/architecture_quality.cpp\n?? tools/performance/convergence_assessment.py\n?? tools/performance/convergence_audit.cpp\n?? tools/performance/convergence_campaign.py\n?? tools/performance/convergence_plot.py\n?? tools/performance/convergence_retain.py\n?? tools/performance/convergence_solver.cpp\n?? tools/performance/physical_accuracy.py\n?? tools/performance/physical_followup.py\n?? tools/performance/physical_plot.py\n?? tools/performance/physical_reference.py\n?? tools/performance/qualification_assessment.py\n?? tools/performance/qualification_audit.py\n?? tools/performance/qualification_campaign.py\n?? tools/performance/qualification_diagnostics.py\n?? tools/performance/qualification_operator.py\n?? tools/performance/qualification_plot.py\n?? tools/performance/qualification_retain.py\n?? tools/performance/qualification_shear.cpp\n?? tools/performance/qualification_slab.cpp\n?? tools/performance/qualification_solver.cpp\n?? tools/performance/qualification_viscosity.hpp\n?? tools/performance/spatial_assessment.py\n?? tools/performance/spatial_audit.py\n?? tools/performance/spatial_campaign.py\n?? tools/performance/spatial_initial.py\n?? tools/performance/spatial_plot.py\n?? tools/performance/spatial_retain.py\n?? tools/performance/spatial_solver.cpp\n?? tools/performance/traction_assessment.py\n?? tools/performance/traction_audit.py\n?? tools/performance/traction_campaign.py\n?? tools/performance/traction_deformed.cpp\n?? tools/performance/traction_invariants.cpp\n?? tools/performance/traction_jacobian.py\n?? tools/performance/traction_native_check.py\n?? tools/performance/traction_operator.py\n?? tools/performance/traction_pbf.cpp\n?? tools/performance/traction_pbf_axis.cpp\n?? tools/performance/traction_pbf_mirror.cpp\n?? tools/performance/traction_pbf_modal.cpp\n?? tools/performance/traction_plot.py\n?? tools/performance/traction_prefix.py\n?? tools/performance/traction_pressure_reference.py\n?? tools/performance/traction_probe.cpp\n?? tools/performance/traction_viscosity.hpp\n",
+  "local_platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "production_writes": false,
+  "history_changes": false,
+  "system_setting_changes": false,
+  "primary_hardware": "AMD Ryzen9 7900X, verified ssh pc",
+  "physics_build_flags": [
+    "-std=c++17",
+    "-O3",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-fopenmp",
+    "-ffp-contract=off"
+  ],
+  "primary_worker_threads": 4,
+  "process_only_environment": {
+    "OMP_WAIT_POLICY": "PASSIVE"
+  },
+  "performance_claim": "None. Concurrent instrumented CPU physics experiments; raw elapsed time is operational evidence. No CUDA benchmark or production validation."
+}

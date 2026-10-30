@@ -1,0 +1,32 @@
+{
+  "deliberate_large_audit_cancellation": {
+    "signal": "SIGINT",
+    "target_process_command": [
+      "/tmp/epq-architecture-20261028/bin/production",
+      "run",
+      "/tmp/maelstrom-reprofile11-20261028/inputs/scenes/capacity-block-48.toml",
+      "--backend",
+      "cuda",
+      "--device",
+      "0",
+      "--block-size",
+      "128",
+      "--refine-timestep",
+      "4",
+      "--steps",
+      "480",
+      "--unpaced",
+      "--format",
+      "json",
+      "--quiet",
+      "--measure",
+      "--checkpoints",
+      "0,1,120,240,480"
+    ],
+    "observed_exit_code": 130,
+    "observed_finished_utc": "2026-10-28T17:20:27.298566+00:00",
+    "reason": "Large checkpoint audit unsuitable for bounded collection; no timing admitted. Replacement retains final state only."
+  },
+  "source_versions": "Measured architecture-measured.py and architecture_quality-v1.cpp remain retained. Canonical frontend subsequently selects explicit effects inputs and handles disabled pressure. Reader v2 adds wall grouping; common fields agree exactly.",
+  "ordinary_caches": "Task builds and CUDA contexts may update ordinary build/JIT caches. No drivers, registry, security, clock locks, installed commands, branches, tags or remotes changed."
+}

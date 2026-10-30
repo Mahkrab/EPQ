@@ -1,0 +1,45 @@
+{
+  "created_utc": "2026-10-29T12:18:04.741548+00:00",
+  "admitted": "fixed rectangular compatible MAC pressure operator only",
+  "mathematics_sha256": "8f1a2bab9dc7483f0739496343e19c7dcaa7a31bac3807c836c1fa348dcf60f7",
+  "physical_tests": "7 independent tests passed before GPU implementation; full log retained on final run",
+  "restrictions": "No arbitrary interface, grid-particle transfer, moving geometry or full-fluid qualification. Low periodic vertical resolutions fail 1% pressure gate and are excluded.",
+  "timing_protocol": {
+    "cases": [
+      [
+        64,
+        16,
+        64,
+        0.2,
+        0.05,
+        0.2
+      ],
+      [
+        256,
+        12,
+        171,
+        1.2,
+        0.05625,
+        0.8
+      ],
+      [
+        64,
+        64,
+        64,
+        0.4,
+        0.4,
+        0.4
+      ]
+    ],
+    "physical_time_s": 0.1,
+    "repeats": 3,
+    "order": "alternate FFT and cold-start Jacobi PCG across trials",
+    "cfl": 0.5,
+    "assumed_velocity_max_m_s": 0.5,
+    "solver_tolerance": 1e-10,
+    "accuracy_audit": "Both algorithms same face operator; final fields and true residual independently checked. Continuum correctness established separately.",
+    "precision": "FP64, ordinary CUDA implementation, no fast math",
+    "scope": "Complete pressure stage kick, divergence, solve and projection. Allocation/planning/build separately excluded. Not full fluid cost.",
+    "sensitivity": "Small tank half timestep, and one-second horizon if bounded runtime permits."
+  }
+}

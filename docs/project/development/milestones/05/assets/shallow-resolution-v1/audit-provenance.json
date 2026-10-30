@@ -1,0 +1,15 @@
+{
+  "auditor_source_sha256": "7dfca9b5e4812df1f0851fc6bf0ab8d6c6dcfb7be1f94fe402918cfc6ff37a12",
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "volume_thresholds": [
+    0.45,
+    0.5,
+    0.55
+  ],
+  "default_grid_fraction_dx": 0.5,
+  "control_grid_fraction_dx": 0.25,
+  "quadrature_order": 24,
+  "validation_order": 48,
+  "notes": "All physical audit streams use the same unchanged reader source. Timed requests are validated by raw readback and exact equality to the corresponding six-second trajectory prefix."
+}

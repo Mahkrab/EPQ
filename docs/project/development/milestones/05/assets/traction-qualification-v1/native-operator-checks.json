@@ -1,0 +1,200 @@
+{
+  "records": [
+    {
+      "label": "horizontal-natural-2-0.6",
+      "command": [
+        "/home/mahkrab/.local/share/maelstrom-experiments/traction-probe",
+        "2",
+        "horizontal-natural",
+        "0.6",
+        "2",
+        "/home/mahkrab/documents/programs/EPQ/docs/project/development/milestones/05/assets/traction-qualification-v1/native-operator/horizontal-natural-2-0.6.bin",
+        "4"
+      ],
+      "raw_sha256": "449d9f7c3e1b51d1f99dfcfed58760ccf105ee1932604cbbd14c6fce272d775b",
+      "metrics": {
+        "particles": 1152,
+        "layers": 2,
+        "mode": "horizontal-natural",
+        "L": 0.6,
+        "dx": 0.025,
+        "power": 0.05392003224782202,
+        "v_dot_a": -0.05392003224782933,
+        "max_condition": 1.7453621355478963,
+        "linear_error": 4.440892098500626e-16,
+        "eigenvalue_bound": 74.24725837616351,
+        "edges": 21888
+      },
+      "maximum_acceleration_difference": 5.898059818321144e-15,
+      "dissipation_closure": 7.313594174718219e-15
+    },
+    {
+      "label": "horizontal-natural-4-0.2",
+      "command": [
+        "/home/mahkrab/.local/share/maelstrom-experiments/traction-probe",
+        "4",
+        "horizontal-natural",
+        "0.2",
+        "2",
+        "/home/mahkrab/documents/programs/EPQ/docs/project/development/milestones/05/assets/traction-qualification-v1/native-operator/horizontal-natural-4-0.2.bin",
+        "4"
+      ],
+      "raw_sha256": "41a74f85615f06e5d9bdf41c5b4ed34e7e70c5b4cbbc2c3f3861ab30bcd1e836",
+      "metrics": {
+        "particles": 1024,
+        "layers": 4,
+        "mode": "horizontal-natural",
+        "L": 0.2,
+        "dx": 0.0125,
+        "power": 0.47434015929097095,
+        "v_dot_a": -0.47434015929098633,
+        "max_condition": 1.7453621355478928,
+        "linear_error": 6.661338147750939e-16,
+        "eigenvalue_bound": 278.3829309964776,
+        "edges": 23552
+      },
+      "maximum_acceleration_difference": 1.5888668075085408e-14,
+      "dissipation_closure": 1.5376588891058418e-14
+    },
+    {
+      "label": "horizontal-slip-4-0.2",
+      "command": [
+        "/home/mahkrab/.local/share/maelstrom-experiments/traction-probe",
+        "4",
+        "horizontal-slip",
+        "0.2",
+        "2",
+        "/home/mahkrab/documents/programs/EPQ/docs/project/development/milestones/05/assets/traction-qualification-v1/native-operator/horizontal-slip-4-0.2.bin",
+        "4"
+      ],
+      "raw_sha256": "47a412a08267031cd6de30274f1b60ef4d2f12ebcee1e78afbadb6d0f4e5d6cc",
+      "metrics": {
+        "particles": 1024,
+        "layers": 4,
+        "mode": "horizontal-slip",
+        "L": 0.2,
+        "dx": 0.0125,
+        "power": 0.47336792983362486,
+        "v_dot_a": -0.47336792983361475,
+        "max_condition": 1.000000000000001,
+        "linear_error": 6.661338147750939e-16,
+        "eigenvalue_bound": 166.928253775633,
+        "edges": 28160
+      },
+      "maximum_acceleration_difference": 1.5296178338991298e-14,
+      "dissipation_closure": 1.0103029524088925e-14
+    },
+    {
+      "label": "vertical-slip-8-0.2",
+      "command": [
+        "/home/mahkrab/.local/share/maelstrom-experiments/traction-probe",
+        "8",
+        "vertical-slip",
+        "0.2",
+        "2",
+        "/home/mahkrab/documents/programs/EPQ/docs/project/development/milestones/05/assets/traction-qualification-v1/native-operator/vertical-slip-8-0.2.bin",
+        "4"
+      ],
+      "raw_sha256": "6abaa2aab99e36d2cf4e280dc66e7265d54c2a35a454c2a653e88ce512276404",
+      "metrics": {
+        "particles": 8192,
+        "layers": 8,
+        "mode": "vertical-slip",
+        "L": 0.2,
+        "dx": 0.00625,
+        "power": 1.8934717193346016,
+        "v_dot_a": -1.8934717193345634,
+        "max_condition": 1.0000000000000016,
+        "linear_error": 6.661338147750939e-16,
+        "eigenvalue_bound": 667.713015102535,
+        "edges": 229376
+      },
+      "maximum_acceleration_difference": 1.1085741723366291e-13,
+      "dissipation_closure": 3.8191672047105385e-14
+    },
+    {
+      "label": "vertical-noslip-8-0.2",
+      "command": [
+        "/home/mahkrab/.local/share/maelstrom-experiments/traction-probe",
+        "8",
+        "vertical-noslip",
+        "0.2",
+        "2",
+        "/home/mahkrab/documents/programs/EPQ/docs/project/development/milestones/05/assets/traction-qualification-v1/native-operator/vertical-noslip-8-0.2.bin",
+        "4"
+      ],
+      "raw_sha256": "416e501af31d47a1e2a8030c4d892a0b408542b44d8bcef6b6b8b27700dcc062",
+      "metrics": {
+        "particles": 8192,
+        "layers": 8,
+        "mode": "vertical-noslip",
+        "L": 0.2,
+        "dx": 0.00625,
+        "power": 1.8934717193346402,
+        "v_dot_a": -1.8934717193345636,
+        "max_condition": 1.0000000000000016,
+        "linear_error": 6.661338147750939e-16,
+        "eigenvalue_bound": 667.713015102535,
+        "edges": 229376
+      },
+      "maximum_acceleration_difference": 9.26443214835746e-14,
+      "dissipation_closure": 7.66053886991358e-14
+    },
+    {
+      "label": "vertical-mixed-4-0.2",
+      "command": [
+        "/home/mahkrab/.local/share/maelstrom-experiments/traction-probe",
+        "4",
+        "vertical-mixed",
+        "0.2",
+        "2",
+        "/home/mahkrab/documents/programs/EPQ/docs/project/development/milestones/05/assets/traction-qualification-v1/native-operator/vertical-mixed-4-0.2.bin",
+        "4"
+      ],
+      "raw_sha256": "49f8bd645078a67394fa85634c77af8c5c3f8227dfcc899f93a7d4ad7a90d20e",
+      "metrics": {
+        "particles": 1024,
+        "layers": 4,
+        "mode": "vertical-mixed",
+        "L": 0.2,
+        "dx": 0.0125,
+        "power": 0.49821783536113373,
+        "v_dot_a": -0.4982178353610787,
+        "max_condition": 1.7453621355478923,
+        "linear_error": 6.661338147750939e-16,
+        "eigenvalue_bound": 278.3829309964775,
+        "edges": 25856
+      },
+      "maximum_acceleration_difference": 1.3216664407566765e-14,
+      "dissipation_closure": 5.5011550870176507e-14
+    },
+    {
+      "label": "vertical-mixed-8-0.2",
+      "command": [
+        "/home/mahkrab/.local/share/maelstrom-experiments/traction-probe",
+        "8",
+        "vertical-mixed",
+        "0.2",
+        "2",
+        "/home/mahkrab/documents/programs/EPQ/docs/project/development/milestones/05/assets/traction-qualification-v1/native-operator/vertical-mixed-8-0.2.bin",
+        "4"
+      ],
+      "raw_sha256": "a972f164dbafef2098743167cb59fd46f03263033cfab8762aa061b1256ce70c",
+      "metrics": {
+        "particles": 8192,
+        "layers": 8,
+        "mode": "vertical-mixed",
+        "L": 0.2,
+        "dx": 0.00625,
+        "power": 0.4916359977685889,
+        "v_dot_a": -0.491635997768552,
+        "max_condition": 1.7453621355478948,
+        "linear_error": 6.661338147750939e-16,
+        "eigenvalue_bound": 1113.531723985914,
+        "edges": 220160
+      },
+      "maximum_acceleration_difference": 5.493042392619191e-14,
+      "dissipation_closure": 3.6914915568786455e-14
+    }
+  ]
+}

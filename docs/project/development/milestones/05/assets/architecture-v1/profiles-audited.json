@@ -1,0 +1,1195 @@
+{
+  "8000-control-checked": {
+    "steps": 480,
+    "wall_s": 0.908561893,
+    "partition_ms_per_step": {
+      "host": 0.036396579166666665,
+      "other-api": 0.0106157125,
+      "launch": 0.114872975,
+      "sync": 0.6573789041666667,
+      "copy": 0.14138823958333332,
+      "gpu": 0.9321848666666667
+    },
+    "kernel_ms_per_step": {
+      "acceleration": {
+        "launches": 480,
+        "ms": 0.0017697979166666667
+      },
+      "prediction": {
+        "launches": 480,
+        "ms": 0.00201753125
+      },
+      "cell": {
+        "launches": 480,
+        "ms": 0.0030894666666666667
+      },
+      "spatial-sort": {
+        "launches": 3360,
+        "ms": 0.040622914583333336
+      },
+      "neighbour-count": {
+        "launches": 480,
+        "ms": 0.12969863125
+      },
+      "prefix-block": {
+        "launches": 480,
+        "ms": 0.0016489333333333334
+      },
+      "prefix-total": {
+        "launches": 480,
+        "ms": 0.0016099333333333334
+      },
+      "prefix-carry": {
+        "launches": 480,
+        "ms": 0.0012085291666666666
+      },
+      "neighbour-fill": {
+        "launches": 480,
+        "ms": 0.13624516666666667
+      },
+      "identity-sort": {
+        "launches": 480,
+        "ms": 0.006438664583333333
+      },
+      "density-lambda-validation": {
+        "launches": 3840,
+        "ms": 0.2541629833333333
+      },
+      "publish": {
+        "launches": 3840,
+        "ms": 0.01096719375
+      },
+      "correction": {
+        "launches": 3840,
+        "ms": 0.2910559375
+      },
+      "physical-density-check": {
+        "launches": 3840,
+        "ms": 0.011660260416666667
+      },
+      "candidate": {
+        "launches": 3840,
+        "ms": 0.01060773125
+      },
+      "projection": {
+        "launches": 3840,
+        "ms": 0.016018391666666666
+      },
+      "velocity": {
+        "launches": 480,
+        "ms": 0.002110466666666667
+      }
+    },
+    "api_counts": {
+      "cuModuleGetLoadingMode": 1,
+      "cudaMalloc_v3020": 15,
+      "cudaHostAlloc_v3020": 1,
+      "cudaMemset_v3020": 1,
+      "cudaMemcpy_v3020": 2408,
+      "cuLibraryLoadData": 1,
+      "cuLibraryGetKernel": 4,
+      "cuKernelGetName": 31200,
+      "cudaLaunchKernel_v7000": 31200,
+      "cudaDeviceSynchronize_v3020": 10081
+    },
+    "kernel_count": 31200,
+    "raw_kernel_count": 31200,
+    "copy_count": 2400,
+    "raw_copy_count": 2408,
+    "copy_bytes": 94106880,
+    "ordinary_solver_s": 0.8661386080000003,
+    "profiled_solver_s": 0.9081818899999998,
+    "overhead_percent": 4.8541055221036356
+  },
+  "8000-control-resident": {
+    "steps": 480,
+    "wall_s": 0.519725105,
+    "partition_ms_per_step": {
+      "host": 0.008230654166666667,
+      "other-api": 0.00876595625,
+      "launch": 0.07955257083333334,
+      "gpu": 0.9016925916666667,
+      "sync": 0.0845188625
+    },
+    "kernel_ms_per_step": {
+      "acceleration": {
+        "launches": 480,
+        "ms": 0.0017328729166666667
+      },
+      "prediction": {
+        "launches": 480,
+        "ms": 0.0019658708333333335
+      },
+      "cell": {
+        "launches": 480,
+        "ms": 0.003024933333333333
+      },
+      "spatial-sort": {
+        "launches": 3360,
+        "ms": 0.03988166458333333
+      },
+      "neighbour-count": {
+        "launches": 480,
+        "ms": 0.12669588125
+      },
+      "prefix-block": {
+        "launches": 480,
+        "ms": 0.0016118041666666667
+      },
+      "prefix-total": {
+        "launches": 480,
+        "ms": 0.0015739375
+      },
+      "prefix-carry": {
+        "launches": 480,
+        "ms": 0.0011815395833333334
+      },
+      "neighbour-fill": {
+        "launches": 480,
+        "ms": 0.13308876458333332
+      },
+      "identity-sort": {
+        "launches": 480,
+        "ms": 0.006278216666666667
+      },
+      "density-lambda-validation": {
+        "launches": 3840,
+        "ms": 0.24886547291666666
+      },
+      "publish": {
+        "launches": 3840,
+        "ms": 0.0113131875
+      },
+      "correction": {
+        "launches": 3840,
+        "ms": 0.28452443541666667
+      },
+      "physical-density-check": {
+        "launches": 3840,
+        "ms": 0.0121482375
+      },
+      "candidate": {
+        "launches": 3840,
+        "ms": 0.010654295833333334
+      },
+      "projection": {
+        "launches": 3840,
+        "ms": 0.01567471875
+      },
+      "velocity": {
+        "launches": 480,
+        "ms": 0.0020571354166666667
+      }
+    },
+    "api_counts": {
+      "cuModuleGetLoadingMode": 1,
+      "cudaMalloc_v3020": 15,
+      "cudaHostAlloc_v3020": 1,
+      "cudaMemset_v3020": 1,
+      "cudaMemcpy_v3020": 8,
+      "cuLibraryLoadData": 1,
+      "cuLibraryGetKernel": 4,
+      "cuKernelGetName": 31200,
+      "cudaLaunchKernel_v7000": 31200,
+      "cudaDeviceSynchronize_v3020": 481
+    },
+    "kernel_count": 31200,
+    "raw_kernel_count": 31200,
+    "copy_count": 0,
+    "raw_copy_count": 8,
+    "copy_bytes": 0,
+    "ordinary_solver_s": 0.5163421749999996,
+    "profiled_solver_s": 0.5194016019999997,
+    "overhead_percent": 0.5925192920760658
+  },
+  "110592-control-checked": {
+    "steps": 480,
+    "wall_s": 3.172673622,
+    "partition_ms_per_step": {
+      "host": 0.3570336145833333,
+      "other-api": 0.011966445833333334,
+      "launch": 0.17193924166666666,
+      "sync": 0.910326575,
+      "copy": 0.2634943875,
+      "gpu": 4.894976447916667
+    },
+    "kernel_ms_per_step": {
+      "acceleration": {
+        "launches": 480,
+        "ms": 0.0038760583333333335
+      },
+      "prediction": {
+        "launches": 480,
+        "ms": 0.006421197916666667
+      },
+      "cell": {
+        "launches": 480,
+        "ms": 0.01748756875
+      },
+      "spatial-sort": {
+        "launches": 5280,
+        "ms": 0.21274390833333334
+      },
+      "neighbour-count": {
+        "launches": 480,
+        "ms": 0.49863721875
+      },
+      "prefix-block": {
+        "launches": 480,
+        "ms": 0.0034340875
+      },
+      "prefix-total": {
+        "launches": 480,
+        "ms": 0.0023150104166666666
+      },
+      "prefix-carry": {
+        "launches": 480,
+        "ms": 0.0019582666666666665
+      },
+      "neighbour-fill": {
+        "launches": 480,
+        "ms": 0.5420299395833333
+      },
+      "identity-sort": {
+        "launches": 480,
+        "ms": 0.07167671875
+      },
+      "density-lambda-validation": {
+        "launches": 3840,
+        "ms": 1.7967355854166667
+      },
+      "publish": {
+        "launches": 3840,
+        "ms": 0.02335854375
+      },
+      "correction": {
+        "launches": 3840,
+        "ms": 1.5176585895833334
+      },
+      "physical-density-check": {
+        "launches": 3840,
+        "ms": 0.020999095833333332
+      },
+      "candidate": {
+        "launches": 3840,
+        "ms": 0.0253121875
+      },
+      "projection": {
+        "launches": 3840,
+        "ms": 0.034980877083333334
+      },
+      "velocity": {
+        "launches": 480,
+        "ms": 0.00477931875
+      }
+    },
+    "api_counts": {
+      "cuModuleGetLoadingMode": 1,
+      "cudaMalloc_v3020": 15,
+      "cudaHostAlloc_v3020": 1,
+      "cudaMemset_v3020": 1,
+      "cudaMemcpy_v3020": 2408,
+      "cuLibraryLoadData": 1,
+      "cuLibraryGetKernel": 4,
+      "cuKernelGetName": 33120,
+      "cudaLaunchKernel_v7000": 33120,
+      "cudaDeviceSynchronize_v3020": 10081
+    },
+    "kernel_count": 33120,
+    "raw_kernel_count": 33120,
+    "copy_count": 2400,
+    "raw_copy_count": 2408,
+    "copy_bytes": 1300573440,
+    "ordinary_solver_s": 2.990761120999996,
+    "profiled_solver_s": 3.172079745999998,
+    "overhead_percent": 6.062624785605619
+  },
+  "110592-control-deferred": {
+    "steps": 480,
+    "wall_s": 2.79853305,
+    "partition_ms_per_step": {
+      "host": 0.35317297708333334,
+      "other-api": 0.01171659375,
+      "launch": 0.13663220625,
+      "copy": 0.43518731875,
+      "gpu": 4.89082956875,
+      "sync": 0.002738522916666667
+    },
+    "kernel_ms_per_step": {
+      "acceleration": {
+        "launches": 480,
+        "ms": 0.00386956875
+      },
+      "prediction": {
+        "launches": 480,
+        "ms": 0.006420210416666666
+      },
+      "cell": {
+        "launches": 480,
+        "ms": 0.017494077083333334
+      },
+      "spatial-sort": {
+        "launches": 5280,
+        "ms": 0.21294618125
+      },
+      "neighbour-count": {
+        "launches": 480,
+        "ms": 0.4987520916666667
+      },
+      "prefix-block": {
+        "launches": 480,
+        "ms": 0.0034369604166666666
+      },
+      "prefix-total": {
+        "launches": 480,
+        "ms": 0.00231773125
+      },
+      "prefix-carry": {
+        "launches": 480,
+        "ms": 0.00195994375
+      },
+      "neighbour-fill": {
+        "launches": 480,
+        "ms": 0.542368375
+      },
+      "identity-sort": {
+        "launches": 480,
+        "ms": 0.07173262708333333
+      },
+      "density-lambda-validation": {
+        "launches": 3840,
+        "ms": 1.7898875145833333
+      },
+      "publish": {
+        "launches": 3840,
+        "ms": 0.02371526041666667
+      },
+      "correction": {
+        "launches": 3840,
+        "ms": 1.5184322770833334
+      },
+      "physical-density-check": {
+        "launches": 3840,
+        "ms": 0.0215909375
+      },
+      "candidate": {
+        "launches": 3840,
+        "ms": 0.02517641875
+      },
+      "projection": {
+        "launches": 3840,
+        "ms": 0.03542017708333333
+      },
+      "velocity": {
+        "launches": 480,
+        "ms": 0.004725354166666667
+      }
+    },
+    "api_counts": {
+      "cuModuleGetLoadingMode": 1,
+      "cudaMalloc_v3020": 15,
+      "cudaHostAlloc_v3020": 1,
+      "cudaMemset_v3020": 1,
+      "cudaMemcpy_v3020": 2408,
+      "cuLibraryLoadData": 1,
+      "cuLibraryGetKernel": 4,
+      "cuKernelGetName": 33120,
+      "cudaLaunchKernel_v7000": 33120,
+      "cudaDeviceSynchronize_v3020": 481
+    },
+    "kernel_count": 33120,
+    "raw_kernel_count": 33120,
+    "copy_count": 2400,
+    "raw_copy_count": 2408,
+    "copy_bytes": 1300573440,
+    "ordinary_solver_s": 2.7618564249999955,
+    "profiled_solver_s": 2.797939428000001,
+    "overhead_percent": 1.3064764219235414
+  },
+  "110592-control-snapshots": {
+    "steps": 480,
+    "wall_s": 2.790969122,
+    "partition_ms_per_step": {
+      "host": 0.017428239583333335,
+      "other-api": 0.009933825,
+      "launch": 0.12952702916666667,
+      "sync": 0.7759148395833333,
+      "copy": 0.08620372291666667,
+      "gpu": 4.7955113479166664
+    },
+    "kernel_ms_per_step": {
+      "acceleration": {
+        "launches": 480,
+        "ms": 0.003869183333333333
+      },
+      "prediction": {
+        "launches": 480,
+        "ms": 0.00640931875
+      },
+      "cell": {
+        "launches": 480,
+        "ms": 0.017531495833333334
+      },
+      "spatial-sort": {
+        "launches": 5280,
+        "ms": 0.21316454375
+      },
+      "neighbour-count": {
+        "launches": 480,
+        "ms": 0.49978944166666667
+      },
+      "prefix-block": {
+        "launches": 480,
+        "ms": 0.003441022916666667
+      },
+      "prefix-total": {
+        "launches": 480,
+        "ms": 0.00232013125
+      },
+      "prefix-carry": {
+        "launches": 480,
+        "ms": 0.00196088125
+      },
+      "neighbour-fill": {
+        "launches": 480,
+        "ms": 0.54285969375
+      },
+      "identity-sort": {
+        "launches": 480,
+        "ms": 0.07188013333333333
+      },
+      "density-lambda-validation": {
+        "launches": 3840,
+        "ms": 1.7988324625
+      },
+      "publish": {
+        "launches": 3840,
+        "ms": 0.023394127083333334
+      },
+      "correction": {
+        "launches": 3840,
+        "ms": 1.5207970770833332
+      },
+      "physical-density-check": {
+        "launches": 3840,
+        "ms": 0.021043627083333332
+      },
+      "candidate": {
+        "launches": 3840,
+        "ms": 0.025323447916666665
+      },
+      "projection": {
+        "launches": 3840,
+        "ms": 0.035027075
+      },
+      "velocity": {
+        "launches": 480,
+        "ms": 0.004786945833333334
+      }
+    },
+    "api_counts": {
+      "cuModuleGetLoadingMode": 1,
+      "cudaMalloc_v3020": 15,
+      "cudaHostAlloc_v3020": 1,
+      "cudaMemset_v3020": 1,
+      "cudaMemcpy_v3020": 1448,
+      "cuLibraryLoadData": 1,
+      "cuLibraryGetKernel": 4,
+      "cuKernelGetName": 33120,
+      "cudaLaunchKernel_v7000": 33120,
+      "cudaDeviceSynchronize_v3020": 10081
+    },
+    "kernel_count": 33120,
+    "raw_kernel_count": 33120,
+    "copy_count": 1440,
+    "raw_copy_count": 1448,
+    "copy_bytes": 26545920,
+    "ordinary_solver_s": 2.714196662999998,
+    "profiled_solver_s": 2.7905166199999996,
+    "overhead_percent": 2.8118801426734175
+  },
+  "110592-control-resident": {
+    "steps": 480,
+    "wall_s": 2.396736819,
+    "partition_ms_per_step": {
+      "host": 0.008232445833333333,
+      "other-api": 0.009349591666666667,
+      "launch": 0.08760676875,
+      "gpu": 4.800848479166667,
+      "sync": 0.08716442083333334
+    },
+    "kernel_ms_per_step": {
+      "acceleration": {
+        "launches": 480,
+        "ms": 0.00388045625
+      },
+      "prediction": {
+        "launches": 480,
+        "ms": 0.00644986875
+      },
+      "cell": {
+        "launches": 480,
+        "ms": 0.017538502083333334
+      },
+      "spatial-sort": {
+        "launches": 5280,
+        "ms": 0.21371972083333332
+      },
+      "neighbour-count": {
+        "launches": 480,
+        "ms": 0.50145250625
+      },
+      "prefix-block": {
+        "launches": 480,
+        "ms": 0.0034568020833333334
+      },
+      "prefix-total": {
+        "launches": 480,
+        "ms": 0.0024434125
+      },
+      "prefix-carry": {
+        "launches": 480,
+        "ms": 0.002047047916666667
+      },
+      "neighbour-fill": {
+        "launches": 480,
+        "ms": 0.5443892875
+      },
+      "identity-sort": {
+        "launches": 480,
+        "ms": 0.07204020208333334
+      },
+      "density-lambda-validation": {
+        "launches": 3840,
+        "ms": 1.7987515958333333
+      },
+      "publish": {
+        "launches": 3840,
+        "ms": 0.023620058333333332
+      },
+      "correction": {
+        "launches": 3840,
+        "ms": 1.52571751875
+      },
+      "physical-density-check": {
+        "launches": 3840,
+        "ms": 0.021542941666666666
+      },
+      "candidate": {
+        "launches": 3840,
+        "ms": 0.02526775625
+      },
+      "projection": {
+        "launches": 3840,
+        "ms": 0.0356442875
+      },
+      "velocity": {
+        "launches": 480,
+        "ms": 0.00474638125
+      }
+    },
+    "api_counts": {
+      "cuModuleGetLoadingMode": 1,
+      "cudaMalloc_v3020": 15,
+      "cudaHostAlloc_v3020": 1,
+      "cudaMemset_v3020": 1,
+      "cudaMemcpy_v3020": 8,
+      "cuLibraryLoadData": 1,
+      "cuLibraryGetKernel": 4,
+      "cuKernelGetName": 33120,
+      "cudaLaunchKernel_v7000": 33120,
+      "cudaDeviceSynchronize_v3020": 481
+    },
+    "kernel_count": 33120,
+    "raw_kernel_count": 33120,
+    "copy_count": 0,
+    "raw_copy_count": 8,
+    "copy_bytes": 0,
+    "ordinary_solver_s": 2.393646415000001,
+    "profiled_solver_s": 2.3965211230000008,
+    "overhead_percent": 0.12009743719811894
+  },
+  "110592-pow32-checked": {
+    "steps": 480,
+    "wall_s": 2.984549259,
+    "partition_ms_per_step": {
+      "host": 0.35114989375,
+      "other-api": 0.01108923125,
+      "launch": 0.17538487708333333,
+      "sync": 0.7376116041666667,
+      "copy": 0.23362274583333334,
+      "gpu": 4.708952604166667
+    },
+    "kernel_ms_per_step": {
+      "acceleration": {
+        "launches": 480,
+        "ms": 0.003834472916666667
+      },
+      "prediction": {
+        "launches": 480,
+        "ms": 0.0064247354166666664
+      },
+      "cell": {
+        "launches": 480,
+        "ms": 0.017483222916666666
+      },
+      "spatial-sort": {
+        "launches": 5280,
+        "ms": 0.21300368541666667
+      },
+      "neighbour-count": {
+        "launches": 480,
+        "ms": 0.4998782041666667
+      },
+      "prefix-block": {
+        "launches": 480,
+        "ms": 0.003439070833333333
+      },
+      "prefix-total": {
+        "launches": 480,
+        "ms": 0.0023162666666666667
+      },
+      "prefix-carry": {
+        "launches": 480,
+        "ms": 0.0019614729166666667
+      },
+      "neighbour-fill": {
+        "launches": 480,
+        "ms": 0.54241541875
+      },
+      "identity-sort": {
+        "launches": 480,
+        "ms": 0.0716841
+      },
+      "density-lambda-validation": {
+        "launches": 3840,
+        "ms": 1.798203825
+      },
+      "publish": {
+        "launches": 3840,
+        "ms": 0.023404160416666667
+      },
+      "correction": {
+        "launches": 3840,
+        "ms": 1.32828825625
+      },
+      "physical-density-check": {
+        "launches": 3840,
+        "ms": 0.02105874375
+      },
+      "candidate": {
+        "launches": 3840,
+        "ms": 0.025315179166666667
+      },
+      "projection": {
+        "launches": 3840,
+        "ms": 0.03494971458333333
+      },
+      "velocity": {
+        "launches": 480,
+        "ms": 0.004770570833333333
+      }
+    },
+    "api_counts": {
+      "cuModuleGetLoadingMode": 1,
+      "cudaMalloc_v3020": 15,
+      "cudaHostAlloc_v3020": 1,
+      "cudaMemset_v3020": 1,
+      "cudaMemcpy_v3020": 2408,
+      "cuLibraryLoadData": 1,
+      "cuLibraryGetKernel": 4,
+      "cuKernelGetName": 33120,
+      "cudaLaunchKernel_v7000": 33120,
+      "cudaDeviceSynchronize_v3020": 10081
+    },
+    "kernel_count": 33120,
+    "raw_kernel_count": 33120,
+    "copy_count": 2400,
+    "raw_copy_count": 2408,
+    "copy_bytes": 1300573440,
+    "ordinary_solver_s": 2.944016722000002,
+    "profiled_solver_s": 2.983997897999999,
+    "overhead_percent": 1.3580485362473027
+  },
+  "110592-pow64-checked": {
+    "steps": 480,
+    "wall_s": 4.946526378,
+    "partition_ms_per_step": {
+      "host": 0.3602290875,
+      "other-api": 0.011714402083333334,
+      "launch": 0.19576031458333334,
+      "sync": 0.7611206020833333,
+      "copy": 0.24378688958333333,
+      "gpu": 8.732651991666666
+    },
+    "kernel_ms_per_step": {
+      "acceleration": {
+        "launches": 480,
+        "ms": 0.0038453416666666667
+      },
+      "prediction": {
+        "launches": 480,
+        "ms": 0.006421429166666667
+      },
+      "cell": {
+        "launches": 480,
+        "ms": 0.0175023375
+      },
+      "spatial-sort": {
+        "launches": 5280,
+        "ms": 0.21273370208333334
+      },
+      "neighbour-count": {
+        "launches": 480,
+        "ms": 0.4983985875
+      },
+      "prefix-block": {
+        "launches": 480,
+        "ms": 0.00343635
+      },
+      "prefix-total": {
+        "launches": 480,
+        "ms": 0.0023160854166666667
+      },
+      "prefix-carry": {
+        "launches": 480,
+        "ms": 0.001957875
+      },
+      "neighbour-fill": {
+        "launches": 480,
+        "ms": 0.5414206708333333
+      },
+      "identity-sort": {
+        "launches": 480,
+        "ms": 0.07165032291666666
+      },
+      "density-lambda-validation": {
+        "launches": 3840,
+        "ms": 1.7962000041666666
+      },
+      "publish": {
+        "launches": 3840,
+        "ms": 0.023346404166666668
+      },
+      "correction": {
+        "launches": 3840,
+        "ms": 5.356242020833333
+      },
+      "physical-density-check": {
+        "launches": 3840,
+        "ms": 0.02114266875
+      },
+      "candidate": {
+        "launches": 3840,
+        "ms": 0.025465227083333333
+      },
+      "projection": {
+        "launches": 3840,
+        "ms": 0.03519363125
+      },
+      "velocity": {
+        "launches": 480,
+        "ms": 0.004801827083333333
+      }
+    },
+    "api_counts": {
+      "cuModuleGetLoadingMode": 1,
+      "cudaMalloc_v3020": 15,
+      "cudaHostAlloc_v3020": 1,
+      "cudaMemset_v3020": 1,
+      "cudaMemcpy_v3020": 2408,
+      "cuLibraryLoadData": 1,
+      "cuLibraryGetKernel": 4,
+      "cuKernelGetName": 33120,
+      "cudaLaunchKernel_v7000": 33120,
+      "cudaDeviceSynchronize_v3020": 10081
+    },
+    "kernel_count": 33120,
+    "raw_kernel_count": 33120,
+    "copy_count": 2400,
+    "raw_copy_count": 2408,
+    "copy_bytes": 1300573440,
+    "ordinary_solver_s": 4.8555871619999955,
+    "profiled_solver_s": 4.945237976999997,
+    "overhead_percent": 1.846343439195408
+  },
+  "110592-soa-checked": {
+    "steps": 480,
+    "wall_s": 3.666473101,
+    "partition_ms_per_step": {
+      "host": 0.43932204166666666,
+      "other-api": 0.004416883333333333,
+      "launch": 0.13694061041666666,
+      "sync": 0.91399386875,
+      "copy": 0.2678065958333333,
+      "gpu": 5.876005627083333
+    },
+    "kernel_ms_per_step": {
+      "acceleration": {
+        "launches": 480,
+        "ms": 0.0038979979166666665
+      },
+      "prediction": {
+        "launches": 480,
+        "ms": 0.0066931875
+      },
+      "cell": {
+        "launches": 480,
+        "ms": 0.017530754166666666
+      },
+      "spatial-sort": {
+        "launches": 5280,
+        "ms": 0.21318295833333334
+      },
+      "neighbour-count": {
+        "launches": 480,
+        "ms": 0.7158963083333333
+      },
+      "prefix-block": {
+        "launches": 480,
+        "ms": 0.00347205625
+      },
+      "prefix-total": {
+        "launches": 480,
+        "ms": 0.002275995833333333
+      },
+      "prefix-carry": {
+        "launches": 480,
+        "ms": 0.0019343979166666666
+      },
+      "neighbour-fill": {
+        "launches": 480,
+        "ms": 0.8301007229166667
+      },
+      "identity-sort": {
+        "launches": 480,
+        "ms": 0.07185050208333334
+      },
+      "density-lambda-validation": {
+        "launches": 3840,
+        "ms": 2.0757602229166667
+      },
+      "publish": {
+        "launches": 3840,
+        "ms": 0.02318941875
+      },
+      "correction": {
+        "launches": 3840,
+        "ms": 1.71203926875
+      },
+      "physical-density-check": {
+        "launches": 3840,
+        "ms": 0.021059408333333335
+      },
+      "candidate": {
+        "launches": 3840,
+        "ms": 0.027029397916666666
+      },
+      "projection": {
+        "launches": 3840,
+        "ms": 0.034739341666666666
+      },
+      "velocity": {
+        "launches": 480,
+        "ms": 0.004935652083333334
+      }
+    },
+    "api_counts": {
+      "cuModuleGetLoadingMode": 1,
+      "cudaMemcpyToSymbol_v3020": 1,
+      "cudaMalloc_v3020": 15,
+      "cudaHostAlloc_v3020": 1,
+      "cudaMemset_v3020": 1,
+      "cudaMemcpy_v3020": 2408,
+      "cuLibraryGetKernel": 4,
+      "cuKernelGetName": 33120,
+      "cudaLaunchKernel_v7000": 33120,
+      "cudaDeviceSynchronize_v3020": 10081
+    },
+    "kernel_count": 33120,
+    "raw_kernel_count": 33120,
+    "copy_count": 2400,
+    "raw_copy_count": 2409,
+    "copy_bytes": 1300573440,
+    "ordinary_solver_s": 3.4979084920000028,
+    "profiled_solver_s": 3.665876132000001,
+    "overhead_percent": 4.80194494464774
+  },
+  "110592-unchecked-checked": {
+    "steps": 480,
+    "wall_s": 3.126462997,
+    "partition_ms_per_step": {
+      "host": 0.35667435416666665,
+      "other-api": 0.011086958333333334,
+      "launch": 0.1530096875,
+      "sync": 0.7923953625,
+      "copy": 0.23918706875,
+      "gpu": 4.961111145833334
+    },
+    "kernel_ms_per_step": {
+      "acceleration": {
+        "launches": 480,
+        "ms": 0.0037713541666666668
+      },
+      "prediction": {
+        "launches": 480,
+        "ms": 0.006068095833333334
+      },
+      "cell": {
+        "launches": 480,
+        "ms": 0.01750792291666667
+      },
+      "spatial-sort": {
+        "launches": 5280,
+        "ms": 0.21309315208333332
+      },
+      "neighbour-count": {
+        "launches": 480,
+        "ms": 0.4953353645833333
+      },
+      "prefix-block": {
+        "launches": 480,
+        "ms": 0.00344408125
+      },
+      "prefix-total": {
+        "launches": 480,
+        "ms": 0.0022927375
+      },
+      "prefix-carry": {
+        "launches": 480,
+        "ms": 0.0019575354166666667
+      },
+      "neighbour-fill": {
+        "launches": 480,
+        "ms": 0.6184987520833334
+      },
+      "identity-sort": {
+        "launches": 480,
+        "ms": 0.06918900208333334
+      },
+      "density-lambda-validation": {
+        "launches": 3840,
+        "ms": 1.84018208125
+      },
+      "publish": {
+        "launches": 3840,
+        "ms": 0.022884227083333333
+      },
+      "correction": {
+        "launches": 3840,
+        "ms": 1.4761439645833334
+      },
+      "physical-density-check": {
+        "launches": 3840,
+        "ms": 0.018172322916666667
+      },
+      "candidate": {
+        "launches": 3840,
+        "ms": 0.026275279166666665
+      },
+      "projection": {
+        "launches": 3840,
+        "ms": 0.0310857
+      },
+      "velocity": {
+        "launches": 480,
+        "ms": 0.004629079166666667
+      }
+    },
+    "api_counts": {
+      "cuModuleGetLoadingMode": 1,
+      "cudaMalloc_v3020": 15,
+      "cudaHostAlloc_v3020": 1,
+      "cudaMemset_v3020": 1,
+      "cudaMemcpy_v3020": 2408,
+      "cuLibraryLoadData": 1,
+      "cuLibraryGetKernel": 4,
+      "cuKernelGetName": 33120,
+      "cudaLaunchKernel_v7000": 33120,
+      "cudaDeviceSynchronize_v3020": 10081
+    },
+    "kernel_count": 33120,
+    "raw_kernel_count": 33120,
+    "copy_count": 2400,
+    "raw_copy_count": 2408,
+    "copy_bytes": 1300573440,
+    "ordinary_solver_s": 3.022536198000003,
+    "profiled_solver_s": 3.125803943000002,
+    "overhead_percent": 3.4165924983241114
+  },
+  "110592-unchecked-pow32-resident": {
+    "steps": 480,
+    "wall_s": 2.343532052,
+    "partition_ms_per_step": {
+      "host": 0.008594614583333333,
+      "other-api": 0.008875672916666667,
+      "launch": 0.08731997083333333,
+      "gpu": 4.6905252270833335,
+      "sync": 0.08704295625
+    },
+    "kernel_ms_per_step": {
+      "acceleration": {
+        "launches": 480,
+        "ms": 0.0037581458333333334
+      },
+      "prediction": {
+        "launches": 480,
+        "ms": 0.006033625
+      },
+      "cell": {
+        "launches": 480,
+        "ms": 0.017429472916666668
+      },
+      "spatial-sort": {
+        "launches": 5280,
+        "ms": 0.21287840208333333
+      },
+      "neighbour-count": {
+        "launches": 480,
+        "ms": 0.49491732916666664
+      },
+      "prefix-block": {
+        "launches": 480,
+        "ms": 0.003458279166666667
+      },
+      "prefix-total": {
+        "launches": 480,
+        "ms": 0.002526470833333333
+      },
+      "prefix-carry": {
+        "launches": 480,
+        "ms": 0.002099066666666667
+      },
+      "neighbour-fill": {
+        "launches": 480,
+        "ms": 0.6191345520833333
+      },
+      "identity-sort": {
+        "launches": 480,
+        "ms": 0.06932308958333333
+      },
+      "density-lambda-validation": {
+        "launches": 3840,
+        "ms": 1.83935046875
+      },
+      "publish": {
+        "launches": 3840,
+        "ms": 0.02310635
+      },
+      "correction": {
+        "launches": 3840,
+        "ms": 1.3176502395833334
+      },
+      "physical-density-check": {
+        "launches": 3840,
+        "ms": 0.018650597916666668
+      },
+      "candidate": {
+        "launches": 3840,
+        "ms": 0.026189902083333334
+      },
+      "projection": {
+        "launches": 3840,
+        "ms": 0.031425183333333336
+      },
+      "velocity": {
+        "launches": 480,
+        "ms": 0.004579341666666667
+      }
+    },
+    "api_counts": {
+      "cuModuleGetLoadingMode": 1,
+      "cudaMalloc_v3020": 15,
+      "cudaHostAlloc_v3020": 1,
+      "cudaMemset_v3020": 1,
+      "cudaMemcpy_v3020": 8,
+      "cuLibraryLoadData": 1,
+      "cuLibraryGetKernel": 4,
+      "cuKernelGetName": 33120,
+      "cudaLaunchKernel_v7000": 33120,
+      "cudaDeviceSynchronize_v3020": 481
+    },
+    "kernel_count": 33120,
+    "raw_kernel_count": 33120,
+    "copy_count": 0,
+    "raw_copy_count": 8,
+    "copy_bytes": 0,
+    "ordinary_solver_s": 2.346548569999999,
+    "profiled_solver_s": 2.3431399119999994,
+    "overhead_percent": -0.14526262288274694
+  },
+  "110592-external-unique-external": {
+    "steps": 480,
+    "wall_s": 2.059617538,
+    "partition_ms_per_step": {
+      "host": 0.01641135,
+      "other-api": 0.01480404375,
+      "launch": 0.08482511458333333,
+      "copy": 0.05650662083333333,
+      "gpu": 4.05054365,
+      "sync": 0.06777909166666667
+    },
+    "kernel_ms_per_step": {
+      "euler_integration": {
+        "launches": 480,
+        "ms": 0.0038308833333333334
+      },
+      "quantize": {
+        "launches": 480,
+        "ms": 0.004454279166666667
+      },
+      "DeviceScanInitKernel": {
+        "launches": 480,
+        "ms": 0.0007252666666666667
+      },
+      "DeviceScanKernel": {
+        "launches": 480,
+        "ms": 0.00364608125
+      },
+      "placement": {
+        "launches": 480,
+        "ms": 0.12080049166666666
+      },
+      "find_neighbours": {
+        "launches": 480,
+        "ms": 0.8901967833333333
+      },
+      "compute_constraints": {
+        "launches": 3840,
+        "ms": 1.3481416854166666
+      },
+      "compute_tensile_instability": {
+        "launches": 3840,
+        "ms": 1.6526855020833333
+      },
+      "project": {
+        "launches": 3840,
+        "ms": 0.02136389375
+      },
+      "velocity": {
+        "launches": 480,
+        "ms": 0.004284279166666667
+      }
+    },
+    "api_counts": {
+      "cuModuleGetLoadingMode": 1,
+      "cudaMalloc_v3020": 490,
+      "cudaMemcpy_v3020": 485,
+      "cuLibraryGetKernel": 10,
+      "cuKernelGetName": 14882,
+      "cudaLaunchKernel_v7000": 14882,
+      "cudaStreamSynchronize_v3020": 482,
+      "cudaMemset_v3020": 480,
+      "cudaFree_v3020": 482,
+      "cudaDeviceSynchronize_v3020": 480
+    },
+    "kernel_count": 14880,
+    "raw_kernel_count": 14882,
+    "copy_count": 480,
+    "raw_copy_count": 485,
+    "copy_bytes": 1920,
+    "ordinary_solver_s": 2.044294474999999,
+    "profiled_solver_s": 2.058844515000001,
+    "overhead_percent": 0.7117389484703196
+  }
+}

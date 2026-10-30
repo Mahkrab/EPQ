@@ -1,0 +1,15 @@
+{
+  "created_utc": "2026-10-28T23:50:06.782082+00:00",
+  "device": "Primary PC CPU, 8 process-local OpenMP workers; no affinity, driver or system policy changes.",
+  "boundary": "Steady-clock sum of complete experimental solver steps. Includes search construction/rebuild, Jacobi work, distance projection and accepted vector updates. Excludes initial scene/wall setup, observations, gzip, transport and independent analysis.",
+  "workload": "New collision simulation from fixed recorded initial geometry, 0.5 simulated seconds; covers initial fall and impact. It is not a sustained six-second or production CUDA benchmark.",
+  "n": [
+    6,
+    12,
+    18,
+    24
+  ],
+  "samples": "One warm-up per size then five admitted samples per size, reversing resolution order each round. All serial; no task build/audit/transfer overlaps admitted solver timings.",
+  "interpretation": "Report median and full range. Do not infer CUDA cost, whole-application throughput, or real-time suitability from this CPU reference.",
+  "source": "Allocation-reuse reference; complete six-second n=6 and n=12 raw outputs matched the preceding reference exactly."
+}

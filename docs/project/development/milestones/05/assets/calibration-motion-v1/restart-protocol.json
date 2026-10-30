@@ -1,0 +1,16 @@
+{
+  "created_utc": "2026-10-29T01:15:56.081936+00:00",
+  "source": "Matched collision raw/self n12, saved t5 state; all sources and arrays hashed.",
+  "duration_s": 1,
+  "controls": {
+    "full": "unchanged model: verify against source t5..6 trajectory",
+    "no-contact": "only contact stage disabled; mechanism diagnostic, not production candidate",
+    "quench": "only initial velocities zeroed; account removed K and momentum explicitly; causal diagnostic only, never an admitted damping policy"
+  },
+  "questions": [
+    "Does motion persist without contact?",
+    "Does reset kinetic energy regenerate under gravity, pressure and boundary updates?",
+    "Are accepted total-energy increases large enough to explain the failing KE?"
+  ],
+  "criteria": "Same closure and impulse budgets. Diagnostic ablations do not admit a fluid model or relax quietness."
+}

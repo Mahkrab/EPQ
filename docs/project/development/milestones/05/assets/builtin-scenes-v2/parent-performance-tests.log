@@ -1,0 +1,33 @@
+.............................................................................................../home/mahkrab/.local/share/uv/python/cpython-3.14.3-linux-x86_64-gnu/lib/python3.14/pathlib/__init__.py:298: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x71efbb4667a0>
+  return drv, root, [x for x in rel.split(sep) if x and x != '.']
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/mahkrab/.local/share/uv/python/cpython-3.14.3-linux-x86_64-gnu/lib/python3.14/pathlib/__init__.py:298: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x71efbb4671f0>
+  return drv, root, [x for x in rel.split(sep) if x and x != '.']
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.............observations-000.tar.gz 573 2
+................../home/mahkrab/documents/programs/EPQ/tools/performance/neighbour_attribution.py:78: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x71efbb4671f0>
+  launches = list(db.execute("SELECT a.correlationId FROM CUPTI_ACTIVITY_KIND_RUNTIME a JOIN StringIds s ON a.nameId=s.id WHERE s.value='cuLaunchKernel' ORDER BY a.start"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/mahkrab/documents/programs/EPQ/tools/performance/neighbour_attribution.py:78: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x71efbb467e20>
+  launches = list(db.execute("SELECT a.correlationId FROM CUPTI_ACTIVITY_KIND_RUNTIME a JOIN StringIds s ON a.nameId=s.id WHERE s.value='cuLaunchKernel' ORDER BY a.start"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.......observations-000.tar.gz 236 1
+.................raw-480 0 {'completed_steps': 24, 'particles': 432, 'solver_s': 0.193829496, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 0.0013026141018901427}
+raw-960 0 {'completed_steps': 48, 'particles': 432, 'solver_s': 0.37898055400000014, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 0.0012324778146075577}
+self-480 0 {'completed_steps': 24, 'particles': 432, 'solver_s': 0.218160241, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 7.983392131660771e-05}
+self-960 0 {'completed_steps': 48, 'particles': 432, 'solver_s': 0.45454410899999986, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 3.911351512209116e-05}
+..raw 0 {'completed_steps': 12, 'particles': 432, 'solver_s': 0.160824353, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 1.7763568394002505e-15}
+self 0 {'completed_steps': 12, 'particles': 432, 'solver_s': 0.18114327700000005, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 0}
+.failed 1 None
+.corrupt 0 {'completed_steps': 12, 'particles': 432, 'solver_s': 0.203700684, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 1.7763568394002505e-15}
+.ballistic 0 {'completed_steps': 12, 'particles': 432, 'solver_s': 0.11868573499999999, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 1.5765166949677223e-14}
+.inherited 0 {'completed_steps': 0, 'particles': 432, 'solver_s': 0, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 0}
+geometric 0 {'completed_steps': 0, 'particles': 432, 'solver_s': 0, 'threads': 1, 'calibration_bias_kg_m3': 33.843008677310756, 'calibration_ratio': 1.0338430086773107, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 0}
+.raw 0 {'completed_steps': 12, 'particles': 432, 'solver_s': 0.17149505, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 1.7763568394002505e-15}
+....viscous 0 {'completed_steps': 24, 'particles': 3456, 'solver_s': 2.690762427, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 0.010955651501756813}
+.window 0 {'completed_steps': 252, 'particles': 432, 'solver_s': 4.718628209000004, 'threads': 1, 'calibration_bias_kg_m3': 32.23825865107778, 'calibration_ratio': 1.0322382586510779, 'wall_mass_multiplier': 1, 'last_iteration_input_max_compression_over_run': 8.032721607192613}
+........................................
+----------------------------------------------------------------------
+Ran 202 tests in 98.851s
+
+OK

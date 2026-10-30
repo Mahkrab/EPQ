@@ -131,7 +131,10 @@ def audit(directory):
         m = d["manifest"]
         assert digest(ROOT / "Maelstrom" / m["configuration"]) == m["configuration_sha256"]
         for case in m["cases"]:
-            assert digest(ROOT / "Maelstrom" / case["scene"]) == case["sha256"]
+            scene_path = ROOT / "Maelstrom" / case["scene"]
+            if case["scene"].startswith("scenes/") and not scene_path.exists():
+                scene_path = ROOT / "Maelstrom/reference" / case["scene"]
+            assert digest(scene_path) == case["sha256"]
             if case["golden"]:
                 assert digest(ROOT / "Maelstrom" / case["golden"]) == case["golden_sha256"]
         correct = read(path / "correctness.json")

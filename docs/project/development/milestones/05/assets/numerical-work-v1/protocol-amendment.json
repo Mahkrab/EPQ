@@ -1,0 +1,15 @@
+{
+  "created_utc": "2026-10-29T23:22:29.037212+00:00",
+  "residual_opportunity": {
+    "trajectory": "Five seconds of unchanged fixed480Hz,I8,correction0.5,relaxation2; 8000 and110592 particles",
+    "min_applied_iterations": 2,
+    "max_iterations": 8,
+    "p95_positive_constraint": 0.03,
+    "maximum_positive_constraint": 0.15,
+    "optional_maximum_correction_m": 0.0005,
+    "measurement": "Inspect next iteration pre-projection residual; ideal oracle ignores extra-group and checking costs. This cannot establish an adaptive trajectory or speedup."
+  },
+  "selection": "Both new strong240 correction1/relaxation0.02 candidates rejected on explosive density/energy; no extension. Sustain half-rate240I8 and half-iterations480I4 as measured trade-offs, not accepted policies.",
+  "quality": "No existing physical threshold relaxed. Hydrostatic, shear and convergence errors reported separately from application screens.",
+  "stop": "If physical screens fail and residual opportunity cannot plausibly remove half the whole-solver cost, retain no adaptive implementation. No new formulation or kernel optimisation."
+}

@@ -1,0 +1,9 @@
+{
+  "created_utc": "2026-10-28T22:49:45.472319+00:00",
+  "hypothesis": "A density estimator can report low residuals at clustered particle sites while geometric volume is wrong; investigate kernel/distribution bias separately from missing wall support.",
+  "change": "Replace density kernel and its matching analytic derivative with normalized 3D Wendland C2 of same support h=.1. Recompute lattice rest sum and mass, as required for a consistent kernel change; other primary parameters fixed.",
+  "formula": "W=21/(2*pi*h^3)*(1-r/h)^4*(1+4*r/h), r<h; gradient=-20*21/(2*pi*h^5)*(1-r/h)^3*d.",
+  "initial_cases": "No distance constraint, epsilon*h^2=.02, scale=.5, artificial pressure0, eight then32 passes, dt1/240, same wall volume samples.",
+  "research_scope": "Dehnen and Aly 2012 arXiv1204.2471 motivates trying Wendland for pairing; it does not prove this PBF implementation correct.",
+  "criteria": "Original criteria unchanged."
+}

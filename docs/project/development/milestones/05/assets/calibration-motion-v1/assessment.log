@@ -1,0 +1,165 @@
+{
+  "spatial": {
+    "collision-raw-n": {
+      "labels": [
+        "collision-raw-n6",
+        "collision-raw-n12",
+        "collision-raw-n18",
+        "collision-raw-n24"
+      ],
+      "final_errors": [
+        -0.081028064943239,
+        0.009952735076613931,
+        0.02621869330315194,
+        0.033116314765489055
+      ],
+      "physical_errors_decrease": false,
+      "successive_mean_centroid_changes_m": [
+        0.002488447384676098,
+        0.0004661022228555668,
+        0.0001936225857507648
+      ],
+      "finest_two_strict_calibration_pass": false,
+      "finest_two_all_checks_pass": false
+    },
+    "collision-self-n": {
+      "labels": [
+        "collision-self-n6",
+        "collision-self-n12",
+        "collision-self-n18",
+        "collision-self-n24"
+      ],
+      "final_errors": [
+        -0.08102843673127218,
+        -0.020965584694398888,
+        -0.01154203832203659,
+        -0.004073040695815068
+      ],
+      "physical_errors_decrease": true,
+      "successive_mean_centroid_changes_m": [
+        0.0016421777526854885,
+        0.0002711020998351632,
+        0.00021773577795926313
+      ],
+      "finest_two_strict_calibration_pass": false,
+      "finest_two_all_checks_pass": false
+    },
+    "viscosity-0.001-self-n": {
+      "labels": [
+        "viscosity-0.001-self-n12",
+        "viscosity-0.001-self-n18",
+        "viscosity-0.001-self-n24"
+      ],
+      "final_errors": [
+        -0.023488072226891952,
+        -0.016036901870386824,
+        -0.008971130523906641
+      ],
+      "physical_errors_decrease": true,
+      "successive_mean_centroid_changes_m": [
+        0.00020129681685122566,
+        0.00019291040418292424
+      ],
+      "finest_two_strict_calibration_pass": false,
+      "finest_two_all_checks_pass": false
+    },
+    "tank-valid-self-n": {
+      "labels": [
+        "tank-valid-self-n6",
+        "tank-valid-self-n12"
+      ],
+      "final_errors": [
+        -0.003860388258151608,
+        -0.0025751560837742283
+      ],
+      "physical_errors_decrease": true,
+      "successive_mean_centroid_changes_m": [
+        0.00018426686823838634
+      ],
+      "finest_two_strict_calibration_pass": true,
+      "finest_two_all_checks_pass": true
+    }
+  },
+  "temporal": {
+    "halfdt-raw-n12": {
+      "base": "collision-raw-n12",
+      "mean_centroid_change_m": 2.235853734010307e-05,
+      "predefined_budget_m": 0.00027204323832477113,
+      "change_within_budget": true,
+      "changed_checks": []
+    },
+    "iter16-raw-n12": {
+      "base": "collision-raw-n12",
+      "mean_centroid_change_m": 1.2873583152221008e-05,
+      "predefined_budget_m": 0.00027204323832477113,
+      "change_within_budget": true,
+      "changed_checks": []
+    },
+    "halfdt-self-n12": {
+      "base": "collision-self-n12",
+      "mean_centroid_change_m": 1.0970016292671109e-05,
+      "predefined_budget_m": 0.00027204323832477113,
+      "change_within_budget": true,
+      "changed_checks": []
+    },
+    "iter16-self-n12": {
+      "base": "collision-self-n12",
+      "mean_centroid_change_m": 2.0559299200195724e-05,
+      "predefined_budget_m": 0.00027204323832477113,
+      "change_within_budget": true,
+      "changed_checks": []
+    },
+    "halfdt-raw-n18": {
+      "base": "collision-raw-n18",
+      "mean_centroid_change_m": 5.2263337232082846e-05,
+      "predefined_budget_m": 0.00027204323832477113,
+      "change_within_budget": true,
+      "changed_checks": []
+    },
+    "iter16-raw-n18": {
+      "base": "collision-raw-n18",
+      "mean_centroid_change_m": 5.570514489558476e-06,
+      "predefined_budget_m": 0.00027204323832477113,
+      "change_within_budget": true,
+      "changed_checks": []
+    },
+    "halfdt-self-n18": {
+      "base": "collision-self-n18",
+      "mean_centroid_change_m": 6.158975436805145e-05,
+      "predefined_budget_m": 0.00027204323832477113,
+      "change_within_budget": true,
+      "changed_checks": []
+    },
+    "iter16-self-n18": {
+      "base": "collision-self-n18",
+      "mean_centroid_change_m": 2.51248683757338e-07,
+      "predefined_budget_m": 0.00027204323832477113,
+      "change_within_budget": true,
+      "changed_checks": []
+    },
+    "halfdt-viscous-self-n12": {
+      "base": "viscosity-0.001-self-n12",
+      "mean_centroid_change_m": 2.1203548105259984e-06,
+      "predefined_budget_m": 0.00027204323832477113,
+      "change_within_budget": true,
+      "changed_checks": []
+    },
+    "iter16-viscous-self-n12": {
+      "base": "viscosity-0.001-self-n12",
+      "mean_centroid_change_m": 1.0861574264098978e-05,
+      "predefined_budget_m": 0.00027204323832477113,
+      "change_within_budget": true,
+      "changed_checks": []
+    }
+  },
+  "viscosity_material_gate": {
+    "amplitude_budget": 0.05,
+    "shallow_free_slip_errors": {
+      "2": 0.39080437802500345,
+      "4": 0.19950290289497286
+    },
+    "shallow_free_slip_pass": false
+  },
+  "production_admitted": false,
+  "admission_rule": "Passing an individual case is insufficient. Require spatial and temporal/iteration physical convergence for the same material model, correct conservation and independent viscosity validation in the operating geometry."
+}

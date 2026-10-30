@@ -1,0 +1,9 @@
+{
+  "created_utc": "2026-10-29T01:44:26.419114+00:00",
+  "reason": "Fixed physical mass isolates estimator bias but retains original initial envelope/geometric mass-density inconsistency. Test physically dense geometric sampling separately.",
+  "one_mechanism_controls": "At n12 collision and deep tank compare inherited/geometric mass crossed with raw/self density convention. Existing inherited cases retained. New geometric-raw changes mass only; geometric-self changes only the site correction relative to geometric-raw.",
+  "geometric_mass": "m=rho0*dx^3. Collision M54kg,H=.05625m; tank M288kg,H=.3m. Particle geometry/count, support, collision/contact extent, dt and iterations unchanged. References use actual header mass, not the old target.",
+  "site_bias": "Derived from ell=(m/rho0)^(1/3), giving33.8430086773kg/m3 at geometric mass; no fitted centroid constant.",
+  "criterion": "Original accuracy, stability,energy and1% calibration thresholds unchanged; no full geometric-mass spatial qualification implied by two n12 screens.",
+  "initialisation": "Inherited mass/geometric envelopes are a dilute particle initial condition, not fully dense0.3m continuum cubes. This limits transient interpretation of fixed-mass studies."
+}

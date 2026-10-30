@@ -1,0 +1,272 @@
+{
+  "timing": [
+    {
+      "scene": "resolved",
+      "method": "pbf",
+      "median": 0.9039046085750526,
+      "min": 0.8968908257994935,
+      "max": 0.9745358903148515,
+      "samples": [
+        0.9039046085750526,
+        0.9002479986920641,
+        0.9745358903148515,
+        0.9293325752613576,
+        0.8968908257994935
+      ],
+      "accuracy_equivalent": false
+    },
+    {
+      "scene": "resolved",
+      "method": "dfsph",
+      "median": 0.31325449566250524,
+      "min": 0.3091162203783326,
+      "max": 0.31424612461078777,
+      "samples": [
+        0.31325449566250524,
+        0.31424612461078777,
+        0.3091162203783326,
+        0.3100531518294681,
+        0.3140684941200517
+      ],
+      "accuracy_equivalent": false
+    },
+    {
+      "scene": "large",
+      "method": "pbf",
+      "median": 3.9225468040785025,
+      "min": 3.8379711979849214,
+      "max": 3.9425107262396573,
+      "samples": [
+        3.928422371290484,
+        3.9225468040785025,
+        3.9132960837745254,
+        3.9425107262396573,
+        3.8379711979849214
+      ],
+      "accuracy_equivalent": false
+    },
+    {
+      "scene": "large",
+      "method": "dfsph",
+      "median": 4.316873807657495,
+      "min": 4.308446142497019,
+      "max": 4.33135205550239,
+      "samples": [
+        4.33135205550239,
+        4.316873807657495,
+        4.323863500492944,
+        4.308446142497019,
+        4.309432862845558
+      ],
+      "accuracy_equivalent": false
+    }
+  ],
+  "workload": [
+    {
+      "scene": "resolved",
+      "method": "pbf",
+      "iterations_per_sim_s": 3839.999799728404,
+      "row_sweeps_per_sim_s": 9599.99949932101,
+      "row_entry_visits_per_sim_s": 2270940541.561221,
+      "search_passes_per_sim_s": 959.999949932101
+    },
+    {
+      "scene": "resolved",
+      "method": "dfsph-cubic",
+      "density_iterations_per_sim_s": 1294.4999324865673,
+      "divergence_iterations_per_sim_s": 398.9999791905295,
+      "iterations_per_sim_s": 1693.4999116770969,
+      "row_sweeps_per_sim_s": 4586.99976076932,
+      "row_entry_visits_per_sim_s": 1045780391.9583024,
+      "search_passes_per_sim_s": 479.9999749660505
+    },
+    {
+      "scene": "large",
+      "method": "pbf",
+      "iterations_per_sim_s": 3839.999799728404,
+      "row_sweeps_per_sim_s": 9599.99949932101,
+      "row_entry_visits_per_sim_s": 37423694992.20221,
+      "search_passes_per_sim_s": 959.999949932101
+    },
+    {
+      "scene": "large",
+      "method": "dfsph-cubic",
+      "density_iterations_per_sim_s": 5151.999731302275,
+      "divergence_iterations_per_sim_s": 352.7999816000471,
+      "iterations_per_sim_s": 5504.799712902322,
+      "row_sweeps_per_sim_s": 12209.599363219771,
+      "row_entry_visits_per_sim_s": 42431766397.21093,
+      "search_passes_per_sim_s": 479.9999749660505
+    }
+  ],
+  "convergence": [
+    {
+      "scene": "hydro",
+      "states": [
+        {
+          "rate": 120.0,
+          "p95_compression_peak": 0.030482488905659855,
+          "min_separation_over_dx": 0.0058397633000030705,
+          "volume_proxy_error_peak": 0.14542233227286616,
+          "hydro_centroid_error": 0.010871182911795674,
+          "final_centroid": [
+            0.5000796479691101,
+            0.19782576341764088,
+            0.4999865317239889
+          ]
+        },
+        {
+          "rate": 240.0,
+          "p95_compression_peak": 0.009286435892881029,
+          "min_separation_over_dx": 0.06420151702167666,
+          "volume_proxy_error_peak": 0.1354251668648816,
+          "hydro_centroid_error": 0.006445731062557747,
+          "final_centroid": [
+            0.5001250228413897,
+            0.19871085378748846,
+            0.49994469826808147
+          ]
+        },
+        {
+          "rate": 480.0,
+          "p95_compression_peak": 0.003525145437497601,
+          "min_separation_over_dx": 0.020856974576200976,
+          "volume_proxy_error_peak": 0.1262251882185217,
+          "hydro_centroid_error": 0.0046326066658380904,
+          "final_centroid": [
+            0.49987428986875254,
+            0.1990734786668324,
+            0.5001385477336591
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "compression",
+      "states": [
+        {
+          "rate": 120.0,
+          "p95_compression_peak": 0.002396871151893798,
+          "min_separation_over_dx": 0.0004116174380926978,
+          "volume_proxy_error_peak": 0.2480210616956543,
+          "hydro_centroid_error": null,
+          "final_centroid": [
+            0.6750000064113425,
+            0.8749999984114553,
+            0.6749999968920863
+          ]
+        },
+        {
+          "rate": 240.0,
+          "p95_compression_peak": 0.002193537544211255,
+          "min_separation_over_dx": 0.00021723746656822013,
+          "volume_proxy_error_peak": 0.25129148604013984,
+          "hydro_centroid_error": null,
+          "final_centroid": [
+            0.6750000231375458,
+            0.8749999835734477,
+            0.6750000343417091
+          ]
+        },
+        {
+          "rate": 480.0,
+          "p95_compression_peak": 0.0020627244271818057,
+          "min_separation_over_dx": 0.0004328610612361279,
+          "volume_proxy_error_peak": 0.263168347754284,
+          "hydro_centroid_error": null,
+          "final_centroid": [
+            0.6750000069012599,
+            0.8749999698173668,
+            0.6750000257546203
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "collision",
+      "states": [
+        {
+          "rate": 120.0,
+          "p95_compression_peak": 0.08623019807492005,
+          "min_separation_over_dx": 0.0025606167188789095,
+          "volume_proxy_error_peak": 0.206692118496261,
+          "hydro_centroid_error": null,
+          "final_centroid": [
+            0.7970956286121151,
+            0.13950099579179434,
+            0.4998605085328813
+          ]
+        },
+        {
+          "rate": 240.0,
+          "p95_compression_peak": 0.019405491794213026,
+          "min_separation_over_dx": 0.0014208477158711669,
+          "volume_proxy_error_peak": 0.19249038570571586,
+          "hydro_centroid_error": null,
+          "final_centroid": [
+            0.7970530871734107,
+            0.139530240799543,
+            0.5006588097484986
+          ]
+        },
+        {
+          "rate": 480.0,
+          "p95_compression_peak": 0.006253468176010912,
+          "min_separation_over_dx": 0.0030195739515852436,
+          "volume_proxy_error_peak": 0.1931153634892927,
+          "hydro_centroid_error": null,
+          "final_centroid": [
+            0.8001764100659345,
+            0.14123701482485343,
+            0.5017589214117771
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "surface",
+      "states": [
+        {
+          "rate": 120.0,
+          "p95_compression_peak": 0.04655077506551675,
+          "min_separation_over_dx": 0.0011682736932250998,
+          "volume_proxy_error_peak": 0.2171946508169832,
+          "hydro_centroid_error": null,
+          "final_centroid": [
+            1.0129086438647905,
+            0.05411943472281676,
+            1.014603355739382
+          ]
+        },
+        {
+          "rate": 240.0,
+          "p95_compression_peak": 0.01416127220832153,
+          "min_separation_over_dx": 0.007701629053911616,
+          "volume_proxy_error_peak": 0.21877745820793704,
+          "hydro_centroid_error": null,
+          "final_centroid": [
+            1.013782590019399,
+            0.05462974078429502,
+            1.013037313582606
+          ]
+        },
+        {
+          "rate": 480.0,
+          "p95_compression_peak": 0.003994978093253776,
+          "min_separation_over_dx": 0.013136318709531629,
+          "volume_proxy_error_peak": 0.20375051150857648,
+          "hydro_centroid_error": null,
+          "final_centroid": [
+            1.016231050890636,
+            0.056795150575345545,
+            1.012984874923711
+          ]
+        }
+      ]
+    }
+  ],
+  "quality_source": "quality-results-corrected.json",
+  "physical_trajectories": 62,
+  "coupled_policies_passed": [],
+  "written_assessment_required": "Physical screens and workload comparisons describe the measured prototype; they do not make an automatic production-integration decision."
+}

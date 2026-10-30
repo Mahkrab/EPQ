@@ -1,0 +1,32 @@
+{
+  "parameters": {
+    "scene": "hydro",
+    "dt": 0.004166666666666667,
+    "duration": 2,
+    "iterations": 8,
+    "boundary": true,
+    "clamp": true,
+    "epsilon": 0.02,
+    "scale": 0.5,
+    "pressure": 0,
+    "poly": true,
+    "refresh": true
+  },
+  "command": [
+    "/home/mahkrab/.local/share/maelstrom-experiments/physical-convergence-v2/bin/solver",
+    "hydro",
+    "0.004166666666666667",
+    "2",
+    "8",
+    "1",
+    "1",
+    "0.02",
+    "0.5",
+    "0",
+    "1",
+    "1"
+  ],
+  "solver_sha256": "a362fe90b9746b961d44a76a257c1f0c0a301e7c2af8c1e68c07098dc24bf2b4",
+  "auditor_sha256": "f7146f49e1e3cd8fd7b49c2512f8d9c100c89fd01ddd41060b39f10935661785",
+  "protocol_sha256": "eb17302ea5b043d5dd08e421886f5750df347fa240f5279950b6abb4acbe2f49"
+}

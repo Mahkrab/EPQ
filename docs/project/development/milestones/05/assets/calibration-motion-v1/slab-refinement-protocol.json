@@ -1,0 +1,7 @@
+{
+  "created_utc": "2026-10-29T01:29:08.390192+00:00",
+  "observed": "At n24 and2/4 fluid layers, unmodified viscosity gives39.08%/19.95% shear amplitude error; fixed H=.05 m n48 four layers reduces error to18.92%.",
+  "extension": "Exact Fourier-reduced viscosity operator only: same fixed L=.6m,H=.05m,nu=.001, n24,48,96,192,384 andlayers n/12, with unchanged support4dx. No full PBF computation at these large horizontal resolutions.",
+  "question": "Does boundary truncation converge with support shrinking relative to fixed slab depth? Retain mean and complete vertical amplitude profile; original5% budget unchanged.",
+  "admission": "Passing this isolated operator limit cannot qualify unrun large-resolution PBF or CUDA performance."
+}

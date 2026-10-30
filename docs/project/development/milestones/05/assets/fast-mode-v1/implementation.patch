@@ -1,0 +1,535 @@
+diff --git a/docs/usage.md b/docs/usage.md
+index fd99f02..1d46577 100644
+--- a/docs/usage.md
++++ b/docs/usage.md
+@@ -75,6 +75,52 @@ maelstrom run builtin:falling-block-04 --backend threaded-grid --threads 3 --ste
+ maelstrom inspect builtin:falling-block-04 --backend cuda --format json
+ ```
+ 
++## Numerical modes
++
++`run`, `view`, `compile`, `inspect` and `validate` accept
++`--numerical-mode fast` or `--numerical-mode reference`. Omitting the option keeps
++the existing scene/configuration selection. The presets change only timestep,
++Jacobi count, correction scale and relaxation scale; geometry, mass, gravity,
++kernel support and velocity-effect settings retain their existing ownership.
++Enabled velocity effects keep their coefficients; changing the step rate also
++changes how often those effects are applied per simulated second.
++
++| Mode | Steps / simulated second | Jacobi iterations / step | Correction scale | Relaxation scale |
++|---|---:|---:|---:|---:|
++| `reference` | 480 | 8 | 0.0625 | 20 |
++| `fast` | 240 | 8 | 0.5 | 2 |
++
++Fast mode reduces numerical work and changes the physical trajectory. It is a
++throughput/quality trade-off, not a promise of the same fluid response. Both modes
++retain the existing PBF physical limitations. Fast mode can improve compression
++and separation while adding projection energy or changing shear response.
++
++These commands start new simulations. The first runs five simulated seconds;
++the second starts a fresh reference run as an explicit fallback:
++
++```sh
++maelstrom run builtin:falling-block-20 --numerical-mode fast --duration 5 --unpaced
++maelstrom run builtin:falling-block-20 --numerical-mode reference --duration 5 --unpaced
++```
++
++Explicit `--set` values take precedence over a preset. Presets reset inherited
++timestep refinement to one; an explicit `--refine-timestep N` still divides the
++selected timestep by N and its correction scale by N². For example, fast mode
++with refinement two runs at 480 Hz with correction 0.125 and relaxation 2. Inspect
++the resolved values before comparing a modified preset. CFL remains a warning;
++it neither inserts timesteps nor switches modes. Numerical errors and cancellation
++retain the last accepted state through the existing transaction boundary.
++
++The viewer's **Numerics** draft field accepts `fast`, `reference`, or blank for
++the scene selection. Apply the draft to start a new generation. Editing the
++field does not modify an active run. The entered step count stays fixed: five
++simulated seconds require 1,200 fast steps or 2,400 reference steps. The selected
++generation displays its effective rate, iterations, correction and relaxation.
++
++Recorded runs store resolved numerical values and selection provenance. `rerun`
++recomputes those recorded values from zero, even if current mode defaults change;
++it does not turn a fast recording into a reference run. Playback uses saved images.
++
+ ## Limits, pacing and results
+ 
+ Fresh execution uses the saved scene limit unless `--steps N` or `--duration SECONDS` replaces it.
+diff --git a/src/cli/arguments.rs b/src/cli/arguments.rs
+index 793cace..7249863 100644
+--- a/src/cli/arguments.rs
++++ b/src/cli/arguments.rs
+@@ -153,6 +153,9 @@ pub(super) struct Inputs {
+     pub scene: Option<String>,
+     #[arg(long, value_name = "FILE")]
+     pub config: Option<PathBuf>,
++    /// Numerical preset; omitted preserves scene settings. Explicit --set values win
++    #[arg(long, value_parser = ["reference", "fast"])]
++    pub numerical_mode: Option<String>,
+     /// Primary numerical override expressed as a TOML literal
+     #[arg(long = "set", value_name = "FIELD=VALUE")]
+     pub overrides: Vec<String>,
+diff --git a/src/cli/inputs.rs b/src/cli/inputs.rs
+index e1f5347..64f1427 100644
+--- a/src/cli/inputs.rs
++++ b/src/cli/inputs.rs
+@@ -78,6 +78,15 @@ pub(super) fn resolve_in(inputs: &Inputs, storage: &Storage) -> Result<ResolvedI
+         overlay.numerical.refine_timestep = Some(factor);
+     }
+     let mut documents = Vec::new();
++    if let Some(name) = &inputs.numerical_mode {
++        let mode = name
++            .parse::<maelstrom::config::NumericalMode>()
++            .map_err(|e| CliError::usage(e.to_string()))?;
++        mode.fill_overrides(&mut overlay.numerical);
++        // The preset is provenance, not a replay instruction. Resolved primary
++        // values remain the sole numerical inputs when a record is rerun.
++        documents.push(identity("numerical_mode", name.clone(), name));
++    }
+     let explicit = inputs
+         .config
+         .as_ref()
+diff --git a/src/cli/scenes.rs b/src/cli/scenes.rs
+index 01d216e..6c825a8 100644
+--- a/src/cli/scenes.rs
++++ b/src/cli/scenes.rs
+@@ -46,6 +46,7 @@ pub(super) fn list(cli: &Cli, storage: &Storage) -> Result<u8, CliError> {
+                 config: None,
+                 overrides: vec![],
+                 refine_timestep: None,
++                numerical_mode: None,
+             },
+             storage,
+         )?;
+@@ -69,6 +70,7 @@ pub(super) fn create(cli: &Cli, storage: &Storage, name: &str, from: &str) -> Re
+         config: None,
+         overrides: vec![],
+         refine_timestep: None,
++        numerical_mode: None,
+     };
+     let resolved = inputs::resolve_in(&selection, storage)?;
+     let presentation = super::presentation::resolve(Some(&resolved), &Default::default())?;
+diff --git a/src/cli/viewer.rs b/src/cli/viewer.rs
+index 5232c4c..9e143f1 100644
+--- a/src/cli/viewer.rs
++++ b/src/cli/viewer.rs
+@@ -52,6 +52,7 @@ pub(super) fn launch(view: &View, storage: &super::storage::Storage) -> Result<u
+                 .as_ref()
+                 .map_or_else(String::new, |p| p.to_string_lossy().into()),
+             mode: mode.into(),
++            numerical_mode: view.inputs.numerical_mode.clone().unwrap_or_default(),
+             workers: workers.to_string(),
+             device: device.to_string(),
+             block_size: block_size.to_string(),
+@@ -172,6 +173,7 @@ fn resolve_in(
+         config: (!draft.config.is_empty()).then(|| draft.config.clone().into()),
+         overrides: overrides.to_vec(),
+         refine_timestep: refinement,
++        numerical_mode: (!draft.numerical_mode.is_empty()).then(|| draft.numerical_mode.clone()),
+     };
+     let resolved = inputs::resolve_in(&selected, storage).map_err(|e| redact(e.message, draft))?;
+     let scene = resolved.scene.ok_or_else(|| "select a scene".to_owned())?;
+@@ -270,6 +272,7 @@ mod tests {
+             scene: "falling-block-04".into(),
+             config: String::new(),
+             mode: "serial-grid".into(),
++            numerical_mode: String::new(),
+             workers: "2".into(),
+             device: "0".into(),
+             block_size: "128".into(),
+@@ -277,6 +280,43 @@ mod tests {
+         }
+     }
+     #[test]
++    fn draft_numerical_mode_is_validated_and_refines_once() {
++        let mut d = draft();
++        d.numerical_mode = "fast".into();
++        let fast = resolve(&d, &[], None).unwrap();
++        assert_eq!(
++            fast.scene.configuration.numerical.fixed_timestep_s,
++            1.0 / 240.0
++        );
++        assert_eq!(fast.scene.configuration.numerical.correction_scale, 0.5);
++        assert_eq!(fast.scene.configuration.numerical.relaxation_scale, 2.0);
++        let refined = resolve(&d, &[], Some(2)).unwrap();
++        assert_eq!(
++            refined.scene.configuration.numerical.correction_scale,
++            0.125
++        );
++        assert_eq!(
++            refined.scene.configuration.numerical.fixed_timestep_s,
++            1.0 / 480.0
++        );
++        d.numerical_mode = "reference".into();
++        let reference = resolve(&d, &[], None).unwrap();
++        assert_eq!(
++            reference.scene.configuration.numerical.correction_scale,
++            0.0625
++        );
++        assert_eq!(
++            reference.scene.configuration.numerical.relaxation_scale,
++            20.0
++        );
++        d.numerical_mode = "unknown".into();
++        assert!(
++            resolve(&d, &[], None)
++                .unwrap_err()
++                .contains("reference or fast")
++        );
++    }
++    #[test]
+     fn external_and_bundled_selection_share_precedence_and_identity() {
+         let overrides = vec!["cfl_factor=0.1".into()];
+         let mut d = draft();
+diff --git a/src/config/mod.rs b/src/config/mod.rs
+index a0c87ab..7e3a0c6 100644
+--- a/src/config/mod.rs
++++ b/src/config/mod.rs
+@@ -12,6 +12,7 @@
+ 
+ mod document;
+ mod inspection;
++mod mode;
+ mod resolution;
+ mod resolved;
+ mod serialisation;
+@@ -21,6 +22,7 @@ pub use document::{
+     ConfigurationDocument, ConfigurationOverlay, DerivedAssertions, NumericalOverrides,
+     load_configuration, parse_configuration, parse_configuration_overlay,
+ };
++pub use mode::NumericalMode;
+ pub use resolution::{Refinement, resolve_configuration_for_schema};
+ pub use resolved::{
+     BOUNDARY_MODEL, CONFIG_SCHEMA_VERSION, COORDINATE_SYSTEM, CORRECTION_KERNEL,
+diff --git a/src/viewer/mod.rs b/src/viewer/mod.rs
+index 693690d..163bf25 100644
+--- a/src/viewer/mod.rs
++++ b/src/viewer/mod.rs
+@@ -320,7 +320,7 @@ impl Viewer {
+                 Ok(())
+             }
+             Key::Named(NamedKey::Tab) => {
+-                self.field = (self.field + 1) % 7;
++                self.field = (self.field + 1) % self.model.draft.fields().len();
+                 Ok(())
+             }
+             Key::Named(NamedKey::Enter) => {
+@@ -448,6 +448,14 @@ impl Viewer {
+                     |i| format!("{:?} / {:?}", i.backend, i.execution)
+                 )
+             ));
++            let numerical = &s.spec.scene.configuration.numerical;
++            lines.push(format!(
++                "Numerics: {:.1} Hz | Jacobi {} | correction {} | relaxation {}",
++                1.0 / numerical.fixed_timestep_s,
++                numerical.solver_iterations,
++                numerical.correction_scale,
++                numerical.relaxation_scale
++            ));
+             if o.snapshot.is_none() {
+                 lines.push(format!(
+                     "Accepted snapshot unavailable; {} requested particles",
+diff --git a/src/viewer/model.rs b/src/viewer/model.rs
+index 5a30b4b..5a1cf68 100644
+--- a/src/viewer/model.rs
++++ b/src/viewer/model.rs
+@@ -14,6 +14,8 @@ pub struct Draft {
+     pub config: String,
+     /// brute-force, serial-grid, threaded-grid or cuda-grid.
+     pub mode: String,
++    /// reference, fast, or blank to preserve scene settings.
++    pub numerical_mode: String,
+     /// Threaded CPU pool size.
+     pub workers: String,
+     /// CUDA ordinal.
+@@ -24,15 +26,16 @@ pub struct Draft {
+     pub steps: String,
+ }
+ impl Draft {
+-    pub(crate) fn fields(&self) -> [(&'static str, &str); 7] {
++    pub(crate) fn fields(&self) -> [(&'static str, &str); 8] {
+         [
+             ("Scene", &self.scene),
+             ("Config (blank = scene)", &self.config),
+-            ("Mode", &self.mode),
++            ("Backend", &self.mode),
+             ("Workers", &self.workers),
+             ("CUDA device", &self.device),
+             ("CUDA block", &self.block_size),
+             ("Steps", &self.steps),
++            ("Numerics (blank / reference / fast)", &self.numerical_mode),
+         ]
+     }
+     pub(crate) fn field_mut(&mut self, index: usize) -> &mut String {
+@@ -43,7 +46,8 @@ impl Draft {
+             3 => &mut self.workers,
+             4 => &mut self.device,
+             5 => &mut self.block_size,
+-            _ => &mut self.steps,
++            6 => &mut self.steps,
++            _ => &mut self.numerical_mode,
+         }
+     }
+ }
+diff --git a/src/viewer/tests.rs b/src/viewer/tests.rs
+index a72638f..653641b 100644
+--- a/src/viewer/tests.rs
++++ b/src/viewer/tests.rs
+@@ -16,6 +16,7 @@ fn draft() -> Draft {
+         scene: "falling-block-04".into(),
+         config: String::new(),
+         mode: "serial-grid".into(),
++        numerical_mode: String::new(),
+         workers: "2".into(),
+         device: "0".into(),
+         block_size: "128".into(),
+diff --git a/tests/cli_usability.rs b/tests/cli_usability.rs
+index 5781f30..3fa55fd 100644
+--- a/tests/cli_usability.rs
++++ b/tests/cli_usability.rs
+@@ -62,6 +62,90 @@ impl Drop for Library {
+     }
+ }
+ 
++#[test]
++fn numerical_modes_match_explicit_values_and_preserve_physics_and_replay() {
++    let lib = Library::new();
++    for (name, timestep, correction, relaxation) in [
++        ("fast", "0.004166666666666667", "0.5", "2.0"),
++        ("reference", "0.0020833333333333333", "0.0625", "20.0"),
++    ] {
++        let base = [
++            "run",
++            "builtin:falling-block-04",
++            "--backend",
++            "serial-grid",
++            "--steps",
++            "3",
++            "--unpaced",
++        ];
++        let mut selected = base.to_vec();
++        selected.extend(["--numerical-mode", name]);
++        let actual = lib.json(&selected);
++        let dt = format!("fixed_timestep_s={timestep}");
++        let scale = format!("correction_scale={correction}");
++        let epsilon = format!("relaxation_scale={relaxation}");
++        let mut explicit = base.to_vec();
++        explicit.extend([
++            "--refine-timestep",
++            "1",
++            "--set",
++            &dt,
++            "--set",
++            &scale,
++            "--set",
++            &epsilon,
++            "--set",
++            "solver_iterations=8",
++        ]);
++        let expected = lib.json(&explicit);
++        assert_eq!(
++            actual["input"]["configuration"]["numerical"],
++            expected["input"]["configuration"]["numerical"]
++        );
++        assert_eq!(actual["final_snapshot"], expected["final_snapshot"]);
++        assert_eq!(actual["steps"], expected["steps"]);
++        let path = lib.0.join(format!("{name}.json"));
++        fs::write(&path, serde_json::to_vec(&actual).unwrap()).unwrap();
++        let replay = lib.json(&["rerun", path.to_str().unwrap()]);
++        assert_eq!(replay["final_snapshot"], actual["final_snapshot"]);
++        assert_eq!(replay["steps"], actual["steps"]);
++    }
++    let selected = lib.json(&[
++        "inspect",
++        "builtin:falling-block-04",
++        "--numerical-mode",
++        "fast",
++        "--refine-timestep",
++        "2",
++        "--set",
++        "solver_iterations=3",
++        "--set",
++        "external_acceleration_m_s2=[0.0,0.0,0.0]",
++        "--set",
++        "xsph_viscosity_enabled=true",
++    ]);
++    let n = &selected["configuration"]["numerical"];
++    assert_eq!(n["solver_iterations"], 3);
++    assert_eq!(n["correction_scale"], 0.125);
++    assert_eq!(
++        n["fixed_timestep_s"].as_f64().unwrap() as f32,
++        1.0_f32 / 480.0
++    );
++    assert_eq!(n["relaxation_scale"], 2.0);
++    assert_eq!(n["external_acceleration_m_s2"]["y"], 0.0);
++    assert_eq!(n["xsph_viscosity_enabled"], true);
++    assert!(
++        !lib.run(&[
++            "inspect",
++            "builtin:falling-block-04",
++            "--numerical-mode",
++            "unknown"
++        ])
++        .status
++        .success()
++    );
++}
++
+ #[test]
+ fn help_is_example_free_and_legacy_commands_are_not_advertised() {
+     let lib = Library::new();
+diff --git a/tests/cuda_execution.rs b/tests/cuda_execution.rs
+index a25a05e..07b625c 100644
+--- a/tests/cuda_execution.rs
++++ b/tests/cuda_execution.rs
+@@ -182,47 +182,57 @@ mod hardware {
+     #[test]
+     #[ignore = "requires an explicitly selected CUDA hardware test run"]
+     fn all_cancellation_polls_rollback_after_acceptance_and_retry_with_no_stale_buffers() {
+-        let config = configuration("");
+-        let initial = vec![
+-            particle(u64::MAX, Vec3::new(0.0, 0.5, 0.0)),
+-            particle(42, Vec3::new(0.05, 0.5, 0.0)),
+-            particle(0, Vec3::new(0.0, 0.55, 0.0)),
+-        ];
+-        let mut cpu = Simulation::new(&config, initial.clone(), vec![]).unwrap();
+-        let mut polls = 0;
+-        let expected = cpu
+-            .step_with_cancellation(|| {
+-                polls += 1;
+-                false
+-            })
+-            .unwrap();
+-        for profile in [None, Some(false), Some(true)] {
+-            for cancel_at in 1..=polls {
+-                let mut solver = gpu(&config, initial.clone(), vec![], 128);
+-                let _ = solver.step().unwrap();
+-                let before = bits(solver.snapshot());
+-                let caller = std::thread::current().id();
+-                let mut seen = 0;
+-                let mut cancelled = || {
+-                    assert_eq!(std::thread::current().id(), caller);
+-                    seen += 1;
+-                    seen == cancel_at
+-                };
+-                let error = match profile {
+-                    None => solver.step_with_cancellation(&mut cancelled).unwrap_err(),
+-                    Some(stages) => solver
+-                        .step_measured_with_cancellation(stages, &mut cancelled)
+-                        .unwrap_err(),
+-                };
+-                assert!(matches!(error, StepError::Cancelled));
+-                assert_eq!(seen, cancel_at);
+-                assert_eq!(bits(solver.snapshot()), before);
+-                assert_eq!(solver.snapshot().completed_steps(), 1);
+-                let _ = solver.step().unwrap();
+-                let mut control = Simulation::new(&config, initial.clone(), vec![]).unwrap();
+-                let _ = control.run_steps(2).unwrap();
+-                assert_eq!(bits(solver.snapshot()), bits(control.snapshot()));
+-                assert_eq!(expected.completed_steps, 1);
++        for mode in [
++            None,
++            Some(maelstrom::config::NumericalMode::Reference),
++            Some(maelstrom::config::NumericalMode::Fast),
++        ] {
++            let mut overlay = maelstrom::config::ConfigurationOverlay::default();
++            if let Some(mode) = mode {
++                mode.fill_overrides(&mut overlay.numerical);
++            }
++            let config = resolve_effective_configuration(None, None, Some(&overlay)).unwrap();
++            let initial = vec![
++                particle(u64::MAX, Vec3::new(0.0, 0.5, 0.0)),
++                particle(42, Vec3::new(0.05, 0.5, 0.0)),
++                particle(0, Vec3::new(0.0, 0.55, 0.0)),
++            ];
++            let mut cpu = Simulation::new(&config, initial.clone(), vec![]).unwrap();
++            let mut polls = 0;
++            let expected = cpu
++                .step_with_cancellation(|| {
++                    polls += 1;
++                    false
++                })
++                .unwrap();
++            for profile in [None, Some(false), Some(true)] {
++                for cancel_at in 1..=polls {
++                    let mut solver = gpu(&config, initial.clone(), vec![], 128);
++                    let _ = solver.step().unwrap();
++                    let before = bits(solver.snapshot());
++                    let caller = std::thread::current().id();
++                    let mut seen = 0;
++                    let mut cancelled = || {
++                        assert_eq!(std::thread::current().id(), caller);
++                        seen += 1;
++                        seen == cancel_at
++                    };
++                    let error = match profile {
++                        None => solver.step_with_cancellation(&mut cancelled).unwrap_err(),
++                        Some(stages) => solver
++                            .step_measured_with_cancellation(stages, &mut cancelled)
++                            .unwrap_err(),
++                    };
++                    assert!(matches!(error, StepError::Cancelled));
++                    assert_eq!(seen, cancel_at);
++                    assert_eq!(bits(solver.snapshot()), before);
++                    assert_eq!(solver.snapshot().completed_steps(), 1);
++                    let _ = solver.step().unwrap();
++                    let mut control = Simulation::new(&config, initial.clone(), vec![]).unwrap();
++                    let _ = control.run_steps(2).unwrap();
++                    assert_eq!(bits(solver.snapshot()), bits(control.snapshot()));
++                    assert_eq!(expected.completed_steps, 1);
++                }
+             }
+         }
+     }
+diff --git a/src/config/mode.rs b/src/config/mode.rs
+new file mode 100644
+index 0000000..f5acd80
+--- /dev/null
++++ b/src/config/mode.rs
+@@ -0,0 +1,46 @@
++//! Named scheduling choices fill the command-line layer without replacing a
++//! scene's physical inputs. Recorded runs retain the resulting numerical values.
++
++use super::{ConfigError, NumericalOverrides};
++
++/// Explicit numerical presets; omitting a selection preserves scene settings.
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub enum NumericalMode {
++    /// Established 480 Hz, eight-iteration comparison and fallback policy.
++    Reference,
++    /// Reduced-work 240 Hz, eight-iteration policy.
++    Fast,
++}
++
++impl std::str::FromStr for NumericalMode {
++    type Err = ConfigError;
++
++    fn from_str(value: &str) -> Result<Self, Self::Err> {
++        match value {
++            "reference" => Ok(Self::Reference),
++            "fast" => Ok(Self::Fast),
++            _ => Err(ConfigError::InvalidField {
++                field: "numerical_mode",
++                reason: "must be reference or fast".into(),
++            }),
++        }
++    }
++}
++
++impl NumericalMode {
++    /// Fills unspecified scheduling fields, preserving explicit overrides and
++    /// every unrelated physical setting. Refinement defaults to one so a scene's
++    /// refinement cannot silently refine the preset a second time. An explicit
++    /// refinement still divides timestep by N and correction scale by N².
++    pub fn fill_overrides(self, values: &mut NumericalOverrides) {
++        let (timestep, correction, relaxation) = match self {
++            Self::Reference => (1.0 / 480.0, 0.0625, 20.0),
++            Self::Fast => (1.0 / 240.0, 0.5, 2.0),
++        };
++        values.fixed_timestep_s.get_or_insert(timestep);
++        values.solver_iterations.get_or_insert(8);
++        values.correction_scale.get_or_insert(correction);
++        values.relaxation_scale.get_or_insert(relaxation);
++        values.refine_timestep.get_or_insert(1);
++    }
++}

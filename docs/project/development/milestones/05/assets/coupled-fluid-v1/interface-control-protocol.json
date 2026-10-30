@@ -1,0 +1,8 @@
+{
+  "created_utc": "2026-10-29T13:17:05.916609+00:00",
+  "trigger": "Stable geometry waves conserve mass and have low divergence but fail velocity/energy. Diagnose pressure-interface forcing before another coupling or performance work.",
+  "hypothesis": "Arithmetic averaging of cell material masses spreads liquid inertia into staggered control volumes containing only gas. Correct D/G adjoint algebra does not prove correct local interface geometry.",
+  "controlled_change": "Pressure-only diagnostic with transport frozen; same incidence, pressure solver, forcing and physical references, change only face inertial masses to independent geometric integration. Both mass and gradient weights change together, preserving compatibility. Not a coupled repair or production candidate.",
+  "sweeps": "Nx32/64/128 fixedgeometry; densitycontrast controls rho_gas12/120 atNx64; amplitude/H1e-4; interfacealignment offsets0.25/0.5 cells with updatedphysicalreference. One factor varied at a time.",
+  "decision": "If initial acceleration is already inaccurate with no transport, isolate interface discretisation. If geometric masses help, require an independently conservative staggered-volume transport design before any coupled use. No mass-weight substitution alone is admitted."
+}

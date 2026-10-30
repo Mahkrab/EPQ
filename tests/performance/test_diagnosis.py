@@ -54,7 +54,7 @@ class ContractTests(unittest.TestCase):
         self.assertEqual([p["offset_m"] for p in scene["planes"]], [0, -2.8, 0, -3.0, 0, -2.8])
         self.assertEqual([p["normal"] for p in scene["planes"]],
                          [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]])
-        original = tomllib.loads(Path("Maelstrom/scenes/falling-block-20.toml").read_text())
+        original = tomllib.loads(Path("Maelstrom/reference/scenes/falling-block-20.toml").read_text())
         capacity = tomllib.loads(contract.capacity_scene(20))
         for key in ("particles", "planes", "configuration", "randomness"):
             self.assertEqual(original[key], capacity[key])

@@ -1,0 +1,31 @@
+{
+  "created_utc": "2026-10-29T13:02:03.959467+00:00",
+  "energy_reference": "Gravity-wave physical excess E0=(rho_l-rho_g)*g*L*a^2/4, not total background gravitational energy. Remove exact flat minimum determined by total liquid volume. Use geometric reconstructed liquid first moment for physical PE; cell-centre PE retained as a separate diagnostic, never used to hide subcell energy errors. Compare sampled analytic reference separately to expose representation bias.",
+  "amplitude": {
+    "depth_m": 0.05,
+    "a_over_H": 0.001,
+    "domain_m": [
+      0.2,
+      0.1
+    ]
+  },
+  "main_spatial_levels": [
+    [
+      32,
+      16
+    ],
+    [
+      64,
+      32
+    ],
+    [
+      128,
+      64
+    ]
+  ],
+  "wave_steps_per_period": "8*Nx initially for midpoint; fixed-grid time study4*Nx,8*Nx,16*Nx. Euler control on same geometry/timestep. One extra diagnostic refinement permitted only for specific unresolved spatial uncertainty.",
+  "shear_translation": "Periodic2D: u=U, v=V*sin(k*(x-Ut)), material map x=x0+Ut,y=y0+V*t*sin(k*x0). U=.1m/s,V=.01m/s, one horizontal period. Phase centre(.07,.05), radius.018m. First uniform translationV0, then full shear.",
+  "collision": "Two equal liquid discs, centres(.065,.05),(.135,.05),radius.02m; exact discrete streamfunction initial velocity gives opposing streams, U=.2m/s, gravity0, periodicx/free-slipy. T=.15s, dt<=.2*min(hx,hy)/U, fixed before outcomes. Evaluate physical invariants, symmetry, final liquid height/spread and energy; no exact post-contact shape claim. Inviscid/no-capillary limit only.",
+  "transport_screens": "Geometric method selected on mathematical conservation and sharp-interface reconstruction. Algebraic MUSCL is a negative/reference control, not a damping parameter to tune.",
+  "stopping": "If uniform translation, velocity nullspace or conservation fail fundamentally, stop that coupling. Spatially convergent errors can be assessed at bounded levels. Full GPU benchmark only after all combined physical gates pass."
+}

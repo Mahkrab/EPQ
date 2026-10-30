@@ -1,0 +1,16 @@
+--- a/native/solver.cu
++++ b/native/solver.cu
+@@ -10,11 +10,11 @@
+ struct Checked {
+     unsigned int error = 0;
+     __device__ float scalar(float value, unsigned int quantity) {
+-        if (!isfinite(value) && !error) error = quantity;
++        (void)quantity;
+         return value;
+     }
+     __device__ Vector vector(Vector v, unsigned int quantity) {
+-        if ((!isfinite(v.x) || !isfinite(v.y) || !isfinite(v.z)) && !error) error = quantity;
++        (void)quantity;
+         return v;
+     }
+ };

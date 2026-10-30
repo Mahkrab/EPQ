@@ -1,0 +1,7 @@
+{
+  "created_utc": "2026-10-29T07:44:28.594490+00:00",
+  "trigger": "Fixed samples reverse coupled mixed shear at Ny4, g9.81; net tangential pressure impulse -0.009462122899315322 m/s. g0 comparable shear remains positive.",
+  "single_mechanism": "Replace fixed bed density samples with reflected current fluid positions. Same mass, self bias, kernel, eps, correction, dt, iteration, gravity, velocity, viscosity. Include reflected target derivatives in exact sparse constraint Jacobian and transpose. Only real fluid constraints and real mass.",
+  "invariants": "Parallel translation invariance requires sum tangential constraint gradients zero; mirrored targets transform by coordinate reflection diag(1,-1,1). Combine repeated target/self gradients before squaring denominator. Wall reaction is normal pressure impulse; tangential viscosity reaction unchanged.",
+  "controls": "Ny4 same mixed g0/g9.81; fixed-wall results retained; hydrostatic g9.81 U0, uniform horizontal translation slip bed additionally test pressure friction. Gate full model on independent physical profiles, not density alone."
+}

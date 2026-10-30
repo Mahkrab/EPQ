@@ -1,0 +1,28 @@
+--- a/native/power.cuh
++++ b/native/power.cuh
+@@ -102,7 +102,6 @@
+ }
+ 
+ __device__ float ordered_power(float x,float exponent) {
+-    float result;
+-    if (exponent==4.0f && try_power_four(x,result)) return result;
+-    return ordered_power_reference(x,exponent);
++    if (exponent==4.0f) { float square=x*x;return square*square; }
++    return powf(x,exponent);
+ }
+--- a/native/solver.cu
++++ b/native/solver.cu
+@@ -10,11 +10,11 @@
+ struct Checked {
+     unsigned int error = 0;
+     __device__ float scalar(float value, unsigned int quantity) {
+-        if (!isfinite(value) && !error) error = quantity;
++        (void)quantity;
+         return value;
+     }
+     __device__ Vector vector(Vector v, unsigned int quantity) {
+-        if ((!isfinite(v.x) || !isfinite(v.y) || !isfinite(v.z)) && !error) error = quantity;
++        (void)quantity;
+         return v;
+     }
+ };

@@ -1,0 +1,30 @@
+   Compiling maelstrom v0.1.0 (/home/oliver/.local/share/maelstrom-experiments/builtin-scenes-v2/source)
+    Finished `release` profile [optimized] target(s) in 6.05s
+     Running unittests src/lib.rs (../target/release/deps/maelstrom-ae149651470e7ac4)
+
+running 1 test
+test cuda::solver::plane_tests::hardware_inclined_contact_repair_matches_cpu_bits ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 85 filtered out; finished in 1.23s
+
+   Compiling maelstrom v0.1.0 (/home/oliver/.local/share/maelstrom-experiments/builtin-scenes-v2/source)
+    Finished `release` profile [optimized] target(s) in 0.45s
+     Running tests/motion_boundaries_diagnostics.rs (../target/release/deps/motion_boundaries_diagnostics-7f36527f71771395)
+
+running 13 tests
+test acceleration_prediction_and_reconstruction_match_exact_binary_examples ... ok
+test axis_aligned_projection_recovers_exact_contact_across_signs_and_scales ... ok
+test axis_aligned_projection_repairs_the_observed_one_ulp_penetration ... ok
+test cfl_rejects_invalid_domains_and_non_finite_speeds_or_limits ... ok
+test cfl_reports_below_equality_and_above_without_changing_timestep ... ok
+test cfl_zero_speed_and_empty_input_are_semantically_unbounded ... ok
+test motion_primitives_reject_invalid_inputs_and_non_finite_outputs ... ok
+test nearly_axis_aligned_normals_keep_the_original_vector_projection ... ok
+test ordered_plane_projection_is_deterministic_and_order_sensitive ... ok
+test plane_projection_handles_permitted_penetrated_and_contact_points ... ok
+test inclined_contacts_repair_roundoff_without_relaxing_containment ... ok
+test plane_projection_rejects_non_finite_points_and_results ... ok
+test plane_validation_uses_explicit_tolerance_without_normalising ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

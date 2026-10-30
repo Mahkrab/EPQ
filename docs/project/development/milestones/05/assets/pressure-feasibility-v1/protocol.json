@@ -1,0 +1,32 @@
+{
+  "created_utc": "2026-10-29T12:00:09.389538+00:00",
+  "scope": "Bounded pressure replacement feasibility, isolated prototypes only. Mathematical gates precede performance. No production/history/settings changes.",
+  "base_heads": {
+    "EPQ": "814f88a7f4122b1b24ea645b210d89e1200a0c44",
+    "Maelstrom": "250932784790ba26cdc55fc38a877ccefacbf054"
+  },
+  "shortlist": [
+    "Linear-consistent meshless divergence with its exact mass adjoint: test constant-pressure consistency and conservation, do not assume correction sufficient.",
+    "Geometric unweighted Voronoi material-volume constraints: distinguish material-volume change from repartition under valid shear; do not mislabel this as the complete weighted Power Particles method.",
+    "Compatible face-flux finite-volume pressure on a staggered Cartesian grid, including physical fractional flat surface location. Weighted power diagrams / moving Voronoi flux methods considered from primary literature with scope/cost limits."
+  ],
+  "math": "For cell volumes V, face areas A, dual distances d and incidence C, D=-V^-1 C A and G=(rho*d)^-1 C^T form a mass-weighted adjoint pair. L=C diag(A/(rho*d)) C^T is SPD after pressure-gauge/Dirichlet handling. Velocity update u_new=u_star-dt*G*p; Lp=-V D u_star/dt. Constant pressures cancel on periodic faces; linear pressures yield exact face-normal gradients. Solids prescribe normal flux; free surface prescribes pressure at actual interface, using physical centre-interface distance.",
+  "criteria": {
+    "constant_pressure_acceleration_scaled_max": 1e-10,
+    "affine_divergence_scaled_max": 1e-09,
+    "periodic_momentum_impulse_scaled_max": 1e-10,
+    "adjoint_work_scaled_max": 1e-10,
+    "hydrostatic_pressure_velocity_error_max": 0.01,
+    "smooth_manufactured_pressure_velocity_error_max": 0.01,
+    "smooth_shear_spatial_error_max": 0.01,
+    "projection_energy_increase_scaled_max": 1e-10,
+    "solve_relative_residual": 1e-08,
+    "volume_error_max": 0.01,
+    "convergence": "Fixed physical geometry, at least3 spatial levels and two finest passing. Perturbed sampling tested separately, not calibrated away."
+  },
+  "bounds": "No more than3 lightweight prototype families. Screen rejected candidates only as far as decisive failure. No general coupled solver, no production integration. GPU component prototype only after mathematical gates pass.",
+  "cases": "Periodic smooth shear and nonzero manufactured pressure; affine solenoidal fields on regular/perturbed samples; hydrostatic flat tank H=.05,Lx=Lz=.2; top layer fractions1,.37,.1; periodic pressure gauge and wall/free-surface distinctions; analytic periodic pressure modes for spatial convergence.",
+  "cost_policy": "Equivalent physical accuracy first. Report complete pressure-stage cost per simulated second for valid grids at prospectively chosen advective CFL=.5, Umax=.5m/s. dt=.5*min_cell_spacing/Umax, with physical accuracy/time-policy sensitivity explicit. Pressure-only cost is not complete fluid/runtime. No timing of failed candidates used to favour them.",
+  "GPU_measurement": "RTX4070 primary PC. If a flat-domain spectral pressure prototype is used, label its fixed rectangular/planar boundary restriction and planning/allocation exclusion. Arbitrary free surfaces/obstacles require a general pressure solver (e.g. multigrid-preconditioned CG) whose performance must not be inferred as measured. Keep measured versus projected costs distinct.",
+  "retention": "Retain raw matrices, geometry, operator fields, solver histories, runtime observations, source and build identities; unique outputs; SHA256 readback; durable local root and independent primary-PC home copy. Preserve previous archive."
+}

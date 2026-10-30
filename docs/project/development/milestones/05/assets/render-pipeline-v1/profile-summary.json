@@ -1,0 +1,182 @@
+[
+  {
+    "case": "large-reference",
+    "stage_total_s": {
+      "DRAW_PROFILE": {
+        "cpu_prepare_s": 0.295401285,
+        "buffer_upload_s": 0.072468054,
+        "render_submit_s": 0.479282468
+      },
+      "PIXEL_PROFILE": {
+        "target_allocation_s": 0.411255156,
+        "draw_call_s": 0.860002931,
+        "draw_drain_s": 1.698912107,
+        "transfer_submit_s": 0.16892137599999998,
+        "transfer_wait_map_s": 0.14068415099999998,
+        "row_unpack_s": 0.016879118000000012
+      },
+      "GPU_PROFILE": {
+        "render_gpu_s": 1.595853696,
+        "texture_copy_gpu_s": 0.12564992
+      },
+      "HASH_PROFILE": {
+        "snapshot_json_s": 13.846002064,
+        "snapshot_sha_s": 3.223034717
+      }
+    },
+    "snapshot_json_bytes": 8274509875,
+    "profile": {
+      "boundary": "export_entry_to_before_manifest",
+      "components_s": {
+        "comparison": 0.000131544,
+        "frame_hashing": 17.240907276,
+        "frame_particle_copy": 0.045098412,
+        "frame_publication": 0.785520801,
+        "graphics_readback": 3.316379916,
+        "other": 0.791617506,
+        "png_encoding": 2.599009799,
+        "progress": 0.720600142,
+        "setup": 0.600994221,
+        "snapshot_capture": 0.271694946,
+        "solver_steps": 19.371459381
+      },
+      "schema_version": 1,
+      "total_s": 45.743413944
+    }
+  },
+  {
+    "case": "large-fast",
+    "stage_total_s": {
+      "DRAW_PROFILE": {
+        "cpu_prepare_s": 0.294258896,
+        "buffer_upload_s": 0.06716868,
+        "render_submit_s": 0.516414444
+      },
+      "PIXEL_PROFILE": {
+        "target_allocation_s": 0.284213183,
+        "draw_call_s": 0.890627251,
+        "draw_drain_s": 5.262816706,
+        "transfer_submit_s": 0.16965419999999998,
+        "transfer_wait_map_s": 0.27576691600000003,
+        "row_unpack_s": 0.016456436999999983
+      },
+      "GPU_PROFILE": {
+        "render_gpu_s": 4.877475904000001,
+        "texture_copy_gpu_s": 0.17939456
+      },
+      "HASH_PROFILE": {
+        "snapshot_json_s": 13.841907829,
+        "snapshot_sha_s": 3.26073271
+      }
+    },
+    "snapshot_json_bytes": 8317420468,
+    "profile": {
+      "boundary": "export_entry_to_before_manifest",
+      "components_s": {
+        "comparison": 9.3014e-05,
+        "frame_hashing": 17.277169139,
+        "frame_particle_copy": 0.045168338,
+        "frame_publication": 0.739506328,
+        "graphics_readback": 6.919750276,
+        "other": 0.795767196,
+        "png_encoding": 2.502096677,
+        "progress": 0.701944761,
+        "setup": 0.611136218,
+        "snapshot_capture": 0.143416541,
+        "solver_steps": 17.551625213
+      },
+      "schema_version": 1,
+      "total_s": 47.287673701
+    }
+  },
+  {
+    "case": "resolved-fast",
+    "stage_total_s": {
+      "DRAW_PROFILE": {
+        "cpu_prepare_s": 0.025020477,
+        "buffer_upload_s": 0.015776857,
+        "render_submit_s": 0.36924053
+      },
+      "PIXEL_PROFILE": {
+        "target_allocation_s": 0.19154084,
+        "draw_call_s": 0.417891185,
+        "draw_drain_s": 0.252339682,
+        "transfer_submit_s": 0.132068577,
+        "transfer_wait_map_s": 0.16064488,
+        "row_unpack_s": 0.17483010699999998
+      },
+      "GPU_PROFILE": {
+        "render_gpu_s": 0.165836576,
+        "texture_copy_gpu_s": 0.13838540800000002
+      },
+      "HASH_PROFILE": {
+        "snapshot_json_s": 1.111631874,
+        "snapshot_sha_s": 0.234372622
+      }
+    },
+    "snapshot_json_bytes": 599264035,
+    "profile": {
+      "boundary": "export_entry_to_before_manifest",
+      "components_s": {
+        "comparison": 4.5521e-05,
+        "frame_hashing": 1.504321593,
+        "frame_particle_copy": 0.003345814,
+        "frame_publication": 0.605462644,
+        "graphics_readback": 1.3474421859999999,
+        "other": 0.090469347,
+        "png_encoding": 2.092713217,
+        "progress": 0.602507325,
+        "setup": 0.549822569,
+        "snapshot_capture": 0.008640304,
+        "solver_steps": 2.915499122
+      },
+      "schema_version": 1,
+      "total_s": 9.720269642
+    }
+  },
+  {
+    "case": "resolved-reference",
+    "stage_total_s": {
+      "DRAW_PROFILE": {
+        "cpu_prepare_s": 0.028164172,
+        "buffer_upload_s": 0.022286943,
+        "render_submit_s": 0.381180694
+      },
+      "PIXEL_PROFILE": {
+        "target_allocation_s": 0.224973033,
+        "draw_call_s": 0.439827411,
+        "draw_drain_s": 0.297770124,
+        "transfer_submit_s": 0.131735187,
+        "transfer_wait_map_s": 0.180171967,
+        "row_unpack_s": 0.171386963
+      },
+      "GPU_PROFILE": {
+        "render_gpu_s": 0.19149718400000001,
+        "texture_copy_gpu_s": 0.15564492800000002
+      },
+      "HASH_PROFILE": {
+        "snapshot_json_s": 1.160049542,
+        "snapshot_sha_s": 0.231842334
+      }
+    },
+    "snapshot_json_bytes": 596856534,
+    "profile": {
+      "boundary": "export_entry_to_before_manifest",
+      "components_s": {
+        "comparison": 8.2008e-05,
+        "frame_hashing": 1.549910661,
+        "frame_particle_copy": 0.002549164,
+        "frame_publication": 0.619394105,
+        "graphics_readback": 1.463842364,
+        "other": 0.092749406,
+        "png_encoding": 2.221927284,
+        "progress": 0.581351648,
+        "setup": 0.575210746,
+        "snapshot_capture": 0.016960661,
+        "solver_steps": 6.320315724
+      },
+      "schema_version": 1,
+      "total_s": 13.444293771
+    }
+  }
+]

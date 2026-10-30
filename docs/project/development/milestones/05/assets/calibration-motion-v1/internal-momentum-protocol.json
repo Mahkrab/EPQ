@@ -1,0 +1,14 @@
+{
+  "created_utc": "2026-10-29T01:48:45.927210+00:00",
+  "geometry": "6x6x12 physical-rest lattice centred in container, ell=(m/rho)^(1/3); no neighbours/wall projection near boundaries. Same physical m andN432.",
+  "initial_velocity": "v=-0.5*(x-centre) + (2*(y-centre_y),0,0), nonzero angular momentum; prescribed compressive component activates internal pressure.",
+  "mechanisms": "Gravity0, fixed-wall densityoff, contactoff, viscosity0. Pressure only; verify no plane interactions.",
+  "controls": "raw/self, dt1/240,1/480,1/960, duration.05s. No hydrostatic/quietness qualification implied.",
+  "reference": "No external impulse/torque; compare independently computed raw meanv and mean(x cross v). Measure angular drift and dt refinement separately from exact algebraic velocity reconstruction.",
+  "initial_sha256": "5e7d2a8d04265f38b93c035600ad2c4a4fba182fa74150a64c47ff4a0951144e",
+  "initial_angular_per_kg": [
+    6.424901762877063e-20,
+    3.726443022468697e-18,
+    -0.014263312776418947
+  ]
+}

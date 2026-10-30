@@ -1,0 +1,29 @@
+{
+  "created_utc": "2026-10-29T13:21:20.352666+00:00",
+  "trigger": "Original fixed dt used initialU=.2; gas/jet speeds exceed it and trigger geometric CFL guard. This is not proof of a physical instability.",
+  "change": "Select dt<=CFL/(max|u|/hx+max|v|/hy) from each accepted state, capped by original dt and remaining horizon. Retry only a stage CFL rejection with half dt; preserve rejection and input prefix. No velocity damping, phase clipping or model change.",
+  "cases": [
+    [
+      32,
+      0.2
+    ],
+    [
+      64,
+      0.2
+    ],
+    [
+      128,
+      0.2
+    ],
+    [
+      64,
+      0.1
+    ],
+    [
+      64,
+      0.05
+    ]
+  ],
+  "bounds": "10000 accepted steps and12 retries per step; original fixed-step failures retained.",
+  "status": "Diagnostic evaluation of already physically rejected wave coupling, not benchmark admission. Spatial/time observables and energy/conservation still subject to original criteria."
+}

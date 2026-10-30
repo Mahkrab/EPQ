@@ -1,0 +1,248 @@
+--- a/src/cuda/solver.rs
++++ b/src/cuda/solver.rs
+@@ -438,6 +438,119 @@
+             planes_checked,
+         })
+     }
++    pub(crate) fn step_device<const PROFILE: bool>(
++        &mut self,
++        configuration: &ResolvedConfiguration,
++        particles: &[Particle],
++        planes: &[Plane],
++        cancelled: &mut impl FnMut() -> bool,
++        clock: &mut StageClock<PROFILE>,
++    ) -> Result<CudaStepOutput, StepError> {
++        let mut s = settings(configuration, particles.len(), planes.len())?;
++        if !self.resident {
++            self.prepare(s, particles, planes)?;
++            self.resident = true;
++        } else {
++            // Count, identities, configuration and planes belong to one fixed
++            // Simulation. Accepted vectors were promoted at its last commit;
++            // a failed attempt can overwrite scratch but never these inputs.
++            self.context.inner.begin_attempt()?;
++        }
++        let records = self.context.inner.observe(s, 0, self.threads)?;
++        diagnostic_error(records[0], s.count)?;
++        let blocks = particles.len().div_ceil(self.threads as usize);
++        let summaries: Vec<[f32; 8]> = self.context.inner.download(7, blocks)?;
++        // Preserve the old ordering: acceleration diagnostics, completed host
++        // observation, then CFL errors, then the first cancellation poll.
++        diagnostic_error(records[1], s.count)?;
++        let maximum_speed = summaries.iter().map(|s| s[0]).fold(0.0_f32, f32::max);
++        let cfl = cfl_from_maximum_speed(
++            maximum_speed,
++            s.timestep,
++            configuration.derived.particle_diameter_m,
++            configuration.numerical.cfl_factor,
++        )?;
++        check_cancellation(cancelled)?;
++        clock.mark(Stage::ValidationAndAcceleration);
++        let records = self.context.inner.observe(s, 1, self.threads)?;
++        diagnostic_error(records[0], s.count)?;
++        check_cancellation(cancelled)?;
++        clock.mark(Stage::Prediction);
++        let summaries: Vec<[f32; 8]> = self.context.inner.download(7, blocks)?;
++        let mut largest = 0.0_f64;
++        let mut lower = Vec3::new(f32::MAX, f32::MAX, f32::MAX);
++        let mut upper = Vec3::new(-f32::MAX, -f32::MAX, -f32::MAX);
++        for summary in summaries {
++            largest = largest.max(f64::from(summary[0]));
++            lower = Vec3::new(
++                lower.x.min(summary[1]),
++                lower.y.min(summary[2]),
++                lower.z.min(summary[3]),
++            );
++            upper = Vec3::new(
++                upper.x.max(summary[4]),
++                upper.y.max(summary[5]),
++                upper.z.max(summary[6]),
++            );
++        }
++        s.validate_pairs =
++            u32::from(particles.len() > 1 && !(upper - lower).length_squared().is_finite());
++        let minimum = f64::from(s.radius)
++            .max(2.0_f64.powi(-72))
++            .max(largest * 2.0_f64.powi(-50));
++        s.width = 2.0_f64.powi(-72);
++        while s.width < minimum {
++            s.width *= 2.0;
++        }
++        self.discover_with_width(&mut s)?;
++        check_cancellation(cancelled)?;
++        clock.mark(Stage::NeighbourSearch);
++        for _ in 0..configuration.numerical.solver_iterations {
++            self.group(s, 5)?;
++            check_cancellation(cancelled)?;
++            clock.mark(Stage::Jacobi);
++            self.group(s, 9)?;
++            check_cancellation(cancelled)?;
++            clock.mark(Stage::Projection);
++        }
++        self.operation(s, 24)?;
++        if s.vorticity != 0.0 {
++            check_cancellation(cancelled)?;
++            self.operation(s, 16)?;
++            check_cancellation(cancelled)?;
++            self.operation(s, 17)?;
++            check_cancellation(cancelled)?;
++            self.operation(s, 15)?;
++        }
++        if s.xsph != 0.0 {
++            check_cancellation(cancelled)?;
++            self.operation(s, 14)?;
++            check_cancellation(cancelled)?;
++            self.operation(s, 15)?;
++        }
++        let record = if particles.is_empty() { u64::MAX } else {
++            self.context.inner.download_at::<u64>(3, (3 * particles.len() + (particles.len() & 1)) / 2, 1)?[0]
++        };
++        if record != u64::MAX {
++            let output = self.experimental_materialise(particles, false)?;
++            for particle in &output {
++                for (index, plane) in planes.iter().enumerate() {
++                    if !plane.contains(particle.position_m)? {
++                        return Err(StepError::OutsidePlane { identity: particle.identity, plane: index });
++                    }
++                }
++            }
++        }
++        Ok(CudaStepOutput { particles: Vec::new(), cfl, planes_checked: true })
++    }
++
++    pub(crate) fn experimental_materialise(&mut self, identities: &[Particle], accepted: bool) -> Result<Vec<Particle>, StepError> {
++        let slot = if accepted { 0 } else { 2 };
++        let positions: Vec<[f32; 3]> = self.context.inner.download(slot, identities.len())?;
++        let velocities: Vec<[f32; 3]> = self.context.inner.download(slot + 1, identities.len())?;
++        Ok(host_values(identities.iter().zip(positions).zip(velocities).map(|((old,p),v)| Particle { identity: old.identity, position_m: vector(p), velocity_m_s: vector(v) }))?)
++    }
++
+ }
+ 
+ const QUANTITIES: [&str; 71] = [
+--- a/src/simulation/mod.rs
++++ b/src/simulation/mod.rs
+@@ -505,3 +505,6 @@
+         assert_eq!(solver.snapshot(), &before);
+     }
+ }
++
++#[cfg(feature = "cuda")]
++pub mod experimental_device;
+--- /dev/null
++++ b/src/simulation/experimental_device.rs
+@@ -0,0 +1,26 @@
++//! Explicit device ownership for the isolated residency measurement.
++use super::*;
++
++pub struct DeviceSimulation { inner: Simulation, completed: u64 }
++impl DeviceSimulation {
++    pub fn from_scene(scene: &ResolvedScene) -> Result<Self, StepError> {
++        Ok(Self { inner: Simulation::from_scene_with_execution(scene, SearchBackend::UniformGrid, ExecutionMode::Cuda { device: 0, threads: 128 })?, completed: 0 })
++    }
++    pub fn step(&mut self, mut cancelled: impl FnMut() -> bool) -> Result<(StepOutcome, StepMeasurement), StepError> {
++        let start = Instant::now();
++        check_cancellation(&mut cancelled)?;
++        let next = self.completed.checked_add(1).ok_or(StepError::StepCountOverflow)?;
++        let cuda = self.inner.cuda.as_mut().unwrap();
++        let output = cuda.step_device(&self.inner.configuration, &self.inner.accepted.particles, &self.inner.planes, &mut cancelled, &mut StageClock::<false>::new())?;
++        check_cancellation(&mut cancelled)?;
++        cuda.accept()?;
++        self.completed = next;
++        Ok((StepOutcome { completed_steps: next, cfl: output.cfl }, StepMeasurement { total_s: start.elapsed().as_secs_f64(), stages: None }))
++    }
++    /// A failed observation leaves canonical accepted device state owned here.
++    pub fn observe(&mut self) -> Result<Snapshot, StepError> {
++        let particles = if self.completed == 0 { self.inner.accepted.particles.clone() } else { self.inner.cuda.as_mut().unwrap().experimental_materialise(&self.inner.accepted.particles, true)? };
++        validate_particles(&particles)?;
++        Ok(Snapshot { completed_steps: self.completed, particles })
++    }
++}
+--- /dev/null
++++ b/examples/frontier_resident.rs
+@@ -0,0 +1,47 @@
++//! Full production coordination versus explicit device ownership, same kernels.
++use maelstrom::{workflow::{RecordedInput, SnapshotRecord}, simulation::{Simulation, experimental_device::DeviceSimulation}, neighbours::SearchBackend, execution::ExecutionMode};
++use std::{fs, time::Instant, io::Write};
++fn main() -> Result<(), Box<dyn std::error::Error>> {
++    let args: Vec<_> = std::env::args().collect();
++    let value: serde_json::Value = serde_json::from_slice(&fs::read(&args[1])?)?;
++    let input: RecordedInput = serde_json::from_value(value["input"].clone())?;
++    let scene = input.resolve()?;
++    let steps: usize = args[2].parse()?;
++    let period: usize = args[4].parse()?;
++    let mut times = Vec::new(); let mut observations = 0.;
++    let start = Instant::now();
++    let snapshot = if args[3] == "device" {
++        let mut sim = DeviceSimulation::from_scene(&scene)?;
++        for k in 1..=steps {
++            times.push(sim.step(|| false)?.1.total_s);
++            if period != 0 && k % period == 0 { let at=Instant::now(); std::hint::black_box(sim.observe()?); observations+=at.elapsed().as_secs_f64(); }
++        }
++        let at=Instant::now();let s=sim.observe()?;observations+=at.elapsed().as_secs_f64();s
++    } else if args[3] == "check" {
++        let mut standard=Simulation::from_scene_with_execution(&scene,SearchBackend::UniformGrid,ExecutionMode::Cuda {device:0,threads:128})?;
++        let _ = standard.step()?;
++        for limit in 1..=(5+2*scene.configuration.numerical.solver_iterations) {
++            let mut sim=DeviceSimulation::from_scene(&scene)?;
++            let initial=sim.observe()?;
++            let mut calls=0;
++            assert!(sim.step(|| { calls+=1;calls==limit }).is_err());
++            assert_eq!(sim.observe()?,initial);
++            let _ = sim.step(|| false)?;
++            assert_eq!(&sim.observe()?,standard.snapshot());
++        }
++        println!("{{\"cancellation_retry_polls\":{},\"passed\":true}}",5+2*scene.configuration.numerical.solver_iterations);
++        return Ok(());
++    } else {
++        let mut sim=Simulation::from_scene_with_execution(&scene,SearchBackend::UniformGrid,ExecutionMode::Cuda {device:0,threads:128})?;
++        for k in 1..=steps {
++            times.push(sim.step_measured_with_cancellation(false,|| false)?.1.total_s);
++            if period != 0 && k % period == 0 {std::hint::black_box(sim.snapshot());}
++        }
++        sim.snapshot().clone()
++    };
++    let wall=start.elapsed().as_secs_f64();
++    let mut out=fs::File::create(&args[5])?;
++    for field in 0..2 { for p in snapshot.particles() {let a=if field==0 {p.position_m} else {p.velocity_m_s};for v in [a.x,a.y,a.z] {out.write_all(&v.to_le_bytes())?;} } }
++    println!("{}",serde_json::json!({"steps":steps,"mode":args[3],"checkpoint_period":period,"solver_s":times.iter().sum::<f64>(),"observation_s":observations,"construction_solver_observation_wall_s":wall,"step_s":times,"snapshot_key":SnapshotRecord::capture(&snapshot).completed_steps()}));
++    Ok(())
++}
+--- /dev/null
++++ b/examples/frontier_device_edges.rs
+@@ -0,0 +1,35 @@
++//! Failure and capacity probes for the isolated device-owned interface.
++use maelstrom::{workflow::RecordedInput, scene::ResolvedScene, math::Vec3, boundary::Plane, simulation::{Simulation, experimental_device::DeviceSimulation}, neighbours::SearchBackend, execution::ExecutionMode};
++use std::fs;
++
++fn compare(scene: &ResolvedScene, failure: bool) -> Result<(),Box<dyn std::error::Error>> {
++    let mut host=Simulation::from_scene_with_execution(scene,SearchBackend::UniformGrid,ExecutionMode::Cuda {device:0,threads:128})?;
++    let mut device=DeviceSimulation::from_scene(scene)?;
++    for _ in 0..3 {
++        let before=device.observe()?;
++        let a=host.step();let b=device.step(|| false);
++        match (a,b) {
++            (Ok(a),Ok((b,_))) => {assert!(!failure);assert_eq!(a,b);assert_eq!(host.snapshot(),&device.observe()?);}
++            (Err(a),Err(b)) => {assert!(failure);assert_eq!(a.to_string(),b.to_string());assert_eq!(before,device.observe()?);assert_eq!(host.snapshot(),&device.observe()?);}
++            (a,b) => panic!("paths disagree: {a:?} {b:?}"),
++        }
++    }
++    Ok(())
++}
++
++fn main()->Result<(),Box<dyn std::error::Error>> {
++    let args:Vec<_>=std::env::args().collect();let value:serde_json::Value=serde_json::from_slice(&fs::read(&args[1])?)?;
++    let input:RecordedInput=serde_json::from_value(value["input"].clone())?;let base=input.resolve()?;
++    let mut names=Vec::new();
++    let mut scene=base.clone();scene.particles.clear();compare(&scene,false)?;names.push("empty");
++    let mut scene=base.clone();scene.particles.truncate(1);compare(&scene,false)?;names.push("one particle");
++    let mut scene=base.clone();scene.particles.truncate(1);scene.planes.clear();scene.particles[0].position_m=Vec3::new(f32::MAX,0.,0.);compare(&scene,false)?;names.push("extent width growth");
++    let mut scene=base.clone();let p=scene.particles[0];scene.particles=(0..600).map(|i|maelstrom::scene::Particle {identity:i,position_m:p.position_m,velocity_m_s:Vec3::ZERO}).collect();compare(&scene,false)?;names.push("599 neighbours per row, dynamic growth");
++    let mut scene=base.clone();scene.particles.truncate(1);scene.particles[0].velocity_m_s=Vec3::new(f32::MAX,0.,0.);compare(&scene,true)?;names.push("numerical failure retry");
++    let mut scene=base.clone();scene.particles.truncate(1);scene.planes=vec![Plane::new(Vec3::new(0.,1.,0.),1.,0.)?,Plane::new(Vec3::new(0.,-1.,0.),0.,0.)?];compare(&scene,true)?;names.push("ordered plane fallback failure retry");
++    let mut scene=base.clone();scene.particles.truncate(33);scene.configuration.numerical.xsph_viscosity_enabled=true;scene.configuration.numerical.vorticity_confinement_enabled=true;compare(&scene,false)?;names.push("velocity effects");
++    let mut device=DeviceSimulation::from_scene(&scene)?;let mut calls=0;let _=device.step(||{calls+=1;false})?;
++    for limit in 1..=calls {let mut device=DeviceSimulation::from_scene(&scene)?;let initial=device.observe()?;let mut k=0;assert!(device.step(||{k+=1;k==limit}).is_err());assert_eq!(initial,device.observe()?);let _=device.step(||false)?;}
++    println!("{}",serde_json::json!({"passed":names,"velocity_effect_cancellation_polls":calls}));
++    Ok(())
++}

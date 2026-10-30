@@ -1,0 +1,24 @@
+schema_version = 2
+name = "frontier-hydro"
+description = "Isolated fixed-geometry PBF policy experiment"
+randomness = "none"
+
+[configuration]
+source = "file"
+path = "../config/hydro.toml"
+
+[container]
+min_m = [0.0, 0.0, 0.0]
+max_m = [1.0, 1.0, 1.0]
+
+[particles]
+construction = "groups"
+
+[[particles.groups]]
+name = "group-0"
+construction = "lattice"
+origin_m = [0.025, 0.025, 0.025]
+counts = [20, 8, 20]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [0, 0, 0]

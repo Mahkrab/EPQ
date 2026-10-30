@@ -1,0 +1,37 @@
+{
+  "micro": {
+    "saved_states": 21,
+    "per_case": [
+      "resolved-reference",
+      "resolved-fast",
+      "large-reference",
+      "large-fast"
+    ],
+    "warmups": 1,
+    "measured_rounds": 5,
+    "order": "rotate six algorithms by round",
+    "boundary": "snapshot validation, formatting and/or hashing only; no loading or correctness comparisons in timers",
+    "algorithms": [
+      "original JSON then SHA",
+      "exact-capacity reserved Vec then SHA (favourable allocation-only diagnostic)",
+      "generic serde buffered SHA",
+      "fixed-schema buffered SHA",
+      "format only",
+      "precomputed bytes SHA only"
+    ],
+    "equivalence": "entire canonical byte sequence and prior production snapshot SHA for every state"
+  },
+  "compilation": {
+    "simulated_s": 5,
+    "width": 640,
+    "height": 480,
+    "hz": 60,
+    "frames": 301,
+    "warmups": 1,
+    "measured_pairs": 3,
+    "order": "AB warmup, BA, AB, BA",
+    "device": "primary PC; CUDA 0 block 128; existing reference and fast presets",
+    "retention": "retain only with correct output and demonstrated complete compilation improvement; engineering assessment, no automatic threshold"
+  },
+  "probe_binary_sha256": "d8236c999673845f11613fe204a969dfd55a71a2d42c6baad1dbbab765091d67"
+}

@@ -1,0 +1,195 @@
+schema_version = 2
+name = "frontier-shear"
+description = "Isolated fixed-geometry PBF policy experiment"
+randomness = "none"
+
+[configuration]
+source = "file"
+path = "../config/shear.toml"
+
+[container]
+min_m = [0.0, 0.0, 0.0]
+max_m = [3.0, 3.0, 3.0]
+
+[particles]
+construction = "groups"
+
+[[particles.groups]]
+name = "group-0"
+construction = "lattice"
+origin_m = [0.2, 0.2, 0.2]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [0.0, 0, 0]
+
+[[particles.groups]]
+name = "group-1"
+construction = "lattice"
+origin_m = [0.2, 0.2, 0.25]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [0.1545084971874737, 0, 0]
+
+[[particles.groups]]
+name = "group-2"
+construction = "lattice"
+origin_m = [0.2, 0.2, 0.30000000000000004]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [0.29389262614623657, 0, 0]
+
+[[particles.groups]]
+name = "group-3"
+construction = "lattice"
+origin_m = [0.2, 0.2, 0.35000000000000003]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [0.4045084971874737, 0, 0]
+
+[[particles.groups]]
+name = "group-4"
+construction = "lattice"
+origin_m = [0.2, 0.2, 0.4]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [0.47552825814757677, 0, 0]
+
+[[particles.groups]]
+name = "group-5"
+construction = "lattice"
+origin_m = [0.2, 0.2, 0.45]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [0.5, 0, 0]
+
+[[particles.groups]]
+name = "group-6"
+construction = "lattice"
+origin_m = [0.2, 0.2, 0.5]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [0.4755282581475768, 0, 0]
+
+[[particles.groups]]
+name = "group-7"
+construction = "lattice"
+origin_m = [0.2, 0.2, 0.55]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [0.4045084971874737, 0, 0]
+
+[[particles.groups]]
+name = "group-8"
+construction = "lattice"
+origin_m = [0.2, 0.2, 0.6000000000000001]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [0.2938926261462366, 0, 0]
+
+[[particles.groups]]
+name = "group-9"
+construction = "lattice"
+origin_m = [0.2, 0.2, 0.65]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [0.15450849718747375, 0, 0]
+
+[[particles.groups]]
+name = "group-10"
+construction = "lattice"
+origin_m = [0.2, 0.2, 0.7]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [6.123233995736766e-17, 0, 0]
+
+[[particles.groups]]
+name = "group-11"
+construction = "lattice"
+origin_m = [0.2, 0.2, 0.75]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [-0.15450849718747345, 0, 0]
+
+[[particles.groups]]
+name = "group-12"
+construction = "lattice"
+origin_m = [0.2, 0.2, 0.8]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [-0.2938926261462365, 0, 0]
+
+[[particles.groups]]
+name = "group-13"
+construction = "lattice"
+origin_m = [0.2, 0.2, 0.8500000000000001]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [-0.40450849718747367, 0, 0]
+
+[[particles.groups]]
+name = "group-14"
+construction = "lattice"
+origin_m = [0.2, 0.2, 0.9000000000000001]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [-0.47552825814757677, 0, 0]
+
+[[particles.groups]]
+name = "group-15"
+construction = "lattice"
+origin_m = [0.2, 0.2, 0.95]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [-0.5, 0, 0]
+
+[[particles.groups]]
+name = "group-16"
+construction = "lattice"
+origin_m = [0.2, 0.2, 1.0]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [-0.4755282581475768, 0, 0]
+
+[[particles.groups]]
+name = "group-17"
+construction = "lattice"
+origin_m = [0.2, 0.2, 1.05]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [-0.4045084971874738, 0, 0]
+
+[[particles.groups]]
+name = "group-18"
+construction = "lattice"
+origin_m = [0.2, 0.2, 1.1]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [-0.2938926261462367, 0, 0]
+
+[[particles.groups]]
+name = "group-19"
+construction = "lattice"
+origin_m = [0.2, 0.2, 1.1500000000000001]
+counts = [20, 20, 1]
+endpoint_rule = "counted_half_open"
+order = "x_then_y_then_z"
+initial_velocity_m_s = [-0.1545084971874738, 0, 0]

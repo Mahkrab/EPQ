@@ -1,0 +1,962 @@
+[
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz120-i2",
+      "dt": 0.008333333333333333,
+      "iterations": 2,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 240,
+    "simulated_s": 2.00000016,
+    "kernel_count": 6960,
+    "kernel_execution_s": 0.135857622,
+    "jacobi_kernel_s": 0.044332605,
+    "traced_solver_s": 0.267125231,
+    "kernel_groups": [
+      [
+        "observe_state",
+        480,
+        1010925
+      ],
+      [
+        "prefix_counts",
+        720,
+        1207624
+      ],
+      [
+        "solver",
+        4080,
+        122622411
+      ],
+      [
+        "spatial_sort",
+        1680,
+        11016662
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz120-i3",
+      "dt": 0.008333333333333333,
+      "iterations": 3,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 240,
+    "simulated_s": 2.00000016,
+    "kernel_count": 8400,
+    "kernel_execution_s": 0.150418908,
+    "jacobi_kernel_s": 0.062820764,
+    "traced_solver_s": 0.296874305,
+    "kernel_groups": [
+      [
+        "observe_state",
+        480,
+        976580
+      ],
+      [
+        "prefix_counts",
+        720,
+        1167845
+      ],
+      [
+        "solver",
+        5520,
+        137623055
+      ],
+      [
+        "spatial_sort",
+        1680,
+        10651428
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz120-i4",
+      "dt": 0.008333333333333333,
+      "iterations": 4,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 240,
+    "simulated_s": 2.00000016,
+    "kernel_count": 9840,
+    "kernel_execution_s": 0.173930949,
+    "jacobi_kernel_s": 0.084391605,
+    "traced_solver_s": 0.345478197,
+    "kernel_groups": [
+      [
+        "observe_state",
+        480,
+        998338
+      ],
+      [
+        "prefix_counts",
+        720,
+        1192455
+      ],
+      [
+        "solver",
+        6960,
+        160867247
+      ],
+      [
+        "spatial_sort",
+        1680,
+        10872909
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz120-i8",
+      "dt": 0.008333333333333333,
+      "iterations": 8,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 240,
+    "simulated_s": 2.00000016,
+    "kernel_count": 15600,
+    "kernel_execution_s": 0.245703384,
+    "jacobi_kernel_s": 0.159357446,
+    "traced_solver_s": 0.473129783,
+    "kernel_groups": [
+      [
+        "observe_state",
+        480,
+        976992
+      ],
+      [
+        "prefix_counts",
+        720,
+        1167852
+      ],
+      [
+        "solver",
+        12720,
+        232911202
+      ],
+      [
+        "spatial_sort",
+        1680,
+        10647338
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz240-i2",
+      "dt": 0.004166666666666667,
+      "iterations": 2,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 480,
+    "simulated_s": 2.00000016,
+    "kernel_count": 13920,
+    "kernel_execution_s": 0.244265619,
+    "jacobi_kernel_s": 0.077117621,
+    "traced_solver_s": 0.5037304969999999,
+    "kernel_groups": [
+      [
+        "observe_state",
+        960,
+        1879833
+      ],
+      [
+        "prefix_counts",
+        1440,
+        2249447
+      ],
+      [
+        "solver",
+        8160,
+        219648231
+      ],
+      [
+        "spatial_sort",
+        3360,
+        20488108
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz240-i3",
+      "dt": 0.004166666666666667,
+      "iterations": 3,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 480,
+    "simulated_s": 2.00000016,
+    "kernel_count": 16800,
+    "kernel_execution_s": 0.282910813,
+    "jacobi_kernel_s": 0.115607312,
+    "traced_solver_s": 0.57624981,
+    "kernel_groups": [
+      [
+        "observe_state",
+        960,
+        1885244
+      ],
+      [
+        "prefix_counts",
+        1440,
+        2256334
+      ],
+      [
+        "solver",
+        11040,
+        258207893
+      ],
+      [
+        "spatial_sort",
+        3360,
+        20561342
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz240-i4",
+      "dt": 0.004166666666666667,
+      "iterations": 4,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 480,
+    "simulated_s": 2.00000016,
+    "kernel_count": 19680,
+    "kernel_execution_s": 0.318191466,
+    "jacobi_kernel_s": 0.152656502,
+    "traced_solver_s": 0.65489653,
+    "kernel_groups": [
+      [
+        "observe_state",
+        960,
+        1874431
+      ],
+      [
+        "prefix_counts",
+        1440,
+        2242931
+      ],
+      [
+        "solver",
+        13920,
+        293650064
+      ],
+      [
+        "spatial_sort",
+        3360,
+        20424040
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz240-i8",
+      "dt": 0.004166666666666667,
+      "iterations": 8,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 480,
+    "simulated_s": 2.00000016,
+    "kernel_count": 31200,
+    "kernel_execution_s": 0.460258552,
+    "jacobi_kernel_s": 0.296755604,
+    "traced_solver_s": 0.999923599,
+    "kernel_groups": [
+      [
+        "observe_state",
+        960,
+        1861083
+      ],
+      [
+        "prefix_counts",
+        1440,
+        2228341
+      ],
+      [
+        "solver",
+        25440,
+        435810007
+      ],
+      [
+        "spatial_sort",
+        3360,
+        20359121
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz480-i2",
+      "dt": 0.0020833333333333333,
+      "iterations": 2,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 960,
+    "simulated_s": 2.000000064,
+    "kernel_count": 27840,
+    "kernel_execution_s": 0.477708617,
+    "jacobi_kernel_s": 0.149838567,
+    "traced_solver_s": 0.99132368,
+    "kernel_groups": [
+      [
+        "observe_state",
+        1920,
+        3730945
+      ],
+      [
+        "prefix_counts",
+        2880,
+        4468434
+      ],
+      [
+        "solver",
+        16320,
+        428722850
+      ],
+      [
+        "spatial_sort",
+        6720,
+        40786388
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz480-i3",
+      "dt": 0.0020833333333333333,
+      "iterations": 3,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 960,
+    "simulated_s": 2.000000064,
+    "kernel_count": 33600,
+    "kernel_execution_s": 0.538036569,
+    "jacobi_kernel_s": 0.21902057,
+    "traced_solver_s": 1.114139587,
+    "kernel_groups": [
+      [
+        "observe_state",
+        1920,
+        3651605
+      ],
+      [
+        "prefix_counts",
+        2880,
+        4370363
+      ],
+      [
+        "solver",
+        22080,
+        490164347
+      ],
+      [
+        "spatial_sort",
+        6720,
+        39850254
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz480-i4",
+      "dt": 0.0020833333333333333,
+      "iterations": 4,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 960,
+    "simulated_s": 2.000000064,
+    "kernel_count": 39360,
+    "kernel_execution_s": 0.607909488,
+    "jacobi_kernel_s": 0.289327467,
+    "traced_solver_s": 1.252319224,
+    "kernel_groups": [
+      [
+        "observe_state",
+        1920,
+        3643015
+      ],
+      [
+        "prefix_counts",
+        2880,
+        4365430
+      ],
+      [
+        "solver",
+        27840,
+        560065560
+      ],
+      [
+        "spatial_sort",
+        6720,
+        39835483
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz480-i8",
+      "dt": 0.0020833333333333333,
+      "iterations": 8,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 960,
+    "simulated_s": 2.000000064,
+    "kernel_count": 62400,
+    "kernel_execution_s": 0.900695284,
+    "jacobi_kernel_s": 0.579041918,
+    "traced_solver_s": 1.8174454820000001,
+    "kernel_groups": [
+      [
+        "observe_state",
+        1920,
+        3648469
+      ],
+      [
+        "prefix_counts",
+        2880,
+        4370563
+      ],
+      [
+        "solver",
+        50880,
+        852789291
+      ],
+      [
+        "spatial_sort",
+        6720,
+        39886961
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz120-i2",
+      "dt": 0.008333333333333333,
+      "iterations": 2,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 120,
+    "simulated_s": 1.00000008,
+    "kernel_count": 3960,
+    "kernel_execution_s": 0.304089313,
+    "jacobi_kernel_s": 0.118787226,
+    "traced_solver_s": 0.460207318,
+    "kernel_groups": [
+      [
+        "observe_state",
+        240,
+        1340720
+      ],
+      [
+        "prefix_counts",
+        360,
+        989330
+      ],
+      [
+        "solver",
+        2040,
+        274187922
+      ],
+      [
+        "spatial_sort",
+        1320,
+        27571341
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz120-i3",
+      "dt": 0.008333333333333333,
+      "iterations": 3,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 120,
+    "simulated_s": 1.00000008,
+    "kernel_count": 4680,
+    "kernel_execution_s": 0.34826138,
+    "jacobi_kernel_s": 0.16854229,
+    "traced_solver_s": 0.534791475,
+    "kernel_groups": [
+      [
+        "observe_state",
+        240,
+        1354287
+      ],
+      [
+        "prefix_counts",
+        360,
+        996367
+      ],
+      [
+        "solver",
+        2760,
+        318200854
+      ],
+      [
+        "spatial_sort",
+        1320,
+        27709872
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz120-i4",
+      "dt": 0.008333333333333333,
+      "iterations": 4,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 120,
+    "simulated_s": 1.00000008,
+    "kernel_count": 5400,
+    "kernel_execution_s": 0.391150119,
+    "jacobi_kernel_s": 0.217076491,
+    "traced_solver_s": 0.565983064,
+    "kernel_groups": [
+      [
+        "observe_state",
+        240,
+        1334032
+      ],
+      [
+        "prefix_counts",
+        360,
+        981160
+      ],
+      [
+        "solver",
+        3480,
+        361508886
+      ],
+      [
+        "spatial_sort",
+        1320,
+        27326041
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz120-i8",
+      "dt": 0.008333333333333333,
+      "iterations": 8,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 120,
+    "simulated_s": 1.00000008,
+    "kernel_count": 8280,
+    "kernel_execution_s": 0.60288584,
+    "jacobi_kernel_s": 0.431012322,
+    "traced_solver_s": 0.807738758,
+    "kernel_groups": [
+      [
+        "observe_state",
+        240,
+        1332851
+      ],
+      [
+        "prefix_counts",
+        360,
+        980472
+      ],
+      [
+        "solver",
+        6360,
+        573171530
+      ],
+      [
+        "spatial_sort",
+        1320,
+        27400987
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz240-i2",
+      "dt": 0.004166666666666667,
+      "iterations": 2,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 240,
+    "simulated_s": 1.00000008,
+    "kernel_count": 7920,
+    "kernel_execution_s": 0.558074515,
+    "jacobi_kernel_s": 0.215249642,
+    "traced_solver_s": 0.849552008,
+    "kernel_groups": [
+      [
+        "observe_state",
+        480,
+        2653947
+      ],
+      [
+        "prefix_counts",
+        720,
+        1956770
+      ],
+      [
+        "solver",
+        4080,
+        498797175
+      ],
+      [
+        "spatial_sort",
+        2640,
+        54666623
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz240-i3",
+      "dt": 0.004166666666666667,
+      "iterations": 3,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 240,
+    "simulated_s": 1.00000008,
+    "kernel_count": 9360,
+    "kernel_execution_s": 0.65643295,
+    "jacobi_kernel_s": 0.31887809,
+    "traced_solver_s": 0.95118123,
+    "kernel_groups": [
+      [
+        "observe_state",
+        480,
+        2621024
+      ],
+      [
+        "prefix_counts",
+        720,
+        1931937
+      ],
+      [
+        "solver",
+        5520,
+        597815612
+      ],
+      [
+        "spatial_sort",
+        2640,
+        54064377
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz240-i4",
+      "dt": 0.004166666666666667,
+      "iterations": 4,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 240,
+    "simulated_s": 1.00000008,
+    "kernel_count": 10800,
+    "kernel_execution_s": 0.753450674,
+    "jacobi_kernel_s": 0.42008273,
+    "traced_solver_s": 1.09749606,
+    "kernel_groups": [
+      [
+        "observe_state",
+        480,
+        2583063
+      ],
+      [
+        "prefix_counts",
+        720,
+        1906756
+      ],
+      [
+        "solver",
+        6960,
+        695515375
+      ],
+      [
+        "spatial_sort",
+        2640,
+        53445480
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz240-i8",
+      "dt": 0.004166666666666667,
+      "iterations": 8,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 240,
+    "simulated_s": 1.00000008,
+    "kernel_count": 16560,
+    "kernel_execution_s": 1.173528902,
+    "jacobi_kernel_s": 0.838298905,
+    "traced_solver_s": 1.56569765,
+    "kernel_groups": [
+      [
+        "observe_state",
+        480,
+        2598481
+      ],
+      [
+        "prefix_counts",
+        720,
+        1920712
+      ],
+      [
+        "solver",
+        12720,
+        1115133017
+      ],
+      [
+        "spatial_sort",
+        2640,
+        53876692
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz480-i2",
+      "dt": 0.0020833333333333333,
+      "iterations": 2,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 480,
+    "simulated_s": 1.000000032,
+    "kernel_count": 15840,
+    "kernel_execution_s": 1.095217577,
+    "jacobi_kernel_s": 0.423313612,
+    "traced_solver_s": 1.636368967,
+    "kernel_groups": [
+      [
+        "observe_state",
+        960,
+        5193229
+      ],
+      [
+        "prefix_counts",
+        1440,
+        3832012
+      ],
+      [
+        "solver",
+        8160,
+        978473410
+      ],
+      [
+        "spatial_sort",
+        5280,
+        107718926
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz480-i3",
+      "dt": 0.0020833333333333333,
+      "iterations": 3,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 480,
+    "simulated_s": 1.000000032,
+    "kernel_count": 18720,
+    "kernel_execution_s": 1.301170562,
+    "jacobi_kernel_s": 0.632402549,
+    "traced_solver_s": 1.880053999,
+    "kernel_groups": [
+      [
+        "observe_state",
+        960,
+        5156834
+      ],
+      [
+        "prefix_counts",
+        1440,
+        3813198
+      ],
+      [
+        "solver",
+        11040,
+        1185087706
+      ],
+      [
+        "spatial_sort",
+        5280,
+        107112824
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz480-i4",
+      "dt": 0.0020833333333333333,
+      "iterations": 4,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 480,
+    "simulated_s": 1.000000032,
+    "kernel_count": 21600,
+    "kernel_execution_s": 1.506353641,
+    "jacobi_kernel_s": 0.83852505,
+    "traced_solver_s": 2.12408569,
+    "kernel_groups": [
+      [
+        "observe_state",
+        960,
+        5149507
+      ],
+      [
+        "prefix_counts",
+        1440,
+        3805711
+      ],
+      [
+        "solver",
+        13920,
+        1390410981
+      ],
+      [
+        "spatial_sort",
+        5280,
+        106987442
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz480-i8",
+      "dt": 0.0020833333333333333,
+      "iterations": 8,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "steps": 480,
+    "simulated_s": 1.000000032,
+    "kernel_count": 33120,
+    "kernel_execution_s": 2.333109983,
+    "jacobi_kernel_s": 1.666874944,
+    "traced_solver_s": 3.106606113,
+    "kernel_groups": [
+      [
+        "observe_state",
+        960,
+        5095992
+      ],
+      [
+        "prefix_counts",
+        1440,
+        3775601
+      ],
+      [
+        "solver",
+        25440,
+        2218126197
+      ],
+      [
+        "spatial_sort",
+        5280,
+        106112193
+      ]
+    ],
+    "endpoint_equal": true,
+    "primary_timing": false
+  }
+]

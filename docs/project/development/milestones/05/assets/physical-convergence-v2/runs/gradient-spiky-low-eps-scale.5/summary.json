@@ -1,0 +1,59 @@
+{
+  "exit_code": 0,
+  "timed_out": false,
+  "audit_exit_code": 0,
+  "raw_sha256": "280ebe6b73a3fd3eceb7dd78fc72f75e8af46dfed3415eb492c1ae96df12ae54",
+  "gzip_sha256": "4765a187c60a4421b24b60a5a334f991552dcae2995d8937886069b585d319ce",
+  "observations": 41,
+  "parameters": {
+    "scene": "hydro",
+    "dt": 0.004166666666666667,
+    "duration": 2,
+    "iterations": 8,
+    "boundary": true,
+    "clamp": true,
+    "epsilon": 0.02,
+    "scale": 0.5,
+    "pressure": 0,
+    "poly": false,
+    "refresh": true
+  },
+  "final": {
+    "step": 480,
+    "time_s": 2,
+    "p95_compression": 0.002559223126578969,
+    "max_compression": 0.004468063160395053,
+    "minimum_separation_m": 0.00521608391966839,
+    "boundary_violation_m": 0,
+    "kinetic_J_kg": 0.04420176731307746,
+    "mechanical_J_kg": 1.888589223534645,
+    "centre": [
+      0.20005082166189858,
+      0.18801095374327909,
+      0.19956034231326802
+    ],
+    "mean_velocity": [
+      -0.0035283718361197175,
+      -0.009372932191642147,
+      -0.002739011635748025
+    ],
+    "expected_depth_m": 0.39612778479203586,
+    "surface_height_m": 0.37942842507839397,
+    "centroid_relative_error": 0.05075603902925701,
+    "surface_relative_error": 0.04215649685469282,
+    "bulk_count": 65,
+    "bulk_p95_absolute_error": 0.01246751428034687,
+    "surface_count": 113,
+    "surface_signed_error_p05": -0.28738451994451397,
+    "surface_signed_error_p95": 0.0012018563424114337,
+    "wall_signed_error_p05": -0.12354791755697803,
+    "wall_signed_error_p95": 0.002609580088339891,
+    "fluid_only_signed_error_p05": -0.5200533919746213,
+    "fluid_only_signed_error_p95": 0.002045904974739443
+  },
+  "worst_p95_compression": 0.00573920901513425,
+  "worst_max_compression": 0.009332831563259703,
+  "minimum_separation_m": 0.0005159265523297096,
+  "max_mechanical_energy_gain_J_kg": 0.0,
+  "settled_kinetic_J_kg_max": null
+}

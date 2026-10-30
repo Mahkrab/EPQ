@@ -1,0 +1,14 @@
+{
+  "created_utc": "2026-10-29T07:40:18.792437+00:00",
+  "isolated_admission": "Native/Python action agreement <1.2e-13; regular and 8% deterministic perturbed free clouds pass rigid/affine/adjoint/linear/angular tests; checkerboard positive. Edge profiles admit mixed Ny>=4 and full-wave vertical Ny>=8. Horizontal L/dx>=16.",
+  "geometry": "Periodic x/z .2m, bed y=0, box y=.1m, fluid H=.05m. Geometric mass rho*dx^3, pressure h=2dx, self density bias, density-aware fixed bed samples, compression-only constraints, correction=.5, eps=.02/h^2, contact .51dx, centre inset=.5dx.",
+  "cases": [
+    "horizontal natural free surface/slip bed, U=.01 and .1m/s, nu=.001",
+    "vertical mixed natural free surface/no-slip bed, U=.01 and .1m/s, nu=.001",
+    "stationary hydrostatic g=9.81m/s2, same viscosity and boundary variants"
+  ],
+  "resolution": "Ny=4,8,12,16 subject to isolated profile admission; at least three spatial levels if controlled full model remains stable; duration 1 viscous e-fold (1/(nu*(pi/.1)^2)), rounded to complete dt, spatial reference keeps physical geometry. dt=1/480s, pressure24; independent dt1/960 and iterations48. Stop candidate qualification when a physical gate fails, retain failures; investigate finest levels only where interpretable.",
+  "viscous_time_integration": "Backward Euler of exact adjoint strain operator, conjugate gradients relative residual<=1e-11 (absolute1e-14), max1000. K loss = dt*power(v_new)+.5*mean|v_new-v_old|^2, including discretisation loss separately. Timestep refinement, no viscosity fitting.",
+  "additional_criteria": "Use protocol amplitude, initial-rms L2, rate, hydrostatic, density, energy, wall traction, spacing gates. Report vertical noise separately; no resetting velocity during measured interval. Initial shear constructed from analytical profile at t=0, hydrostatic conditioning not silently added.",
+  "snapshot": "Every accepted step ledger and p/v every ~.05s including initial/final. Failed prefixes preserved."
+}

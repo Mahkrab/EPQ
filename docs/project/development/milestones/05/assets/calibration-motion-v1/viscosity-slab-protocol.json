@@ -1,0 +1,10 @@
+{
+  "created_utc": "2026-10-29T01:27:32.771290+00:00",
+  "reason": "Bulk periodic shear alone does not qualify a viscosity operator truncated by a shallow free surface. Test before interpreting a quiet viscous pool as the specified Newtonian material.",
+  "model": "Periodic horizontal x,z; finite fluid slab y; free-slip at y=0,H, tangential velocity u_x=sin(2pi*z/L), uniform y. Continuum solution amplitude exp(-nu*k^2*t) independent of slab depth; zero normal flow and zero tangential traction at both y faces.",
+  "geometry": "L=.6m, horizontal n=24/48; isotropic spacing L/n; layer counts1,2,3,4,8,16,32 at n24 and fixed physical depths2/24,4/24,8/24 timesL refined n48.",
+  "operator": "Exactly the implemented central pair viscosity, physical cell volume dx^3, viscosity support4dx, missing fluid neighbours omitted. No boundary drag, ghost viscosity or normalisation added.",
+  "parameters": "nu=.001m2/s, duration=one analytic decay time;8000 steps plus halfdt for selected cases.",
+  "criteria": "Same predefined 5% amplitude error and conservation/dissipation bounds. Vertical amplitude should remain uniform. Save initial/final vertical mode amplitudes and samples at 20 equal intervals.",
+  "scope": "Independent prescribed-position operator test, not new PBF or thin-film implementation."
+}

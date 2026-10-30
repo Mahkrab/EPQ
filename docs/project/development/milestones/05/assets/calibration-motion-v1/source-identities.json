@@ -1,0 +1,118 @@
+{
+  "source_commit": "814f88a7f4122b1b24ea645b210d89e1200a0c44",
+  "Maelstrom_commit": "250932784790ba26cdc55fc38a877ccefacbf054",
+  "uncommitted_experiment": true,
+  "identities": [
+    {
+      "version": 1,
+      "source": "sources/solver-v1.cpp",
+      "source_sha256": "d3e07f2700daf27b91ef1eac427d3ff0681c7a676c1340e0d11da388c7bcebe7",
+      "primary_native_sha256": "5cfd5ca9d0a6e486c43a58201fae1bb9a58182163acca1849b45c0581142b166"
+    },
+    {
+      "version": 2,
+      "source": "sources/solver-v2.cpp",
+      "source_sha256": "ae26476b3bfc5c9ace237d6af1c89acd4610c627140b522f74950f0eae0da330",
+      "primary_native_sha256": "890ce2b2c473e37d23a3858a07b89b1509eece56b29908cd4ac863eb5d66be37"
+    },
+    {
+      "version": 3,
+      "source": "sources/solver-v3.cpp",
+      "source_sha256": "b425f579cf66e5d19eed085041b6f9717bdb77d2565c168291508a8957d89dfc",
+      "primary_native_sha256": "6763268d35555afc92be1cca88a105f8dc5240540ea8b901c3769145ec728cc4"
+    },
+    {
+      "working_source": "tools/performance/qualification_assessment.py",
+      "snapshot": "sources/qualification_assessment.py",
+      "sha256": "cf5d71a57956e5fe363ec2f06d9f31504d9ac131da908f3e2fc4fd46f49f10ac"
+    },
+    {
+      "working_source": "tools/performance/qualification_viscosity.hpp",
+      "snapshot": "sources/qualification_viscosity.hpp",
+      "sha256": "4c4987f5f17b30cadc6c86cdd09cc4d086d571a796626c04a5479556f4eddb06"
+    },
+    {
+      "working_source": "tools/performance/qualification_campaign.py",
+      "snapshot": "sources/qualification_campaign.py",
+      "sha256": "d372ae5120623c5433ff581a64bc1bf2a0e5cf19c5952818569ae45e7c3516d5"
+    },
+    {
+      "working_source": "tools/performance/qualification_retain.py",
+      "snapshot": "sources/qualification_retain.py",
+      "sha256": "e7b5e99a7b562f4fe4a3dde1bf041b42043bf966c9af2d0e67a6962091aa7c08"
+    },
+    {
+      "working_source": "tools/performance/qualification_plot.py",
+      "snapshot": "sources/qualification_plot.py",
+      "sha256": "775b6229eb24474aa71f465eac153d462b8afbe389cab19823cecbdc57f0c65a"
+    },
+    {
+      "working_source": "tools/performance/qualification_slab.cpp",
+      "snapshot": "sources/qualification_slab.cpp",
+      "sha256": "1284cada8048d7dee0faba79a0a6640a61fc082be265d7c2dece675c51f3e4a0"
+    },
+    {
+      "working_source": "tools/performance/qualification_operator.py",
+      "snapshot": "sources/qualification_operator.py",
+      "sha256": "73b264053771815868ee742d2f135af89fe922ef7ccbf4c2225c8216530ec2be"
+    },
+    {
+      "working_source": "tools/performance/qualification_solver.cpp",
+      "snapshot": "sources/qualification_solver.cpp",
+      "sha256": "b425f579cf66e5d19eed085041b6f9717bdb77d2565c168291508a8957d89dfc"
+    },
+    {
+      "working_source": "tools/performance/qualification_shear.cpp",
+      "snapshot": "sources/qualification_shear.cpp",
+      "sha256": "6162453e5a4450a33be0ea52bcd17b38ba085a45ae87bd14465341f7d082cfd4"
+    },
+    {
+      "working_source": "tools/performance/qualification_diagnostics.py",
+      "snapshot": "sources/qualification_diagnostics.py",
+      "sha256": "a95e3df893f83d4ccaaa52c2e5f42eda5f47a7adb9638c86b49b3b56e47e0ec5"
+    },
+    {
+      "working_source": "tools/performance/qualification_audit.py",
+      "snapshot": "sources/qualification_audit.py",
+      "sha256": "ac72b7f6b255603774b933deaab04e74be7341ce376202edfc42edf165b9ab25"
+    },
+    {
+      "working_source": "tools/performance/spatial_audit.py",
+      "snapshot": "sources/spatial_audit.py",
+      "sha256": "7dfca9b5e4812df1f0851fc6bf0ab8d6c6dcfb7be1f94fe402918cfc6ff37a12"
+    },
+    {
+      "working_source": "tools/performance/spatial_retain.py",
+      "snapshot": "sources/spatial_retain.py",
+      "sha256": "6f8ec02469b0814b8c3dbef505c74d49b95b84a2e839c135b60adc59c3840dbe"
+    },
+    {
+      "working_source": "tools/performance/convergence_campaign.py",
+      "snapshot": "sources/convergence_campaign.py",
+      "sha256": "ad30d11fb4f9b520968c93efd61e2e14716ffe5bb7243b8f15014bedb301a3af"
+    },
+    {
+      "working_source": "tests/performance/test_qualification.py",
+      "snapshot": "sources/test_qualification.py",
+      "sha256": "e99e0d623b386b3c5fd1e4c28e9f71d84f37b7a8342b28485034b640a8e74509"
+    },
+    {
+      "working_source": "tests/performance/test_spatial.py",
+      "snapshot": "sources/test_spatial.py",
+      "sha256": "a914d304ab99d3c269b884db3d59ec8308af6738a35c37d35155f9032500513d"
+    }
+  ],
+  "immutable_wrapper_bindings": {
+    "solver": {
+      "native_sha256": "5cfd5ca9d0a6e486c43a58201fae1bb9a58182163acca1849b45c0581142b166",
+      "wrapper_sha256": "3238637de2ea2ffdd098df25afdd857397c879119ec15a1cb25ce62bddc6f0c1",
+      "wrapper": "#!/bin/sh\nexport OMP_WAIT_POLICY=PASSIVE\nexec /home/oliver/.local/share/maelstrom-experiments/calibration-motion-v1/work/bin/objects/5cfd5ca9d0a6e486c43a58201fae1bb9a58182163acca1849b45c0581142b166 \"$@\"\n"
+    },
+    "solver-v2": {
+      "native_sha256": "890ce2b2c473e37d23a3858a07b89b1509eece56b29908cd4ac863eb5d66be37",
+      "wrapper_sha256": "a1fdea3593d11b1edacb1a94dc8a8bf4fbd75da8b74970752e93123e46489ce3",
+      "wrapper": "#!/bin/sh\nexport OMP_WAIT_POLICY=PASSIVE\nexec /home/oliver/.local/share/maelstrom-experiments/calibration-motion-v1/work/bin/objects/890ce2b2c473e37d23a3858a07b89b1509eece56b29908cd4ac863eb5d66be37 \"$@\"\n"
+    }
+  },
+  "rebuild_readback": "rebuild-readback.json"
+}

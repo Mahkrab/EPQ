@@ -1,0 +1,7 @@
+{
+  "created_utc": "2026-10-29T01:52:07.653403+00:00",
+  "observation": "Physical-rest unforced raw case injects energy increasingly under dt refinement; self-corrected case remains bounded.",
+  "control": "At exactly dt1/480, repeat same raw/self input and all mechanisms with16 instead of8 Jacobi passes.",
+  "question": "Does solving the miscalibrated constraint more accurately reduce its physical energy error?",
+  "criteria": "No new tolerance or damping; retain energy,angular momentum,density-input residuals."
+}

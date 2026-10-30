@@ -1,0 +1,15 @@
+{
+  "created_utc": "2026-10-29T08:11:23.071032+00:00",
+  "purpose": "Isolate pressure/gravity switch-on from persistent coupled shear failure. New initial-value problem, not continued settling and not evidence that physical motion was dissipated.",
+  "source_run": "mirror-rest-n4-g9.81",
+  "source_time": 1.0,
+  "conditioning_history": "All six seconds and initial state retained; selected1s before new control.",
+  "position_change": "None",
+  "new_velocity": "Prescribed analytic vx=.01 sin(pi*y/.1), vy=vz=0, identical intended mixed reference flow. No velocity reset inside measured interval.",
+  "conditioning_K_J_kg": 1.926664999241323e-17,
+  "new_K_J_kg": 2.499897905323724e-05,
+  "centroid_error": -3.9899099237517e-05,
+  "sha256": "5f798fd3784433d2daf3cc29a447bdbd33f6a278a14721a193d6bc454004d8c1",
+  "parameters": "same dt, iterations, nu, support, gravity, density mirror; Ny4; duration1.0125s",
+  "gate": "Any quietness result for this new flow does not replace the original collision/rest screens. Require original5% modal/rate/traction/L2 budgets."
+}

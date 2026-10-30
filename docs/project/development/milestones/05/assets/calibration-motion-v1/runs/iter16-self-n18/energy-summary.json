@@ -1,0 +1,250 @@
+{
+  "maximum_identity_residuals": {
+    "closure": 5.551115123125783e-16,
+    "gravity": 1.192953952310928e-12,
+    "checkpoint_K": 1.687538997430238e-13,
+    "checkpoint_U": 2.5224267119483557e-13,
+    "checkpoint_momentum": 2.220446049250313e-16,
+    "momentum_budget": 1.3347066507574112e-12,
+    "density_internal_impulse": 3.4391413328282994e-13,
+    "contact_impulse": 7.549516567451064e-15,
+    "viscous_impulse": 0.0,
+    "viscous_angular": 0.0,
+    "viscous_increase": 0.0,
+    "reconstruction": 9.930136612989092e-16
+  },
+  "windows": {
+    "all": {
+      "steps": 4320,
+      "state_samples": 4321,
+      "start_time_s": 0.0,
+      "end_time_s": 6,
+      "initial": {
+        "K": 0.12499999999999999,
+        "U": 5.150250000000016,
+        "mean_v": [
+          0,
+          0,
+          0
+        ],
+        "angular_per_kg": [
+          0,
+          -1.4684469918042355e-17,
+          -4.701124415829602e-17
+        ]
+      },
+      "final": {
+        "K": 0.00165127494397876,
+        "U": 0.26379852764510514,
+        "mean_v": [
+          0.0002857453733498622,
+          -4.5729515849052895e-05,
+          -0.0010998736721283511
+        ],
+        "angular_per_kg": [
+          2.5668973457881345e-06,
+          0.00313329180990918,
+          -4.323008641784091e-05
+        ]
+      },
+      "net_energy_change": -5.009800197410932,
+      "sum_positive_accepted_energy_steps": 0,
+      "maximum_positive_accepted_step": -1.8289670027371585e-06,
+      "maximum_K": 3.7639275312492915,
+      "mean_K": 0.21069067097881045,
+      "minimum_U": 0.26363970331525005,
+      "maximum_U": 5.150250000000016,
+      "active_density_constraints": 539491473,
+      "max_viscous_row_dt": 0,
+      "phase_work": {
+        "density": {
+          "dK": -3.4994290890137187,
+          "dU": 0.4216457703735664,
+          "positive_dE": 0.09328344581589121,
+          "negative_dE": -3.1710667644560653,
+          "max_displacement": 0.005287115625454978,
+          "active_particle_stages": 741100929
+        },
+        "contact": {
+          "dK": -0.28045287826351234,
+          "dU": 1.0970668817833484e-12,
+          "positive_dE": 0.04876838830836133,
+          "negative_dE": -0.32922126657081824,
+          "max_displacement": 0.004172830950631384,
+          "active_particle_stages": 4324651
+        },
+        "plane": {
+          "dK": -1.6309013570691058,
+          "dU": 0.38032110652076706,
+          "positive_dE": 0.17961644971093177,
+          "negative_dE": -1.430196700259352,
+          "max_displacement": 0.007573589059371794,
+          "active_particle_stages": 206709245
+        },
+        "viscosity": {
+          "dK": 0,
+          "dU": 0,
+          "positive_dE": 0,
+          "negative_dE": 0,
+          "max_displacement": 0,
+          "active_particle_stages": 0
+        }
+      }
+    },
+    "settled": {
+      "steps": 720,
+      "state_samples": 721,
+      "start_time_s": 5.0,
+      "end_time_s": 6,
+      "initial": {
+        "K": 0.0029502696453409145,
+        "U": 0.26440452063412334,
+        "mean_v": [
+          -0.0013142307820065184,
+          1.027049329464945e-05,
+          0.0019275020859452964
+        ],
+        "angular_per_kg": [
+          7.372017443739808e-05,
+          -0.00019661140560894123,
+          3.7679638861818184e-06
+        ]
+      },
+      "final": {
+        "K": 0.00165127494397876,
+        "U": 0.26379852764510514,
+        "mean_v": [
+          0.0002857453733498622,
+          -4.5729515849052895e-05,
+          -0.0010998736721283511
+        ],
+        "angular_per_kg": [
+          2.5668973457881345e-06,
+          0.00313329180990918,
+          -4.323008641784091e-05
+        ]
+      },
+      "net_energy_change": -0.0019049876903803331,
+      "sum_positive_accepted_energy_steps": 0,
+      "maximum_positive_accepted_step": -1.8289670027371585e-06,
+      "maximum_K": 0.0029502696453409145,
+      "mean_K": 0.0022951307877953904,
+      "minimum_U": 0.26363970331525005,
+      "maximum_U": 0.2644693105510376,
+      "active_density_constraints": 125988566,
+      "max_viscous_row_dt": 0,
+      "phase_work": {
+        "density": {
+          "dK": -0.04741247478450175,
+          "dU": 0.0702728479418146,
+          "positive_dE": 0.02651146991934844,
+          "negative_dE": -0.00365109676203218,
+          "max_displacement": 4.7060829319197666e-05,
+          "active_particle_stages": 134369280
+        },
+        "contact": {
+          "dK": -1.9304496755501686e-05,
+          "dU": 1.3877787807814457e-15,
+          "positive_dE": 2.5133077008465676e-08,
+          "negative_dE": -1.9329629836417617e-05,
+          "max_displacement": 9.999407828479352e-05,
+          "active_particle_stages": 65030
+        },
+        "plane": {
+          "dK": -0.021303070408999668,
+          "dU": 0.06338763905299816,
+          "positive_dE": 0.042084648039493855,
+          "negative_dE": -7.939549262481194e-08,
+          "max_displacement": 0.00018986211164084832,
+          "active_particle_stages": 42421728
+        },
+        "viscosity": {
+          "dK": 0,
+          "dU": 0,
+          "positive_dE": 0,
+          "negative_dE": 0,
+          "max_displacement": 0,
+          "active_particle_stages": 0
+        }
+      }
+    },
+    "tail": {
+      "steps": 720,
+      "state_samples": 721,
+      "start_time_s": 5.0,
+      "end_time_s": 6,
+      "initial": {
+        "K": 0.0029502696453409145,
+        "U": 0.26440452063412334,
+        "mean_v": [
+          -0.0013142307820065184,
+          1.027049329464945e-05,
+          0.0019275020859452964
+        ],
+        "angular_per_kg": [
+          7.372017443739808e-05,
+          -0.00019661140560894123,
+          3.7679638861818184e-06
+        ]
+      },
+      "final": {
+        "K": 0.00165127494397876,
+        "U": 0.26379852764510514,
+        "mean_v": [
+          0.0002857453733498622,
+          -4.5729515849052895e-05,
+          -0.0010998736721283511
+        ],
+        "angular_per_kg": [
+          2.5668973457881345e-06,
+          0.00313329180990918,
+          -4.323008641784091e-05
+        ]
+      },
+      "net_energy_change": -0.0019049876903803331,
+      "sum_positive_accepted_energy_steps": 0,
+      "maximum_positive_accepted_step": -1.8289670027371585e-06,
+      "maximum_K": 0.0029502696453409145,
+      "mean_K": 0.0022951307877953904,
+      "minimum_U": 0.26363970331525005,
+      "maximum_U": 0.2644693105510376,
+      "active_density_constraints": 125988566,
+      "max_viscous_row_dt": 0,
+      "phase_work": {
+        "density": {
+          "dK": -0.04741247478450175,
+          "dU": 0.0702728479418146,
+          "positive_dE": 0.02651146991934844,
+          "negative_dE": -0.00365109676203218,
+          "max_displacement": 4.7060829319197666e-05,
+          "active_particle_stages": 134369280
+        },
+        "contact": {
+          "dK": -1.9304496755501686e-05,
+          "dU": 1.3877787807814457e-15,
+          "positive_dE": 2.5133077008465676e-08,
+          "negative_dE": -1.9329629836417617e-05,
+          "max_displacement": 9.999407828479352e-05,
+          "active_particle_stages": 65030
+        },
+        "plane": {
+          "dK": -0.021303070408999668,
+          "dU": 0.06338763905299816,
+          "positive_dE": 0.042084648039493855,
+          "negative_dE": -7.939549262481194e-08,
+          "max_displacement": 0.00018986211164084832,
+          "active_particle_stages": 42421728
+        },
+        "viscosity": {
+          "dK": 0,
+          "dU": 0,
+          "positive_dE": 0,
+          "negative_dE": 0,
+          "max_displacement": 0,
+          "active_particle_stages": 0
+        }
+      }
+    }
+  },
+  "every_step_max_energy_above_initial": -9.282031224522314e-05
+}

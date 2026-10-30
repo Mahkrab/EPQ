@@ -1,0 +1,1109 @@
+{
+  "auditor_sha256": "d34242eceab08b8e0adb2ac52bdaaab52b722605e5cecc3ccd2a93f0b2ed1425",
+  "summary": {
+    "label": "mirror-mixed-n4-u.1",
+    "parameters": {
+      "ny": 4,
+      "amplitude": 0.1,
+      "gravity": 9.81,
+      "dt": 0.0020833333333333333,
+      "duration": 1.0125,
+      "iterations": 24,
+      "threads": 4,
+      "boundary": true,
+      "density": true,
+      "nu": 0.001,
+      "mode": "channel-mixed"
+    },
+    "density_boundary": "mirrored",
+    "observations": 22,
+    "accepted_steps": 486,
+    "final": {
+      "step": 486,
+      "time_s": 1.0125,
+      "centroid_m": 0.02500497837648355,
+      "centroid_relative_error": 0.00019913505934199272,
+      "height_m": 0.049988492951222686,
+      "height_relative_error": -0.0002301409755463002,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.00015786330914133547,
+      "axis_kinetic_J_kg": [
+        0.00015786305609663477,
+        2.530221528410317e-10,
+        2.254780557642167e-14
+      ],
+      "potential_J_kg": 0.24529883787330364,
+      "mean_v": [
+        0.017469551040816593,
+        1.851121153812661e-05,
+        -1.7767274944871195e-14
+      ],
+      "amplitude": 0.24280446128011596,
+      "analytical_amplitude": 0.3681379872984424,
+      "amplitude_relative_error": -0.3404525757802901,
+      "L2_velocity_error_over_initial_rms": 0.14106476300388893,
+      "p95_compression": 6.823965711556523e-05,
+      "max_compression": 6.824052723231055e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.833971034252759e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.019375528735309996,
+          "mean_relative_error": -0.011383329333526704
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.018452694894113424,
+          "mean_relative_error": -0.009585151806218772
+        }
+      },
+      "minimum_separation_over_dx": 0.9999890409720709,
+      "plane_violation_m": 0.0,
+      "field_volume": {
+        "horizontal_probes": 208,
+        "vertical_probes": 241,
+        "thresholds": {
+          "0.45": {
+            "relative_volume_error": -0.003964715703346222,
+            "equivalent_height_m": 0.04980176421483269,
+            "relative_height_error": -0.003964715703346222
+          },
+          "0.5": {
+            "relative_volume_error": -0.0013545151754328077,
+            "equivalent_height_m": 0.049932274241228355,
+            "relative_height_error": -0.0013545151754328077
+          },
+          "0.55": {
+            "relative_volume_error": 0.001366600233077414,
+            "equivalent_height_m": 0.05006833001165387,
+            "relative_height_error": 0.001366600233077414
+          }
+        }
+      }
+    },
+    "maximum_p95_compression": 6.834959208744662e-05,
+    "maximum_compression": 6.834960469936924e-05,
+    "maximum_abs_centroid_error": 0.0010550305142491556,
+    "minimum_separation_over_dx": 0.9965449013898131,
+    "maximum_plane_violation": 0.0,
+    "max_L2_velocity_error": 0.20327203283496162,
+    "decay_rate_relative_error": 0.41649400974982353,
+    "legacy_settled_max_K": null,
+    "legacy_quietness_pass": null,
+    "energy_maxima": {
+      "energy_budget": 2.7321894746634712e-17,
+      "viscous_identity": 2.8725248842042163e-16,
+      "reconstruction": 1.3877787807814457e-17,
+      "viscous_increase": 0.0,
+      "snapshot_K": 8.239936510889834e-18
+    },
+    "physical_viscous_loss": 0.0022659804424901737,
+    "time_discretisation_viscous_loss": 8.198038551738702e-06,
+    "pressure_impulse_per_kg": [
+      6.931955010003321e-15,
+      9.687673257324867,
+      -2.960685082514791e-14
+    ],
+    "wall_viscous_impulse_per_kg": [
+      -0.0466033351527391,
+      -0.00013745999251921247,
+      1.4053407889905347e-14
+    ],
+    "max_condition": 1.7535214398231875,
+    "max_cg_residual": 9.979073666343472e-12,
+    "maximum_mechanical_energy_gain_J_kg": 0.0,
+    "analytical_wall_impulse_x_per_kg": -0.04022558506937874,
+    "wall_viscous_impulse_relative_error": 0.15854959156865944
+  },
+  "records": [
+    {
+      "step": 0,
+      "time_s": 0.0,
+      "centroid_m": 0.025,
+      "centroid_relative_error": 0.0,
+      "height_m": 0.05,
+      "height_relative_error": 0.0,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.0025000000000000005,
+      "axis_kinetic_J_kg": [
+        0.002500000000000009,
+        0.0,
+        0.0
+      ],
+      "potential_J_kg": 0.24525000000000002,
+      "mean_v": [
+        0.06407288619353749,
+        0.0,
+        0.0
+      ],
+      "amplitude": 1.0000000000000009,
+      "analytical_amplitude": 1.0,
+      "amplitude_relative_error": 8.881784197001252e-16,
+      "L2_velocity_error_over_initial_rms": 0.0,
+      "p95_compression": 1.1102230246251565e-15,
+      "max_compression": 1.3322676295501878e-15,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 1.1102230246251565e-15,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.01736383818616398,
+          "mean_relative_error": -0.008464668629767802
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.01736383818616398,
+          "mean_relative_error": -0.008464668629767802
+        }
+      },
+      "minimum_separation_over_dx": 0.9999999999999987,
+      "plane_violation_m": 0.0,
+      "field_volume": {
+        "horizontal_probes": 208,
+        "vertical_probes": 241,
+        "thresholds": {
+          "0.45": {
+            "relative_volume_error": -0.0037853486891016586,
+            "equivalent_height_m": 0.04981073256554494,
+            "relative_height_error": -0.003785348689101381
+          },
+          "0.5": {
+            "relative_volume_error": -0.0011995747231796638,
+            "equivalent_height_m": 0.04994002126384102,
+            "relative_height_error": -0.0011995747231796638
+          },
+          "0.55": {
+            "relative_volume_error": 0.0014910442136886748,
+            "equivalent_height_m": 0.050074552210684437,
+            "relative_height_error": 0.0014910442136886748
+          }
+        }
+      }
+    },
+    {
+      "step": 24,
+      "time_s": 0.05,
+      "centroid_m": 0.025003624297011896,
+      "centroid_relative_error": 0.00014497188047579712,
+      "height_m": 0.04998497872285731,
+      "height_relative_error": -0.00030042554285392153,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.0022201618577908644,
+      "axis_kinetic_J_kg": [
+        0.002220143266260275,
+        1.8591530591229134e-08,
+        1.7854174081432826e-29
+      ],
+      "potential_J_kg": 0.2452855543536867,
+      "mean_v": [
+        0.06105479454836075,
+        0.00016039579530880755,
+        -3.5248690240351003e-16
+      ],
+      "amplitude": 0.941828335231921,
+      "analytical_amplitude": 0.9518498073692735,
+      "amplitude_relative_error": -0.010528417466459161,
+      "L2_velocity_error_over_initial_rms": 0.03302901272564347,
+      "p95_compression": 6.805859891634292e-05,
+      "max_compression": 6.805859891700905e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.824384293760197e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.019482040962934908,
+          "mean_relative_error": -0.010583109910927702
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.018772704953783217,
+          "mean_relative_error": -0.009098478433309909
+        }
+      },
+      "minimum_separation_over_dx": 0.9979000546966394,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 48,
+      "time_s": 0.1,
+      "centroid_m": 0.02501272750978742,
+      "centroid_relative_error": 0.000509100391496764,
+      "height_m": 0.050000025371561514,
+      "height_relative_error": 5.074312301456274e-07,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.001923863963501869,
+      "axis_kinetic_J_kg": [
+        0.0019238393340119619,
+        2.4629489907225923e-08,
+        2.2831478261606903e-29
+      ],
+      "potential_J_kg": 0.2453748568710146,
+      "mean_v": [
+        0.05781805545573158,
+        0.00018227289027770833,
+        1.7886160512732567e-17
+      ],
+      "amplitude": 0.8743064540395258,
+      "analytical_amplitude": 0.9060180557889229,
+      "amplitude_relative_error": -0.03500107039454525,
+      "L2_velocity_error_over_initial_rms": 0.07800785359424278,
+      "p95_compression": 6.80710843115051e-05,
+      "max_compression": 6.807108431283737e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.824116333062122e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.018187952909133883,
+          "mean_relative_error": -0.01077721716768798
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.016910708055250006,
+          "mean_relative_error": -0.007196239455032893
+        }
+      },
+      "minimum_separation_over_dx": 0.9999999999993893,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 72,
+      "time_s": 0.15,
+      "centroid_m": 0.025020581842727423,
+      "centroid_relative_error": 0.000823273709096739,
+      "height_m": 0.0500141648111335,
+      "height_relative_error": 0.000283296222669982,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.00165907105319073,
+      "axis_kinetic_J_kg": [
+        0.0016590584987980336,
+        1.2554392701083649e-08,
+        3.900121175357043e-29
+      ],
+      "potential_J_kg": 0.24545190787715604,
+      "mean_v": [
+        0.05437646982169541,
+        0.0001276756737483149,
+        4.203187144581375e-16
+      ],
+      "amplitude": 0.8083700018419118,
+      "analytical_amplitude": 0.86239311187577,
+      "amplitude_relative_error": -0.06264325316369224,
+      "L2_velocity_error_over_initial_rms": 0.11418023895588132,
+      "p95_compression": 6.794313792424234e-05,
+      "max_compression": 6.794313792513051e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.813195000068603e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.01820734154232135,
+          "mean_relative_error": -0.01180605102418264
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.014879830129522445,
+          "mean_relative_error": -0.006026747161742785
+        }
+      },
+      "minimum_separation_over_dx": 0.9999999999988091,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 96,
+      "time_s": 0.2,
+      "centroid_m": 0.02502518921705656,
+      "centroid_relative_error": 0.001007568682262372,
+      "height_m": 0.050022766658789505,
+      "height_relative_error": 0.00045533317578994037,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.001442976726729057,
+      "axis_kinetic_J_kg": [
+        0.0014429740383480173,
+        2.6883810383526936e-09,
+        6.282267328921464e-29
+      ],
+      "potential_J_kg": 0.24549710621932486,
+      "mean_v": [
+        0.05091305742007803,
+        5.9313006572293226e-05,
+        5.077313407892042e-16
+      ],
+      "amplitude": 0.7508276665335855,
+      "analytical_amplitude": 0.8208687174155399,
+      "amplitude_relative_error": -0.08532552087314871,
+      "L2_velocity_error_over_initial_rms": 0.13531704012582688,
+      "p95_compression": 6.78720360844931e-05,
+      "max_compression": 6.787203608493719e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.8064854912533974e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.017616128649161143,
+          "mean_relative_error": -0.012216249073970342
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.013524780993778147,
+          "mean_relative_error": -0.003906967284288854
+        }
+      },
+      "minimum_separation_over_dx": 0.9999999999978983,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 120,
+      "time_s": 0.25,
+      "centroid_m": 0.02502637576285623,
+      "centroid_relative_error": 0.0010550305142491556,
+      "height_m": 0.05002483531586059,
+      "height_relative_error": 0.0004967063172116593,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.001274477973331991,
+      "axis_kinetic_J_kg": [
+        0.0012744777333310237,
+        2.4000096723706655e-10,
+        4.497902454553859e-28
+      ],
+      "potential_J_kg": 0.24550874623361962,
+      "mean_v": [
+        0.047601905020438824,
+        -1.194286815814901e-05,
+        4.1333308555302048e-16
+      ],
+      "amplitude": 0.7026392610417371,
+      "analytical_amplitude": 0.7813437305474442,
+      "amplitude_relative_error": -0.10072963591908934,
+      "L2_velocity_error_over_initial_rms": 0.1490992272153634,
+      "p95_compression": 6.783909882557282e-05,
+      "max_compression": 6.783909882668304e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.804390176319617e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.017723067208897676,
+          "mean_relative_error": -0.012056727365479025
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.01269381936915862,
+          "mean_relative_error": -0.0033003476365330853
+        }
+      },
+      "minimum_separation_over_dx": 0.9999999999953801,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 144,
+      "time_s": 0.3,
+      "centroid_m": 0.02502321363762567,
+      "centroid_relative_error": 0.0009285455050267455,
+      "height_m": 0.050018217449414475,
+      "height_relative_error": 0.0003643489882894091,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.0011537551807742305,
+      "axis_kinetic_J_kg": [
+        0.0011537424517497907,
+        1.2729024439566956e-08,
+        6.499179891273134e-27
+      ],
+      "potential_J_kg": 0.24547772578510785,
+      "mean_v": [
+        0.04454373684985462,
+        -0.00011684243351336982,
+        -6.538797281422528e-16
+      ],
+      "amplitude": 0.6630461702108675,
+      "analytical_amplitude": 0.7437218794107743,
+      "amplitude_relative_error": -0.10847564315819691,
+      "L2_velocity_error_over_initial_rms": 0.16823306826353493,
+      "p95_compression": 6.784912489443684e-05,
+      "max_compression": 6.784912489599115e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.808087938450555e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.019118067232557656,
+          "mean_relative_error": -0.011916854579388625
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.014483874132287855,
+          "mean_relative_error": -0.005142803333446411
+        }
+      },
+      "minimum_separation_over_dx": 0.9999999999883591,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 168,
+      "time_s": 0.35,
+      "centroid_m": 0.025015777309300415,
+      "centroid_relative_error": 0.0006310923720165285,
+      "height_m": 0.05000332895910951,
+      "height_relative_error": 6.657918219010739e-05,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.0010639654146462887,
+      "axis_kinetic_J_kg": [
+        0.0010639470245297805,
+        1.8390116508183914e-08,
+        6.245558998001118e-26
+      ],
+      "potential_J_kg": 0.24540477540423708,
+      "mean_v": [
+        0.04176545262508834,
+        -0.00014686028873480957,
+        -1.5671489449141487e-15
+      ],
+      "amplitude": 0.6278201377688261,
+      "analytical_amplitude": 0.7079115276534595,
+      "amplitude_relative_error": -0.11313756981767953,
+      "L2_velocity_error_over_initial_rms": 0.19427418366715213,
+      "p95_compression": 6.799442648519616e-05,
+      "max_compression": 6.799442648874887e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.82273946726297e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.019557833443407502,
+          "mean_relative_error": -0.011411697551658717
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.016408635168599944,
+          "mean_relative_error": -0.007514094899124912
+        }
+      },
+      "minimum_separation_over_dx": 0.9999999999715303,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 192,
+      "time_s": 0.4,
+      "centroid_m": 0.025011654372183226,
+      "centroid_relative_error": 0.00046617488732891843,
+      "height_m": 0.04999600741649263,
+      "height_relative_error": -7.98516701474572e-05,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.0009387865572720828,
+      "axis_kinetic_J_kg": [
+        0.0009387861530637738,
+        4.0420830888402506e-10,
+        3.6508049143818564e-25
+      ],
+      "potential_J_kg": 0.24536432939111746,
+      "mean_v": [
+        0.03915672367193312,
+        -1.5642695511285087e-05,
+        -1.0947250923909922e-16
+      ],
+      "amplitude": 0.5862971604887663,
+      "analytical_amplitude": 0.6738254512314336,
+      "amplitude_relative_error": -0.12989757300307814,
+      "L2_velocity_error_over_initial_rms": 0.19832066882156782,
+      "p95_compression": 6.809242050983543e-05,
+      "max_compression": 6.809242051630804e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.830307594809845e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.019704213939419086,
+          "mean_relative_error": -0.010857773169691609
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.01735761822373831,
+          "mean_relative_error": -0.0077550559721306644
+        }
+      },
+      "minimum_separation_over_dx": 0.9999999999313736,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 216,
+      "time_s": 0.45,
+      "centroid_m": 0.025013170910598487,
+      "centroid_relative_error": 0.0005268364239394696,
+      "height_m": 0.050000805203953586,
+      "height_relative_error": 1.6104079071599386e-05,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.000783380661447366,
+      "axis_kinetic_J_kg": [
+        0.0007833758663523757,
+        4.795094990460521e-09,
+        2.2148710920547184e-24
+      ],
+      "potential_J_kg": 0.24537920663297116,
+      "mean_v": [
+        0.036546271589472344,
+        5.005856161120876e-05,
+        -2.9091368045004274e-15
+      ],
+      "amplitude": 0.5367568578988842,
+      "analytical_amplitude": 0.6413806259551538,
+      "amplitude_relative_error": -0.16312274462681553,
+      "L2_velocity_error_over_initial_rms": 0.1900216534965147,
+      "p95_compression": 6.805330447675617e-05,
+      "max_compression": 6.805330449100033e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.823413446809587e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.019011620716609858,
+          "mean_relative_error": -0.010957855522294668
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.015557667264484805,
+          "mean_relative_error": -0.006613633146381526
+        }
+      },
+      "minimum_separation_over_dx": 0.9999999998379461,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 240,
+      "time_s": 0.5,
+      "centroid_m": 0.025015136053790632,
+      "centroid_relative_error": 0.0006054421516252795,
+      "height_m": 0.05000679069128674,
+      "height_relative_error": 0.0001358138257347985,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.000648750961849095,
+      "axis_kinetic_J_kg": [
+        0.000648749222034231,
+        1.739814863689197e-09,
+        1.5515904840018376e-23
+      ],
+      "potential_J_kg": 0.2453984846876861,
+      "mean_v": [
+        0.03388658607525324,
+        2.1009686673755734e-05,
+        -1.3263266625771485e-14
+      ],
+      "amplitude": 0.48713256256974174,
+      "analytical_amplitude": 0.6104980252657972,
+      "amplitude_relative_error": -0.20207348359946764,
+      "L2_velocity_error_over_initial_rms": 0.19328749308889076,
+      "p95_compression": 6.804311749594171e-05,
+      "max_compression": 6.804311752395265e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.817899911445766e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.017812611970653362,
+          "mean_relative_error": -0.011483789628154217
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.016068090832183083,
+          "mean_relative_error": -0.006288493032885811
+        }
+      },
+      "minimum_separation_over_dx": 0.999999999594432,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 264,
+      "time_s": 0.55,
+      "centroid_m": 0.02501512953907257,
+      "centroid_relative_error": 0.0006051815629026791,
+      "height_m": 0.05000874449062936,
+      "height_relative_error": 0.0001748898125870646,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.0005478281035707422,
+      "axis_kinetic_J_kg": [
+        0.0005478277062196106,
+        3.973511310581378e-10,
+        1.2521967467516744e-22
+      ],
+      "potential_J_kg": 0.2453984207783019,
+      "mean_v": [
+        0.03126658977747517,
+        -1.8915660266191162e-05,
+        -9.38370600391286e-15
+      ],
+      "amplitude": 0.44422359520110066,
+      "analytical_amplitude": 0.5811024277485708,
+      "amplitude_relative_error": -0.2355502679240128,
+      "L2_velocity_error_over_initial_rms": 0.2011816737549827,
+      "p95_compression": 6.806768696040466e-05,
+      "max_compression": 6.806768702860566e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.816106069441938e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.017339890947436626,
+          "mean_relative_error": -0.011966054423833694
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.015347215604182467,
+          "mean_relative_error": -0.00667214080029932
+        }
+      },
+      "minimum_separation_over_dx": 0.9999999988812802,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 288,
+      "time_s": 0.6,
+      "centroid_m": 0.02501340687427473,
+      "centroid_relative_error": 0.0005362749709891812,
+      "height_m": 0.050006786214333805,
+      "height_relative_error": 0.00013572428667596448,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.0004736087260271949,
+      "axis_kinetic_J_kg": [
+        0.00047360713260163624,
+        1.5934255592818701e-09,
+        1.1789742675808509e-21
+      ],
+      "potential_J_kg": 0.24538152143663514,
+      "mean_v": [
+        0.028814985150856547,
+        -4.882323843446019e-05,
+        -1.0633453041356293e-14
+      ],
+      "amplitude": 0.41039796319679056,
+      "analytical_amplitude": 0.5531222339142944,
+      "amplitude_relative_error": -0.25803387021252666,
+      "L2_velocity_error_over_initial_rms": 0.20327203283496162,
+      "p95_compression": 6.811200178646892e-05,
+      "max_compression": 6.811200197742728e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.8176543140044925e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.0176648788286905,
+          "mean_relative_error": -0.01212860697732121
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.01610160926920312,
+          "mean_relative_error": -0.007054775488497866
+        }
+      },
+      "minimum_separation_over_dx": 0.9999999967184281,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 312,
+      "time_s": 0.65,
+      "centroid_m": 0.02501008836627194,
+      "centroid_relative_error": 0.00040353465087750173,
+      "height_m": 0.05000077087842347,
+      "height_relative_error": 1.5417568469455745e-05,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.0004233451543527503,
+      "axis_kinetic_J_kg": [
+        0.0004233388893161067,
+        6.26503664410168e-09,
+        1.2814369844123427e-20
+      ],
+      "potential_J_kg": 0.24534896687312774,
+      "mean_v": [
+        0.026648754611725792,
+        -8.575107103675817e-05,
+        -1.2298300266573802e-14
+      ],
+      "amplitude": 0.3868395863013717,
+      "analytical_amplitude": 0.5264892918029833,
+      "amplitude_relative_error": -0.26524700060541717,
+      "L2_velocity_error_over_initial_rms": 0.1977766591000106,
+      "p95_compression": 6.816320594048575e-05,
+      "max_compression": 6.816320660485431e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.82218376955068e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.01873033553748748,
+          "mean_relative_error": -0.011767296884610312
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.016690840293865798,
+          "mean_relative_error": -0.0074902265350599295
+        }
+      },
+      "minimum_separation_over_dx": 0.9979848455228305,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 336,
+      "time_s": 0.7,
+      "centroid_m": 0.02500489503041951,
+      "centroid_relative_error": 0.0001958012167804224,
+      "height_m": 0.04999008956467975,
+      "height_relative_error": -0.0001982087064050786,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.00039569556535818523,
+      "axis_kinetic_J_kg": [
+        0.0003956836473370191,
+        1.1918021165857189e-08,
+        1.314464996331533e-19
+      ],
+      "potential_J_kg": 0.2452980202484154,
+      "mean_v": [
+        0.02486154107623411,
+        -0.00011130226995613748,
+        -1.2327614984876618e-14
+      ],
+      "amplitude": 0.373399982294073,
+      "analytical_amplitude": 0.5011387309846549,
+      "amplitude_relative_error": -0.2548969792049326,
+      "L2_velocity_error_over_initial_rms": 0.18730176996058115,
+      "p95_compression": 6.824694985121393e-05,
+      "max_compression": 6.824695192064745e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.8313603369044544e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.019237050220680667,
+          "mean_relative_error": -0.010833361130395791
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.01792180916978665,
+          "mean_relative_error": -0.008442676279250105
+        }
+      },
+      "minimum_separation_over_dx": 0.9965555506080879,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 360,
+      "time_s": 0.75,
+      "centroid_m": 0.025000466151984313,
+      "centroid_relative_error": 1.864607937251961e-05,
+      "height_m": 0.04998055850358225,
+      "height_relative_error": -0.00038882992835509445,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.0003665844560803812,
+      "axis_kinetic_J_kg": [
+        0.00036658115048307353,
+        3.305597307476059e-09,
+        9.837609150018638e-19
+      ],
+      "potential_J_kg": 0.24525457295096612,
+      "mean_v": [
+        0.023467194084185544,
+        -5.68909022848583e-05,
+        -1.2295734867602674e-14
+      ],
+      "amplitude": 0.3641022472812948,
+      "analytical_amplitude": 0.47700880455302586,
+      "amplitude_relative_error": -0.23669700893158252,
+      "L2_velocity_error_over_initial_rms": 0.163527537299493,
+      "p95_compression": 6.834162026373436e-05,
+      "max_compression": 6.834162494984142e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.841699543783994e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.019025745694304992,
+          "mean_relative_error": -0.00994176940803082
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.0185037064731325,
+          "mean_relative_error": -0.009490950450540714
+        }
+      },
+      "minimum_separation_over_dx": 0.996872971463538,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 384,
+      "time_s": 0.8,
+      "centroid_m": 0.02499942768384049,
+      "centroid_relative_error": -2.2892646380445747e-05,
+      "height_m": 0.04997814394563877,
+      "height_relative_error": -0.0004371210872246012,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.0003234224982239615,
+      "axis_kinetic_J_kg": [
+        0.0003234224568920463,
+        4.133190943885658e-11,
+        6.150946052422985e-18
+      ],
+      "potential_J_kg": 0.24524438557847522,
+      "mean_v": [
+        0.02235633572196326,
+        5.7265947613881735e-06,
+        -1.3087949777176658e-14
+      ],
+      "amplitude": 0.3517900352863581,
+      "analytical_amplitude": 0.45404073872724504,
+      "amplitude_relative_error": -0.22520160575791814,
+      "L2_velocity_error_over_initial_rms": 0.1266035058370003,
+      "p95_compression": 6.834959208744662e-05,
+      "max_compression": 6.834960469936924e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.843357110666634e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.019185778539928006,
+          "mean_relative_error": -0.009802042114466003
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.01930434488781578,
+          "mean_relative_error": -0.00999173809479914
+        }
+      },
+      "minimum_separation_over_dx": 0.9970094622167833,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 408,
+      "time_s": 0.85,
+      "centroid_m": 0.025000337083424775,
+      "centroid_relative_error": 1.3483336990915973e-05,
+      "height_m": 0.04998001578611308,
+      "height_relative_error": -0.0003996842777383991,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.00028040128642152593,
+      "axis_kinetic_J_kg": [
+        0.0002804006659954796,
+        6.204260066411559e-10,
+        3.936913481848372e-17
+      ],
+      "potential_J_kg": 0.24525330678839705,
+      "mean_v": [
+        0.021361766526203592,
+        2.4868139555997763e-05,
+        -1.3247684200962032e-14
+      ],
+      "amplitude": 0.3336733256626424,
+      "analytical_amplitude": 0.43217858969533085,
+      "amplitude_relative_error": -0.22792721893541934,
+      "L2_velocity_error_over_initial_rms": 0.10253512342951966,
+      "p95_compression": 6.832731735071374e-05,
+      "max_compression": 6.832735197037643e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.840974021405152e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.01943253024150803,
+          "mean_relative_error": -0.01021201929556248
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.01966372679510006,
+          "mean_relative_error": -0.010204375343008665
+        }
+      },
+      "minimum_separation_over_dx": 0.9965449013898131,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 432,
+      "time_s": 0.9,
+      "centroid_m": 0.025001752711220758,
+      "centroid_relative_error": 7.010844883015288e-05,
+      "height_m": 0.049982769211114476,
+      "height_relative_error": -0.00034461577771049967,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.00024081427242712684,
+      "axis_kinetic_J_kg": [
+        0.00024081351880957767,
+        7.536172805245969e-10,
+        2.686750648130441e-16
+      ],
+      "potential_J_kg": 0.24526719409707565,
+      "mean_v": [
+        0.02033133549781295,
+        3.108092808370392e-05,
+        -1.4418407742656646e-14
+      ],
+      "amplitude": 0.3097890388802398,
+      "analytical_amplitude": 0.41136910735062493,
+      "amplitude_relative_error": -0.2469316889753822,
+      "L2_velocity_error_over_initial_rms": 0.10332800049710023,
+      "p95_compression": 6.830542585735122e-05,
+      "max_compression": 6.830551114744843e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.838605180226384e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.019630311503504305,
+          "mean_relative_error": -0.010711245977863437
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.019188282767298868,
+          "mean_relative_error": -0.010273149073581234
+        }
+      },
+      "minimum_separation_over_dx": 0.9973056751118529,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 456,
+      "time_s": 0.95,
+      "centroid_m": 0.025003361063216267,
+      "centroid_relative_error": 0.00013444252865069117,
+      "height_m": 0.04998560811396806,
+      "height_relative_error": -0.0002878377206388949,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.00020191319176265503,
+      "axis_kinetic_J_kg": [
+        0.00020191248483046525,
+        7.069302854077532e-10,
+        1.9042756269764463e-15
+      ],
+      "potential_J_kg": 0.2452829720301516,
+      "mean_v": [
+        0.01916424109130221,
+        3.1642836547644795e-05,
+        -1.843721413795663e-14
+      ],
+      "amplitude": 0.2814110505018547,
+      "analytical_amplitude": 0.3915616055893623,
+      "amplitude_relative_error": -0.2813109189337232,
+      "L2_velocity_error_over_initial_rms": 0.11709042250007275,
+      "p95_compression": 6.827448900207367e-05,
+      "max_compression": 6.827471572523613e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.836293489795084e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.01962080736310327,
+          "mean_relative_error": -0.011101374557875854
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.018764948822500047,
+          "mean_relative_error": -0.010084172608624709
+        }
+      },
+      "minimum_separation_over_dx": 0.9993344204375,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 480,
+      "time_s": 1.0,
+      "centroid_m": 0.025004728157306505,
+      "centroid_relative_error": 0.00018912629226019995,
+      "height_m": 0.049988020734560504,
+      "height_relative_error": -0.0002395853087899802,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.0001660277788853078,
+      "axis_kinetic_J_kg": [
+        0.0001660274313946736,
+        3.4747690116515696e-10,
+        1.3732812542551424e-14
+      ],
+      "potential_J_kg": 0.24529638322317682,
+      "mean_v": [
+        0.01782788761105108,
+        2.1973996805613428e-05,
+        -1.706189824339212e-14
+      ],
+      "amplitude": 0.250625278328489,
+      "analytical_amplitude": 0.37270783885343794,
+      "amplitude_relative_error": -0.3275556556591668,
+      "L2_velocity_error_over_initial_rms": 0.1360249074768112,
+      "p95_compression": 6.824497171750154e-05,
+      "max_compression": 6.824564379659392e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.834335107109066e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.019436242829265597,
+          "mean_relative_error": -0.0113443839126528
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.018676163131710603,
+          "mean_relative_error": -0.009694158853747803
+        }
+      },
+      "minimum_separation_over_dx": 0.9999914908610328,
+      "plane_violation_m": 0.0
+    },
+    {
+      "step": 486,
+      "time_s": 1.0125,
+      "centroid_m": 0.02500497837648355,
+      "centroid_relative_error": 0.00019913505934199272,
+      "height_m": 0.049988492951222686,
+      "height_relative_error": -0.0002301409755463002,
+      "mass_kg": 2.0,
+      "kinetic_J_kg": 0.00015786330914133547,
+      "axis_kinetic_J_kg": [
+        0.00015786305609663477,
+        2.530221528410317e-10,
+        2.254780557642167e-14
+      ],
+      "potential_J_kg": 0.24529883787330364,
+      "mean_v": [
+        0.017469551040816593,
+        1.851121153812661e-05,
+        -1.7767274944871195e-14
+      ],
+      "amplitude": 0.24280446128011596,
+      "analytical_amplitude": 0.3681379872984424,
+      "amplitude_relative_error": -0.3404525757802901,
+      "L2_velocity_error_over_initial_rms": 0.14106476300388893,
+      "p95_compression": 6.823965711556523e-05,
+      "max_compression": 6.824052723231055e-05,
+      "bulk_count": 0,
+      "surface_count": 512,
+      "bulk_p95_compression": null,
+      "surface_p95_compression": 3.833971034252759e-05,
+      "interparticle_density": {
+        "middepth": {
+          "p95_absolute_relative_error": 0.019375528735309996,
+          "mean_relative_error": -0.011383329333526704
+        },
+        "free_surface": {
+          "p95_absolute_relative_error": 0.018452694894113424,
+          "mean_relative_error": -0.009585151806218772
+        }
+      },
+      "minimum_separation_over_dx": 0.9999890409720709,
+      "plane_violation_m": 0.0,
+      "field_volume": {
+        "horizontal_probes": 208,
+        "vertical_probes": 241,
+        "thresholds": {
+          "0.45": {
+            "relative_volume_error": -0.003964715703346222,
+            "equivalent_height_m": 0.04980176421483269,
+            "relative_height_error": -0.003964715703346222
+          },
+          "0.5": {
+            "relative_volume_error": -0.0013545151754328077,
+            "equivalent_height_m": 0.049932274241228355,
+            "relative_height_error": -0.0013545151754328077
+          },
+          "0.55": {
+            "relative_volume_error": 0.001366600233077414,
+            "equivalent_height_m": 0.05006833001165387,
+            "relative_height_error": 0.001366600233077414
+          }
+        }
+      }
+    }
+  ]
+}

@@ -227,9 +227,14 @@ dimensions to 8192 per side. Decode on demand into bounded frame storage and reu
 
 ### Lossless export ownership
 
-The controller's coalesced slot is **not** the export source for a rerun. A dedicated synchronous
-driver owns a solver, advances every step, and submits each scheduled accepted snapshot through a
-capacity-one lossless render/readback/encoding boundary, waiting for its acknowledgement. Export
+The controller's coalesced slot is **not** the export source for a rerun. A dedicated driver owns
+the solver and graphics, advances every step, and renders each scheduled accepted snapshot.
+One CPU encoding/hash job may overlap later solver work and preparation/readback of the next image.
+The driver collects and publishes the preceding frame before submitting the next CPU job; the
+initial image is published before stepping. Cancellation joins outstanding CPU work and leaves it
+unpublished. The [compilation pipeline assessment](/docs/project/development/milestones/05/performance-render-pipeline.md)
+records this authorised replacement of the original fully synchronous frame boundary; it changes
+no numerical or frame-sampling policy. Export
 backpressure may delay completion but never discard a scheduled frame or alter numerical work.
 Simulation setup/stepping and graphics/readback/encoding must have separate timing boundaries.
 

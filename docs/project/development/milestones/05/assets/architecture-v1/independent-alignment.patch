@@ -1,0 +1,29 @@
+--- a/src/CUDA/Kernels/Simulation/Solver/Constraint.cuh
++++ b/src/CUDA/Kernels/Simulation/Solver/Constraint.cuh
+@@ -30,7 +30,7 @@
+     // Calculate lambda_i = C_i(p_1, ..., p_n) / { sum_k | nabla_p_k C_i |^2 + epsilon } (eq. 9)
+ 
+     // (1) calculate rho_i and nabla_p_k C_i
+-    auto rho_i = 0.f;
++    auto rho_i = (315.f / (64.f * 3.14159265f)) / (support_radius*support_radius*support_radius);
+     float kj_grad = 0.f;
+     float3 ki_grad { 0., 0., 0. };
+ 
+--- a/src/CUDA/Kernels/Simulation/FindNeighbours.cuh
++++ b/src/CUDA/Kernels/Simulation/FindNeighbours.cuh
+@@ -48,9 +48,14 @@
+                         continue;
+ 
+                     auto const p_j = particles.d_position[j];
++                    // A hash bucket may represent several cells. Match the
++                    // queried cell so aliasing cannot visit one particle twice.
++                    auto const cell_j = to_int3(p_j / spacing);
++                    if (cell_j.x != x || cell_j.y != y || cell_j.z != z) continue;
++
+                     float distance = L2_squared(p_i - p_j);
+ 
+-                    if (distance > max_norm)
++                    if (distance >= max_norm)
+                         continue;
+ 
+                     d_neighbours[offset + num_neighbours + 1] = j;

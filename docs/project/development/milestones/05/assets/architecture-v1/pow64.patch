@@ -1,0 +1,10 @@
+--- a/native/power.cuh
++++ b/native/power.cuh
+@@ -103,6 +103,6 @@
+ 
+ __device__ float ordered_power(float x,float exponent) {
+     float result;
+-    if (exponent==4.0f && try_power_four(x,result)) return result;
++    (void)result;
+     return ordered_power_reference(x,exponent);
+ }

@@ -1,0 +1,12 @@
+{
+  "created_utc": "2026-10-29T00:00:54.455572+00:00",
+  "reason": "Off-grid depth cases in the first sampler start with 5.19%/14.85% particle-site compression despite consistent mass and cell volume. This can confound a minimum-layer conclusion.",
+  "one_control": "Keep physical tank/depth, total count/mass and all solver controls fixed. Use ceil(L) vertical strata; select an integer horizontal factor pair preserving the exact count and minimizing squared logarithmic step anisotropy. No relaxation or force change.",
+  "nominal_depths": [
+    1.25,
+    1.5,
+    2.5,
+    3.75
+  ],
+  "interpretation": "Initialization-sensitivity control, not a new thin-film solver or retrospective acceptance change. Keep both outcomes and initial density diagnostics."
+}

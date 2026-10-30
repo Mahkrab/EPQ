@@ -1,0 +1,197 @@
+--- a/native/neighbours.cuh
++++ b/native/neighbours.cuh
+@@ -35,7 +35,7 @@
+ __device__ void discover_row(SolverBuffers b, SolverSettings s, unsigned int i,
+                              Checked &c, bool fill) {
+     if (!fill && s.validate_pairs) for (unsigned int j=0;j<s.count;++j) if (i!=j) {
+-        separation(b.position[i],b.position[j],c);
++        separation(arch_load(b.position,i),arch_load(b.position,j),c);
+         if (c.error) break;
+     }
+     if (c.error) return;
+@@ -43,7 +43,7 @@
+     auto start=cursor;
+     std::uint64_t stop=fill ? b.offsets[i+1] : 0;
+     if (fill && (start>stop || stop>s.entries)) { c.error=52; return; }
+-    Cell origin=cell(b.position[i],s.width,i);
++    Cell origin=cell(arch_load(b.position,i),s.width,i);
+     for (int x=-1;x<=1;++x) for (int y=-1;y<=1;++y) {
+         // Each z-cell run keeps its own loop. The sorted cursor can advance
+         // between all three without repeating the column's lower-bound search.
+@@ -55,7 +55,7 @@
+             target.z=origin.z+z;
+             for (;k<s.count && same(b.cells[k],target);++k) {
+                 auto j=b.cells[k].index;
+-                if (i!=j && separation(b.position[i],b.position[j],c)<s.radius) {
++                if (i!=j && separation(arch_load(b.position,i),arch_load(b.position,j),c)<s.radius) {
+                     if (fill) {
+                         if (cursor==stop) { c.error=52; return; }
+                         b.neighbours[cursor]=j;
+--- a/native/power.cuh
++++ b/native/power.cuh
+@@ -102,7 +102,6 @@
+ }
+ 
+ __device__ float ordered_power(float x,float exponent) {
+-    float result;
+-    if (exponent==4.0f && try_power_four(x,result)) return result;
+-    return ordered_power_reference(x,exponent);
++    if (exponent==4.0f) { float square=x*x;return square*square; }
++    return powf(x,exponent);
+ }
+--- a/native/solver.cu
++++ b/native/solver.cu
+@@ -6,6 +6,16 @@
+ #include <cfloat>
+ #include "power.cuh"
+ 
++__device__ __constant__ unsigned int arch_count;
++__device__ Vector arch_load(const Vector *p,unsigned int i) {
++    const auto *v=reinterpret_cast<const float *>(p);
++    return {v[i],v[arch_count+i],v[2*arch_count+i]};
++}
++__device__ void arch_store(Vector *p,unsigned int i,Vector a) {
++    auto *v=reinterpret_cast<float *>(p);v[i]=a.x;v[arch_count+i]=a.y;v[2*arch_count+i]=a.z;
++}
++
++
+ // Error numbers map to enduring checked quantities in src/cuda/solver.rs.
+ struct Checked {
+     unsigned int error = 0;
+@@ -61,7 +71,7 @@
+ }
+ __device__ bool active(SolverBuffers b, SolverSettings s, unsigned int i, unsigned int j, Checked &c) {
+     // Callers enumerate the fixed row; only current-distance filtering remains.
+-    return separation(b.position[i],b.position[j],c,18) < s.radius;
++    return separation(arch_load(b.position,i),arch_load(b.position,j),c,18) < s.radius;
+ }
+ #include "neighbours.cuh"
+ #include "spatial_sort.cuh"
+@@ -90,7 +100,7 @@
+     if (operation==2) {
+         if (lane>=s.padded) return;
+         auto i=static_cast<unsigned int>(lane);
+-        b.cells[i]=i<s.count ? cell(b.position[i],s.width,i) : Cell{LLONG_MAX,LLONG_MAX,LLONG_MAX,UINT_MAX,0};
++        b.cells[i]=i<s.count ? cell(arch_load(b.position,i),s.width,i) : Cell{LLONG_MAX,LLONG_MAX,LLONG_MAX,UINT_MAX,0};
+         return;
+     }
+     if (operation==18) {
+@@ -122,14 +132,14 @@
+         b.velocity[i]=c.vector(add(b.old_velocity[i],delta),20);
+     } else if (operation==1) {
+         Vector delta=c.vector(mul(b.velocity[i],s.timestep),21);
+-        b.position[i]=c.vector(add(b.old_position[i],delta),22);
++        arch_store(b.position,i,c.vector(add(arch_load(b.old_position,i),delta),22));
+     } else if (operation==4 || operation==12) {
+         discover_row(b,s,i,c,operation==12);
+     } else if (operation==5 && !staged) {
+         // Standalone validation retains its own checked traversal.
+         Members row(b,s,i);
+         for (auto j=row.next(s.count);j<s.count;j=row.next(s.count)) {
+-            separation(b.position[i],b.position[j],c,18);
++            separation(arch_load(b.position,i),arch_load(b.position,j),c,18);
+             if (c.error) break;
+         }
+     } else if (operation==6 && b.first_operation==5) {
+@@ -158,7 +168,7 @@
+             }
+             if (j>i && suffix==row.stop) suffix=row.cursor-1;
+             Checked geometry;
+-            Vector displacement=geometry.vector(sub(b.position[i],b.position[j]),18);
++            Vector displacement=geometry.vector(sub(arch_load(b.position,i),arch_load(b.position,j)),18);
+             float distance=length(displacement,geometry);
+             // This independent first-error record replaces the earlier complete
+             // traversal. Keep checking geometry even after a numerical failure.
+@@ -189,7 +199,7 @@
+         squared_row.cursor=suffix;
+         for (auto j=squared_row.next(s.count);j<s.count;j=squared_row.next(s.count)) {
+             if (active(b,s,i,j,c)) {
+-                Vector dir=c.vector(mul(neg(spiky(sub(b.position[i],b.position[j]),s.radius,c)),reciprocal),29);
++                Vector dir=c.vector(mul(neg(spiky(sub(arch_load(b.position,i),arch_load(b.position,j)),s.radius,c)),reciprocal),29);
+                 sum=c.scalar(sum+c.scalar(dot(dir,dir),30),31);
+             }
+         }
+@@ -205,8 +215,8 @@
+         Vector sum{0,0,0};
+         Members correction_row(b,s,i);
+         for (auto j=correction_row.next(s.count);j<s.count;j=correction_row.next(s.count)) if (active(b,s,i,j,c)) {
+-            Vector displacement=sub(b.position[i],b.position[j]);
+-            float distance=separation(b.position[i],b.position[j],c,18);
++            Vector displacement=sub(arch_load(b.position,i),arch_load(b.position,j));
++            float distance=separation(arch_load(b.position,i),arch_load(b.position,j),c,18);
+             Vector direction=spiky(displacement,s.radius,c);
+             float weight=poly6(distance,s.radius,c), pressure=0;
+             if (weight!=0 && s.strength!=0) {
+@@ -224,7 +234,7 @@
+     } else if (operation==8) {
+         c.scalar(b.density[i]*s.mass,43);
+     } else if (operation==9) {
+-        b.candidate[i]=c.vector(add(b.position[i],b.correction[i]),44);
++        b.candidate[i]=c.vector(add(arch_load(b.position,i),b.correction[i]),44);
+     } else if (operation==10) {
+         Vector point=b.candidate[i];
+         for (unsigned int k=0;k<s.planes;++k) {
+@@ -239,12 +249,12 @@
+                 else if (n.x==0 && n.y==0 && (n.z==1 || n.z==-1)) point.z=n.z==1 ? plane.offset : -plane.offset;
+             }
+         }
+-        b.position[i]=point;
++        arch_store(b.position,i,point);
+         // The complete projection launch precedes final observation. No lane
+         // reads this private trailer until the following stream-ordered pass.
+         if (i==0) reset_plane_observation(b,s);
+     } else if (operation==11 || operation==24) {
+-        Vector displacement=c.vector(sub(b.position[i],b.old_position[i]),49);
++        Vector displacement=c.vector(sub(arch_load(b.position,i),arch_load(b.old_position,i)),49);
+         float reciprocal=c.scalar(__fdiv_rn(1.0f,s.timestep),50);
+         b.velocity[i]=c.vector(mul(displacement,reciprocal),51);
+         // The containment result is deferred until effects and host state
+@@ -255,7 +265,7 @@
+         Vector sum{0,0,0};
+         Members row(b,s,i);
+         for (auto j=row.next(s.count);j<s.count;j=row.next(s.count)) {
+-            float distance=separation(b.position[i],b.position[j],c,18);
++            float distance=separation(arch_load(b.position,i),arch_load(b.position,j),c,18);
+             if (distance>=s.radius) continue;
+             float weight=c.scalar(__fdiv_rn(poly6(distance,s.radius,c),s.rest_density),54);
+             Vector difference=c.vector(sub(b.velocity[j],b.velocity[i]),53);
+@@ -272,7 +282,7 @@
+         Vector omega{0,0,0};
+         Members row(b,s,i);
+         for (auto j=row.next(s.count);j<s.count;j=row.next(s.count)) {
+-            Vector displacement=c.vector(sub(b.position[i],b.position[j]),18);
++            Vector displacement=c.vector(sub(arch_load(b.position,i),arch_load(b.position,j)),18);
+             if (length(displacement,c)>=s.radius) continue;
+             Vector gradient=c.vector(divide(spiky(displacement,s.radius,c),s.rest_density),59);
+             Vector difference=c.vector(sub(b.velocity[j],b.velocity[i]),60);
+@@ -285,7 +295,7 @@
+         Vector eta{0,0,0};
+         Members row(b,s,i);
+         for (auto j=row.next(s.count);j<s.count;j=row.next(s.count)) {
+-            Vector displacement=c.vector(sub(b.position[i],b.position[j]),18);
++            Vector displacement=c.vector(sub(arch_load(b.position,i),arch_load(b.position,j)),18);
+             if (length(displacement,c)>=s.radius) continue;
+             Vector gradient=c.vector(divide(spiky(displacement,s.radius,c),s.rest_density),59);
+             float difference=c.scalar(b.density[j]-b.density[i],63);
+--- a/native/state_observation.cuh
++++ b/native/state_observation.cuh
+@@ -28,7 +28,7 @@
+ }
+ 
+ __device__ void observe_final_planes(SolverBuffers b, SolverSettings s, unsigned int i) {
+-    const auto point=b.position[i];
++    const auto point=arch_load(b.position,i);
+     for (unsigned int k=0;k<s.planes;++k) {
+         const auto plane=b.planes[k];
+         const float product=dot(plane.normal,point), constraint=product-plane.offset;
+@@ -60,8 +60,8 @@
+             }
+         } else {
+             Vector delta=c.vector(mul(b.velocity[i],s.timestep),21);
+-            Vector p=c.vector(add(b.old_position[i],delta),22);
+-            b.position[i]=p;
++            Vector p=c.vector(add(arch_load(b.old_position,i),delta),22);
++            arch_store(b.position,i,p);
+             value.scalar=fmaxf(fabsf(p.x),fmaxf(fabsf(p.y),fabsf(p.z)));
+             value.lower=p;value.upper=p;
+         }

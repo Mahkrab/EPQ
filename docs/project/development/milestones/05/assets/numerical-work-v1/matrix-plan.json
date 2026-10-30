@@ -1,0 +1,1276 @@
+[
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz120-i2",
+      "dt": 0.008333333333333333,
+      "iterations": 2,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 2.0
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz120-i3",
+      "dt": 0.008333333333333333,
+      "iterations": 3,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 2.0
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz120-i4",
+      "dt": 0.008333333333333333,
+      "iterations": 4,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 2.0
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz120-i8",
+      "dt": 0.008333333333333333,
+      "iterations": 8,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 2.0,
+    "reused_from": "/home/oliver/.local/share/maelstrom-experiments/pbf-frontier-v1/runs/resolved--dt-0.008333333333333333",
+    "summary": {
+      "label": "resolved--dt-0.008333333333333333",
+      "scene": "resolved",
+      "policy": {
+        "id": "dt-0.008333333333333333",
+        "dt": 0.008333333333333333,
+        "iterations": 8,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.22383031159357508,
+      "CFL_warning_steps": 133,
+      "observations": 19,
+      "p95_compression_peak": 0.08286376896458081,
+      "max_compression_peak": 0.1850364519201706,
+      "min_separation_over_dx": 0.5565380048345029,
+      "energy_excess_peak": 0.014262914143244312,
+      "volume_error_peak": 0.3369991276509433,
+      "final": {
+        "particles": 8000,
+        "p95_compression": 0.03224841060984063,
+        "max_compression": 0.07815252125189587,
+        "mean_density_ratio": 1.0036418572075436,
+        "under_density_fraction": 0.00075,
+        "min_separation": 0.03243064507842064,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0.8442672821128379,
+        "com": [
+          0.6906561121394708,
+          0.1901503793778833,
+          0.6894685563081178
+        ],
+        "mean_velocity": [
+          0.015948817268268772,
+          -0.004836565813971672,
+          0.021059857380409927
+        ],
+        "kinetic_J_kg": 0.013641399901882092,
+        "potential_J_kg": 1.865375221697031,
+        "mechanical_excess_relative": -0.7810960730217511,
+        "shear_projection": 0,
+        "velocity_error_relative": 165175058055882.56,
+        "occupied_support_volume": 0.7108157498058864,
+        "physical_volume": 0.990319728,
+        "height_max": 0.4923077762126923,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0.03640199449780135,
+        "bulk_p95": 0.022544539220999305,
+        "top_exposed_density_p05": 0.9614804662749789,
+        "step": 240,
+        "time_s": 2.00000016
+      },
+      "initial": {
+        "particles": 8000,
+        "p95_compression": 1.4204747786905614e-06,
+        "max_compression": 3.3061534030487394e-06,
+        "mean_density_ratio": 0.9436336422753331,
+        "under_density_fraction": 0.271,
+        "min_separation": 0.04999995231628418,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0,
+        "com": [
+          0.6750000081955808,
+          0.8750000178813734,
+          0.675000008195632
+        ],
+        "mean_velocity": [
+          0,
+          0,
+          0
+        ],
+        "kinetic_J_kg": 0,
+        "potential_J_kg": 8.583750175416538,
+        "mechanical_excess_relative": 0,
+        "shear_projection": 0,
+        "velocity_error_relative": 0,
+        "occupied_support_volume": 0.9999996006488577,
+        "physical_volume": 0.990319728,
+        "height_max": 1.3750000238418578,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0,
+        "bulk_p95": 1.4204747786905614e-06,
+        "top_exposed_density_p05": 0.64848530362098,
+        "step": 0,
+        "time_s": 0.0
+      },
+      "completed": true,
+      "stability": true,
+      "sampled_gates": {
+        "density": false,
+        "stability": true,
+        "energy": true,
+        "volume_proxy": false
+      },
+      "sampled_practical_pass": false
+    },
+    "metrics_sha256": "3de9982b28695d0e90850176fc526df830ae2bf8e6841abc611c205e1649fac5",
+    "production_json_sha256": "e8e5883b70c45a33cd8a8570dd785369c6eb496c520ed232a0949e4e7b95f42a"
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz240-i2",
+      "dt": 0.004166666666666667,
+      "iterations": 2,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 2.0,
+    "reused_from": "/home/oliver/.local/share/maelstrom-experiments/pbf-frontier-v1/runs/resolved--iterations-2",
+    "summary": {
+      "label": "resolved--iterations-2",
+      "scene": "resolved",
+      "policy": {
+        "id": "iterations-2",
+        "dt": 0.004166666666666667,
+        "iterations": 2,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.24004040229676782,
+      "CFL_warning_steps": 127,
+      "observations": 19,
+      "p95_compression_peak": 0.09960571987510036,
+      "max_compression_peak": 0.27104463409073043,
+      "min_separation_over_dx": 0.46962836955854026,
+      "energy_excess_peak": 0.029152819255081057,
+      "volume_error_peak": 0.3438647827049409,
+      "final": {
+        "particles": 8000,
+        "p95_compression": 0.033637588145427166,
+        "max_compression": 0.09637594899654034,
+        "mean_density_ratio": 1.0039353117603698,
+        "under_density_fraction": 0.001,
+        "min_separation": 0.031763289123773575,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0.8517926327040811,
+        "com": [
+          0.6894630953998583,
+          0.19021724910824475,
+          0.6916625958574945
+        ],
+        "mean_velocity": [
+          0.01593270606020634,
+          -0.008491053571547473,
+          0.01963729936971404
+        ],
+        "kinetic_J_kg": 0.022764562882908696,
+        "potential_J_kg": 1.8660312137518904,
+        "mechanical_excess_relative": -0.7799568093157904,
+        "shear_projection": 0,
+        "velocity_error_relative": 213375551002961.44,
+        "occupied_support_volume": 0.7063827772801738,
+        "physical_volume": 0.990319728,
+        "height_max": 0.5135906279087067,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0.038891014950624525,
+        "bulk_p95": 0.022902199580248972,
+        "top_exposed_density_p05": 0.9602596551357326,
+        "step": 480,
+        "time_s": 2.00000016
+      },
+      "initial": {
+        "particles": 8000,
+        "p95_compression": 1.4204747786905614e-06,
+        "max_compression": 3.3061534030487394e-06,
+        "mean_density_ratio": 0.9436336422753331,
+        "under_density_fraction": 0.271,
+        "min_separation": 0.04999995231628418,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0,
+        "com": [
+          0.6750000081955808,
+          0.8750000178813734,
+          0.675000008195632
+        ],
+        "mean_velocity": [
+          0,
+          0,
+          0
+        ],
+        "kinetic_J_kg": 0,
+        "potential_J_kg": 8.583750175416538,
+        "mechanical_excess_relative": 0,
+        "shear_projection": 0,
+        "velocity_error_relative": 0,
+        "occupied_support_volume": 0.9999996006488577,
+        "physical_volume": 0.990319728,
+        "height_max": 1.3750000238418578,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0,
+        "bulk_p95": 1.4204747786905614e-06,
+        "top_exposed_density_p05": 0.64848530362098,
+        "step": 0,
+        "time_s": 0.0
+      },
+      "completed": true,
+      "stability": true,
+      "sampled_gates": {
+        "density": false,
+        "stability": false,
+        "energy": true,
+        "volume_proxy": false
+      },
+      "sampled_practical_pass": false
+    },
+    "metrics_sha256": "cd675db7c505d3411d31da395f47a835eaf4ab99ce9dcb4ebb8c9e27c6607aa3",
+    "production_json_sha256": "650f09a8f910704bb895334e3908f8ac7697f37f6434f3cf1766c48d8a33548e"
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz240-i3",
+      "dt": 0.004166666666666667,
+      "iterations": 3,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 2.0
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz240-i4",
+      "dt": 0.004166666666666667,
+      "iterations": 4,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 2.0,
+    "reused_from": "/home/oliver/.local/share/maelstrom-experiments/pbf-frontier-v1/runs/resolved--iterations-4",
+    "summary": {
+      "label": "resolved--iterations-4",
+      "scene": "resolved",
+      "policy": {
+        "id": "iterations-4",
+        "dt": 0.004166666666666667,
+        "iterations": 4,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.30601497351880214,
+      "CFL_warning_steps": 114,
+      "observations": 19,
+      "p95_compression_peak": 0.0703153872875324,
+      "max_compression_peak": 0.18502782475680069,
+      "min_separation_over_dx": 0.5680914266431761,
+      "energy_excess_peak": 0.04508815861120486,
+      "volume_error_peak": 0.31619470623111934,
+      "final": {
+        "particles": 8000,
+        "p95_compression": 0.021619882910165478,
+        "max_compression": 0.06944335492849718,
+        "mean_density_ratio": 0.9978951251670873,
+        "under_density_fraction": 0.001625,
+        "min_separation": 0.03468350664015166,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0.6042819619178772,
+        "com": [
+          0.6931241616196713,
+          0.19357169516252273,
+          0.6934570216895409
+        ],
+        "mean_velocity": [
+          0.028220766679233733,
+          -0.0011207562941466394,
+          0.02715004460821111
+        ],
+        "kinetic_J_kg": 0.011158382028634043,
+        "potential_J_kg": 1.898938329544349,
+        "mechanical_excess_relative": -0.7774752675068047,
+        "shear_projection": 0,
+        "velocity_error_relative": 149387964901019,
+        "occupied_support_volume": 0.7244124922696511,
+        "physical_volume": 0.990319728,
+        "height_max": 0.4626044869422913,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0.024991085161614857,
+        "bulk_p95": 0.01458835229226052,
+        "top_exposed_density_p05": 0.9674308055901856,
+        "step": 480,
+        "time_s": 2.00000016
+      },
+      "initial": {
+        "particles": 8000,
+        "p95_compression": 1.4204747786905614e-06,
+        "max_compression": 3.3061534030487394e-06,
+        "mean_density_ratio": 0.9436336422753331,
+        "under_density_fraction": 0.271,
+        "min_separation": 0.04999995231628418,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0,
+        "com": [
+          0.6750000081955808,
+          0.8750000178813734,
+          0.675000008195632
+        ],
+        "mean_velocity": [
+          0,
+          0,
+          0
+        ],
+        "kinetic_J_kg": 0,
+        "potential_J_kg": 8.583750175416538,
+        "mechanical_excess_relative": 0,
+        "shear_projection": 0,
+        "velocity_error_relative": 0,
+        "occupied_support_volume": 0.9999996006488577,
+        "physical_volume": 0.990319728,
+        "height_max": 1.3750000238418578,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0,
+        "bulk_p95": 1.4204747786905614e-06,
+        "top_exposed_density_p05": 0.64848530362098,
+        "step": 0,
+        "time_s": 0.0
+      },
+      "completed": true,
+      "stability": true,
+      "sampled_gates": {
+        "density": false,
+        "stability": true,
+        "energy": true,
+        "volume_proxy": false
+      },
+      "sampled_practical_pass": false
+    },
+    "metrics_sha256": "405ab052791ba510623adc4c7c621d1876a5c475f28ea11e91fc4b2a3afe5929",
+    "production_json_sha256": "d299a56b5fe3ed237f780519fe634457bc737b09f33ff45e9a6c96beff7cd39f"
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz240-i8",
+      "dt": 0.004166666666666667,
+      "iterations": 8,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 2.0,
+    "reused_from": "/home/oliver/.local/share/maelstrom-experiments/pbf-frontier-v1/runs/resolved--anchor",
+    "summary": {
+      "label": "resolved--anchor",
+      "scene": "resolved",
+      "policy": {
+        "id": "anchor",
+        "dt": 0.004166666666666667,
+        "iterations": 8,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.4417879081569674,
+      "CFL_warning_steps": 68,
+      "observations": 19,
+      "p95_compression_peak": 0.052732118560251395,
+      "max_compression_peak": 0.14948207732667096,
+      "min_separation_over_dx": 0.658731673803715,
+      "energy_excess_peak": 0.05851148168710759,
+      "volume_error_peak": 0.29836916094631316,
+      "final": {
+        "particles": 8000,
+        "p95_compression": 0.012950424529327265,
+        "max_compression": 0.040918179251156594,
+        "mean_density_ratio": 0.9951405054433559,
+        "under_density_fraction": 0.000125,
+        "min_separation": 0.03609266938168065,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0.4075840444704067,
+        "com": [
+          0.6997488839082656,
+          0.19586046909283275,
+          0.7007166379169492
+        ],
+        "mean_velocity": [
+          0.0032888495171584987,
+          -0.00014647613889955143,
+          0.0031823633125312775
+        ],
+        "kinetic_J_kg": 0.003981437521796029,
+        "potential_J_kg": 1.921391201800694,
+        "mechanical_excess_relative": -0.7756956341953348,
+        "shear_projection": 0,
+        "velocity_error_relative": 89234942951693.86,
+        "occupied_support_volume": 0.7318697894031473,
+        "physical_volume": 0.990319728,
+        "height_max": 0.4499273538589478,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0.015399514677831405,
+        "bulk_p95": 0.009699723958211282,
+        "top_exposed_density_p05": 0.9671579903784575,
+        "step": 480,
+        "time_s": 2.00000016
+      },
+      "initial": {
+        "particles": 8000,
+        "p95_compression": 1.4204747786905614e-06,
+        "max_compression": 3.3061534030487394e-06,
+        "mean_density_ratio": 0.9436336422753331,
+        "under_density_fraction": 0.271,
+        "min_separation": 0.04999995231628418,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0,
+        "com": [
+          0.6750000081955808,
+          0.8750000178813734,
+          0.675000008195632
+        ],
+        "mean_velocity": [
+          0,
+          0,
+          0
+        ],
+        "kinetic_J_kg": 0,
+        "potential_J_kg": 8.583750175416538,
+        "mechanical_excess_relative": 0,
+        "shear_projection": 0,
+        "velocity_error_relative": 0,
+        "occupied_support_volume": 0.9999996006488577,
+        "physical_volume": 0.990319728,
+        "height_max": 1.3750000238418578,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0,
+        "bulk_p95": 1.4204747786905614e-06,
+        "top_exposed_density_p05": 0.64848530362098,
+        "step": 0,
+        "time_s": 0.0
+      },
+      "completed": true,
+      "stability": true,
+      "sampled_gates": {
+        "density": false,
+        "stability": true,
+        "energy": true,
+        "volume_proxy": false
+      },
+      "sampled_practical_pass": false
+    },
+    "metrics_sha256": "2fe83d1c5f003d9ea70254f7dc2dc77e8462728bd9efaf53a214b471b663eaed",
+    "production_json_sha256": "948ae50c68e32040f80d66c745236bdd974c5d6647a904c2676a114cfa4140e1"
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz480-i2",
+      "dt": 0.0020833333333333333,
+      "iterations": 2,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 2.0
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz480-i3",
+      "dt": 0.0020833333333333333,
+      "iterations": 3,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 2.0
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz480-i4",
+      "dt": 0.0020833333333333333,
+      "iterations": 4,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 2.0
+  },
+  {
+    "scene": "resolved",
+    "policy": {
+      "id": "hz480-i8",
+      "dt": 0.0020833333333333333,
+      "iterations": 8,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 2.0,
+    "reused_from": "/home/oliver/.local/share/maelstrom-experiments/pbf-frontier-v1/runs/resolved--dt-0.0020833333333333333",
+    "summary": {
+      "label": "resolved--dt-0.0020833333333333333",
+      "scene": "resolved",
+      "policy": {
+        "id": "dt-0.0020833333333333333",
+        "dt": 0.0020833333333333333,
+        "iterations": 8,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.8858698066521663,
+      "CFL_warning_steps": 1,
+      "observations": 19,
+      "p95_compression_peak": 0.052732118560251395,
+      "max_compression_peak": 0.14948207866674545,
+      "min_separation_over_dx": 0.7228718335999468,
+      "energy_excess_peak": 0.23441081455209398,
+      "volume_error_peak": 0.2572734433666882,
+      "final": {
+        "particles": 8000,
+        "p95_compression": 0.009797612165514336,
+        "max_compression": 0.0367464780234652,
+        "mean_density_ratio": 0.9926192156455047,
+        "under_density_fraction": 0,
+        "min_separation": 0.038955149235095674,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0.5902572180589478,
+        "com": [
+          0.7008761519474058,
+          0.20675805077562245,
+          0.7023758885072344
+        ],
+        "mean_velocity": [
+          -0.00039475505002111724,
+          -0.0006403483995360663,
+          0.0024749132020325357
+        ],
+        "kinetic_J_kg": 0.002972040580397283,
+        "potential_J_kg": 2.0282964781088646,
+        "mechanical_excess_relative": -0.7633588493166168,
+        "shear_projection": 0,
+        "velocity_error_relative": 77097867420536.12,
+        "occupied_support_volume": 0.7542649340510473,
+        "physical_volume": 0.990319728,
+        "height_max": 0.49942260384559634,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0.010929321995899466,
+        "bulk_p95": 0.008656133597263915,
+        "top_exposed_density_p05": 0.969352536489022,
+        "step": 960,
+        "time_s": 2.000000064
+      },
+      "initial": {
+        "particles": 8000,
+        "p95_compression": 1.4204747786905614e-06,
+        "max_compression": 3.3061534030487394e-06,
+        "mean_density_ratio": 0.9436336422753331,
+        "under_density_fraction": 0.271,
+        "min_separation": 0.04999995231628418,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0,
+        "com": [
+          0.6750000081955808,
+          0.8750000178813734,
+          0.675000008195632
+        ],
+        "mean_velocity": [
+          0,
+          0,
+          0
+        ],
+        "kinetic_J_kg": 0,
+        "potential_J_kg": 8.583750175416538,
+        "mechanical_excess_relative": 0,
+        "shear_projection": 0,
+        "velocity_error_relative": 0,
+        "occupied_support_volume": 0.9999996006488577,
+        "physical_volume": 0.990319728,
+        "height_max": 1.3750000238418578,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0,
+        "bulk_p95": 1.4204747786905614e-06,
+        "top_exposed_density_p05": 0.64848530362098,
+        "step": 0,
+        "time_s": 0.0
+      },
+      "completed": true,
+      "stability": true,
+      "sampled_gates": {
+        "density": false,
+        "stability": true,
+        "energy": false,
+        "volume_proxy": false
+      },
+      "sampled_practical_pass": false
+    },
+    "metrics_sha256": "4896857a7098175f43c46cd4ab6b3c588959028942ff82489709e077b7500423",
+    "production_json_sha256": "ef2af981bf746e20a8dfdaf79299d131280408abafa2bd2f754c51938f2b8bea"
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz120-i2",
+      "dt": 0.008333333333333333,
+      "iterations": 2,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 1.0
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz120-i3",
+      "dt": 0.008333333333333333,
+      "iterations": 3,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 1.0
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz120-i4",
+      "dt": 0.008333333333333333,
+      "iterations": 4,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 1.0
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz120-i8",
+      "dt": 0.008333333333333333,
+      "iterations": 8,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 1.0,
+    "reused_from": "/home/oliver/.local/share/maelstrom-experiments/pbf-frontier-v1/runs/large--dt-0.008333333333333333",
+    "summary": {
+      "label": "large--dt-0.008333333333333333",
+      "scene": "large",
+      "policy": {
+        "id": "dt-0.008333333333333333",
+        "dt": 0.008333333333333333,
+        "iterations": 8,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.7810734605141232,
+      "CFL_warning_steps": 102,
+      "observations": 11,
+      "p95_compression_peak": 0.2447144862361632,
+      "max_compression_peak": 0.40787842182585243,
+      "min_separation_over_dx": 0.0,
+      "energy_excess_peak": 0.0027406317519990575,
+      "volume_error_peak": 0.2533111940363738,
+      "final": {
+        "particles": 110592,
+        "p95_compression": 0.10948094982575851,
+        "max_compression": 0.18982099855266288,
+        "mean_density_ratio": 1.0430383033985506,
+        "under_density_fraction": 0.004512080439814815,
+        "min_separation": 0,
+        "coincidences": 2,
+        "boundary_violation": 0,
+        "max_speed": 7.760992936550811,
+        "com": [
+          1.414135407368149,
+          0.8366747117163786,
+          1.4139820333736897
+        ],
+        "mean_velocity": [
+          0.034429833271267016,
+          -0.332080793781282,
+          0.03610528927921626
+        ],
+        "kinetic_J_kg": 0.3559386440133352,
+        "potential_J_kg": 8.207778921937708,
+        "mechanical_excess_relative": -0.44574099246342413,
+        "shear_projection": 0,
+        "velocity_error_relative": 843728207438076.8,
+        "occupied_support_volume": 10.481123913197292,
+        "physical_volume": 13.690179919872,
+        "height_max": 3,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0.13833946573709266,
+        "bulk_p95": 0.0975993045830954,
+        "top_exposed_density_p05": 0.8748256330503547,
+        "step": 120,
+        "time_s": 1.00000008
+      },
+      "initial": {
+        "particles": 110592,
+        "p95_compression": 2.049034570017483e-06,
+        "max_compression": 3.306153403270784e-06,
+        "mean_density_ratio": 0.976293992384756,
+        "under_density_fraction": 0.11986400462962964,
+        "min_separation": 0.04999995231628418,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0,
+        "com": [
+          1.3750000406677179,
+          1.5750000377496263,
+          1.3750000406680516
+        ],
+        "mean_velocity": [
+          0,
+          0,
+          0
+        ],
+        "kinetic_J_kg": 0,
+        "potential_J_kg": 15.450750370323785,
+        "mechanical_excess_relative": 0,
+        "shear_projection": 0,
+        "velocity_error_relative": 0,
+        "occupied_support_volume": 13.82399248123315,
+        "physical_volume": 13.690179919872,
+        "height_max": 2.775000238418579,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0,
+        "bulk_p95": 2.049034570017483e-06,
+        "top_exposed_density_p05": 0.6484833095771234,
+        "step": 0,
+        "time_s": 0.0
+      },
+      "completed": true,
+      "stability": false,
+      "sampled_gates": {
+        "density": false,
+        "stability": false,
+        "energy": true,
+        "volume_proxy": false
+      },
+      "sampled_practical_pass": false
+    },
+    "metrics_sha256": "16a0b2974d50d07ffeaa847705074a59d8e63810ed7ca45f046b52f06837c7ab",
+    "production_json_sha256": "6e1a885a3ca5639c93c13876c5a102d564daec6223de3649114007e652c3b165"
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz240-i2",
+      "dt": 0.004166666666666667,
+      "iterations": 2,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 1.0,
+    "reused_from": "/home/oliver/.local/share/maelstrom-experiments/pbf-frontier-v1/runs/large--iterations-2",
+    "summary": {
+      "label": "large--iterations-2",
+      "scene": "large",
+      "policy": {
+        "id": "iterations-2",
+        "dt": 0.004166666666666667,
+        "iterations": 2,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.815474025762078,
+      "CFL_warning_steps": 169,
+      "observations": 11,
+      "p95_compression_peak": 0.2522037085936526,
+      "max_compression_peak": 0.4626228968760475,
+      "min_separation_over_dx": 0.0,
+      "energy_excess_peak": 0.005804858423144917,
+      "volume_error_peak": 0.2589978853259015,
+      "final": {
+        "particles": 110592,
+        "p95_compression": 0.09942311030867845,
+        "max_compression": 0.19673791936100216,
+        "mean_density_ratio": 1.0296529557870622,
+        "under_density_fraction": 0.004204644097222222,
+        "min_separation": 0,
+        "coincidences": 2,
+        "boundary_violation": 0,
+        "max_speed": 6.7135522616700944,
+        "com": [
+          1.412900912143412,
+          0.8665625167003508,
+          1.412650016699601
+        ],
+        "mean_velocity": [
+          0.03760464880242251,
+          -0.3622641329509378,
+          0.03907794463532781
+        ],
+        "kinetic_J_kg": 0.5320029794967981,
+        "potential_J_kg": 8.500978288830263,
+        "mechanical_excess_relative": -0.4153694123699853,
+        "shear_projection": 0,
+        "velocity_error_relative": 1031506645152417.9,
+        "occupied_support_volume": 10.574972590782618,
+        "physical_volume": 13.690179919872,
+        "height_max": 3,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0.13392363132379903,
+        "bulk_p95": 0.08906538739334025,
+        "top_exposed_density_p05": 0.8996318971557445,
+        "step": 240,
+        "time_s": 1.00000008
+      },
+      "initial": {
+        "particles": 110592,
+        "p95_compression": 2.049034570017483e-06,
+        "max_compression": 3.306153403270784e-06,
+        "mean_density_ratio": 0.976293992384756,
+        "under_density_fraction": 0.11986400462962964,
+        "min_separation": 0.04999995231628418,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0,
+        "com": [
+          1.3750000406677179,
+          1.5750000377496263,
+          1.3750000406680516
+        ],
+        "mean_velocity": [
+          0,
+          0,
+          0
+        ],
+        "kinetic_J_kg": 0,
+        "potential_J_kg": 15.450750370323785,
+        "mechanical_excess_relative": 0,
+        "shear_projection": 0,
+        "velocity_error_relative": 0,
+        "occupied_support_volume": 13.82399248123315,
+        "physical_volume": 13.690179919872,
+        "height_max": 2.775000238418579,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0,
+        "bulk_p95": 2.049034570017483e-06,
+        "top_exposed_density_p05": 0.6484833095771234,
+        "step": 0,
+        "time_s": 0.0
+      },
+      "completed": true,
+      "stability": false,
+      "sampled_gates": {
+        "density": false,
+        "stability": false,
+        "energy": true,
+        "volume_proxy": false
+      },
+      "sampled_practical_pass": false
+    },
+    "metrics_sha256": "0126ea1e518b9eea22c005aa2954bff4f77471e2a5e558c0e84358c91b82d907",
+    "production_json_sha256": "bfcf99cc41008da911b01bf6fc6ab63d200acf55129fd22ac466a75d39c30cda"
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz240-i3",
+      "dt": 0.004166666666666667,
+      "iterations": 3,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 1.0
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz240-i4",
+      "dt": 0.004166666666666667,
+      "iterations": 4,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 1.0,
+    "reused_from": "/home/oliver/.local/share/maelstrom-experiments/pbf-frontier-v1/runs/large--iterations-4",
+    "summary": {
+      "label": "large--iterations-4",
+      "scene": "large",
+      "policy": {
+        "id": "iterations-4",
+        "dt": 0.004166666666666667,
+        "iterations": 4,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 1.0883776259297901,
+      "CFL_warning_steps": 170,
+      "observations": 11,
+      "p95_compression_peak": 0.15548144139113673,
+      "max_compression_peak": 0.28482965969203655,
+      "min_separation_over_dx": 0.0,
+      "energy_excess_peak": 0.00913697634501488,
+      "volume_error_peak": 0.23604504151506633,
+      "final": {
+        "particles": 110592,
+        "p95_compression": 0.0587748602654683,
+        "max_compression": 0.1096824685616069,
+        "mean_density_ratio": 1.0222091993947529,
+        "under_density_fraction": 0.001347294560185185,
+        "min_separation": 0,
+        "coincidences": 2,
+        "boundary_violation": 0,
+        "max_speed": 6.633871991915039,
+        "com": [
+          1.412975294886456,
+          0.8375404682121304,
+          1.4129174940707734
+        ],
+        "mean_velocity": [
+          0.03654832333442443,
+          0.1415758832326883,
+          0.03375775082384051
+        ],
+        "kinetic_J_kg": 0.31945049683147103,
+        "potential_J_kg": 8.216271993160998,
+        "mechanical_excess_relative": -0.4475528834905644,
+        "shear_projection": 0,
+        "velocity_error_relative": 799312825909194.2,
+        "occupied_support_volume": 10.722548191595106,
+        "physical_volume": 13.690179919872,
+        "height_max": 3,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0.07916923235641549,
+        "bulk_p95": 0.0522652446205738,
+        "top_exposed_density_p05": 0.9240603471633987,
+        "step": 240,
+        "time_s": 1.00000008
+      },
+      "initial": {
+        "particles": 110592,
+        "p95_compression": 2.049034570017483e-06,
+        "max_compression": 3.306153403270784e-06,
+        "mean_density_ratio": 0.976293992384756,
+        "under_density_fraction": 0.11986400462962964,
+        "min_separation": 0.04999995231628418,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0,
+        "com": [
+          1.3750000406677179,
+          1.5750000377496263,
+          1.3750000406680516
+        ],
+        "mean_velocity": [
+          0,
+          0,
+          0
+        ],
+        "kinetic_J_kg": 0,
+        "potential_J_kg": 15.450750370323785,
+        "mechanical_excess_relative": 0,
+        "shear_projection": 0,
+        "velocity_error_relative": 0,
+        "occupied_support_volume": 13.82399248123315,
+        "physical_volume": 13.690179919872,
+        "height_max": 2.775000238418579,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0,
+        "bulk_p95": 2.049034570017483e-06,
+        "top_exposed_density_p05": 0.6484833095771234,
+        "step": 0,
+        "time_s": 0.0
+      },
+      "completed": true,
+      "stability": false,
+      "sampled_gates": {
+        "density": false,
+        "stability": false,
+        "energy": true,
+        "volume_proxy": false
+      },
+      "sampled_practical_pass": false
+    },
+    "metrics_sha256": "ea1fe3ce642c787bb12d2a5453702a2f8aa95dddaea488aaa4a65a5851884fcf",
+    "production_json_sha256": "77d7bd3bef6139965691267a97a1bc928ec8a01d7251ae489c8ff4ff078ad459"
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz240-i8",
+      "dt": 0.004166666666666667,
+      "iterations": 8,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 1.0,
+    "reused_from": "/home/oliver/.local/share/maelstrom-experiments/pbf-frontier-v1/runs/large--anchor",
+    "summary": {
+      "label": "large--anchor",
+      "scene": "large",
+      "policy": {
+        "id": "anchor",
+        "dt": 0.004166666666666667,
+        "iterations": 8,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 1.549755938019525,
+      "CFL_warning_steps": 175,
+      "observations": 11,
+      "p95_compression_peak": 0.09770980399807372,
+      "max_compression_peak": 0.21736602008881345,
+      "min_separation_over_dx": 0.5375965008132607,
+      "energy_excess_peak": 0.011773537431338328,
+      "volume_error_peak": 0.2142048376057777,
+      "final": {
+        "particles": 110592,
+        "p95_compression": 0.029577813235694084,
+        "max_compression": 0.0954330790830693,
+        "mean_density_ratio": 1.0086685083053837,
+        "under_density_fraction": 0.0005244502314814815,
+        "min_separation": 0.033138548721008174,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 7.177021247618335,
+        "com": [
+          1.4131512591194129,
+          0.8251478486256945,
+          1.4132407411752381
+        ],
+        "mean_velocity": [
+          0.024682783927789366,
+          -0.21057450392760124,
+          0.025158673582639214
+        ],
+        "kinetic_J_kg": 0.21835781734345647,
+        "potential_J_kg": 8.094700395018181,
+        "mechanical_excess_relative": -0.4619641109257382,
+        "shear_projection": 0,
+        "velocity_error_relative": 660844637329314.2,
+        "occupied_support_volume": 10.997482699510945,
+        "physical_volume": 13.690179919872,
+        "height_max": 3,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0.04208968878678343,
+        "bulk_p95": 0.025451164507031665,
+        "top_exposed_density_p05": 0.950321009964037,
+        "step": 240,
+        "time_s": 1.00000008
+      },
+      "initial": {
+        "particles": 110592,
+        "p95_compression": 2.049034570017483e-06,
+        "max_compression": 3.306153403270784e-06,
+        "mean_density_ratio": 0.976293992384756,
+        "under_density_fraction": 0.11986400462962964,
+        "min_separation": 0.04999995231628418,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0,
+        "com": [
+          1.3750000406677179,
+          1.5750000377496263,
+          1.3750000406680516
+        ],
+        "mean_velocity": [
+          0,
+          0,
+          0
+        ],
+        "kinetic_J_kg": 0,
+        "potential_J_kg": 15.450750370323785,
+        "mechanical_excess_relative": 0,
+        "shear_projection": 0,
+        "velocity_error_relative": 0,
+        "occupied_support_volume": 13.82399248123315,
+        "physical_volume": 13.690179919872,
+        "height_max": 2.775000238418579,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0,
+        "bulk_p95": 2.049034570017483e-06,
+        "top_exposed_density_p05": 0.6484833095771234,
+        "step": 0,
+        "time_s": 0.0
+      },
+      "completed": true,
+      "stability": true,
+      "sampled_gates": {
+        "density": false,
+        "stability": true,
+        "energy": true,
+        "volume_proxy": false
+      },
+      "sampled_practical_pass": false
+    },
+    "metrics_sha256": "57cac916f6bbb6125151e9d944cd05b8546960d9bf1613c700a1556e5c4dd59f",
+    "production_json_sha256": "7c306ae9cec9686c2ae478cb2fe973306348d1986a7eb86426f23c5098760ce1"
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz480-i2",
+      "dt": 0.0020833333333333333,
+      "iterations": 2,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 1.0
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz480-i3",
+      "dt": 0.0020833333333333333,
+      "iterations": 3,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 1.0
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz480-i4",
+      "dt": 0.0020833333333333333,
+      "iterations": 4,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 1.0
+  },
+  {
+    "scene": "large",
+    "policy": {
+      "id": "hz480-i8",
+      "dt": 0.0020833333333333333,
+      "iterations": 8,
+      "scale": 0.5,
+      "epsilon": 2.0
+    },
+    "duration": 1.0,
+    "reused_from": "/home/oliver/.local/share/maelstrom-experiments/pbf-frontier-v1/runs/large--dt-0.0020833333333333333",
+    "summary": {
+      "label": "large--dt-0.0020833333333333333",
+      "scene": "large",
+      "policy": {
+        "id": "dt-0.0020833333333333333",
+        "dt": 0.0020833333333333333,
+        "iterations": 8,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 3.1065441625905867,
+      "CFL_warning_steps": 157,
+      "observations": 11,
+      "p95_compression_peak": 0.037692100051016864,
+      "max_compression_peak": 0.14889409905231754,
+      "min_separation_over_dx": 0.6216237243530097,
+      "energy_excess_peak": 0.047296893138571015,
+      "volume_error_peak": 0.19064078038905485,
+      "final": {
+        "particles": 110592,
+        "p95_compression": 0.009632831700772337,
+        "max_compression": 0.040925660950379195,
+        "mean_density_ratio": 0.9982108630213692,
+        "under_density_fraction": 0,
+        "min_separation": 0.037401834239106965,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 5.434999969175812,
+        "com": [
+          1.4094306628049313,
+          0.8092524491024405,
+          1.4091066019285092
+        ],
+        "mean_velocity": [
+          0.014129626918651121,
+          -0.07369140331394418,
+          0.013960301028306372
+        ],
+        "kinetic_J_kg": 0.16582933590094787,
+        "potential_J_kg": 7.938766525694938,
+        "mechanical_excess_relative": -0.4754561644357182,
+        "shear_projection": 0,
+        "velocity_error_relative": 575898143599973.5,
+        "occupied_support_volume": 11.221906824934065,
+        "physical_volume": 13.690179919872,
+        "height_max": 2.524053716659546,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0.013755983709360597,
+        "bulk_p95": 0.006959681213279945,
+        "top_exposed_density_p05": 0.9675283953821877,
+        "step": 480,
+        "time_s": 1.000000032
+      },
+      "initial": {
+        "particles": 110592,
+        "p95_compression": 2.049034570017483e-06,
+        "max_compression": 3.306153403270784e-06,
+        "mean_density_ratio": 0.976293992384756,
+        "under_density_fraction": 0.11986400462962964,
+        "min_separation": 0.04999995231628418,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0,
+        "com": [
+          1.3750000406677179,
+          1.5750000377496263,
+          1.3750000406680516
+        ],
+        "mean_velocity": [
+          0,
+          0,
+          0
+        ],
+        "kinetic_J_kg": 0,
+        "potential_J_kg": 15.450750370323785,
+        "mechanical_excess_relative": 0,
+        "shear_projection": 0,
+        "velocity_error_relative": 0,
+        "occupied_support_volume": 13.82399248123315,
+        "physical_volume": 13.690179919872,
+        "height_max": 2.775000238418579,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0,
+        "bulk_p95": 2.049034570017483e-06,
+        "top_exposed_density_p05": 0.6484833095771234,
+        "step": 0,
+        "time_s": 0.0
+      },
+      "completed": true,
+      "stability": true,
+      "sampled_gates": {
+        "density": true,
+        "stability": true,
+        "energy": true,
+        "volume_proxy": false
+      },
+      "sampled_practical_pass": false
+    },
+    "metrics_sha256": "ba342dc2f4e90cf13294ec3fc2339d2520616157da86de596c24feb90c6f4465",
+    "production_json_sha256": "447966ab00407f79d74cb8c56ac3a65c5050a5dd69e43af177441dddf330c53d"
+  }
+]

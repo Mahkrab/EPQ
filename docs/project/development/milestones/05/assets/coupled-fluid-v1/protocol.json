@@ -1,0 +1,55 @@
+{
+  "created_utc": "2026-10-29T12:54:17.823005+00:00",
+  "base_heads": {
+    "EPQ": "814f88a7f4122b1b24ea645b210d89e1200a0c44",
+    "Maelstrom": "250932784790ba26cdc55fc38a877ccefacbf054"
+  },
+  "scope": "Bounded isolated 2D per-unit-depth coupled incompressible finite-volume reference; no production integration/history/settings changes. No GPU benchmark until all declared coupled gates pass.",
+  "model": {
+    "rho_liquid": 1000.0,
+    "rho_gas": 1.2,
+    "gravity": 9.81,
+    "viscosity": 0.0,
+    "surface_tension": 0.0,
+    "meaning": "Idealised inviscid two-phase Euler; short smooth gravity-dominated tests, not viscous settling, real capillary coalescence or 3D qualification. Finite gas density is a model, not a solver density floor.",
+    "geometry": "Uniform Cartesian mesh; periodic x; periodic y for closed-material controls or impermeable free-slip flat bed and rigid gas lid. Oblique solid geometry outside scope.",
+    "transport": "At most2 interface methods: monotone algebraic MUSCL control and geometric piecewise-linear VOF with split compression accounting. Staggered momentum uses the same phase-derived mass fluxes. No particles.",
+    "pressure": "Same compatible incidence/divergence/mass-adjoint gradient, face density from consistent staggered mass. Uniform rectangular direct solve only in valid constant-density controls. Variable coefficients use small sparse direct reference; no multigrid implementation unless physical evidence and size require it.",
+    "time": "One baseline explicit Euler coupling, and one midpoint coupling if needed to isolate temporal splitting error. No arbitrary damping."
+  },
+  "criteria": {
+    "mass_relative": 1e-10,
+    "periodic_momentum_relative": 1e-09,
+    "uniform_velocity_error_relative": 1e-08,
+    "pressure_offset_force_scaled": 1e-10,
+    "pressure_adjoint_work_scaled": 1e-10,
+    "pressure_solve_relative_residual": 1e-08,
+    "accepted_velocity_divergence_times_dt_max": 1e-08,
+    "phase_bounds_tolerance": 1e-10,
+    "geometry_volume_and_bulk_density_relative": 0.01,
+    "translation_interface_L1_relative": 0.01,
+    "analytical_pressure_velocity_relative": 0.01,
+    "shear_mode_amplitude_error": 0.01,
+    "shear_projection_loss_relative": 1e-08,
+    "hydrostatic_pressure_force_relative": 0.01,
+    "hydrostatic_speed_m_s": 1e-07,
+    "wave_amplitude_phase_velocity_relative": 0.01,
+    "unforced_inviscid_energy_drift_relative": 0.01,
+    "collision_spatial_time_bulk_difference": 0.01,
+    "convergence": "At least3 spatial levels; two finest must pass references or successive-refinement errors and decrease. At least3 timesteps at fixed geometry. Preserve coarse failures. Reference waves derived from finite-depth two-fluid linear theory with rigid lid; keep analytical linearisation error far below1% using amplitude/H<=1e-3."
+  },
+  "sequence": [
+    "Operator/geometry and analytic transport controls",
+    "Conservative translation, shear, constant/affine velocity and pressure-work ledgers",
+    "Hydrostatic gas/liquid equilibrium, fractional material interfaces",
+    "Small-amplitude two-layer gravity waves, independent dispersion/eigenfields",
+    "Symmetric controlled liquid-blob approach/collision: mass, momentum, symmetry, kinetic/potential energy and convergence. No exact post-contact shape claim."
+  ],
+  "bounds": {
+    "spatial_levels": "Primary Nx32,64,128 with rectangular aspect matching physical geometry. One finer diagnostic only if it resolves a specific uncertainty; not endless tuning.",
+    "time_refinement": "CFL-like dt set prospectively for each manufactured/reference duration; hold physical geometry fixed.",
+    "stop": "Reject a coupling on fundamental invariant failure; resolution errors require convergence evidence, not hidden smoothing/damping. If complete gates fail, no GPU throughput benchmark or inherited pressure-only performance claim.",
+    "raw": "Every accepted coupled state and per-stage conservation/energy ledger; failed prefix, input, sources, solver diagnostics and raw reference comparisons retained. Checksum and fsync local plus independent primary-home copy."
+  },
+  "performance_if_admitted": "Primary RTX4070 complete coupled step per simulated second, all transport/interface/pressure/coupling included. Separate planning, output and audits. Physics-matched workload, three alternating trials and timestep sensitivity. No projection presented as a measurement."
+}

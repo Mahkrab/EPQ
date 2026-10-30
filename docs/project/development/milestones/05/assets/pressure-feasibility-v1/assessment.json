@@ -1,0 +1,317 @@
+{
+  "costs": [
+    {
+      "case": "deep",
+      "solver": "fft",
+      "samples_s_per_sim_s": [
+        0.05704375,
+        0.05695922,
+        0.06350127
+      ],
+      "median": 0.05704375,
+      "min": 0.05695922,
+      "max": 0.06350127,
+      "dt": 0.00625,
+      "steps": 16,
+      "shape": [
+        64,
+        64,
+        64
+      ],
+      "iterations_min": 0,
+      "iterations_max": 0,
+      "setup_median_s": 0.240696151
+    },
+    {
+      "case": "deep",
+      "solver": "pcg",
+      "samples_s_per_sim_s": [
+        13.95085474,
+        14.093120779999998,
+        14.88140859
+      ],
+      "median": 14.093120779999998,
+      "min": 13.95085474,
+      "max": 14.88140859,
+      "dt": 0.00625,
+      "steps": 16,
+      "shape": [
+        64,
+        64,
+        64
+      ],
+      "iterations_min": 235,
+      "iterations_max": 237,
+      "setup_median_s": 0.236171834
+    },
+    {
+      "case": "pool",
+      "solver": "fft",
+      "samples_s_per_sim_s": [
+        0.17227378,
+        0.16610651999999998,
+        0.17322298999999997
+      ],
+      "median": 0.17227378,
+      "min": 0.16610651999999998,
+      "max": 0.17322298999999997,
+      "dt": 0.004545454545454546,
+      "steps": 22,
+      "shape": [
+        256,
+        12,
+        171
+      ],
+      "iterations_min": 0,
+      "iterations_max": 0,
+      "setup_median_s": 0.23971988
+    },
+    {
+      "case": "pool",
+      "solver": "pcg",
+      "samples_s_per_sim_s": [
+        16.232201289999995,
+        16.417777799999996,
+        16.789058639999997
+      ],
+      "median": 16.417777799999996,
+      "min": 16.232201289999995,
+      "max": 16.789058639999997,
+      "dt": 0.004545454545454546,
+      "steps": 22,
+      "shape": [
+        256,
+        12,
+        171
+      ],
+      "iterations_min": 149,
+      "iterations_max": 152,
+      "setup_median_s": 0.231415151
+    },
+    {
+      "case": "tank",
+      "solver": "fft",
+      "samples_s_per_sim_s": [
+        0.04460975,
+        0.037484939999999994,
+        0.038000149999999996
+      ],
+      "median": 0.038000149999999996,
+      "min": 0.037484939999999994,
+      "max": 0.04460975,
+      "dt": 0.003125,
+      "steps": 32,
+      "shape": [
+        64,
+        16,
+        64
+      ],
+      "iterations_min": 0,
+      "iterations_max": 0,
+      "setup_median_s": 0.259178273
+    },
+    {
+      "case": "tank",
+      "solver": "pcg",
+      "samples_s_per_sim_s": [
+        10.950236649999999,
+        10.99565266,
+        10.77657049
+      ],
+      "median": 10.950236649999999,
+      "min": 10.77657049,
+      "max": 10.99565266,
+      "dt": 0.003125,
+      "steps": 32,
+      "shape": [
+        64,
+        16,
+        64
+      ],
+      "iterations_min": 111,
+      "iterations_max": 115,
+      "setup_median_s": 0.251296129
+    },
+    {
+      "case": "tank-1s",
+      "solver": "fft",
+      "samples_s_per_sim_s": [
+        0.035938838,
+        0.035636026,
+        0.036965532
+      ],
+      "median": 0.035938838,
+      "min": 0.035636026,
+      "max": 0.036965532,
+      "dt": 0.003125,
+      "steps": 320,
+      "shape": [
+        64,
+        16,
+        64
+      ],
+      "iterations_min": 0,
+      "iterations_max": 0,
+      "setup_median_s": 0.24098869
+    },
+    {
+      "case": "tank-1s",
+      "solver": "pcg",
+      "samples_s_per_sim_s": [
+        10.7520945,
+        11.183885186,
+        10.992529764
+      ],
+      "median": 10.992529764,
+      "min": 10.7520945,
+      "max": 11.183885186,
+      "dt": 0.003125,
+      "steps": 320,
+      "shape": [
+        64,
+        16,
+        64
+      ],
+      "iterations_min": 111,
+      "iterations_max": 115,
+      "setup_median_s": 0.236696803
+    },
+    {
+      "case": "tank-halfdt",
+      "solver": "fft",
+      "samples_s_per_sim_s": [
+        0.07255242999999999,
+        0.07313692,
+        0.07250564
+      ],
+      "median": 0.07255242999999999,
+      "min": 0.07250564,
+      "max": 0.07313692,
+      "dt": 0.0015625,
+      "steps": 64,
+      "shape": [
+        64,
+        16,
+        64
+      ],
+      "iterations_min": 0,
+      "iterations_max": 0,
+      "setup_median_s": 0.236598929
+    },
+    {
+      "case": "tank-halfdt",
+      "solver": "pcg",
+      "samples_s_per_sim_s": [
+        23.78313854,
+        21.82300794,
+        21.513823069999997
+      ],
+      "median": 21.82300794,
+      "min": 21.513823069999997,
+      "max": 23.78313854,
+      "dt": 0.0015625,
+      "steps": 64,
+      "shape": [
+        64,
+        16,
+        64
+      ],
+      "iterations_min": 111,
+      "iterations_max": 115,
+      "setup_median_s": 0.232190441
+    }
+  ],
+  "spatial_impulse_errors": [
+    {
+      "case": "mac-n4-fraction1.0",
+      "pressure_error": 0.007387606383545279,
+      "velocity_error_relative_to_pressure_impulse": 0.002497133723320717
+    },
+    {
+      "case": "mac-n4-fraction0.37",
+      "pressure_error": 0.009269935356140437,
+      "velocity_error_relative_to_pressure_impulse": 0.003588530505189875
+    },
+    {
+      "case": "mac-n4-fraction0.1",
+      "pressure_error": 0.009121397581723947,
+      "velocity_error_relative_to_pressure_impulse": 0.0033908287508637364
+    },
+    {
+      "case": "mac-n8-fraction1.0",
+      "pressure_error": 0.0018394494885968756,
+      "velocity_error_relative_to_pressure_impulse": 0.0006197878861470122
+    },
+    {
+      "case": "mac-n8-fraction0.37",
+      "pressure_error": 0.0020273233975659916,
+      "velocity_error_relative_to_pressure_impulse": 0.0006540134838605123
+    },
+    {
+      "case": "mac-n8-fraction0.1",
+      "pressure_error": 0.002004281778891176,
+      "velocity_error_relative_to_pressure_impulse": 0.000637862476888807
+    },
+    {
+      "case": "mac-n12-fraction1.0",
+      "pressure_error": 0.0008169200674493409,
+      "velocity_error_relative_to_pressure_impulse": 0.0002750927994456415
+    },
+    {
+      "case": "mac-n12-fraction0.37",
+      "pressure_error": 0.0008686469146965994,
+      "velocity_error_relative_to_pressure_impulse": 0.00027724065289140115
+    },
+    {
+      "case": "mac-n12-fraction0.1",
+      "pressure_error": 0.0008619508823317344,
+      "velocity_error_relative_to_pressure_impulse": 0.0002745259679758702
+    },
+    {
+      "case": "mac-n16-fraction1.0",
+      "pressure_error": 0.0004593968608795877,
+      "velocity_error_relative_to_pressure_impulse": 0.000154667218269594
+    },
+    {
+      "case": "mac-n16-fraction0.37",
+      "pressure_error": 0.0004804425289895115,
+      "velocity_error_relative_to_pressure_impulse": 0.0001541041643083948
+    },
+    {
+      "case": "mac-n16-fraction0.1",
+      "pressure_error": 0.0004776709383756139,
+      "velocity_error_relative_to_pressure_impulse": 0.00015340991115493755
+    },
+    {
+      "case": "mac-periodic-n4",
+      "pressure_error": 0.0965751939023587,
+      "velocity_error_relative_to_pressure_impulse": 0.03236852717576432
+    },
+    {
+      "case": "mac-periodic-n8",
+      "pressure_error": 0.023241122763985364,
+      "velocity_error_relative_to_pressure_impulse": 0.007737897108395634
+    },
+    {
+      "case": "mac-periodic-n12",
+      "pressure_error": 0.010256369165877703,
+      "velocity_error_relative_to_pressure_impulse": 0.0034110385779259657
+    },
+    {
+      "case": "mac-periodic-n16",
+      "pressure_error": 0.005754890435943205,
+      "velocity_error_relative_to_pressure_impulse": 0.0019132371330048779
+    },
+    {
+      "case": "mac-periodic-n24",
+      "pressure_error": 0.0025531923195235276,
+      "velocity_error_relative_to_pressure_impulse": 0.0008485968606622771
+    }
+  ],
+  "gpu_audited_trials": 30,
+  "gpu_max_true_residual": 9.979074294686348e-11,
+  "gpu_max_velocity_error_m_s": 4.315915680397353e-12,
+  "gpu_max_pressure_relative_error": 6.073021723220377e-13,
+  "gpu_max_energy_change_J": 0.0,
+  "gpu_max_volume_rate_m3_s": 1.3388867922334294e-14
+}

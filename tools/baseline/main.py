@@ -73,6 +73,10 @@ def checked_manifest() -> dict:
             files.append((case["golden"], case["golden_sha256"]))
     for name, expected in files:
         path = (SIMULATOR / name).resolve()
+        # The manifest keeps its historical paths and hashes; catalogue examples
+        # now live separately from these byte-preserved regression fixtures.
+        if name.startswith("scenes/") and not path.exists():
+            path = (SIMULATOR / "reference" / name).resolve()
         if not path.is_relative_to(SIMULATOR) or sha256(path.read_bytes()) != expected:
             raise ValueError(f"frozen input/golden hash mismatch: {name}")
     for case in manifest["cases"][1:]:

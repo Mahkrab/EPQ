@@ -1,0 +1,604 @@
+{
+  "label": "96-iterations",
+  "parameters": {
+    "n": 4,
+    "gamma": 0.3,
+    "eps": 0.02,
+    "iterations": 96,
+    "refresh": 1,
+    "dt": 0.0020833333333333333,
+    "support": 2,
+    "gravity": 0.0,
+    "replay": null
+  },
+  "initial_p95_compression": 0.0009217989462159904,
+  "final_p95_compression": 1.1496610330397061e-09,
+  "pressure_mode_displacement_m": -1.1013523812601264e-07,
+  "pressure_mode_velocity_change_m_s": -5.286491430048607e-05,
+  "pressure_tangent_displacement_rms_m": 2.095890214555429e-07,
+  "net_pressure_tangent_displacement_mean_m": 3.754473538704686e-18,
+  "manufactured_shear_displacement_fraction_removed": 1.1533335166601461e-05,
+  "sparse_native_action_error_m": 0.0,
+  "reduced_native_action_error_m": 3.2346070673273594e-20,
+  "reduced_constraint_error": 1.0217521273503394e-15,
+  "reduced_J_error_per_m": 2.913225216616411e-13,
+  "reduced_diagonal_error_per_m2": 1.7280399333685637e-11,
+  "history": [
+    {
+      "iteration": 0,
+      "p95_compression_before": 0.0009217989462159904,
+      "tangential_mode_correction_m": -1.7729306812149908e-08,
+      "maximum_pressure_correction_m": 5.905333484206585e-06
+    },
+    {
+      "iteration": 1,
+      "p95_compression_before": 0.0006895515962903609,
+      "tangential_mode_correction_m": -1.4025865924611523e-08,
+      "maximum_pressure_correction_m": 4.410271089732085e-06
+    },
+    {
+      "iteration": 2,
+      "p95_compression_before": 0.0005383191405892163,
+      "tangential_mode_correction_m": -1.1328801985124209e-08,
+      "maximum_pressure_correction_m": 3.29797502504095e-06
+    },
+    {
+      "iteration": 3,
+      "p95_compression_before": 0.0005014552835347352,
+      "tangential_mode_correction_m": -9.291890619334615e-09,
+      "maximum_pressure_correction_m": 2.467731020296293e-06
+    },
+    {
+      "iteration": 4,
+      "p95_compression_before": 0.00045875623747648753,
+      "tangential_mode_correction_m": -7.74726621298144e-09,
+      "maximum_pressure_correction_m": 1.8745518576028308e-06
+    },
+    {
+      "iteration": 5,
+      "p95_compression_before": 0.00040369157188746563,
+      "tangential_mode_correction_m": -6.6255090584450516e-09,
+      "maximum_pressure_correction_m": 1.5250176141210035e-06
+    },
+    {
+      "iteration": 6,
+      "p95_compression_before": 0.00035186854237378995,
+      "tangential_mode_correction_m": -5.7167997583761226e-09,
+      "maximum_pressure_correction_m": 1.2801830258856185e-06
+    },
+    {
+      "iteration": 7,
+      "p95_compression_before": 0.0003059675949521612,
+      "tangential_mode_correction_m": -4.950321181318248e-09,
+      "maximum_pressure_correction_m": 1.0914606520946346e-06
+    },
+    {
+      "iteration": 8,
+      "p95_compression_before": 0.000265899345089915,
+      "tangential_mode_correction_m": -4.293643251132684e-09,
+      "maximum_pressure_correction_m": 9.382536275337671e-07
+    },
+    {
+      "iteration": 9,
+      "p95_compression_before": 0.00023104903187420867,
+      "tangential_mode_correction_m": -3.727199874368315e-09,
+      "maximum_pressure_correction_m": 8.102396845239308e-07
+    },
+    {
+      "iteration": 10,
+      "p95_compression_before": 0.00020076378700273345,
+      "tangential_mode_correction_m": -3.236965204802056e-09,
+      "maximum_pressure_correction_m": 7.040968109388372e-07
+    },
+    {
+      "iteration": 11,
+      "p95_compression_before": 0.00017445055133458176,
+      "tangential_mode_correction_m": -2.8119390991036326e-09,
+      "maximum_pressure_correction_m": 6.131073253565618e-07
+    },
+    {
+      "iteration": 12,
+      "p95_compression_before": 0.0001515887428145124,
+      "tangential_mode_correction_m": -2.443088374013017e-09,
+      "maximum_pressure_correction_m": 5.334415134746543e-07
+    },
+    {
+      "iteration": 13,
+      "p95_compression_before": 0.0001317251860804003,
+      "tangential_mode_correction_m": -2.1228107433122566e-09,
+      "maximum_pressure_correction_m": 4.6391021026348156e-07
+    },
+    {
+      "iteration": 14,
+      "p95_compression_before": 0.00011446616513377528,
+      "tangential_mode_correction_m": -1.8446203624899503e-09,
+      "maximum_pressure_correction_m": 4.0333309367615066e-07
+    },
+    {
+      "iteration": 15,
+      "p95_compression_before": 9.946975757957333e-05,
+      "tangential_mode_correction_m": -1.6029409063931422e-09,
+      "maximum_pressure_correction_m": 3.506111470834394e-07
+    },
+    {
+      "iteration": 16,
+      "p95_compression_before": 8.643902445593099e-05,
+      "tangential_mode_correction_m": -1.3929567157987798e-09,
+      "maximum_pressure_correction_m": 3.0475276173419215e-07
+    },
+    {
+      "iteration": 17,
+      "p95_compression_before": 7.511607354060423e-05,
+      "tangential_mode_correction_m": -1.2104983895298882e-09,
+      "maximum_pressure_correction_m": 2.6487795485668956e-07
+    },
+    {
+      "iteration": 18,
+      "p95_compression_before": 6.527690646906947e-05,
+      "tangential_mode_correction_m": -1.051950708609521e-09,
+      "maximum_pressure_correction_m": 2.3021284444903555e-07
+    },
+    {
+      "iteration": 19,
+      "p95_compression_before": 5.6726949642538216e-05,
+      "tangential_mode_correction_m": -9.141762706778495e-10,
+      "maximum_pressure_correction_m": 2.000802830565455e-07
+    },
+    {
+      "iteration": 20,
+      "p95_compression_before": 4.929717792401256e-05,
+      "tangential_mode_correction_m": -7.944509556705352e-10,
+      "maximum_pressure_correction_m": 1.7388945158573546e-07
+    },
+    {
+      "iteration": 21,
+      "p95_compression_before": 4.2840751737216465e-05,
+      "tangential_mode_correction_m": -6.904087690550636e-10,
+      "maximum_pressure_correction_m": 1.5112568911738125e-07
+    },
+    {
+      "iteration": 22,
+      "p95_compression_before": 3.723009887798279e-05,
+      "tangential_mode_correction_m": -5.999943825961287e-10,
+      "maximum_pressure_correction_m": 1.3134109324426983e-07
+    },
+    {
+      "iteration": 23,
+      "p95_compression_before": 3.2354381715560265e-05,
+      "tangential_mode_correction_m": -5.214221370523445e-10,
+      "maximum_pressure_correction_m": 1.141460706890595e-07
+    },
+    {
+      "iteration": 24,
+      "p95_compression_before": 2.8117298495500265e-05,
+      "tangential_mode_correction_m": -4.5314054508628605e-10,
+      "maximum_pressure_correction_m": 9.920185333952166e-08
+    },
+    {
+      "iteration": 25,
+      "p95_compression_before": 2.443517438788234e-05,
+      "tangential_mode_correction_m": -3.9380151461527437e-10,
+      "maximum_pressure_correction_m": 8.621392290116111e-08
+    },
+    {
+      "iteration": 26,
+      "p95_compression_before": 2.1235303877320533e-05,
+      "tangential_mode_correction_m": -3.422336432671789e-10,
+      "maximum_pressure_correction_m": 7.492626000417154e-08
+    },
+    {
+      "iteration": 27,
+      "p95_compression_before": 1.8454511250265426e-05,
+      "tangential_mode_correction_m": -2.9741903413889333e-10,
+      "maximum_pressure_correction_m": 6.511632733411741e-08
+    },
+    {
+      "iteration": 28,
+      "p95_compression_before": 1.6037900353760293e-05,
+      "tangential_mode_correction_m": -2.584731624155548e-10,
+      "maximum_pressure_correction_m": 5.6590699578660365e-08
+    },
+    {
+      "iteration": 29,
+      "p95_compression_before": 1.3937768657212857e-05,
+      "tangential_mode_correction_m": -2.2462738808639126e-10,
+      "maximum_pressure_correction_m": 4.9181260120492044e-08
+    },
+    {
+      "iteration": 30,
+      "p95_compression_before": 1.211266395406696e-05,
+      "tangential_mode_correction_m": -1.9521376507163155e-10,
+      "maximum_pressure_correction_m": 4.2741892557879866e-08
+    },
+    {
+      "iteration": 31,
+      "p95_compression_before": 1.052656491218329e-05,
+      "tangential_mode_correction_m": -1.6965184392873067e-10,
+      "maximum_pressure_correction_m": 3.7145603641934265e-08
+    },
+    {
+      "iteration": 32,
+      "p95_compression_before": 9.148169181294463e-06,
+      "tangential_mode_correction_m": -1.4743720597014125e-10,
+      "maximum_pressure_correction_m": 3.228202177795169e-08
+    },
+    {
+      "iteration": 33,
+      "p95_compression_before": 7.95027490352318e-06,
+      "tangential_mode_correction_m": -1.2813150097644209e-10,
+      "maximum_pressure_correction_m": 2.8055222356947198e-08
+    },
+    {
+      "iteration": 34,
+      "p95_compression_before": 6.909243356112427e-06,
+      "tangential_mode_correction_m": -1.1135379116393614e-10,
+      "maximum_pressure_correction_m": 2.4381837340868247e-08
+    },
+    {
+      "iteration": 35,
+      "p95_compression_before": 6.0045320640078614e-06,
+      "tangential_mode_correction_m": -9.677302983574841e-11,
+      "maximum_pressure_correction_m": 2.1189412029622606e-08
+    },
+    {
+      "iteration": 36,
+      "p95_compression_before": 5.218289125918929e-06,
+      "tangential_mode_correction_m": -8.410152578483064e-11,
+      "maximum_pressure_correction_m": 1.841497678471154e-08
+    },
+    {
+      "iteration": 37,
+      "p95_compression_before": 4.535000724281701e-06,
+      "tangential_mode_correction_m": -7.30892642529349e-11,
+      "maximum_pressure_correction_m": 1.6003805549153045e-08
+    },
+    {
+      "iteration": 38,
+      "p95_compression_before": 3.941184837152889e-06,
+      "tangential_mode_correction_m": -6.351897197820738e-11,
+      "maximum_pressure_correction_m": 1.390833684867349e-08
+    },
+    {
+      "iteration": 39,
+      "p95_compression_before": 3.4251250882189055e-06,
+      "tangential_mode_correction_m": -5.520182884351067e-11,
+      "maximum_pressure_correction_m": 1.2087235938276585e-08
+    },
+    {
+      "iteration": 40,
+      "p95_compression_before": 2.9766394720187606e-06,
+      "tangential_mode_correction_m": -4.797374131912203e-11,
+      "maximum_pressure_correction_m": 1.0504579712058807e-08
+    },
+    {
+      "iteration": 41,
+      "p95_compression_before": 2.586879387367347e-06,
+      "tangential_mode_correction_m": -4.1692104125774835e-11,
+      "maximum_pressure_correction_m": 9.12914825980627e-09
+    },
+    {
+      "iteration": 42,
+      "p95_compression_before": 2.248154994832774e-06,
+      "tangential_mode_correction_m": -3.6232986073597276e-11,
+      "maximum_pressure_correction_m": 7.933809173935023e-09
+    },
+    {
+      "iteration": 43,
+      "p95_compression_before": 1.953783455688196e-06,
+      "tangential_mode_correction_m": -3.148868449469482e-11,
+      "maximum_pressure_correction_m": 6.894982433602324e-09
+    },
+    {
+      "iteration": 44,
+      "p95_compression_before": 1.6979570502950736e-06,
+      "tangential_mode_correction_m": -2.7365600000766223e-11,
+      "maximum_pressure_correction_m": 5.99217529952599e-09
+    },
+    {
+      "iteration": 45,
+      "p95_compression_before": 1.4756285724448759e-06,
+      "tangential_mode_correction_m": -2.378238963198282e-11,
+      "maximum_pressure_correction_m": 5.207578176993869e-09
+    },
+    {
+      "iteration": 46,
+      "p95_compression_before": 1.282411732139721e-06,
+      "tangential_mode_correction_m": -2.066836183375195e-11,
+      "maximum_pressure_correction_m": 4.525713275259231e-09
+    },
+    {
+      "iteration": 47,
+      "p95_compression_before": 1.114494607046268e-06,
+      "tangential_mode_correction_m": -1.796208163374592e-11,
+      "maximum_pressure_correction_m": 3.933129347272291e-09
+    },
+    {
+      "iteration": 48,
+      "p95_compression_before": 9.685644264401105e-07,
+      "tangential_mode_correction_m": -1.5610158536639638e-11,
+      "maximum_pressure_correction_m": 3.4181363616411105e-09
+    },
+    {
+      "iteration": 49,
+      "p95_compression_before": 8.417422066031577e-07,
+      "tangential_mode_correction_m": -1.3566193118258189e-11,
+      "maximum_pressure_correction_m": 2.9705748918928515e-09
+    },
+    {
+      "iteration": 50,
+      "p95_compression_before": 7.315259460405343e-07,
+      "tangential_mode_correction_m": -1.1789861547771722e-11,
+      "maximum_pressure_correction_m": 2.581615735836612e-09
+    },
+    {
+      "iteration": 51,
+      "p95_compression_before": 6.357412636326387e-07,
+      "tangential_mode_correction_m": -1.0246120052232235e-11,
+      "maximum_pressure_correction_m": 2.2435857198953907e-09
+    },
+    {
+      "iteration": 52,
+      "p95_compression_before": 5.524984927340881e-07,
+      "tangential_mode_correction_m": -8.904513506037817e-12,
+      "maximum_pressure_correction_m": 1.9498163736347002e-09
+    },
+    {
+      "iteration": 53,
+      "p95_compression_before": 4.801554038813549e-07,
+      "tangential_mode_correction_m": -7.73857458194017e-12,
+      "maximum_pressure_correction_m": 1.6945123595401649e-09
+    },
+    {
+      "iteration": 54,
+      "p95_compression_before": 4.1728480271174817e-07,
+      "tangential_mode_correction_m": -6.725301591180055e-12,
+      "maximum_pressure_correction_m": 1.4726371470176405e-09
+    },
+    {
+      "iteration": 55,
+      "p95_compression_before": 3.626463707107064e-07,
+      "tangential_mode_correction_m": -5.8447046653397375e-12,
+      "maximum_pressure_correction_m": 1.2798136778879546e-09
+    },
+    {
+      "iteration": 56,
+      "p95_compression_before": 3.151621972286023e-07,
+      "tangential_mode_correction_m": -5.079411408208858e-12,
+      "maximum_pressure_correction_m": 1.1122380074275534e-09
+    },
+    {
+      "iteration": 57,
+      "p95_compression_before": 2.738955144909738e-07,
+      "tangential_mode_correction_m": -4.414324136833449e-12,
+      "maximum_pressure_correction_m": 9.666042601034012e-10
+    },
+    {
+      "iteration": 58,
+      "p95_compression_before": 2.3803221238516414e-07,
+      "tangential_mode_correction_m": -3.836322061682316e-12,
+      "maximum_pressure_correction_m": 8.400394266667516e-10
+    },
+    {
+      "iteration": 59,
+      "p95_compression_before": 2.0686478130471642e-07,
+      "tangential_mode_correction_m": -3.334002382810892e-12,
+      "maximum_pressure_correction_m": 7.300466708760784e-10
+    },
+    {
+      "iteration": 60,
+      "p95_compression_before": 1.797783510948392e-07,
+      "tangential_mode_correction_m": -2.8974554082299146e-12,
+      "maximum_pressure_correction_m": 6.34456096524987e-10
+    },
+    {
+      "iteration": 61,
+      "p95_compression_before": 1.5623856319813e-07,
+      "tangential_mode_correction_m": -2.518068966662906e-12,
+      "maximum_pressure_correction_m": 5.513819152581035e-10
+    },
+    {
+      "iteration": 62,
+      "p95_compression_before": 1.357810268665105e-07,
+      "tangential_mode_correction_m": -2.188358583600703e-12,
+      "maximum_pressure_correction_m": 4.791852652559383e-10
+    },
+    {
+      "iteration": 63,
+      "p95_compression_before": 1.180021567126488e-07,
+      "tangential_mode_correction_m": -1.9018197680127043e-12,
+      "maximum_pressure_correction_m": 4.164418687617767e-10
+    },
+    {
+      "iteration": 64,
+      "p95_compression_before": 1.02551214631319e-07,
+      "tangential_mode_correction_m": -1.6527997237576226e-12,
+      "maximum_pressure_correction_m": 3.6191394394244074e-10
+    },
+    {
+      "iteration": 65,
+      "p95_compression_before": 8.91233857824858e-08,
+      "tangential_mode_correction_m": -1.4363858211766338e-12,
+      "maximum_pressure_correction_m": 3.1452577670474655e-10
+    },
+    {
+      "iteration": 66,
+      "p95_compression_before": 7.745376784384916e-08,
+      "tangential_mode_correction_m": -1.2483086819046856e-12,
+      "maximum_pressure_correction_m": 2.7334250210460145e-10
+    },
+    {
+      "iteration": 67,
+      "p95_compression_before": 6.731214474697822e-08,
+      "tangential_mode_correction_m": -1.0848579456040927e-12,
+      "maximum_pressure_correction_m": 2.37551667557528e-10
+    },
+    {
+      "iteration": 68,
+      "p95_compression_before": 5.8498442756516056e-08,
+      "tangential_mode_correction_m": -9.42809086126503e-13,
+      "maximum_pressure_correction_m": 2.0644720105921104e-10
+    },
+    {
+      "iteration": 69,
+      "p95_compression_before": 5.083878829026389e-08,
+      "tangential_mode_correction_m": -8.193597919471531e-13,
+      "maximum_pressure_correction_m": 1.7941548302804375e-10
+    },
+    {
+      "iteration": 70,
+      "p95_compression_before": 4.418207133483065e-08,
+      "tangential_mode_correction_m": -7.120746691317193e-13,
+      "maximum_pressure_correction_m": 1.559232324438043e-10
+    },
+    {
+      "iteration": 71,
+      "p95_compression_before": 3.8396970714060785e-08,
+      "tangential_mode_correction_m": -6.188372236578282e-13,
+      "maximum_pressure_correction_m": 1.3550700334034725e-10
+    },
+    {
+      "iteration": 72,
+      "p95_compression_before": 3.336935794351348e-08,
+      "tangential_mode_correction_m": -5.378080816572098e-13,
+      "maximum_pressure_correction_m": 1.1776402891255619e-10
+    },
+    {
+      "iteration": 73,
+      "p95_compression_before": 2.9000049917016213e-08,
+      "tangential_mode_correction_m": -4.673887123741024e-13,
+      "maximum_pressure_correction_m": 1.0234427763600448e-10
+    },
+    {
+      "iteration": 74,
+      "p95_compression_before": 2.5202848918937093e-08,
+      "tangential_mode_correction_m": -4.0618989178207335e-13,
+      "maximum_pressure_correction_m": 8.894355221573904e-11
+    },
+    {
+      "iteration": 75,
+      "p95_compression_before": 2.190284509318019e-08,
+      "tangential_mode_correction_m": -3.5300431134901885e-13,
+      "maximum_pressure_correction_m": 7.729748821715404e-11
+    },
+    {
+      "iteration": 76,
+      "p95_compression_before": 1.9034936293849114e-08,
+      "tangential_mode_correction_m": -3.06782726773098e-13,
+      "maximum_pressure_correction_m": 6.717633444479132e-11
+    },
+    {
+      "iteration": 77,
+      "p95_compression_before": 1.6542544889475153e-08,
+      "tangential_mode_correction_m": -2.666132886777907e-13,
+      "maximum_pressure_correction_m": 5.8380419790243e-11
+    },
+    {
+      "iteration": 78,
+      "p95_compression_before": 1.4376501544788312e-08,
+      "tangential_mode_correction_m": -2.3170355268831063e-13,
+      "maximum_pressure_correction_m": 5.0736221192153384e-11
+    },
+    {
+      "iteration": 79,
+      "p95_compression_before": 1.2494075329883003e-08,
+      "tangential_mode_correction_m": -2.0136481556720602e-13,
+      "maximum_pressure_correction_m": 4.4092936374547157e-11
+    },
+    {
+      "iteration": 80,
+      "p95_compression_before": 1.0858129062540911e-08,
+      "tangential_mode_correction_m": -1.74998566622511e-13,
+      "maximum_pressure_correction_m": 3.831950686009062e-11
+    },
+    {
+      "iteration": 81,
+      "p95_compression_before": 9.436390779882231e-09,
+      "tangential_mode_correction_m": -1.5208465586926794e-13,
+      "maximum_pressure_correction_m": 3.330204149796376e-11
+    },
+    {
+      "iteration": 82,
+      "p95_compression_before": 8.200811141279019e-09,
+      "tangential_mode_correction_m": -1.321710334317627e-13,
+      "maximum_pressure_correction_m": 2.894154649199787e-11
+    },
+    {
+      "iteration": 83,
+      "p95_compression_before": 7.127015644314838e-09,
+      "tangential_mode_correction_m": -1.1486485955976824e-13,
+      "maximum_pressure_correction_m": 2.5152006257940745e-11
+    },
+    {
+      "iteration": 84,
+      "p95_compression_before": 6.193820567546027e-09,
+      "tangential_mode_correction_m": -9.982471791857043e-14,
+      "maximum_pressure_correction_m": 2.1858662075945784e-11
+    },
+    {
+      "iteration": 85,
+      "p95_compression_before": 5.3828157486890404e-09,
+      "tangential_mode_correction_m": -8.675389565582548e-14,
+      "maximum_pressure_correction_m": 1.8996541152583205e-11
+    },
+    {
+      "iteration": 86,
+      "p95_compression_before": 4.678002207825216e-09,
+      "tangential_mode_correction_m": -7.53945408619067e-14,
+      "maximum_pressure_correction_m": 1.65091769621671e-11
+    },
+    {
+      "iteration": 87,
+      "p95_compression_before": 4.065475067704938e-09,
+      "tangential_mode_correction_m": -6.552254858728178e-14,
+      "maximum_pressure_correction_m": 1.4347503116999449e-11
+    },
+    {
+      "iteration": 88,
+      "p95_compression_before": 3.5331513270620007e-09,
+      "tangential_mode_correction_m": -5.694317723887732e-14,
+      "maximum_pressure_correction_m": 1.2468874277717552e-11
+    },
+    {
+      "iteration": 89,
+      "p95_compression_before": 3.0705284981280556e-09,
+      "tangential_mode_correction_m": -4.948716975875604e-14,
+      "maximum_pressure_correction_m": 1.083623056835186e-11
+    },
+    {
+      "iteration": 90,
+      "p95_compression_before": 2.6684803255960787e-09,
+      "tangential_mode_correction_m": -4.300742580080091e-14,
+      "maximum_pressure_correction_m": 9.417358161475436e-12
+    },
+    {
+      "iteration": 91,
+      "p95_compression_before": 2.3190760423119627e-09,
+      "tangential_mode_correction_m": -3.737613757467733e-14,
+      "maximum_pressure_correction_m": 8.18427168509556e-12
+    },
+    {
+      "iteration": 92,
+      "p95_compression_before": 2.0154213853373903e-09,
+      "tangential_mode_correction_m": -3.248219074702057e-14,
+      "maximum_pressure_correction_m": 7.112641722371976e-12
+    },
+    {
+      "iteration": 93,
+      "p95_compression_before": 1.7515267014545088e-09,
+      "tangential_mode_correction_m": -2.8229044171641244e-14,
+      "maximum_pressure_correction_m": 6.181330236062571e-12
+    },
+    {
+      "iteration": 94,
+      "p95_compression_before": 1.522185710811641e-09,
+      "tangential_mode_correction_m": -2.453279702423017e-14,
+      "maximum_pressure_correction_m": 5.371961899423813e-12
+    },
+    {
+      "iteration": 95,
+      "p95_compression_before": 1.3228744766280442e-09,
+      "tangential_mode_correction_m": -2.1320525910871684e-14,
+      "maximum_pressure_correction_m": 4.668568010086776e-12
+    }
+  ]
+}

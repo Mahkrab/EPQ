@@ -1,0 +1,86 @@
+{
+  "heads": {
+    "EPQ": "814f88a7f4122b1b24ea645b210d89e1200a0c44",
+    "Maelstrom": "250932784790ba26cdc55fc38a877ccefacbf054"
+  },
+  "native_source_identities": {
+    "spatial_sort.cuh": {
+      "sha256": "9db7cdb4d9671d3cf105ad89241414df1d77d6b0e965589f9aac4308671fdcf7",
+      "prior_expected": "9db7cdb4d9671d3cf105ad89241414df1d77d6b0e965589f9aac4308671fdcf7",
+      "match": true
+    },
+    "power.cuh": {
+      "sha256": "255aac4535d59a9d74d912960428b6681b6ae564909ea34cdb87ead71bf405d8",
+      "prior_expected": "255aac4535d59a9d74d912960428b6681b6ae564909ea34cdb87ead71bf405d8",
+      "match": true
+    },
+    "power_exhaustive.cu": {
+      "sha256": "82cde6d20690c2657e20164499a371b2cf1adb74d83a343a97370de14e478e5b",
+      "prior_expected": "82cde6d20690c2657e20164499a371b2cf1adb74d83a343a97370de14e478e5b",
+      "match": true
+    },
+    "neighbours.cuh": {
+      "sha256": "25c013791467057b68c47bf7b57fa65e1f8377bdec35f1f73de62fb0474e667f",
+      "prior_expected": "25c013791467057b68c47bf7b57fa65e1f8377bdec35f1f73de62fb0474e667f",
+      "match": true
+    },
+    "solver.h": {
+      "sha256": "4302b0ed260c1357ff8505a37782f63aa109411fc83d3f8fbf2af200be728229",
+      "prior_expected": "4302b0ed260c1357ff8505a37782f63aa109411fc83d3f8fbf2af200be728229",
+      "match": true
+    },
+    "row_sort.cuh": {
+      "sha256": "233607e3f241bd2fd2d858fbaba734c7d5792b208a07cf15189f4ee241d091ac",
+      "prior_expected": "233607e3f241bd2fd2d858fbaba734c7d5792b208a07cf15189f4ee241d091ac",
+      "match": true
+    },
+    "bridge.cpp": {
+      "sha256": "5481c4a6ea29353f4848470b1a46d616586d8c4b6c07ef9e0557e61e5beb5042",
+      "prior_expected": "5481c4a6ea29353f4848470b1a46d616586d8c4b6c07ef9e0557e61e5beb5042",
+      "match": true
+    },
+    "solver.cu": {
+      "sha256": "b13d44290b80aad7de5e6669aea1d0c5f1b4f150b653969568a65655a0eb1744",
+      "prior_expected": "b13d44290b80aad7de5e6669aea1d0c5f1b4f150b653969568a65655a0eb1744",
+      "match": true
+    },
+    "kernels.cu": {
+      "sha256": "0ec2d7009e58fcf6cc7b5aac032a731bb77f0d514df40424cd0dc317d81dee8f",
+      "prior_expected": "0ec2d7009e58fcf6cc7b5aac032a731bb77f0d514df40424cd0dc317d81dee8f",
+      "match": true
+    },
+    "power-LICENSE": {
+      "sha256": "296abd795697343af2ef7b707e3d3a8bd2d4fe93f86bb6b54ae2c9553f1f7d16",
+      "prior_expected": "296abd795697343af2ef7b707e3d3a8bd2d4fe93f86bb6b54ae2c9553f1f7d16",
+      "match": true
+    },
+    "roundtrip.cu": {
+      "sha256": "bb3aa7c294671099db5f3ae77171a762bbe05d00a1586659670902f0138f4b6f",
+      "prior_expected": "bb3aa7c294671099db5f3ae77171a762bbe05d00a1586659670902f0138f4b6f",
+      "match": true
+    },
+    "probe.h": {
+      "sha256": "b715638ad1326c8241157b1b9335c4bf3d9ffa255343dbb290a7f9dad7a070f2",
+      "prior_expected": "b715638ad1326c8241157b1b9335c4bf3d9ffa255343dbb290a7f9dad7a070f2",
+      "match": true
+    },
+    "state_observation.cuh": {
+      "sha256": "85399e7b353756c719bc2b69609456044302fc410a66214b48e3153fcd98c106",
+      "prior_expected": "85399e7b353756c719bc2b69609456044302fc410a66214b48e3153fcd98c106",
+      "match": true
+    }
+  },
+  "unchanged_Maelstrom_working_state": true,
+  "status": " D native/tests.cpp\n D src/cuda/active_tests.rs\n D src/cuda/correction_tests.rs\n D src/cuda/density_tests.rs\n D src/cuda/mirror_tests.rs\n D src/cuda/observation_tests.rs\n D src/cuda/plane_tests.rs\n D src/cuda/residency_tests.rs\n D src/cuda/search_tests.rs\n M src/cuda/solver.rs\n D src/cuda/solver_tests.rs\n D src/cuda/spatial_sort_tests.rs\n D src/cuda/vorticity_tests.rs\n?? tests/native/\n?? tests/unit/\n",
+  "local_platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "primary_CPU": "AMD Ryzen9 7900X",
+  "primary_compiler": "GCC13.3.0",
+  "primary_workers": 4,
+  "production_changes": false,
+  "history_changes": false,
+  "system_setting_changes": false,
+  "process_local_environment": {
+    "OMP_WAIT_POLICY": "PASSIVE"
+  },
+  "cost_claims": "None. No CUDA benchmark or performance optimisation."
+}

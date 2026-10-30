@@ -1,0 +1,7 @@
+{
+  "created_utc": "2026-10-29T01:02:26.740730+00:00",
+  "reason": "Original central strain operator with h_visc/dx=2 fails analytic shear validation; no viscous fluid simulations have run. Preserve original validation.",
+  "isolated_change": "Vary viscosity quadrature support ratio 2,3,4 at unchanged material nu; density/pressure support stays 2dx. No fitted viscosity coefficient.",
+  "criterion": "Original 5% shear amplitude criterion unchanged. Require error decrease with spatial refinement; no coefficient correction fitted to a measured centroid or quietness.",
+  "sources": "Archive shear-v1.cpp and its outputs before extending stencil."
+}

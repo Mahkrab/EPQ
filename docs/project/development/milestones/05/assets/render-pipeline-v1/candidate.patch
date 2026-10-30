@@ -1,0 +1,596 @@
+diff -ruN control/docs/export.md candidate/docs/export.md
+--- control/docs/export.md	2026-10-26 23:09:37.206771135 +0000
++++ candidate/docs/export.md	2026-10-30 08:36:42.725092913 +0000
+@@ -105,18 +105,24 @@
+ `progress.json` and any published prefix, explicitly incomplete; it is not normal
+ playback input. Never infer completion from a directory or a few images alone.
+ 
+-Compilation uses a lossless synchronous frame boundary, unlike the live viewer's
+-coalesced observations. Numerical outcome and image publication are distinct.
++Compilation retains every scheduled observation. One CPU worker encodes and hashes
++an owned frame while the export thread advances the solver and prepares the next
++image. Publication stays ordered on the export thread. The initial image closes
++before stepping; cancellation joins pending CPU work without publishing it.
++Storage is bounded to one outstanding encoding job and one prepared image, in
++addition to the solver and retained frame metadata. Numerical outcome and image publication are distinct.
+ Solver work, graphics/readback and PNG encoding have separate manifest timings;
+ total wall time includes additional work and is not an interchangeable solver benchmark.
+ 
+-New manifests also contain `timing_profile` schema 1. Its disjoint `components_s` cover
++New manifests contain `timing_profile` schema 2. Its disjoint `components_s` cover
+ setup, solver steps, snapshot capture, checkpoint comparison, frame particle copying,
+-graphics/readback, PNG encoding, frame publication, frame hashing, progress updates and
++graphics/readback, waiting for CPU frame output, frame publication, progress updates and
+ an explicit `other` remainder. `total_s` ends before manifest construction, as indicated
+ by `boundary = "export_entry_to_before_manifest"`. It excludes final manifest publication,
+ CLI output and teardown; measure whole-command wall time for the full cost. Graphics/readback
+-includes CPU packing and driver waits. Frame hashing includes portable snapshot JSON encoding.
++includes CPU packing and driver waits. `worker_components_s` separately records PNG encoding
++and frame hashing, including portable snapshot JSON encoding. Those worker intervals overlap
++the export thread and must not be added to `components_s` to reconstruct elapsed time.
+ The existing three `timing_seconds` fields retain their meanings, and older bundles remain valid.
+ 
+ The default stride is 1: every accepted timestep produces an image, including when
+diff -ruN control/src/export/encoding.rs candidate/src/export/encoding.rs
+--- control/src/export/encoding.rs	1970-01-01 01:00:00.000000000 +0100
++++ candidate/src/export/encoding.rs	2026-10-30 08:31:01.794899798 +0000
+@@ -0,0 +1,184 @@
++//! One owned frame at a time crosses to a CPU worker. Graphics and exclusive
++//! publication stay on the export thread; dropping the worker always joins it.
++
++use super::{ExportError, Frame, fail, offscreen::EncodePng, timing::FrameTimings};
++use crate::workflow::SnapshotRecord;
++use std::{
++    sync::mpsc::{self, Receiver, SyncSender},
++    thread::{self, JoinHandle},
++    time::Instant,
++};
++
++pub(super) struct Job {
++    pub snapshot: SnapshotRecord,
++    pub rgba: Vec<u8>,
++    pub width: u32,
++    pub height: u32,
++    pub index: usize,
++    pub dt: f64,
++    pub encode: EncodePng,
++}
++
++pub(super) struct Encoded {
++    pub frame: Frame,
++    pub png: Vec<u8>,
++    pub timings: FrameTimings,
++}
++
++fn encode(job: Job) -> Result<Encoded, ExportError> {
++    let mut timings = FrameTimings::default();
++    let start = Instant::now();
++    let png = (job.encode)(job.width, job.height, &job.rgba)?;
++    timings.png_encoding = start.elapsed();
++    let start = Instant::now();
++    let frame = Frame {
++        index: job.index,
++        step: job.snapshot.completed_steps().to_string(),
++        simulated_seconds: job.snapshot.completed_steps() as f64 * job.dt,
++        file: format!("frame-{:08}.png", job.index),
++        png_sha256: super::hash(&png),
++        rgba_sha256: super::hash(&job.rgba),
++        snapshot_sha256: super::hash(job.snapshot.to_json().map_err(fail)?.as_bytes()),
++    };
++    timings.hashing = start.elapsed();
++    Ok(Encoded {
++        frame,
++        png,
++        timings,
++    })
++}
++
++pub(super) struct Worker {
++    requests: Option<SyncSender<Job>>,
++    results: Receiver<Result<Encoded, ExportError>>,
++    thread: Option<JoinHandle<()>>,
++    pending: bool,
++}
++
++impl Worker {
++    pub fn new() -> Result<Self, ExportError> {
++        let (requests, jobs) = mpsc::sync_channel(1);
++        let (completed, results) = mpsc::sync_channel(1);
++        let thread = thread::Builder::new()
++            .name("frame-encoding".into())
++            .spawn(move || {
++                while let Ok(job) = jobs.recv() {
++                    if completed.send(encode(job)).is_err() {
++                        break;
++                    }
++                }
++            })
++            .map_err(|e| fail(format!("start frame encoder: {e}")))?;
++        Ok(Self {
++            requests: Some(requests),
++            results,
++            thread: Some(thread),
++            pending: false,
++        })
++    }
++
++    pub fn submit(&mut self, job: Job) -> Result<(), ExportError> {
++        if self.pending {
++            return Err(fail("previous frame has not been collected"));
++        }
++        self.requests
++            .as_ref()
++            .ok_or_else(|| fail("frame encoder is closed"))?
++            .send(job)
++            .map_err(|_| fail("frame encoder stopped before accepting a frame"))?;
++        self.pending = true;
++        Ok(())
++    }
++
++    pub fn collect(&mut self) -> Result<Option<Encoded>, ExportError> {
++        if !self.pending {
++            return Ok(None);
++        }
++        self.pending = false;
++        self.results
++            .recv()
++            .map_err(|_| fail("frame encoder stopped before completing a frame"))?
++            .map(Some)
++    }
++}
++
++impl Drop for Worker {
++    fn drop(&mut self) {
++        // There is at most one outstanding result, so the capacity-one result
++        // channel cannot block shutdown, even on cancellation or publication error.
++        self.requests.take();
++        if let Some(thread) = self.thread.take() {
++            let _ = thread.join();
++        }
++    }
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    fn job() -> Job {
++        Job {
++            snapshot: SnapshotRecord::from_json(
++                r#"{"schema_version":1,"completed_steps":"7","particles":[]}"#,
++            )
++            .unwrap(),
++            rgba: vec![16, 24, 32, 255],
++            width: 1,
++            height: 1,
++            index: 2,
++            dt: 0.125,
++            encode: super::super::offscreen::encode,
++        }
++    }
++
++    #[test]
++    fn worker_preserves_bytes_and_hashes_with_one_outstanding_frame() {
++        let request = job();
++        let expected_png = (request.encode)(1, 1, &request.rgba).unwrap();
++        let expected_snapshot_hash =
++            super::super::hash(request.snapshot.to_json().unwrap().as_bytes());
++        let mut worker = Worker::new().unwrap();
++        assert!(worker.collect().unwrap().is_none());
++        worker.submit(request).unwrap();
++        assert!(worker.submit(job()).is_err());
++        let result = worker.collect().unwrap().unwrap();
++        assert_eq!(result.png, expected_png);
++        assert_eq!(result.frame.png_sha256, super::super::hash(&expected_png));
++        assert_eq!(result.frame.snapshot_sha256, expected_snapshot_hash);
++        assert_eq!(result.frame.step, "7");
++        assert_eq!(result.frame.simulated_seconds, 0.875);
++        assert_eq!(result.frame.index, 2);
++        assert_eq!(result.frame.file, "frame-00000002.png");
++        assert!(worker.collect().unwrap().is_none());
++        worker.submit(job()).unwrap();
++        // Cancellation can drop a live job without collecting its result.
++        drop(worker);
++    }
++
++    #[test]
++    fn worker_reports_encoding_failure_and_unexpected_unwind_without_deadlock() {
++        let mut worker = Worker::new().unwrap();
++        let mut invalid = job();
++        invalid.rgba.clear();
++        worker.submit(invalid).unwrap();
++        assert!(worker.collect().is_err());
++        worker.submit(job()).unwrap();
++        assert!(worker.collect().unwrap().is_some());
++        fn unwind(_: u32, _: u32, _: &[u8]) -> Result<Vec<u8>, ExportError> {
++            panic!("injected encoder unwind")
++        }
++        let mut invalid = job();
++        invalid.encode = unwind;
++        worker.submit(invalid).unwrap();
++        assert!(
++            worker
++                .collect()
++                .err()
++                .unwrap()
++                .to_string()
++                .contains("stopped")
++        );
++        assert!(worker.submit(job()).is_err());
++    }
++}
+diff -ruN control/src/export/mod.rs candidate/src/export/mod.rs
+--- control/src/export/mod.rs	2026-10-26 23:07:13.944625854 +0000
++++ candidate/src/export/mod.rs	2026-10-30 08:36:05.871418558 +0000
+@@ -1,6 +1,7 @@
+-//! Offline sequences sample accepted step indices. A synchronous frame boundary
+-//! applies backpressure without giving graphics any control over numerical work.
++//! Offline sequences sample accepted step indices. One CPU frame job overlaps
++//! later simulation and drawing; ordered publication applies bounded backpressure.
+ 
++mod encoding;
+ mod offscreen;
+ mod source;
+ mod timing;
+@@ -254,6 +255,7 @@
+             dt,
+             destination: request.destination,
+             timings: timing::FrameTimings::default(),
++            worker: encoding::Worker::new()?,
+         };
+         let mut diagnostics = Vec::new();
+         let start = Instant::now();
+@@ -312,14 +314,15 @@
+             }
+             timings.comparison += start.elapsed();
+             if schedule.steps.get(next) == Some(&step) {
+-                let frame = writer.write(&snapshot, next)?;
+-                frames.push(frame);
++                queue_frame(
++                    &mut writer,
++                    &snapshot,
++                    next,
++                    &mut frames,
++                    &mut progress,
++                    &mut timings.progress,
++                )?;
+                 next += 1;
+-                let start = Instant::now();
+-                progress["frames"] = serde_json::to_value(&frames).map_err(fail)?;
+-                progress["accepted_steps"] = json!(step.to_string());
+-                write_progress(request.destination, &progress)?;
+-                timings.progress += start.elapsed();
+             }
+         }
+         if mode == "saved" {
+@@ -334,14 +337,22 @@
+                     .snapshots
+                     .get(step)
+                     .ok_or_else(|| fail("missing saved frame"))?;
+-                frames.push(writer.write(snapshot, index)?);
+-                let start = Instant::now();
+-                progress["frames"] = serde_json::to_value(&frames).map_err(fail)?;
+-                progress["accepted_steps"] = json!(step.to_string());
+-                write_progress(request.destination, &progress)?;
+-                timings.progress += start.elapsed();
++                queue_frame(
++                    &mut writer,
++                    snapshot,
++                    index,
++                    &mut frames,
++                    &mut progress,
++                    &mut timings.progress,
++                )?;
+             }
+         }
++        collect_frame(
++            &mut writer,
++            &mut frames,
++            &mut progress,
++            &mut timings.progress,
++        )?;
+         if frames.len() != schedule.steps.len() {
+             return Err(fail("incomplete frame schedule"));
+         }
+@@ -382,6 +393,44 @@
+     result
+ }
+ 
++fn queue_frame(
++    writer: &mut offscreen::FrameWriter<'_>,
++    snapshot: &SnapshotRecord,
++    index: usize,
++    frames: &mut Vec<Frame>,
++    progress: &mut Value,
++    progress_time: &mut std::time::Duration,
++) -> Result<(), ExportError> {
++    // Prepare this image while the preceding one encodes. Collect the preceding
++    // result even if drawing failed, retaining its closed, ordered output prefix.
++    let prepared = writer.prepare(snapshot, index);
++    collect_frame(writer, frames, progress, progress_time)?;
++    writer.submit(prepared?)?;
++    if index == 0 {
++        collect_frame(writer, frames, progress, progress_time)?;
++    }
++    Ok(())
++}
++
++fn collect_frame(
++    writer: &mut offscreen::FrameWriter<'_>,
++    frames: &mut Vec<Frame>,
++    progress: &mut Value,
++    progress_time: &mut std::time::Duration,
++) -> Result<(), ExportError> {
++    if let Some(frame) = writer.collect()? {
++        if progress["source_mode"] == "saved" || progress.get("accepted_steps").is_none() {
++            progress["accepted_steps"] = json!(frame.step);
++        }
++        frames.push(frame);
++        let start = Instant::now();
++        progress["frames"] = serde_json::to_value(&frames).map_err(fail)?;
++        write_progress(writer.destination, progress)?;
++        *progress_time += start.elapsed();
++    }
++    Ok(())
++}
++
+ fn write_progress(directory: &Path, progress: &Value) -> Result<(), ExportError> {
+     // Only our own progress file is replaced. Frame and manifest publication
+     // always uses exclusive staging and hard links, retaining the existing policy.
+diff -ruN control/src/export/offscreen.rs candidate/src/export/offscreen.rs
+--- control/src/export/offscreen.rs	2026-10-26 23:07:14.753066062 +0000
++++ candidate/src/export/offscreen.rs	2026-10-30 08:36:05.875045220 +0000
+@@ -117,7 +117,7 @@
+     Ok(bytes)
+ }
+ 
+-type EncodePng = fn(u32, u32, &[u8]) -> Result<Vec<u8>, ExportError>;
++pub(super) type EncodePng = fn(u32, u32, &[u8]) -> Result<Vec<u8>, ExportError>;
+ 
+ /// The two fallible frame stages are kept separate so sequence recovery can be
+ /// checked with real encoder and device failures before publication.
+@@ -145,13 +145,14 @@
+     pub dt: f64,
+     pub destination: &'a std::path::Path,
+     pub timings: FrameTimings,
++    pub worker: super::encoding::Worker,
+ }
+ impl FrameWriter<'_> {
+-    pub fn write(
++    pub fn prepare(
+         &mut self,
+         snapshot: &SnapshotRecord,
+         index: usize,
+-    ) -> Result<super::Frame, ExportError> {
++    ) -> Result<super::encoding::Job, ExportError> {
+         let start = std::time::Instant::now();
+         let particles: Vec<_> = snapshot.particles().iter().map(|p| p.particle()).collect();
+         self.timings.particle_copy += start.elapsed();
+@@ -171,25 +172,42 @@
+         )?;
+         self.timings.graphics_readback += start.elapsed();
+         let start = std::time::Instant::now();
+-        let bytes = (self.operations.encode_png)(self.settings.width, self.settings.height, &rgba)?;
+-        self.timings.png_encoding += start.elapsed();
+-        let start = std::time::Instant::now();
+-        let file = format!("frame-{index:08}.png");
+-        publish_bytes(&self.destination.join(&file), &bytes)
+-            .map_err(|e| fail(format!("frame {index} publication: {}", e.kind())))?;
+-        self.timings.publication += start.elapsed();
+-        let start = std::time::Instant::now();
+-        let frame = super::Frame {
++        let job = super::encoding::Job {
++            snapshot: snapshot.clone(),
++            rgba,
++            width: self.settings.width,
++            height: self.settings.height,
+             index,
+-            step: snapshot.completed_steps().to_string(),
+-            simulated_seconds: snapshot.completed_steps() as f64 * self.dt,
+-            file,
+-            png_sha256: super::hash(&bytes),
+-            rgba_sha256: super::hash(&rgba),
+-            snapshot_sha256: super::hash(snapshot.to_json().map_err(fail)?.as_bytes()),
++            dt: self.dt,
++            encode: self.operations.encode_png,
++        };
++        self.timings.particle_copy += start.elapsed();
++        Ok(job)
++    }
++
++    pub fn submit(&mut self, job: super::encoding::Job) -> Result<(), ExportError> {
++        self.worker.submit(job)
++    }
++
++    pub fn collect(&mut self) -> Result<Option<super::Frame>, ExportError> {
++        let start = std::time::Instant::now();
++        let encoded = self.worker.collect()?;
++        self.timings.output_wait += start.elapsed();
++        let Some(encoded) = encoded else {
++            return Ok(None);
+         };
+-        self.timings.hashing += start.elapsed();
+-        Ok(frame)
++        self.timings.png_encoding += encoded.timings.png_encoding;
++        self.timings.hashing += encoded.timings.hashing;
++        let start = std::time::Instant::now();
++        publish_bytes(&self.destination.join(&encoded.frame.file), &encoded.png).map_err(|e| {
++            fail(format!(
++                "frame {} publication: {}",
++                encoded.frame.index,
++                e.kind()
++            ))
++        })?;
++        self.timings.publication += start.elapsed();
++        Ok(Some(encoded.frame))
+     }
+ }
+ 
+diff -ruN control/src/export/tests.rs candidate/src/export/tests.rs
+--- control/src/export/tests.rs	2026-10-21 19:12:47.536777496 +0100
++++ candidate/src/export/tests.rs	2026-10-30 08:33:18.085701650 +0000
+@@ -81,3 +81,66 @@
+         fs::remove_dir_all(directory).unwrap();
+     }
+ }
++
++#[test]
++#[ignore = "requires explicitly available software Vulkan"]
++fn cancellation_joins_pending_encoding_without_publishing_it() {
++    static PIXELS: AtomicUsize = AtomicUsize::new(0);
++    static FINISHED: AtomicUsize = AtomicUsize::new(0);
++    fn read(g: &Graphics, scene: &crate::render::DrawScene<'_>) -> Result<Vec<u8>, ExportError> {
++        let pixels = offscreen::pixels(g, scene)?;
++        PIXELS.fetch_add(1, Ordering::SeqCst);
++        Ok(pixels)
++    }
++    fn encode(width: u32, height: u32, pixels: &[u8]) -> Result<Vec<u8>, ExportError> {
++        let png = offscreen::encode(width, height, pixels)?;
++        FINISHED.fetch_add(1, Ordering::SeqCst);
++        Ok(png)
++    }
++    let mut scene =
++        crate::scene::load_resolved_scene(Path::new("reference/small-lattice.toml"), None).unwrap();
++    scene.particles.clear();
++    scene.planes.clear();
++    let directory =
++        std::env::temp_dir().join(format!("maelstrom-pending-cancel-{}", std::process::id()));
++    let error = export_using(
++        ExportRequest {
++            source: Source::Direct {
++                scene: &scene,
++                steps: 3,
++                options: Default::default(),
++            },
++            settings: Settings {
++                width: 17,
++                height: 19,
++                ..Default::default()
++            },
++            graphics: GraphicsSelection {
++                index: 0,
++                software: true,
++            },
++            fit_camera: true,
++            destination: &directory,
++        },
++        || PIXELS.load(Ordering::SeqCst) >= 2,
++        offscreen::FrameOperations {
++            read_pixels: read,
++            encode_png: encode,
++        },
++    )
++    .unwrap_err();
++    assert!(error.to_string().contains("cancelled"));
++    assert_eq!(
++        FINISHED.load(Ordering::SeqCst),
++        2,
++        "pending worker must be joined"
++    );
++    assert!(directory.join("frame-00000000.png").exists());
++    assert!(!directory.join("frame-00000001.png").exists());
++    assert!(!directory.join("manifest.json").exists());
++    let progress: Value =
++        serde_json::from_slice(&fs::read(directory.join("progress.json")).unwrap()).unwrap();
++    assert_eq!(progress["complete"], false);
++    assert_eq!(progress["frames"].as_array().unwrap().len(), 1);
++    fs::remove_dir_all(directory).unwrap();
++}
+diff -ruN control/src/export/timing.rs candidate/src/export/timing.rs
+--- control/src/export/timing.rs	2026-10-26 23:07:13.929372310 +0000
++++ candidate/src/export/timing.rs	2026-10-30 08:28:27.331162156 +0000
+@@ -1,4 +1,4 @@
+-//! Export intervals account for synchronous work before manifest construction.
++//! Export-thread intervals are disjoint; CPU encoder work overlaps those intervals.
+ //! Final manifest publication, caller output and teardown belong to command wall
+ //! time; the manifest cannot contain a measurement of its own completed write.
+ 
+@@ -12,6 +12,7 @@
+     pub graphics_readback: Duration,
+     pub png_encoding: Duration,
+     pub publication: Duration,
++    pub output_wait: Duration,
+     pub hashing: Duration,
+ }
+ 
+@@ -34,9 +35,8 @@
+             ("comparison", self.comparison),
+             ("frame_particle_copy", self.frames.particle_copy),
+             ("graphics_readback", self.frames.graphics_readback),
+-            ("png_encoding", self.frames.png_encoding),
++            ("frame_output_wait", self.frames.output_wait),
+             ("frame_publication", self.frames.publication),
+-            ("frame_hashing", self.frames.hashing),
+             ("progress", self.progress),
+         ];
+         let accounted: Duration = components.iter().map(|(_, time)| *time).sum();
+@@ -49,7 +49,12 @@
+             .collect();
+         seconds.insert("other".into(), json!(other.as_secs_f64()));
+         Ok(json!({
+-            "schema_version": 1,
++            "schema_version": 2,
++            "worker_components_s": {
++                "png_encoding": self.frames.png_encoding.as_secs_f64(),
++                "frame_hashing": self.frames.hashing.as_secs_f64(),
++            },
++            "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+             "boundary": "export_entry_to_before_manifest",
+             "total_s": elapsed.as_secs_f64(),
+             "components_s": seconds,
+@@ -75,13 +80,13 @@
+             ..Default::default()
+         };
+         let profile = timings.profile(Duration::from_secs(31)).unwrap();
+-        assert_eq!(profile["schema_version"], 1);
++        assert_eq!(profile["schema_version"], 2);
+         assert_eq!(profile["boundary"], "export_entry_to_before_manifest");
+         assert_eq!(profile["total_s"], 31.0);
+         assert_eq!(profile["components_s"]["frame_publication"], 5.0);
+-        assert_eq!(profile["components_s"]["frame_hashing"], 7.0);
++        assert_eq!(profile["worker_components_s"]["frame_hashing"], 7.0);
+         assert_eq!(profile["components_s"]["progress"], 11.0);
+-        assert_eq!(profile["components_s"]["other"], 3.0);
+-        assert!(timings.profile(Duration::from_secs(27)).is_err());
++        assert_eq!(profile["components_s"]["other"], 10.0);
++        assert!(timings.profile(Duration::from_secs(20)).is_err());
+     }
+ }
+diff -ruN control/tests/export_device.rs candidate/tests/export_device.rs
+--- control/tests/export_device.rs	2026-10-26 23:09:37.202957868 +0000
++++ candidate/tests/export_device.rs	2026-10-30 08:33:18.254368310 +0000
+@@ -117,10 +117,10 @@
+     eprintln!("export graphics: {}", direct["graphics"]);
+     for manifest in [&direct, &saved, &rerun] {
+         let profile = &manifest["timing_profile"];
+-        assert_eq!(profile["schema_version"], 1);
++        assert_eq!(profile["schema_version"], 2);
+         assert_eq!(profile["boundary"], "export_entry_to_before_manifest");
+         let components = profile["components_s"].as_object().unwrap();
+-        assert_eq!(components.len(), 11);
++        assert_eq!(components.len(), 10);
+         let seconds: Vec<_> = components.values().map(|v| v.as_f64().unwrap()).collect();
+         assert!(seconds.iter().all(|v| v.is_finite() && *v >= 0.0));
+         let total = profile["total_s"].as_f64().unwrap();
+@@ -129,10 +129,20 @@
+         for (legacy, component) in [
+             ("solver_steps", "solver_steps"),
+             ("graphics_readback", "graphics_readback"),
+-            ("encoding", "png_encoding"),
+         ] {
+             assert_eq!(manifest["timing_seconds"][legacy], components[component]);
+         }
++        assert_eq!(
++            manifest["timing_seconds"]["encoding"],
++            profile["worker_components_s"]["png_encoding"]
++        );
++        assert!(
++            profile["worker_components_s"]
++                .as_object()
++                .unwrap()
++                .values()
++                .all(|v| v.as_f64().is_some_and(|s| s.is_finite() && s >= 0.0))
++        );
+         assert_eq!(manifest["frame_count"], schedule.steps.len());
+         assert_eq!(
+             manifest["input"]["comparison_key"],

@@ -1,0 +1,787 @@
+{
+  "timestep": [
+    {
+      "scene": "resolved",
+      "coarse": "dt-0.008333333333333333",
+      "fine": "anchor",
+      "centroid_y_relative_change": 0.029153865205147796,
+      "occupied_volume_relative_change": 0.028767466429282282,
+      "height_relative_change": 0.09419392261940751,
+      "kinetic_energy_relative_change": 2.4262498977325273,
+      "shear_projection_change_over_initial_mode": null,
+      "note": "Bulk lengths/volume use the finer value; shear uses initial unit amplitude. Near-zero kinetic-energy denominators require inspecting absolute raw energies."
+    },
+    {
+      "scene": "resolved",
+      "coarse": "anchor",
+      "fine": "dt-0.0020833333333333333",
+      "centroid_y_relative_change": 0.05270692793779505,
+      "occupied_volume_relative_change": 0.029691350660594782,
+      "height_relative_change": 0.09910494560224335,
+      "kinetic_energy_relative_change": 0.3396309418035659,
+      "shear_projection_change_over_initial_mode": null,
+      "note": "Bulk lengths/volume use the finer value; shear uses initial unit amplitude. Near-zero kinetic-energy denominators require inspecting absolute raw energies."
+    },
+    {
+      "scene": "resolved",
+      "coarse": "dt-0.0020833333333333333",
+      "fine": "dt-0.0010416666666666667",
+      "centroid_y_relative_change": 0.31705740957207124,
+      "occupied_volume_relative_change": 0.06256220216313549,
+      "height_relative_change": 0.3209638313671543,
+      "kinetic_energy_relative_change": 0.6968689560198381,
+      "shear_projection_change_over_initial_mode": null,
+      "note": "Bulk lengths/volume use the finer value; shear uses initial unit amplitude. Near-zero kinetic-energy denominators require inspecting absolute raw energies."
+    },
+    {
+      "scene": "hydro",
+      "coarse": "dt-0.008333333333333333",
+      "fine": "anchor",
+      "centroid_y_relative_change": 0.08483745280390594,
+      "occupied_volume_relative_change": 0.04316497585030368,
+      "height_relative_change": 0.17575340357613298,
+      "kinetic_energy_relative_change": 0.33323514881896205,
+      "shear_projection_change_over_initial_mode": null,
+      "note": "Bulk lengths/volume use the finer value; shear uses initial unit amplitude. Near-zero kinetic-energy denominators require inspecting absolute raw energies."
+    },
+    {
+      "scene": "hydro",
+      "coarse": "anchor",
+      "fine": "dt-0.0020833333333333333",
+      "centroid_y_relative_change": 0.12666939775705757,
+      "occupied_volume_relative_change": 0.04168302145490826,
+      "height_relative_change": 0.11276640985525582,
+      "kinetic_energy_relative_change": 0.40638704063877984,
+      "shear_projection_change_over_initial_mode": null,
+      "note": "Bulk lengths/volume use the finer value; shear uses initial unit amplitude. Near-zero kinetic-energy denominators require inspecting absolute raw energies."
+    },
+    {
+      "scene": "hydro",
+      "coarse": "dt-0.0020833333333333333",
+      "fine": "dt-0.0010416666666666667",
+      "centroid_y_relative_change": 0.06973573920945908,
+      "occupied_volume_relative_change": 0.023462188314100723,
+      "height_relative_change": 0.038656532022982824,
+      "kinetic_energy_relative_change": 0.5355085686284038,
+      "shear_projection_change_over_initial_mode": null,
+      "note": "Bulk lengths/volume use the finer value; shear uses initial unit amplitude. Near-zero kinetic-energy denominators require inspecting absolute raw energies."
+    },
+    {
+      "scene": "collision",
+      "coarse": "dt-0.008333333333333333",
+      "fine": "anchor",
+      "centroid_y_relative_change": 0.171248422065795,
+      "occupied_volume_relative_change": 0.08445251580240201,
+      "height_relative_change": 0.17818103538644622,
+      "kinetic_energy_relative_change": 0.2066403483294302,
+      "shear_projection_change_over_initial_mode": null,
+      "note": "Bulk lengths/volume use the finer value; shear uses initial unit amplitude. Near-zero kinetic-energy denominators require inspecting absolute raw energies."
+    },
+    {
+      "scene": "collision",
+      "coarse": "anchor",
+      "fine": "dt-0.0020833333333333333",
+      "centroid_y_relative_change": 0.42160453448232027,
+      "occupied_volume_relative_change": 0.07546406288852489,
+      "height_relative_change": 0.4056814030608601,
+      "kinetic_energy_relative_change": 0.9861210378414681,
+      "shear_projection_change_over_initial_mode": null,
+      "note": "Bulk lengths/volume use the finer value; shear uses initial unit amplitude. Near-zero kinetic-energy denominators require inspecting absolute raw energies."
+    },
+    {
+      "scene": "collision",
+      "coarse": "dt-0.0020833333333333333",
+      "fine": "dt-0.0010416666666666667",
+      "centroid_y_relative_change": 0.11089709846472456,
+      "occupied_volume_relative_change": 0.024799234641583883,
+      "height_relative_change": 0.044155650369564675,
+      "kinetic_energy_relative_change": 0.26004811459633703,
+      "shear_projection_change_over_initial_mode": null,
+      "note": "Bulk lengths/volume use the finer value; shear uses initial unit amplitude. Near-zero kinetic-energy denominators require inspecting absolute raw energies."
+    },
+    {
+      "scene": "surface",
+      "coarse": "dt-0.008333333333333333",
+      "fine": "anchor",
+      "centroid_y_relative_change": 0.7455913077618052,
+      "occupied_volume_relative_change": 0.209671230757181,
+      "height_relative_change": 0.5047967513134591,
+      "kinetic_energy_relative_change": 2.6309142146691396,
+      "shear_projection_change_over_initial_mode": null,
+      "note": "Bulk lengths/volume use the finer value; shear uses initial unit amplitude. Near-zero kinetic-energy denominators require inspecting absolute raw energies."
+    },
+    {
+      "scene": "surface",
+      "coarse": "anchor",
+      "fine": "dt-0.0020833333333333333",
+      "centroid_y_relative_change": 0.32563686395324454,
+      "occupied_volume_relative_change": 0.05168804908400957,
+      "height_relative_change": 0.28462283840292224,
+      "kinetic_energy_relative_change": 0.5729821951708708,
+      "shear_projection_change_over_initial_mode": null,
+      "note": "Bulk lengths/volume use the finer value; shear uses initial unit amplitude. Near-zero kinetic-energy denominators require inspecting absolute raw energies."
+    },
+    {
+      "scene": "surface",
+      "coarse": "dt-0.0020833333333333333",
+      "fine": "dt-0.0010416666666666667",
+      "centroid_y_relative_change": 0.09217099520798071,
+      "occupied_volume_relative_change": 0.015461248890336055,
+      "height_relative_change": 0.05655387570306709,
+      "kinetic_energy_relative_change": 0.3947467656311382,
+      "shear_projection_change_over_initial_mode": null,
+      "note": "Bulk lengths/volume use the finer value; shear uses initial unit amplitude. Near-zero kinetic-energy denominators require inspecting absolute raw energies."
+    },
+    {
+      "scene": "shear",
+      "coarse": "dt-0.008333333333333333",
+      "fine": "anchor",
+      "centroid_y_relative_change": 1.1902440278558569e-07,
+      "occupied_volume_relative_change": 0.015944794587513998,
+      "height_relative_change": 0.025216378626132248,
+      "kinetic_energy_relative_change": 0.12405682650538791,
+      "shear_projection_change_over_initial_mode": 0.14443869766698192,
+      "note": "Bulk lengths/volume use the finer value; shear uses initial unit amplitude. Near-zero kinetic-energy denominators require inspecting absolute raw energies."
+    },
+    {
+      "scene": "shear",
+      "coarse": "anchor",
+      "fine": "dt-0.0020833333333333333",
+      "centroid_y_relative_change": 1.0665782763341482e-07,
+      "occupied_volume_relative_change": 0.006696193946402257,
+      "height_relative_change": 0.019023700842617765,
+      "kinetic_energy_relative_change": 0.03987655362527586,
+      "shear_projection_change_over_initial_mode": 0.24809562948291197,
+      "note": "Bulk lengths/volume use the finer value; shear uses initial unit amplitude. Near-zero kinetic-energy denominators require inspecting absolute raw energies."
+    },
+    {
+      "scene": "shear",
+      "coarse": "dt-0.0020833333333333333",
+      "fine": "dt-0.0010416666666666667",
+      "centroid_y_relative_change": 3.8051621615095213e-07,
+      "occupied_volume_relative_change": 0.006967074509772187,
+      "height_relative_change": 0.003227043029956987,
+      "kinetic_energy_relative_change": 0.0818388959610397,
+      "shear_projection_change_over_initial_mode": 0.3242973500149784,
+      "note": "Bulk lengths/volume use the finer value; shear uses initial unit amplitude. Near-zero kinetic-energy denominators require inspecting absolute raw energies."
+    }
+  ],
+  "iteration_controls": [
+    {
+      "scene": "resolved",
+      "policy": {
+        "id": "iterations-2",
+        "dt": 0.004166666666666667,
+        "iterations": 2,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.24004040229676782,
+      "p95_compression_peak": 0.09960571987510036,
+      "energy_excess_peak": 0.029152819255081057,
+      "final": {
+        "particles": 8000,
+        "p95_compression": 0.033637588145427166,
+        "max_compression": 0.09637594899654034,
+        "mean_density_ratio": 1.0039353117603698,
+        "under_density_fraction": 0.001,
+        "min_separation": 0.031763289123773575,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0.8517926327040811,
+        "com": [
+          0.6894630953998583,
+          0.19021724910824475,
+          0.6916625958574945
+        ],
+        "mean_velocity": [
+          0.01593270606020634,
+          -0.008491053571547473,
+          0.01963729936971404
+        ],
+        "kinetic_J_kg": 0.022764562882908696,
+        "potential_J_kg": 1.8660312137518904,
+        "mechanical_excess_relative": -0.7799568093157904,
+        "shear_projection": 0,
+        "velocity_error_relative": 213375551002961.44,
+        "occupied_support_volume": 0.7063827772801738,
+        "physical_volume": 0.990319728,
+        "height_max": 0.5135906279087067,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0.038891014950624525,
+        "bulk_p95": 0.022902199580248972,
+        "top_exposed_density_p05": 0.9602596551357326,
+        "step": 480,
+        "time_s": 2.00000016
+      }
+    },
+    {
+      "scene": "resolved",
+      "policy": {
+        "id": "iterations-4",
+        "dt": 0.004166666666666667,
+        "iterations": 4,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.30601497351880214,
+      "p95_compression_peak": 0.0703153872875324,
+      "energy_excess_peak": 0.04508815861120486,
+      "final": {
+        "particles": 8000,
+        "p95_compression": 0.021619882910165478,
+        "max_compression": 0.06944335492849718,
+        "mean_density_ratio": 0.9978951251670873,
+        "under_density_fraction": 0.001625,
+        "min_separation": 0.03468350664015166,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0.6042819619178772,
+        "com": [
+          0.6931241616196713,
+          0.19357169516252273,
+          0.6934570216895409
+        ],
+        "mean_velocity": [
+          0.028220766679233733,
+          -0.0011207562941466394,
+          0.02715004460821111
+        ],
+        "kinetic_J_kg": 0.011158382028634043,
+        "potential_J_kg": 1.898938329544349,
+        "mechanical_excess_relative": -0.7774752675068047,
+        "shear_projection": 0,
+        "velocity_error_relative": 149387964901019,
+        "occupied_support_volume": 0.7244124922696511,
+        "physical_volume": 0.990319728,
+        "height_max": 0.4626044869422913,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0.024991085161614857,
+        "bulk_p95": 0.01458835229226052,
+        "top_exposed_density_p05": 0.9674308055901856,
+        "step": 480,
+        "time_s": 2.00000016
+      }
+    },
+    {
+      "scene": "resolved",
+      "policy": {
+        "id": "anchor",
+        "dt": 0.004166666666666667,
+        "iterations": 8,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.4417879081569674,
+      "p95_compression_peak": 0.052732118560251395,
+      "energy_excess_peak": 0.05851148168710759,
+      "final": {
+        "particles": 8000,
+        "p95_compression": 0.012950424529327265,
+        "max_compression": 0.040918179251156594,
+        "mean_density_ratio": 0.9951405054433559,
+        "under_density_fraction": 0.000125,
+        "min_separation": 0.03609266938168065,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0.4075840444704067,
+        "com": [
+          0.6997488839082656,
+          0.19586046909283275,
+          0.7007166379169492
+        ],
+        "mean_velocity": [
+          0.0032888495171584987,
+          -0.00014647613889955143,
+          0.0031823633125312775
+        ],
+        "kinetic_J_kg": 0.003981437521796029,
+        "potential_J_kg": 1.921391201800694,
+        "mechanical_excess_relative": -0.7756956341953348,
+        "shear_projection": 0,
+        "velocity_error_relative": 89234942951693.86,
+        "occupied_support_volume": 0.7318697894031473,
+        "physical_volume": 0.990319728,
+        "height_max": 0.4499273538589478,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0.015399514677831405,
+        "bulk_p95": 0.009699723958211282,
+        "top_exposed_density_p05": 0.9671579903784575,
+        "step": 480,
+        "time_s": 2.00000016
+      }
+    },
+    {
+      "scene": "resolved",
+      "policy": {
+        "id": "iterations-16",
+        "dt": 0.004166666666666667,
+        "iterations": 16,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.7189411809847056,
+      "p95_compression_peak": 0.047780893554646875,
+      "energy_excess_peak": 0.07192032619884871,
+      "final": {
+        "particles": 8000,
+        "p95_compression": 0.009973641437501124,
+        "max_compression": 0.03488713448756808,
+        "mean_density_ratio": 0.993425750040428,
+        "under_density_fraction": 0,
+        "min_separation": 0.038154842269072675,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0.4402631974143087,
+        "com": [
+          0.7042206863196743,
+          0.19814534039986526,
+          0.7070383271754446
+        ],
+        "mean_velocity": [
+          -0.00813369621327752,
+          0.00022257018927576035,
+          -0.004240971837784926
+        ],
+        "kinetic_J_kg": 0.002700878268977234,
+        "potential_J_kg": 1.9438057893226786,
+        "mechanical_excess_relative": -0.7732335368792115,
+        "shear_projection": 0,
+        "velocity_error_relative": 73496643038675.36,
+        "occupied_support_volume": 0.7389127880419873,
+        "physical_volume": 0.990319728,
+        "height_max": 0.4561844110488892,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0.011380584570166441,
+        "bulk_p95": 0.008457976029098813,
+        "top_exposed_density_p05": 0.9697236432765888,
+        "step": 480,
+        "time_s": 2.00000016
+      }
+    },
+    {
+      "scene": "hydro",
+      "policy": {
+        "id": "iterations-2",
+        "dt": 0.004166666666666667,
+        "iterations": 2,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.20652414697806826,
+      "p95_compression_peak": 0.058649417705603835,
+      "energy_excess_peak": 0.20613275619855773,
+      "final": {
+        "particles": 3200,
+        "p95_compression": 0.032110498711858115,
+        "max_compression": 0.07405417826153804,
+        "mean_density_ratio": 0.9982962345437033,
+        "under_density_fraction": 0.0015625,
+        "min_separation": 0.034330220753900915,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0.17653894516836893,
+        "com": [
+          0.5003943178149345,
+          0.13615217513171965,
+          0.49950258741140174
+        ],
+        "mean_velocity": [
+          0.0003966834164697252,
+          -5.899923573877976e-05,
+          0.0002618083848295975
+        ],
+        "kinetic_J_kg": 0.0010619887680176853,
+        "potential_J_kg": 1.3356528380421688,
+        "mechanical_excess_relative": -0.31869786612549705,
+        "shear_projection": 0,
+        "velocity_error_relative": 46086630773309.63,
+        "occupied_support_volume": 0.2732155945203263,
+        "physical_volume": 0.3961278912,
+        "height_max": 0.3239367246627808,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0.03346686463634252,
+        "bulk_p95": 0.020866877090243596,
+        "top_exposed_density_p05": 0.9638185206319472,
+        "step": 480,
+        "time_s": 2.00000016
+      }
+    },
+    {
+      "scene": "hydro",
+      "policy": {
+        "id": "iterations-4",
+        "dt": 0.004166666666666667,
+        "iterations": 4,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.2668354911531607,
+      "p95_compression_peak": 0.061627237221133946,
+      "energy_excess_peak": 0.31836877064458413,
+      "final": {
+        "particles": 3200,
+        "p95_compression": 0.020153343061410922,
+        "max_compression": 0.04478118819600296,
+        "mean_density_ratio": 0.9938587114169586,
+        "under_density_fraction": 0.0003125,
+        "min_separation": 0.03588159521928843,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0.24806313189982201,
+        "com": [
+          0.5007904565786473,
+          0.1424141999566202,
+          0.4980417212523306
+        ],
+        "mean_velocity": [
+          -0.0002359910152293309,
+          0.0008964473077691102,
+          0.0006920956561206933
+        ],
+        "kinetic_J_kg": 0.0010783093850691334,
+        "potential_J_kg": 1.3970833015744477,
+        "mechanical_excess_relative": -0.2873794245843311,
+        "shear_projection": 0,
+        "velocity_error_relative": 46439409666125.89,
+        "occupied_support_volume": 0.27908138519195774,
+        "physical_volume": 0.3961278912,
+        "height_max": 0.35426544547080996,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0.022193141406358752,
+        "bulk_p95": 0.016514052628674003,
+        "top_exposed_density_p05": 0.9658611651101398,
+        "step": 480,
+        "time_s": 2.00000016
+      }
+    },
+    {
+      "scene": "hydro",
+      "policy": {
+        "id": "anchor",
+        "dt": 0.004166666666666667,
+        "iterations": 8,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.3980962281523017,
+      "p95_compression_peak": 0.0618478460400258,
+      "energy_excess_peak": 0.4248000854362507,
+      "final": {
+        "particles": 3200,
+        "p95_compression": 0.01720642447547238,
+        "max_compression": 0.049220936518956204,
+        "mean_density_ratio": 0.9914253420133092,
+        "under_density_fraction": 0,
+        "min_separation": 0.0390442173537853,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0.25120005267179435,
+        "com": [
+          0.49871577312074994,
+          0.14921861010806223,
+          0.5003985163546113
+        ],
+        "mean_velocity": [
+          -0.004031766113470377,
+          -0.001341810877310077,
+          0.0007393349198936545
+        ],
+        "kinetic_J_kg": 0.0010181938774567459,
+        "potential_J_kg": 1.4638345651600893,
+        "mechanical_excess_relative": -0.25338801476019673,
+        "shear_projection": 0,
+        "velocity_error_relative": 45126353219748.34,
+        "occupied_support_volume": 0.28531440466079283,
+        "physical_volume": 0.3961278912,
+        "height_max": 0.39552011489868166,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0.019261840059291657,
+        "bulk_p95": 0.014823629791753667,
+        "top_exposed_density_p05": 0.9652741873492182,
+        "step": 480,
+        "time_s": 2.00000016
+      }
+    },
+    {
+      "scene": "hydro",
+      "policy": {
+        "id": "iterations-16",
+        "dt": 0.004166666666666667,
+        "iterations": 16,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.6372356605211472,
+      "p95_compression_peak": 0.05415724801574573,
+      "energy_excess_peak": 0.5244166683531871,
+      "final": {
+        "particles": 3200,
+        "p95_compression": 0.01588213925706361,
+        "max_compression": 0.03688143967716395,
+        "mean_density_ratio": 0.9907050017651591,
+        "under_density_fraction": 0,
+        "min_separation": 0.03974207687756054,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 0.29067276896422056,
+        "com": [
+          0.5008787996921749,
+          0.15598492048001628,
+          0.500992992794763
+        ],
+        "mean_velocity": [
+          -0.0023974425826710816,
+          -0.002704026133316264,
+          -0.0015350975913152288
+        ],
+        "kinetic_J_kg": 0.0010967972243222182,
+        "potential_J_kg": 1.5302120699089568,
+        "mechanical_excess_relative": -0.2195164010498426,
+        "shear_projection": 0,
+        "velocity_error_relative": 46835824415125.19,
+        "occupied_support_volume": 0.29114214763925045,
+        "physical_volume": 0.3961278912,
+        "height_max": 0.4175643265247345,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0.017207207755838505,
+        "bulk_p95": 0.013860572988797726,
+        "top_exposed_density_p05": 0.9663539914367022,
+        "step": 480,
+        "time_s": 2.00000016
+      }
+    },
+    {
+      "scene": "shear",
+      "policy": {
+        "id": "iterations-2",
+        "dt": 0.004166666666666667,
+        "iterations": 2,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.24352226551821876,
+      "p95_compression_peak": 0.04285988565981369,
+      "energy_excess_peak": 4.017524263904709,
+      "final": {
+        "particles": 8000,
+        "p95_compression": 0.017142846759009123,
+        "max_compression": 0.04979927511021187,
+        "mean_density_ratio": 0.9910968840687326,
+        "under_density_fraction": 0,
+        "min_separation": 0.036719910854083895,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 1.347737835842682,
+        "com": [
+          0.6749999834774076,
+          0.6749998730588709,
+          0.6749997440725574
+        ],
+        "mean_velocity": [
+          1.6736504906855634e-07,
+          -1.0053608193635516e-06,
+          -1.383498158737724e-06
+        ],
+        "kinetic_J_kg": 0.11081478733131797,
+        "potential_J_kg": 0,
+        "mechanical_excess_relative": 0.773036559214274,
+        "shear_projection": 0.920818456057181,
+        "velocity_error_relative": 0.9650904864829571,
+        "occupied_support_volume": 0.8270674575250585,
+        "physical_volume": 0.990319728,
+        "height_max": 1.2199259042739867,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0,
+        "bulk_p95": 0.017205700952149128,
+        "top_exposed_density_p05": 0.9545800231102054,
+        "step": 48,
+        "time_s": 0.200000016
+      }
+    },
+    {
+      "scene": "shear",
+      "policy": {
+        "id": "iterations-4",
+        "dt": 0.004166666666666667,
+        "iterations": 4,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.307380650409548,
+      "p95_compression_peak": 0.05352542222342471,
+      "energy_excess_peak": 6.208889931031861,
+      "final": {
+        "particles": 8000,
+        "p95_compression": 0.014463568483583655,
+        "max_compression": 0.036071736770208584,
+        "mean_density_ratio": 0.9916466775603753,
+        "under_density_fraction": 0,
+        "min_separation": 0.03873124018721172,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 1.2490240880994476,
+        "com": [
+          0.6749998780018647,
+          0.6750000418163845,
+          0.6749997938554753
+        ],
+        "mean_velocity": [
+          -8.302532460275459e-07,
+          5.593064583991975e-07,
+          -5.454172483406985e-07
+        ],
+        "kinetic_J_kg": 0.11358434515383013,
+        "potential_J_kg": 0,
+        "mechanical_excess_relative": 0.8173494834225774,
+        "shear_projection": 0.857779914565334,
+        "velocity_error_relative": 1.0496616856358574,
+        "occupied_support_volume": 0.8199762800838813,
+        "physical_volume": 0.990319728,
+        "height_max": 1.2368586301803588,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0,
+        "bulk_p95": 0.01449429177476369,
+        "top_exposed_density_p05": 0.958336725472866,
+        "step": 48,
+        "time_s": 0.200000016
+      }
+    },
+    {
+      "scene": "shear",
+      "policy": {
+        "id": "anchor",
+        "dt": 0.004166666666666667,
+        "iterations": 8,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.4443997694480184,
+      "p95_compression_peak": 0.05275471562897627,
+      "energy_excess_peak": 8.057645979286235,
+      "final": {
+        "particles": 8000,
+        "p95_compression": 0.011447210850188405,
+        "max_compression": 0.03225036820511429,
+        "mean_density_ratio": 0.9922869700207124,
+        "under_density_fraction": 0,
+        "min_separation": 0.03950484505116854,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 1.1618504307638107,
+        "com": [
+          0.6749999415124746,
+          0.6750000040624289,
+          0.6749997011087832
+        ],
+        "mean_velocity": [
+          2.017808916290496e-07,
+          -3.1293316891889357e-07,
+          -9.901530586658552e-07
+        ],
+        "kinetic_J_kg": 0.10614971796131856,
+        "potential_J_kg": 0,
+        "mechanical_excess_relative": 0.6983954508976582,
+        "shear_projection": 0.7676954319950439,
+        "velocity_error_relative": 1.078426903831498,
+        "occupied_support_volume": 0.8217704259939479,
+        "physical_volume": 0.990319728,
+        "height_max": 1.2495182991027831,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0,
+        "bulk_p95": 0.01144805411532368,
+        "top_exposed_density_p05": 0.9638776474687152,
+        "step": 48,
+        "time_s": 0.200000016
+      }
+    },
+    {
+      "scene": "shear",
+      "policy": {
+        "id": "iterations-16",
+        "dt": 0.004166666666666667,
+        "iterations": 16,
+        "scale": 0.5,
+        "epsilon": 2.0
+      },
+      "cost_s_per_sim_s": 0.7638327288933816,
+      "p95_compression_peak": 0.04789700191282553,
+      "energy_excess_peak": 9.907259470900902,
+      "final": {
+        "particles": 8000,
+        "p95_compression": 0.009584396277327656,
+        "max_compression": 0.03338284206099451,
+        "mean_density_ratio": 0.992641543133434,
+        "under_density_fraction": 0,
+        "min_separation": 0.04018976143773039,
+        "coincidences": 0,
+        "boundary_violation": 0,
+        "max_speed": 1.2198208196188354,
+        "com": [
+          0.6749999427269234,
+          0.6750003514420279,
+          0.6749995637163496
+        ],
+        "mean_velocity": [
+          -1.0675636676838666e-07,
+          1.902547074342665e-06,
+          -2.6996112487654e-06
+        ],
+        "kinetic_J_kg": 0.08659934741473309,
+        "potential_J_kg": 0,
+        "mechanical_excess_relative": 0.38558952887171266,
+        "shear_projection": 0.6472727133044144,
+        "velocity_error_relative": 1.0445305654996053,
+        "occupied_support_volume": 0.8260801525842414,
+        "physical_volume": 0.990319728,
+        "height_max": 1.2623794317245483,
+        "volume_pitch": 0.025,
+        "near_wall_p95": 0,
+        "bulk_p95": 0.00959581969994927,
+        "top_exposed_density_p05": 0.9669421779712523,
+        "step": 48,
+        "time_s": 0.200000016
+      }
+    }
+  ],
+  "sampled_cost_density_nondominated": {
+    "resolved": [
+      "resolved--dt-0.008333333333333333",
+      "resolved--epsilon-0.02",
+      "resolved--iterations-16",
+      "resolved--iterations-4"
+    ],
+    "hydro": [
+      "hydro--dt-0.008333333333333333",
+      "hydro--epsilon-0.02",
+      "hydro--epsilon-0.2",
+      "hydro--iterations-16",
+      "hydro--iterations-2",
+      "hydro--production-eps2"
+    ],
+    "collision": [
+      "collision--dt-0.008333333333333333",
+      "collision--epsilon-20.0",
+      "collision--production-eps2",
+      "collision--production-scale.5"
+    ],
+    "surface": [
+      "surface--dt-0.008333333333333333",
+      "surface--iterations-2",
+      "surface--production-eps2"
+    ],
+    "shear": [
+      "shear--dt-0.008333333333333333",
+      "shear--production-dt120",
+      "shear--production-eps2",
+      "shear--scale-0.0625"
+    ],
+    "large": [
+      "large--anchor",
+      "large--dt-0.0020833333333333333",
+      "large--dt-0.008333333333333333",
+      "large--iterations-4"
+    ]
+  },
+  "warning": "No cost/density Pareto point is thereby physically qualified."
+}

@@ -1,0 +1,76 @@
+{
+  "observations": 121,
+  "final": {
+    "step": 2880,
+    "time_s": 6.0,
+    "count": 1920,
+    "dx": 0.024999999999999998,
+    "h": 0.049999999999999996,
+    "mass_kg": 29.01794542130892,
+    "expected_depth_m": 0.030227026480530123,
+    "nominal_layers": 1.2090810592212051,
+    "centre": [
+      0.5999708391530694,
+      0.014299371906125796,
+      0.3999844560687403
+    ],
+    "centroid_relative_error": -0.05386843688800628,
+    "height_p95_plus_half_dx_m": 0.045104530564479946,
+    "height_relative_error": 0.4921921146803091,
+    "p95_compression": 0.00013232969802356997,
+    "max_compression": 0.00016664735176297185,
+    "minimum_separation_fraction_dx": 0.5099999999999959,
+    "boundary_violation_m": 0.0,
+    "kinetic_J_kg": 9.70797928974939e-05,
+    "mechanical_J_kg": 0.14037391819199158,
+    "interparticle_slab_density_p95_absolute_error": 0.19861459439984627,
+    "interparticle_slab_density_mean_signed_error": 0.13628559327023973,
+    "geometric_columns": {
+      "1": {
+        "volume_m3": 0.026046973795280995,
+        "wet_fraction": 0.9954427083333334
+      },
+      "2": {
+        "volume_m3": 0.029228215293377824,
+        "wet_fraction": 1.0
+      }
+    },
+    "field_volume": {
+      "grid_factor": 0.5,
+      "probes": 93600,
+      "physical_reference_m3": 0.029017945421308918,
+      "0.45": {
+        "observed_reconstruction_m3": 0.029031866971330964,
+        "analytic_slab_reconstruction_m3": 0.030569559739176525,
+        "equivalent_volume_m3": 0.02748025265346336,
+        "relative_volume_error": -0.052991097251026555,
+        "equivalent_mean_height_m": 0.028625263180691002,
+        "occupied_column_fraction": 1.0
+      },
+      "0.5": {
+        "observed_reconstruction_m3": 0.0277340414352356,
+        "analytic_slab_reconstruction_m3": 0.0288675044329922,
+        "equivalent_volume_m3": 0.02788448242355232,
+        "relative_volume_error": -0.03906075986083628,
+        "equivalent_mean_height_m": 0.029046335857866992,
+        "occupied_column_fraction": 1.0
+      },
+      "0.55": {
+        "observed_reconstruction_m3": 0.026443500970506385,
+        "analytic_slab_reconstruction_m3": 0.02716911866972638,
+        "equivalent_volume_m3": 0.02829232772208892,
+        "relative_volume_error": -0.02500582617703694,
+        "equivalent_mean_height_m": 0.029471174710509303,
+        "occupied_column_fraction": 1.0
+      }
+    }
+  },
+  "max_p95_compression": 0.00339950668321376,
+  "max_positive_density_error": 0.0033995066832168686,
+  "minimum_separation_fraction_dx": 0.5099962386931959,
+  "max_energy_gain_J_kg": 0.054491652996162265,
+  "settled_mean_centroid_m": 0.014301562317572479,
+  "settled_max_kinetic_J_kg": 0.00011467288426262237,
+  "settled_max_centroid_error": 0.05387301516802502,
+  "settled_max_interparticle_error": 0.1998485771355333
+}

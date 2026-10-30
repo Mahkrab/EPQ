@@ -45,6 +45,51 @@ retains accepted vectors and static planes across timesteps. It preserves curren
 all cancellation polls, with exact results and modest matched PC gains. This is a residency foundation,
 not completion of device-owned execution or the real-time target.
 
+The separately requested [architectural and numerical-policy investigation](/docs/project/development/milestones/05/performance-architecture.md)
+compares isolated ownership, synchronisation, precision and layout variants with an independent
+CUDA PBF path. It preserves all ten retained optimisations, rejects production adoption of the
+prototypes, and identifies independent density qualification as a prerequisite to changing solver work.
+Its measurements do not authorise another local kernel optimisation.
+
+The separately requested [pressure replacement feasibility study](/docs/project/development/milestones/05/pressure-feasibility.md)
+admits a compatible staggered finite-volume pressure operator for further isolated physical-model
+qualification. Its flat-domain direct solve has a measured RTX 4070 pressure budget; general moving
+surfaces, material transport and viscous coupling remain unqualified. Production adoption and
+further performance optimisation remain blocked on those physical gates. This does not revise
+the earlier PBF failures or retain a replacement in production.
+
+The subsequent [coupled-fluid qualification](/docs/project/development/milestones/05/coupled-fluid-qualification.md)
+preserves those pressure-only results but rejects the tested geometric-VOF/averaged-staggered-mass
+coupling. Conservation and surface timing pass while wave velocity/energy and collision gates fail.
+No coupled CUDA benchmark was admitted. Further work requires coherent interface geometry,
+staggered material transport and pressure/gravity work; production adoption remains blocked.
+
+The requested [fast-mode application integration](/docs/project/development/milestones/05/performance-fast-mode.md)
+retains explicit fast/reference selectors after full regression and fresh matched physical,
+headless and rendered comparisons. The earlier 5% compression target is not an application gate.
+Fast improves headless throughput and bulk compression/separation, but energy/shear regressions and
+the lack of a large-scene compilation gain do not justify making it the universal default.
+The existing default selection remains unchanged; no further formulation work was initiated.
+
+The subsequent [complete compilation assessment](/docs/project/development/milestones/05/performance-render-pipeline.md)
+retains a bounded CPU encoding/hash worker after matched complete-command comparisons at both
+particle counts and in both modes. Saved-state probes separate trajectory costs from the observed
+graphics/clocking interaction. This application change preserves the numerical policies and all
+ten CUDA optimisations; it does not revise the earlier mode assessment or default recommendation.
+
+The [snapshot provenance follow-up](/docs/project/development/milestones/05/performance-snapshot-provenance.md)
+retains fixed-schema buffered hashing after byte-exact saved-state checks and complete compilation
+comparisons. It removes the large fast-mode output wait while preserving canonical JSON, hashes,
+the parallel pipeline and all numerical policies. Its timings remain separate from the pipeline campaign.
+
+By subsequent explicit user instruction, fast is now the application default. Reference remains
+available through `--numerical-mode reference` or the `numerical_mode` application preference.
+This changes the default selection, not either preset; historical assessments above retain their original decisions.
+
+The [built-in scene overhaul](/docs/project/development/milestones/05/builtin-scenes.md)
+packages varied examples with energy colouring and fitted cameras. Its retained full-compilation
+checks establish catalogue behaviour and output equivalence, without adding a physical-quality claim.
+
 ## What the external targets actually mean
 
 The original PBF paper reports Armadillo Splash at 128k particles, two steps per 16 ms frame,

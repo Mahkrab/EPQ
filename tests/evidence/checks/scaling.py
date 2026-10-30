@@ -96,7 +96,10 @@ def audit(directory):
         assert digest(ROOT / "Maelstrom/reference/manifest.json") == dataset["manifest_sha256"]
         manifest = dataset["manifest"]
         for case in manifest["cases"]:
-            assert digest(ROOT / "Maelstrom" / case["scene"]) == case["sha256"]
+            scene_path = ROOT / "Maelstrom" / case["scene"]
+            if case["scene"].startswith("scenes/") and not scene_path.exists():
+                scene_path = ROOT / "Maelstrom/reference" / case["scene"]
+            assert digest(scene_path) == case["sha256"]
             if case["golden"]:
                 assert digest(ROOT / "Maelstrom" / case["golden"]) == case["golden_sha256"]
         assert digest(ROOT / "Maelstrom" / manifest["configuration"]) == manifest["configuration_sha256"]

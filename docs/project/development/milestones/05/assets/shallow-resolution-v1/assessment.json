@@ -1,0 +1,883 @@
+{
+  "cases": {
+    "ceil-L1.25": {
+      "checks": {
+        "centroid": false,
+        "height": false,
+        "reconstructed_volume": true,
+        "interparticle_density": false,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": false
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 1.2090810592212051,
+      "final_centroid_error": -0.05310121078990924,
+      "max_settled_kinetic": 0.0002044803722331498,
+      "initial_p95_compression": 0.009072416011711049,
+      "mean_centroid_m": 0.014314974041015397,
+      "mean_height_m": 0.04502288747660595
+    },
+    "ceil-L1.5": {
+      "checks": {
+        "centroid": true,
+        "height": false,
+        "reconstructed_volume": true,
+        "interparticle_density": false,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": false
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 1.4508972710654462,
+      "final_centroid_error": 0.045973569531743586,
+      "max_settled_kinetic": 0.0002019336448405547,
+      "initial_p95_compression": 0.010876207952199568,
+      "mean_centroid_m": 0.018975050970372866,
+      "mean_height_m": 0.046724386261374276
+    },
+    "ceil-L2.5": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": false
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 2.4181621184424102,
+      "final_centroid_error": 0.021993425002991944,
+      "max_settled_kinetic": 0.00025410818832848216,
+      "initial_p95_compression": 0.013848087291904232,
+      "mean_centroid_m": 0.030897470669998126,
+      "mean_height_m": 0.06429693215202845
+    },
+    "ceil-L3.75": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": false
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 3.6272431776636154,
+      "final_centroid_error": 0.030681351717748998,
+      "max_settled_kinetic": 0.00014899535128036536,
+      "initial_p95_compression": 0.0015282926705488808,
+      "mean_centroid_m": 0.046734039094777254,
+      "mean_height_m": 0.0915802602967653
+    },
+    "depth-L1": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": false,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 0.9672648473769639,
+      "final_centroid_error": 0.03384300867728065,
+      "max_settled_kinetic": 0.0,
+      "initial_p95_compression": 0.0,
+      "mean_centroid_m": 0.012499999999999638,
+      "mean_height_m": 0.024999999999999998
+    },
+    "depth-L1.25": {
+      "checks": {
+        "centroid": false,
+        "height": false,
+        "reconstructed_volume": true,
+        "interparticle_density": false,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": false
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 1.2090810592212051,
+      "final_centroid_error": -0.05386843688800628,
+      "max_settled_kinetic": 0.00011467288426262237,
+      "initial_p95_compression": 0.00339950668321376,
+      "mean_centroid_m": 0.014301562317572479,
+      "mean_height_m": 0.045205739756327974
+    },
+    "depth-L1.5": {
+      "checks": {
+        "centroid": true,
+        "height": false,
+        "reconstructed_volume": true,
+        "interparticle_density": false,
+        "transient_density": false,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": false
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 1.4508972710654462,
+      "final_centroid_error": 0.047288633333317724,
+      "max_settled_kinetic": 0.0004120334365908362,
+      "initial_p95_compression": 0.14854062272063762,
+      "mean_centroid_m": 0.019003297864670143,
+      "mean_height_m": 0.04771813333167871
+    },
+    "depth-L2": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": true
+      },
+      "all_declared_pass": true,
+      "macroscopic_pass": true,
+      "nominal_layers": 1.9345296947539279,
+      "final_centroid_error": 0.03219954821614881,
+      "max_settled_kinetic": 7.508853891970484e-06,
+      "initial_p95_compression": 1.7763568394002505e-15,
+      "mean_centroid_m": 0.024960329254688482,
+      "mean_height_m": 0.05008402723212347
+    },
+    "depth-L2.5": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": false,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": false
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 2.4181621184424102,
+      "final_centroid_error": 0.021899902284640404,
+      "max_settled_kinetic": 0.0002795988200669905,
+      "initial_p95_compression": 0.051868398946637306,
+      "mean_centroid_m": 0.03089573080840671,
+      "mean_height_m": 0.06418715345804722
+    },
+    "depth-L3": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": true
+      },
+      "all_declared_pass": true,
+      "macroscopic_pass": true,
+      "nominal_layers": 2.9017945421308924,
+      "final_centroid_error": 0.0231086151507793,
+      "max_settled_kinetic": 0.0001279253683197207,
+      "initial_p95_compression": 2.4424906541753444e-15,
+      "mean_centroid_m": 0.037112618686201755,
+      "mean_height_m": 0.07247664001622413
+    },
+    "depth-L3.75": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": false,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": false
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 3.6272431776636154,
+      "final_centroid_error": 0.028439327048952186,
+      "max_settled_kinetic": 0.00027744443695590696,
+      "initial_p95_compression": 0.051868398946636196,
+      "mean_centroid_m": 0.046635714396722726,
+      "mean_height_m": 0.09213159993372654
+    },
+    "depth-L4": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": true
+      },
+      "all_declared_pass": true,
+      "macroscopic_pass": true,
+      "nominal_layers": 3.8690593895078558,
+      "final_centroid_error": 0.02730646179206618,
+      "max_settled_kinetic": 0.00010334781562728381,
+      "initial_p95_compression": 2.6645352591003757e-15,
+      "mean_centroid_m": 0.0496855586220886,
+      "mean_height_m": 0.09722252918468795
+    },
+    "flat-n12": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": false
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 2.176345906598169,
+      "final_centroid_error": 0.005931753086970181,
+      "max_settled_kinetic": 0.0002479057903188068,
+      "initial_p95_compression": 0.020474751690676474,
+      "mean_centroid_m": 0.02736927534238419,
+      "mean_height_m": 0.05398778535613936
+    },
+    "flat-n18": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": false
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 3.264518859897253,
+      "final_centroid_error": 0.022164397665303478,
+      "max_settled_kinetic": 0.0001105771857674166,
+      "initial_p95_compression": 0.020401319710991572,
+      "mean_centroid_m": 0.027809380856912983,
+      "mean_height_m": 0.05441129853925224
+    },
+    "flat-n6": {
+      "checks": {
+        "centroid": false,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": false,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": false
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 1.0881729532990845,
+      "final_centroid_error": -0.08102843673127218,
+      "max_settled_kinetic": 1.419707285591034e-05,
+      "initial_p95_compression": 0.0,
+      "mean_centroid_m": 0.0250000000000002,
+      "mean_height_m": 0.049999999999999996
+    },
+    "halfdt-n12": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": false,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": true,
+      "nominal_layers": 2.176345906598169,
+      "final_centroid_error": 0.010442272011410094,
+      "max_settled_kinetic": 0.002497998059885458,
+      "initial_p95_compression": 3.1086244689504383e-15,
+      "mean_centroid_m": 0.02751084399635722,
+      "mean_height_m": 0.054286770257098674
+    },
+    "halfdt-n18": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": false,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": true,
+      "nominal_layers": 3.264518859897253,
+      "final_centroid_error": 0.027811142296833753,
+      "max_settled_kinetic": 0.0034488601954313232,
+      "initial_p95_compression": 3.1086244689504383e-15,
+      "mean_centroid_m": 0.028003148654702135,
+      "mean_height_m": 0.056234240843011346
+    },
+    "halfdt-n6": {
+      "checks": {
+        "centroid": false,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": false,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 1.0881729532990845,
+      "final_centroid_error": -0.08102829996970279,
+      "max_settled_kinetic": 0.0011719066174272442,
+      "initial_p95_compression": 1.7763568394002505e-15,
+      "mean_centroid_m": 0.025000010620895827,
+      "mean_height_m": 0.049999999999999996
+    },
+    "inset0-n12": {
+      "checks": {
+        "centroid": false,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": false,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 2.176345906598169,
+      "final_centroid_error": -0.06074273358955031,
+      "max_settled_kinetic": 0.002280056627678152,
+      "initial_p95_compression": 3.1086244689504383e-15,
+      "mean_centroid_m": 0.025599036394913108,
+      "mean_height_m": 0.056093642815892374
+    },
+    "inset0-n6": {
+      "checks": {
+        "centroid": false,
+        "height": false,
+        "reconstructed_volume": false,
+        "interparticle_density": false,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": false,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 1.0881729532990845,
+      "final_centroid_error": -0.25646539576704,
+      "max_settled_kinetic": 0.0023783786244190998,
+      "initial_p95_compression": 1.7763568394002505e-15,
+      "mean_centroid_m": 0.02027569172297781,
+      "mean_height_m": 0.0768176353666081
+    },
+    "inset0.25-n12": {
+      "checks": {
+        "centroid": false,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": false,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 2.176345906598169,
+      "final_centroid_error": -0.05903420300200029,
+      "max_settled_kinetic": 0.001304783440195915,
+      "initial_p95_compression": 3.1086244689504383e-15,
+      "mean_centroid_m": 0.02562571502335317,
+      "mean_height_m": 0.05586758626501996
+    },
+    "inset0.25-n6": {
+      "checks": {
+        "centroid": false,
+        "height": false,
+        "reconstructed_volume": false,
+        "interparticle_density": false,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 1.0881729532990845,
+      "final_centroid_error": -0.2500585379189234,
+      "max_settled_kinetic": 0.0010590132868520438,
+      "initial_p95_compression": 1.7763568394002505e-15,
+      "mean_centroid_m": 0.020429631876731497,
+      "mean_height_m": 0.08234648059062781
+    },
+    "iter16-n12": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": false,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": true,
+      "nominal_layers": 2.176345906598169,
+      "final_centroid_error": 0.0103647675427303,
+      "max_settled_kinetic": 0.0015560196454083217,
+      "initial_p95_compression": 3.1086244689504383e-15,
+      "mean_centroid_m": 0.027501359042169337,
+      "mean_height_m": 0.053764379603376856
+    },
+    "ladder-n12": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": false,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": true,
+      "nominal_layers": 2.176345906598169,
+      "final_centroid_error": 0.009952735076613931,
+      "max_settled_kinetic": 0.0016604713284011346,
+      "initial_p95_compression": 3.1086244689504383e-15,
+      "mean_centroid_m": 0.027488485459017123,
+      "mean_height_m": 0.05374480804891791
+    },
+    "ladder-n18": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": false,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": true,
+      "nominal_layers": 3.264518859897253,
+      "final_centroid_error": 0.02602442553260179,
+      "max_settled_kinetic": 0.0032338948125261186,
+      "initial_p95_compression": 3.1086244689504383e-15,
+      "mean_centroid_m": 0.027951419781026894,
+      "mean_height_m": 0.05584320475731733
+    },
+    "ladder-n24": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": false,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": true,
+      "nominal_layers": 4.352691813196338,
+      "final_centroid_error": 0.033116314765489055,
+      "max_settled_kinetic": 0.0033874019453146087,
+      "initial_p95_compression": 4.218847493575595e-15,
+      "mean_centroid_m": 0.028148210267623448,
+      "mean_height_m": 0.05679855922834459
+    },
+    "ladder-n6": {
+      "checks": {
+        "centroid": false,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": false,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": false,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 1.0881729532990845,
+      "final_centroid_error": -0.081028064943239,
+      "max_settled_kinetic": 0.0023882021486743375,
+      "initial_p95_compression": 1.7763568394002505e-15,
+      "mean_centroid_m": 0.02500003807434102,
+      "mean_height_m": 0.049999999999999996
+    },
+    "no-wall-n12": {
+      "checks": {
+        "centroid": false,
+        "height": false,
+        "reconstructed_volume": false,
+        "interparticle_density": false,
+        "transient_density": true,
+        "separation": false,
+        "containment": true,
+        "quietness": false,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 2.176345906598169,
+      "final_centroid_error": 0.1892228041177426,
+      "max_settled_kinetic": 0.0014086761739849655,
+      "initial_p95_compression": 3.1086244689504383e-15,
+      "mean_centroid_m": 0.03236680009904754,
+      "mean_height_m": 0.1127823275595466
+    },
+    "no-wall-n6": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": false,
+        "interparticle_density": false,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": false,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 1.0881729532990845,
+      "final_centroid_error": -0.010084899377884912,
+      "max_settled_kinetic": 0.0018712447911603024,
+      "initial_p95_compression": 1.7763568394002505e-15,
+      "mean_centroid_m": 0.026935319944028355,
+      "mean_height_m": 0.049999999999999996
+    },
+    "reuse-equivalence-n12": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": false,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": true,
+      "nominal_layers": 2.176345906598169,
+      "final_centroid_error": 0.009952735076613931,
+      "max_settled_kinetic": 0.0016604713284011346,
+      "initial_p95_compression": 3.1086244689504383e-15,
+      "mean_centroid_m": 0.027488485459017123,
+      "mean_height_m": 0.05374480804891791
+    },
+    "reuse-equivalence-n6": {
+      "checks": {
+        "centroid": false,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": false,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": false,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 1.0881729532990845,
+      "final_centroid_error": -0.081028064943239,
+      "max_settled_kinetic": 0.0023882021486743375,
+      "initial_p95_compression": 1.7763568394002505e-15,
+      "mean_centroid_m": 0.02500003807434102,
+      "mean_height_m": 0.049999999999999996
+    },
+    "valid-ceil-L2.5": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": false,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": true,
+      "nominal_layers": 2.4181621184424102,
+      "final_centroid_error": 0.02225051904001759,
+      "max_settled_kinetic": 0.00030671039557222024,
+      "initial_p95_compression": 0.11182058689630114,
+      "mean_centroid_m": 0.03090671617152002,
+      "mean_height_m": 0.06446795173600901
+    },
+    "valid-ceil-L3.75": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": true
+      },
+      "all_declared_pass": true,
+      "macroscopic_pass": true,
+      "nominal_layers": 3.6272431776636154,
+      "final_centroid_error": 0.02986715356769072,
+      "max_settled_kinetic": 0.0001625916191412976,
+      "initial_p95_compression": 0.02336296473241961,
+      "mean_centroid_m": 0.046697921933228734,
+      "mean_height_m": 0.09153017737166898
+    },
+    "valid-depth-L1.25": {
+      "checks": {
+        "centroid": false,
+        "height": false,
+        "reconstructed_volume": true,
+        "interparticle_density": false,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 1.2090810592212051,
+      "final_centroid_error": -0.05296764083669014,
+      "max_settled_kinetic": 0.00011238387073796685,
+      "initial_p95_compression": 0.009109199778572385,
+      "mean_centroid_m": 0.014314333581513102,
+      "mean_height_m": 0.044656698262740144
+    },
+    "valid-depth-L1.5": {
+      "checks": {
+        "centroid": true,
+        "height": false,
+        "reconstructed_volume": true,
+        "interparticle_density": false,
+        "transient_density": false,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 1.4508972710654462,
+      "final_centroid_error": 0.04790623482877037,
+      "max_settled_kinetic": 0.0005162818712203345,
+      "initial_p95_compression": 0.160295574793615,
+      "mean_centroid_m": 0.019015446536563146,
+      "mean_height_m": 0.047824730672405204
+    },
+    "valid-depth-L2.5": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": false,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": true,
+      "nominal_layers": 2.4181621184424102,
+      "final_centroid_error": 0.02182475524623704,
+      "max_settled_kinetic": 0.0002160245067321108,
+      "initial_p95_compression": 0.05789015187263513,
+      "mean_centroid_m": 0.030891507518180556,
+      "mean_height_m": 0.06414770810864284
+    },
+    "valid-depth-L3.75": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": false,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": true,
+      "nominal_layers": 3.6272431776636154,
+      "final_centroid_error": 0.028679850110902478,
+      "max_settled_kinetic": 0.000248196310977671,
+      "initial_p95_compression": 0.057870975487303467,
+      "mean_centroid_m": 0.04664602559851379,
+      "mean_height_m": 0.0917752984614028
+    },
+    "valid-flat-n12": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": true
+      },
+      "all_declared_pass": true,
+      "macroscopic_pass": true,
+      "nominal_layers": 2.176345906598169,
+      "final_centroid_error": 0.010920595156612773,
+      "max_settled_kinetic": 7.302331695327903e-05,
+      "initial_p95_compression": 0.023624465890133672,
+      "mean_centroid_m": 0.027502343842878318,
+      "mean_height_m": 0.05341915903637375
+    },
+    "valid-flat-n18": {
+      "checks": {
+        "centroid": true,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": true,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": true
+      },
+      "all_declared_pass": true,
+      "macroscopic_pass": true,
+      "nominal_layers": 3.264518859897253,
+      "final_centroid_error": 0.02124212620677139,
+      "max_settled_kinetic": 9.878174500804664e-05,
+      "initial_p95_compression": 0.022516522201993405,
+      "mean_centroid_m": 0.027784189511518207,
+      "mean_height_m": 0.05410298474798575
+    },
+    "valid-flat-n6": {
+      "checks": {
+        "centroid": false,
+        "height": true,
+        "reconstructed_volume": true,
+        "interparticle_density": false,
+        "transient_density": true,
+        "separation": true,
+        "containment": true,
+        "quietness": true,
+        "initial_geometry": true
+      },
+      "all_declared_pass": false,
+      "macroscopic_pass": false,
+      "nominal_layers": 1.0881729532990845,
+      "final_centroid_error": -0.08102843673127218,
+      "max_settled_kinetic": 0.0,
+      "initial_p95_compression": 0.0,
+      "mean_centroid_m": 0.0250000000000002,
+      "mean_height_m": 0.049999999999999996
+    }
+  },
+  "spatial_changes": {
+    "mean_centroid_m": {
+      "values": [
+        0.02500003807434102,
+        0.027488485459017123,
+        0.027951419781026894,
+        0.028148210267623448
+      ],
+      "successive_changes_m": [
+        0.0024884473846761013,
+        0.0004629343220097712,
+        0.0001967904865965535
+      ],
+      "changes_decrease": true,
+      "finest_pair_budget_m": 0.0013602161916238557,
+      "finest_change_within_budget": true
+    },
+    "mean_height_m": {
+      "values": [
+        0.049999999999999996,
+        0.05374480804891791,
+        0.05584320475731733,
+        0.05679855922834459
+      ],
+      "successive_changes_m": [
+        0.0037448080489179136,
+        0.002098396708399418,
+        0.0009553544710272643
+      ],
+      "changes_decrease": true,
+      "finest_pair_budget_m": 0.005440864766495423,
+      "finest_change_within_budget": true
+    }
+  },
+  "smallest_collision_macroscopic_layers": 2.176345906598169,
+  "collision_all_declared_pass": false,
+  "nominal_lattice_bias": 0.033843008677310715,
+  "production_admitted": false,
+  "conclusion": "Spatial refinement removes the coarse centroid/field failure within the declared macroscopic budgets, but the fixed-ratio bias and quietness failure prevent a general fully qualified policy."
+}

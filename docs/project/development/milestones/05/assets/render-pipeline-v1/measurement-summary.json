@@ -1,0 +1,302 @@
+[
+  {
+    "scene": "resolved",
+    "mode": "reference",
+    "control_s": [
+      12.935809756003437,
+      13.078682056991966,
+      13.275132756010862
+    ],
+    "candidate_s": [
+      7.528263514992432,
+      7.385620921006193,
+      7.383099161990685
+    ],
+    "paired_speedups": [
+      1.718299277149631,
+      1.7708304009746234,
+      1.7980434049095886
+    ],
+    "control_median_s": 13.078682056991966,
+    "control_stages_median_s": {
+      "components_s": {
+        "comparison": 8.0477e-05,
+        "frame_hashing": 1.492914535,
+        "frame_particle_copy": 0.002513474,
+        "frame_publication": 0.587019915,
+        "graphics_readback": 1.252155105,
+        "other": 0.093449897,
+        "png_encoding": 2.214171342,
+        "progress": 0.604820054,
+        "setup": 0.529451256,
+        "snapshot_capture": 0.017205922,
+        "solver_steps": 6.104419976
+      }
+    },
+    "control_cpu_core_equivalents": [
+      0.8210881421683439,
+      0.8235993468654911,
+      0.8233997505637493
+    ],
+    "control_gpu_util_mean_percent": [
+      32.11290322580645,
+      32.38095238095238,
+      33.609375
+    ],
+    "candidate_median_s": 7.385620921006193,
+    "candidate_stages_median_s": {
+      "components_s": {
+        "comparison": 8.1306e-05,
+        "frame_output_wait": 0.022420383,
+        "frame_particle_copy": 0.005115686,
+        "frame_publication": 0.575014186,
+        "graphics_readback": 0.873279577,
+        "other": 0.007236339,
+        "progress": 0.559796079,
+        "setup": 0.539188461,
+        "snapshot_capture": 0.01756837,
+        "solver_steps": 4.624134871
+      },
+      "worker_components_s": {
+        "frame_hashing": 1.115970923,
+        "png_encoding": 2.239285778
+      }
+    },
+    "candidate_cpu_core_equivalents": [
+      1.1820910602129664,
+      1.1837104955027888,
+      1.1827896129252902
+    ],
+    "candidate_gpu_util_mean_percent": [
+      38.888888888888886,
+      39.72222222222222,
+      38.30555555555556
+    ],
+    "speedup": 1.7708304009746234
+  },
+  {
+    "scene": "resolved",
+    "mode": "fast",
+    "control_s": [
+      9.40565938600048,
+      9.247044674004428,
+      9.253367458994035
+    ],
+    "candidate_s": [
+      5.131501672993181,
+      5.204736437997781,
+      5.201306050992571
+    ],
+    "paired_speedups": [
+      1.8329253277850344,
+      1.7766595454277585,
+      1.779046910194451
+    ],
+    "control_median_s": 9.253367458994035,
+    "control_stages_median_s": {
+      "components_s": {
+        "comparison": 4.2464e-05,
+        "frame_hashing": 1.4691147820000001,
+        "frame_particle_copy": 0.002547477,
+        "frame_publication": 0.612664574,
+        "graphics_readback": 1.100117148,
+        "other": 0.092504767,
+        "png_encoding": 2.090343279,
+        "progress": 0.567167362,
+        "setup": 0.52978571,
+        "snapshot_capture": 0.008915951,
+        "solver_steps": 2.664180698
+      }
+    },
+    "control_cpu_core_equivalents": [
+      0.7807712036574935,
+      0.7755327515785043,
+      0.7810151311969704
+    ],
+    "control_gpu_util_mean_percent": [
+      20.533333333333335,
+      20.333333333333332,
+      20.466666666666665
+    ],
+    "candidate_median_s": 5.201306050992571,
+    "candidate_stages_median_s": {
+      "components_s": {
+        "comparison": 4.0617e-05,
+        "frame_output_wait": 0.030678586,
+        "frame_particle_copy": 0.005046563,
+        "frame_publication": 0.572803564,
+        "graphics_readback": 0.884129754,
+        "other": 0.006417951,
+        "progress": 0.557969295,
+        "setup": 0.524207455,
+        "snapshot_capture": 0.008832886,
+        "solver_steps": 2.425922418
+      },
+      "worker_components_s": {
+        "frame_hashing": 1.111723455,
+        "png_encoding": 2.06990638
+      }
+    },
+    "candidate_cpu_core_equivalents": [
+      1.2497616504252715,
+      1.2347966273720363,
+      1.2369195230825276
+    ],
+    "candidate_gpu_util_mean_percent": [
+      32.56,
+      32.4,
+      33.48
+    ],
+    "speedup": 1.779046910194451
+  },
+  {
+    "scene": "large",
+    "mode": "reference",
+    "control_s": [
+      46.23162675999629,
+      46.03637346900359,
+      46.177347489996464
+    ],
+    "candidate_s": [
+      26.087779645007686,
+      26.132668372010812,
+      26.22470078599872
+    ],
+    "paired_speedups": [
+      1.7721564421770732,
+      1.761640748417046,
+      1.7608341031921475
+    ],
+    "control_median_s": 46.177347489996464,
+    "control_stages_median_s": {
+      "components_s": {
+        "comparison": 0.000117509,
+        "frame_hashing": 17.843560033,
+        "frame_particle_copy": 0.046343881,
+        "frame_publication": 0.726209514,
+        "graphics_readback": 2.983615613,
+        "other": 0.003496685,
+        "png_encoding": 2.636891561,
+        "progress": 0.72109921,
+        "setup": 0.624856506,
+        "snapshot_capture": 0.264754601,
+        "solver_steps": 19.413271003
+      }
+    },
+    "control_cpu_core_equivalents": [
+      0.8964336300590806,
+      0.8959600396797448,
+      0.8966014128240941
+    ],
+    "control_gpu_util_mean_percent": [
+      38.472972972972975,
+      38.98642533936651,
+      38.81447963800905
+    ],
+    "candidate_median_s": 26.132668372010812,
+    "candidate_stages_median_s": {
+      "components_s": {
+        "comparison": 8.459e-05,
+        "frame_output_wait": 0.637645845,
+        "frame_particle_copy": 0.090973757,
+        "frame_publication": 0.754035527,
+        "graphics_readback": 2.897038893,
+        "other": 0.009120934,
+        "progress": 0.569115477,
+        "setup": 0.625224717,
+        "snapshot_capture": 0.305024838,
+        "solver_steps": 19.492501451
+      },
+      "worker_components_s": {
+        "frame_hashing": 18.209429485,
+        "png_encoding": 2.6488830869999997
+      }
+    },
+    "candidate_cpu_core_equivalents": [
+      1.5937598203362835,
+      1.5961502823291838,
+      1.5913675942598828
+    ],
+    "candidate_gpu_util_mean_percent": [
+      68.48412698412699,
+      68.5079365079365,
+      68.5
+    ],
+    "speedup": 1.7670352997497318
+  },
+  {
+    "scene": "large",
+    "mode": "fast",
+    "control_s": [
+      44.74806491700292,
+      50.215813452989096,
+      47.864948656002525
+    ],
+    "candidate_s": [
+      23.579736721003428,
+      23.57061820999661,
+      25.42251451998891
+    ],
+    "paired_speedups": [
+      1.897733865584004,
+      2.1304410858299807,
+      1.882777906110265
+    ],
+    "control_median_s": 47.864948656002525,
+    "control_stages_median_s": {
+      "components_s": {
+        "comparison": 6.9383e-05,
+        "frame_hashing": 17.956095751,
+        "frame_particle_copy": 0.093741802,
+        "frame_publication": 0.755387714,
+        "graphics_readback": 6.54032312,
+        "other": 0.002918979,
+        "png_encoding": 2.536109674,
+        "progress": 0.72769297,
+        "setup": 0.645158271,
+        "snapshot_capture": 0.136587105,
+        "solver_steps": 16.874334105
+      }
+    },
+    "control_cpu_core_equivalents": [
+      0.8304765148823111,
+      0.8271785946251045,
+      0.8095113457338036
+    ],
+    "control_gpu_util_mean_percent": [
+      39.345794392523366,
+      43.510373443983404,
+      41.4
+    ],
+    "candidate_median_s": 23.579736721003428,
+    "candidate_stages_median_s": {
+      "components_s": {
+        "comparison": 8.2572e-05,
+        "frame_output_wait": 8.738559402,
+        "frame_particle_copy": 0.093452762,
+        "frame_publication": 0.86629859,
+        "graphics_readback": 2.905585898,
+        "other": 0.008122535,
+        "progress": 0.618631721,
+        "setup": 0.641450704,
+        "snapshot_capture": 0.179963771,
+        "solver_steps": 8.811420723
+      },
+      "worker_components_s": {
+        "frame_hashing": 18.129552439,
+        "png_encoding": 2.534910817
+      }
+    },
+    "candidate_cpu_core_equivalents": [
+      1.3193345781630144,
+      1.3138962552482185,
+      1.2264087793316205
+    ],
+    "candidate_gpu_util_mean_percent": [
+      37.203539823008846,
+      37.008849557522126,
+      34.49180327868852
+    ],
+    "speedup": 2.029918706147693
+  }
+]

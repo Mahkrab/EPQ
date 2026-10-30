@@ -1,0 +1,8 @@
+{
+  "created_utc": "2026-10-29T07:22:07.727293+00:00",
+  "observation": "Nodal weak strain passes resolved smooth modes but has a non-rigid alternating-velocity null mode under no-slip. Preserve its failure.",
+  "change": "Reconstruct velocity gradient at each neighbour edge: G_edge=Gavg+(dv-Gavg*r) outer r/r^2. Integrate symmetric-strain energy with per-owner positive normalised C2 quadrature weights, sum to1. Form full adjoint including both nodal gradients and ghost transforms. No free damping coefficient; energy and affine strain exactly retain physical mu.",
+  "criteria": "Original5% modal/traction budgets unchanged. Require positive dissipation of non-rigid checkerboard modes, rigid translation/rotation zero for unconstrained fluid, symmetry/PSD and independent finite-difference energy-gradient checks.",
+  "extensions": "Repeat horizontal mode at L=.6m to match preceding39%/20% benchmark and separate horizontal wavelength resolution from layer count. Fixed-geometry vertical refinements and mirror BC comparisons unchanged.",
+  "scope": "Isolated operator only until all relevant checks pass; no PBF runs yet."
+}

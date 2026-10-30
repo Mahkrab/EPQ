@@ -1,0 +1,32 @@
+[
+  {
+    "case": "zero-count",
+    "exit_code": 1,
+    "expected_error": "bounded particles",
+    "passed": true
+  },
+  {
+    "case": "wrong-support",
+    "exit_code": 1,
+    "expected_error": "0.1 m support",
+    "passed": true
+  },
+  {
+    "case": "nan-position",
+    "exit_code": 1,
+    "expected_error": "nonfinite input",
+    "passed": true
+  },
+  {
+    "case": "truncated",
+    "exit_code": 1,
+    "expected_error": "byte count differs",
+    "passed": true
+  },
+  {
+    "case": "nan-dt",
+    "exit_code": 1,
+    "expected_error": "invalid numerical policy",
+    "passed": true
+  }
+]

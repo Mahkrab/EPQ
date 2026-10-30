@@ -1,0 +1,7 @@
+{
+  "created_utc": "2026-10-29T18:42:08.247547+00:00",
+  "reason": "The reserved Wendland/support3 control diverges with the author-reference fixed Jacobi weight0.5. First-step kinetic-energy blowup agrees CPU/GPU. One numerical linear-solver repair is allowed; no new pressure formulation.",
+  "change": "Wendland/support3,120Hz,density0.1%,divergence0.1%,Jacobi weight0.1; warmstart factors remain0.5. Independently patch only the two reference Jacobi updates to verify.",
+  "bound_revision": "Original six screen policies plus exactly one repaired policy. If successful, at most one required timestep refinement control; no further parameter/kernel search.",
+  "physical_acceptance": "All original practical thresholds remain unchanged. Cap100/100 iterations; report caps, all traversal counts and cost."
+}

@@ -1,0 +1,251 @@
+{
+  "derivation": "C_affine(gamma)=C0+.5*b*gamma^2+O(gamma^4). Pressure potential density P*C therefore adds artificial shear modulus G=P*b. Its long-wave constant-P acceleration is ax=(P/rho)*b*d2S/dy2. b is independently computed from the C2 Hessian, never fitted to sinusoidal force or coupled data.",
+  "coefficients": [
+    {
+      "support": 2,
+      "dimensionless_shear_curvature": 0.037743801533193205,
+      "finite_difference_curvature": 0.037743690839420196,
+      "G_at_mean_hydrostatic_Pa": 9.256667326015634,
+      "samples": [
+        {
+          "shear": -0.1,
+          "C_minus_rest": 0.0001831719387477282
+        },
+        {
+          "shear": -0.01,
+          "C_minus_rest": 1.8866351871871245e-06
+        },
+        {
+          "shear": -0.001,
+          "C_minus_rest": 1.8871845419710098e-08
+        },
+        {
+          "shear": 0.0,
+          "C_minus_rest": 0.0
+        },
+        {
+          "shear": 0.001,
+          "C_minus_rest": 1.8871845419710098e-08
+        },
+        {
+          "shear": 0.01,
+          "C_minus_rest": 1.88663518696508e-06
+        },
+        {
+          "shear": 0.1,
+          "C_minus_rest": 0.0001831719387477282
+        }
+      ]
+    },
+    {
+      "support": 3,
+      "dimensionless_shear_curvature": -0.008357857937390491,
+      "finite_difference_curvature": -0.00835766300610885,
+      "G_at_mean_hydrostatic_Pa": -2.049764659145018,
+      "samples": [
+        {
+          "shear": -0.1,
+          "C_minus_rest": -3.3528457482390195e-05
+        },
+        {
+          "shear": -0.01,
+          "C_minus_rest": -4.1693224250849426e-07
+        },
+        {
+          "shear": -0.001,
+          "C_minus_rest": -4.178831503054425e-09
+        },
+        {
+          "shear": 0.0,
+          "C_minus_rest": 0.0
+        },
+        {
+          "shear": 0.001,
+          "C_minus_rest": -4.178831503054425e-09
+        },
+        {
+          "shear": 0.01,
+          "C_minus_rest": -4.1693224228644965e-07
+        },
+        {
+          "shear": 0.1,
+          "C_minus_rest": -3.3528457482390195e-05
+        }
+      ]
+    },
+    {
+      "support": 4,
+      "dimensionless_shear_curvature": 0.0021765874727609448,
+      "finite_difference_curvature": 0.0021765242941285123,
+      "G_at_mean_hydrostatic_Pa": 0.5338080776946217,
+      "samples": [
+        {
+          "shear": -0.1,
+          "C_minus_rest": 7.905251255602153e-06
+        },
+        {
+          "shear": -0.01,
+          "C_minus_rest": 1.0851238285702891e-07
+        },
+        {
+          "shear": -0.001,
+          "C_minus_rest": 1.0882621470642562e-09
+        },
+        {
+          "shear": 0.0,
+          "C_minus_rest": 0.0
+        },
+        {
+          "shear": 0.001,
+          "C_minus_rest": 1.0882621470642562e-09
+        },
+        {
+          "shear": 0.01,
+          "C_minus_rest": 1.085123826349843e-07
+        },
+        {
+          "shear": 0.1,
+          "C_minus_rest": 7.905251255602153e-06
+        }
+      ]
+    },
+    {
+      "support": 6,
+      "dimensionless_shear_curvature": -0.0008997502327392287,
+      "finite_difference_curvature": -0.0008997014244727097,
+      "G_at_mean_hydrostatic_Pa": -0.22066374457929583,
+      "samples": [
+        {
+          "shear": -0.1,
+          "C_minus_rest": -2.5420862210800976e-06
+        },
+        {
+          "shear": -0.01,
+          "C_minus_rest": -4.474645853846937e-08
+        },
+        {
+          "shear": -0.001,
+          "C_minus_rest": -4.4985082325865733e-10
+        },
+        {
+          "shear": 0.0,
+          "C_minus_rest": 0.0
+        },
+        {
+          "shear": 0.001,
+          "C_minus_rest": -4.498506012140524e-10
+        },
+        {
+          "shear": 0.01,
+          "C_minus_rest": -4.474645853846937e-08
+        },
+        {
+          "shear": 0.1,
+          "C_minus_rest": -2.5420862210800976e-06
+        }
+      ]
+    },
+    {
+      "support": 8,
+      "dimensionless_shear_curvature": -1.583813401826774e-05,
+      "finite_difference_curvature": -1.5848655721129035e-05,
+      "G_at_mean_hydrostatic_Pa": -0.003884302367980163,
+      "samples": [
+        {
+          "shear": -0.1,
+          "C_minus_rest": 2.2654369269403674e-08
+        },
+        {
+          "shear": -0.01,
+          "C_minus_rest": -8.429048570235409e-10
+        },
+        {
+          "shear": -0.001,
+          "C_minus_rest": -7.924105815959592e-12
+        },
+        {
+          "shear": 0.0,
+          "C_minus_rest": 0.0
+        },
+        {
+          "shear": 0.001,
+          "C_minus_rest": -7.924549905169442e-12
+        },
+        {
+          "shear": 0.01,
+          "C_minus_rest": -8.429048570235409e-10
+        },
+        {
+          "shear": 0.1,
+          "C_minus_rest": 2.265436949144828e-08
+        }
+      ]
+    }
+  ],
+  "records": [
+    {
+      "layers": 12,
+      "support": 2,
+      "gamma": 0.001,
+      "curvature_from_independent_affine_lattice": 0.037743801533193205,
+      "predicted_force_L2_relative_error": 0.022642757357058656,
+      "measured_over_predicted_mode_force": 0.9773572429680009
+    },
+    {
+      "layers": 24,
+      "support": 2,
+      "gamma": 0.001,
+      "curvature_from_independent_affine_lattice": 0.037743801533193205,
+      "predicted_force_L2_relative_error": 0.00570290565879951,
+      "measured_over_predicted_mode_force": 0.9942970959332394
+    },
+    {
+      "layers": 32,
+      "support": 2,
+      "gamma": 0.001,
+      "curvature_from_independent_affine_lattice": 0.037743801533193205,
+      "predicted_force_L2_relative_error": 0.0032130210644631444,
+      "measured_over_predicted_mode_force": 0.9967869818478736
+    },
+    {
+      "layers": 64,
+      "support": 2,
+      "gamma": 0.001,
+      "curvature_from_independent_affine_lattice": 0.037743801533193205,
+      "predicted_force_L2_relative_error": 0.0008073477648974358,
+      "measured_over_predicted_mode_force": 0.9991926641664889
+    },
+    {
+      "layers": 32,
+      "support": 3,
+      "gamma": 0.001,
+      "curvature_from_independent_affine_lattice": -0.008357857937390491,
+      "predicted_force_L2_relative_error": 0.01916000829895212,
+      "measured_over_predicted_mode_force": 0.9808400188498456
+    },
+    {
+      "layers": 64,
+      "support": 3,
+      "gamma": 0.001,
+      "curvature_from_independent_affine_lattice": -0.008357857937390491,
+      "predicted_force_L2_relative_error": 0.004836378789273858,
+      "measured_over_predicted_mode_force": 0.9951637427918136
+    },
+    {
+      "layers": 32,
+      "support": 4,
+      "gamma": 0.001,
+      "curvature_from_independent_affine_lattice": 0.0021765874727609448,
+      "predicted_force_L2_relative_error": 0.025402593114481186,
+      "measured_over_predicted_mode_force": 0.9745974342155965
+    },
+    {
+      "layers": 64,
+      "support": 4,
+      "gamma": 0.001,
+      "curvature_from_independent_affine_lattice": 0.0021765874727609448,
+      "predicted_force_L2_relative_error": 0.00644110617662157,
+      "measured_over_predicted_mode_force": 0.9935590309151302
+    }
+  ]
+}

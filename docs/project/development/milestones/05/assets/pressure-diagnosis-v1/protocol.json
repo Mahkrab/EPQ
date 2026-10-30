@@ -1,0 +1,31 @@
+{
+  "created_utc": "2026-10-29T08:57:54.696337+00:00",
+  "question": "Why does the existing discrete density projection alter physically valid tangential shear? Bounded diagnosis, no replacement solver or production change.",
+  "base_heads": {
+    "EPQ": "814f88a7f4122b1b24ea645b210d89e1200a0c44",
+    "Maelstrom": "250932784790ba26cdc55fc38a877ccefacbf054"
+  },
+  "base_reference_sha256": "56af94ed60a0603114096417839394c755906c60b11d65ed60c08ec3f92a97e0",
+  "reference": "Constant rho1000; flat material slab H=.05,Lx=Lz=.2; volume-preserving map x=X+gamma*sin(kY)/k,y=Y,z=Z. u_x=U sin(kY),u_y=u_z=0. Tangential pressure gradient and pressure correction are exactly zero for hydrostatic p=rho*g*(H-y). Periodic bulk sinusoid uses k=2pi/H and constant manufactured p, so no boundary or hydrostatic load is needed. Affine bulk shear detF=1 provides independent local consistency check.",
+  "experiments": {
+    "frozen_operator": "Exact horizontal-symmetry reduction, all individual particle derivatives retained for native Jacobi diagonal. Save C, full reduced J, native diagonal, manufactured pressure, pressure action, exact Gram projection. Check unstrained and strained geometries; native sparse-J comparison and finite differences validate reduction.",
+    "space": "Ny4,8,12,16,24,32; support/spacing2,3,4; targeted Ny64 support6,8. Keep physical geometry/mass fixed; h=q*H/Ny. Repeat fixed q refinement and q-increasing/h-decreasing sequences. No assertion that dx refinement alone is consistency.",
+    "surface_boundary": "Same material sites/map; natural top with mirrored bed; mirrored top/bottom closure; fully periodic smooth shear with h<H/2; fixed bed samples versus reflected bed with horizontal phase changes. Manufactured pressure references stated per closure. Compare rows farther than2h from boundaries with boundary/surface rows.",
+    "native_pressure_only": "At most20 one-step cases, nu0/contactoff. Manufactured isochoric shear with U0,g0 isolates density restoration from physics. Separately one-step replay of retained n4 state at0.2s, g9.81, no viscosity. Save every iteration p,C,lambda,pressure correction and first sparse Jacobian.",
+    "controls": "Vary epsilon*h^2=0,.002,.02,.2; iterations1,24,96; dt1/480 versus1/960; refreshed versus frozen neighbour identities with current positions/ghost coordinates. One factor per paired comparison. Ny4/8/12 and q2/3/4 native spot checks only, not full coupled qualification.",
+    "exact_projection": "Offline dense solve/pseudoinverse of the SAME J Gram matrix; no epsilon and no Jacobi limit. Measure whether physical tangential velocity lies in its nullspace and whether a converged existing constraint can preserve it. This is an oracle, not a replacement pressure method."
+  },
+  "criteria": {
+    "density_J_finite_difference_relative_or_scaled_abs": 1e-06,
+    "native_reduced_action_scaled_error_max": 1e-09,
+    "adjoint_relative_or_scaled_abs": 1e-10,
+    "unstrained_tangential_force_over_g_max": 1e-10,
+    "manufactured_tangential_force_over_g_budget": 0.01,
+    "manufactured_tangential_projection_loss_budget": 0.05,
+    "density_directional_derivative_scaled_by_H_over_U_budget": 0.01,
+    "exact_linear_solve_relative_residual": 1e-09,
+    "conclusion": "A repeatable nonzero pressure force or alteration of admissible isochoric shear in boundary-free frozen tests establishes a discrete consistency defect. A native/independent mismatch establishes implementation error. Regularisation/neighbour controls quantify modifiers, not attribution from residual alone."
+  },
+  "stop_rule": "Stop at a demonstrated cause with controlled exclusions. Do not develop a new solver or rerun long collision campaigns. A prospective replacement needs an explicit validation strategy before implementation.",
+  "retention": "Exclusive output labels; full raw numpy/native arrays and iteration traces; requests/source identities/checksums; durable workspace plus independent primary-PC home mirror; old evidence preserved."
+}

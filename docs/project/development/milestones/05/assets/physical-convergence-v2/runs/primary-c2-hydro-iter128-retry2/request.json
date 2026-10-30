@@ -1,0 +1,43 @@
+{
+  "parameters": {
+    "scene": "hydro",
+    "dt": 0.004166666666666667,
+    "duration": 6,
+    "iterations": 128,
+    "boundary": true,
+    "clamp": true,
+    "epsilon": 0.02,
+    "scale": 0.5,
+    "pressure": 0,
+    "poly": false,
+    "refresh": true,
+    "contact": true,
+    "contact_distance": 0.0255,
+    "kernel": 2,
+    "wall_inset": 0
+  },
+  "command": [
+    "/home/oliver/.local/share/maelstrom-experiments/physical-convergence-v2/work/bin/objects/a8e04966526ba90302c88e2f5e4ab98c54f0fb9cc0aabe2894b8b684583dd5b5",
+    "hydro",
+    "0.004166666666666667",
+    "6",
+    "128",
+    "1",
+    "1",
+    "0.02",
+    "0.5",
+    "0",
+    "2",
+    "1",
+    "1",
+    "0.0255"
+  ],
+  "solver_sha256": "a8e04966526ba90302c88e2f5e4ab98c54f0fb9cc0aabe2894b8b684583dd5b5",
+  "auditor_sha256": "1b9ad453accb83470965e8bc2bc70e65f4ff444c2417074639583b1055e90296",
+  "contact_protocol_sha256": "857eb9d216735c892ebefce793d64e21a7fee6c0738d6209c0e8f763dba041d4",
+  "distribution_protocol_sha256": null,
+  "kernel_protocol_sha256": "925e878414c827f3d6247cf6b188fa4a20f52b83b0c191b86ef507811eca0ce8",
+  "extent_protocol_sha256": null,
+  "timeout_s": 1800,
+  "protocol_sha256": "eb17302ea5b043d5dd08e421886f5750df347fa240f5279950b6abb4acbe2f49"
+}

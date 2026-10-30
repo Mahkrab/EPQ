@@ -1,0 +1,3577 @@
+{
+  "format": "pbf-frontier-raw-seal-v1",
+  "archives": [
+    {
+      "name": "observations-000.tar.gz",
+      "bytes": 27113501,
+      "sha256": "4bfdd76606e3ffaf41232dc419524844123b3d0e32473c21eafba9b11ac35d2d",
+      "members": 509
+    },
+    {
+      "name": "observations-001.tar.gz",
+      "bytes": 22625093,
+      "sha256": "d12a22f363db633fa708d9bf9c37ad7b97f81dd497b3a728114133d2facd153a",
+      "members": 84
+    }
+  ],
+  "files": [
+    {
+      "name": "candidate-build.log",
+      "bytes": 172,
+      "sha256": "ddf632048cb85338364ccb24a1a4b49c5e7b103b019a55345d466f6bbe596ed0",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "candidate.patch",
+      "bytes": 24313,
+      "sha256": "42ff18b27bd2b18f2f162c9fc65ebaf7a45c35183125a524bcf43fca4b8a7dfe",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "control-build.log",
+      "bytes": 170,
+      "sha256": "c294ab19fd165111b614401b9122a7cd0649efed8a98cf187fd8acf1492f485d",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "control-from-base.patch",
+      "bytes": 332267,
+      "sha256": "ff8ae179e681e3692f4d1a174cdf29fb22f4cbd4e57daa64ad9be0a7cb2e389e",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "final-build.log",
+      "bytes": 171,
+      "sha256": "f94b7af0fbcc5969ca10c35ea0fbeefa0526f91a8f73f7b10cf7d8d06779c461",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "final-clippy.log",
+      "bytes": 171,
+      "sha256": "784a21007d98cc7dd0cce44109c4315c203d43e62958c58e1ffc537fce713a59",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "final-format.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "final-regression.log",
+      "bytes": 40600,
+      "sha256": "036fb64b3bc61b7a924338e282d767f7f60e1fabf0670001223f6d23183c77f3",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "frontier_retain.py",
+      "bytes": 3692,
+      "sha256": "48a9c96f501a0b07b5f372031715f0596513e7c26e0c6bd62807df72bf1544b7",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "identities/environment.txt",
+      "bytes": 5245,
+      "sha256": "a6c02c7a5750f0a807db69484e5973b59f17e4d2074d35eaa072b89d23c42ddb",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "identities/preservation.json",
+      "bytes": 484,
+      "sha256": "03befafc5cedfd15642d7d24a9aa70d89a9057062f078f395c04f10b6b3dcb26",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "identities/profile-source.json",
+      "bytes": 18693,
+      "sha256": "85982986096b4cc755f70d1a4a326df2a11f24172eb9f76dacbdcfa1c552abbe",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "identities/source.json",
+      "bytes": 38095,
+      "sha256": "70e581f5bc976efbc96099bb0f28919259f9cbb6082983922f386b8e5e91a18d",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "0c399620ee07ff40822257e21a71766f2fbe58cb6e1a923ec220607d7f10ede3",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-candidate/gpu.csv",
+      "bytes": 6109,
+      "sha256": "2863bb1922d2406dbe74d1ea8dea4407bff237022dabe25f5ce46b2b7f983174",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-candidate/manifest.json.gz",
+      "bytes": 1361362,
+      "sha256": "778be77f9cf2e8cc8f853aa467e92f784f71a19826fdcaec59948ae4f75476fc",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-candidate/metrics.json",
+      "bytes": 3053,
+      "sha256": "65cbb797a09fb630795f77199436372190fe0288ba0db10094c04e8cd6b455ce",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-candidate/process.json",
+      "bytes": 1080,
+      "sha256": "57c556889250a429750c94b98c1625f20adc239905aebcaaad43e29f85ad51d5",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-candidate/stdout.json.gz",
+      "bytes": 227,
+      "sha256": "780e162be7f0327845bfaf38669f1e5e67581f6272258d88c57ebe80879241a8",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-candidate/validation.stdout",
+      "bytes": 160,
+      "sha256": "e4ed2743516771181ffd29849a106cf764044e8e070cffea5c2d88f32d66c0d6",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-control/bundle-audit.json",
+      "bytes": 205,
+      "sha256": "9d1e9e1d9be6cd96b36cdf953b1839a76c99f4434b384c461e15e00ec0806a97",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-control/gpu.csv",
+      "bytes": 11584,
+      "sha256": "54077213906899e88c76fcbe8228fadea479226cc22793f407d10efc470dd34c",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-control/manifest.json.gz",
+      "bytes": 1361302,
+      "sha256": "43f320029a4064e0da53e80887d6081d5f3b16c45cd0e8c8783b8f134ce4f6e1",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-control/metrics.json",
+      "bytes": 2901,
+      "sha256": "dc4fa4d06bf5bcf5c9d828a98c86ce5728ee1fb77209fb30007d3a9f4297ed33",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-control/process.json",
+      "bytes": 1075,
+      "sha256": "35015a67b5159d4593e35b06df8ffc95002c715c12d886899608cfe2f283de8f",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-control/stdout.json.gz",
+      "bytes": 226,
+      "sha256": "93a9daaab3ee3aea5b0c12f3c4c629ccf51c11e55b1106dc2eb58960a7037f67",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-0-control/validation.stdout",
+      "bytes": 158,
+      "sha256": "440740304a3f465e52e6fc115bab6a30b68e8aed19c880d91b87980cf4bd6b3e",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "7096c86b8146f95856d99e2ac4dcc421151fa0557f5c0face84343c5fabbeca0",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-candidate/gpu.csv",
+      "bytes": 6114,
+      "sha256": "4f2ac60e2462af135e4a00867e68a1fb0f15340b368594d3cf7511593014a8c8",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-candidate/manifest.json.gz",
+      "bytes": 1361367,
+      "sha256": "4f985b10baf2bedf7cdda3329a158862594f3d2ba9ef133d4aef7abd6de4c6fa",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-candidate/metrics.json",
+      "bytes": 3058,
+      "sha256": "fbdfee03df80b1fc8671b736c3e3a846c66b43844a9fdcfae5f54aa69fb78dbb",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-candidate/process.json",
+      "bytes": 1080,
+      "sha256": "a702eeac4c18bbb0e46298ee892173c0cdaf5d65d6f5cfaaf3e7efc17e4f4663",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-candidate/stdout.json.gz",
+      "bytes": 227,
+      "sha256": "799a968dec18c44f7ce8f58584f9534ca23591f8182652ddc0f2ef5050b93995",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-candidate/validation.stdout",
+      "bytes": 160,
+      "sha256": "3c819a107c7a87c9085f5fbb36badd59cb3876d0136a860ca31eece88589b522",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-control/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "b20316b0a6032085ef1fdec899dcbd4c2edc31d0a10a8c050460e1c27f48e504",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-control/gpu.csv",
+      "bytes": 11490,
+      "sha256": "72a931ff1c95a08b0a55dc020d7b70fd4486897e8cc837f71ae43d133b81aef5",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-control/manifest.json.gz",
+      "bytes": 1361304,
+      "sha256": "7753844cb465e5facbb92115800ee8212998f32d2446bcfeac568870d198e950",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-control/metrics.json",
+      "bytes": 2911,
+      "sha256": "c9bc6e736c24006cd23a77f4df039a5e31c3254a4d9fa80aa811e2c6ecc76040",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-control/process.json",
+      "bytes": 1074,
+      "sha256": "a5e5d245a4c7068aa4d01b8eefd28069c354bfeee93b7924552e1d41149f7071",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-control/stdout.json.gz",
+      "bytes": 225,
+      "sha256": "5cda219b6631ab909c8a43505de2d04ccf14ed0ed4824e988417e8be3b485482",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-1-control/validation.stdout",
+      "bytes": 158,
+      "sha256": "084bef5bfa0e8eff879fca6f6fb25612da7c7550f82e9fd769b735f7931c6c98",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "9e8d47c85bd7f5c075c8b80d60c7b846591725468352e49bfeac754423885b80",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-candidate/gpu.csv",
+      "bytes": 6099,
+      "sha256": "b817ba259f2a977c67fdb1bf6f2cbb96344ebfcae8e674a6ecb0475c7458d3cc",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-candidate/manifest.json.gz",
+      "bytes": 1361363,
+      "sha256": "f56e3b584076d11e014e64a44cdccee015e93355639f2ebabc90f3f467ef06f0",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-candidate/metrics.json",
+      "bytes": 3043,
+      "sha256": "731cbe89948272e9c9c8500b329fd5c91c529781a9c79a311632b58f223de716",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-candidate/process.json",
+      "bytes": 1069,
+      "sha256": "aef2153573bc80ccdf5ed573f31bdcc9d0f4769c73f6768a799ba8753dadfe87",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-candidate/stdout.json.gz",
+      "bytes": 227,
+      "sha256": "a488bdee76cc33a8d44bd2e5cd5f19ef65ca520ed025d42b9ae6df27e9f5263f",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-candidate/validation.stdout",
+      "bytes": 160,
+      "sha256": "ac97a06190b9f34160bc6d2f8b844136f4bd5a602a4b8152c31b18f0e7627d1f",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-control/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "0f09a2d8f973d77b2bf4b36a8bb5adc2afbefc46df7f0bc2687230340d49cc02",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-control/gpu.csv",
+      "bytes": 12850,
+      "sha256": "5492f3914ca9a9e0c8978fcce2c55aaff7b6137253b22555e28b2cfad1f3ca44",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-control/manifest.json.gz",
+      "bytes": 1361299,
+      "sha256": "2f2e3c3f4796920287008e4de195cf1d434af22566ee638af9bf0bfc89038d35",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-control/metrics.json",
+      "bytes": 2901,
+      "sha256": "167c832bbf7f6c1b4c33fe9643ed0bd69c53f1d1aaf955f771bb865415afeef6",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-control/process.json",
+      "bytes": 1075,
+      "sha256": "3d3013522ac2f94af91cefaed32ac91c743cccb38cfde022e5abd314ca67c9e8",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-control/stdout.json.gz",
+      "bytes": 225,
+      "sha256": "9aa1a8acdfdfd03635499f5156776cae905d2ba0f4288c28e7517d8d84cdc2c3",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-2-control/validation.stdout",
+      "bytes": 158,
+      "sha256": "ee2e599117794a8287603508ba77899fb7b8f157eb23459a6125c57db04210c0",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "a75b0911d62e22f749f78ec8bae48cc68d12389ff369d14a68a5ad79a200b0bb",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-candidate/gpu.csv",
+      "bytes": 6576,
+      "sha256": "4c87d350d7664fde180e595fdd67c5e178d3a5cfd17910d02635cb7a55824df6",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-candidate/manifest.json.gz",
+      "bytes": 1361364,
+      "sha256": "d662b656ab3d5e1449732e82a6c9cf338ebeef7aba0c1843ff5a75d67b7704e8",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-candidate/metrics.json",
+      "bytes": 3063,
+      "sha256": "55d669cdc99f57daf4c1daf259356082f89149bd94118e19d02926a9f5784529",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-candidate/process.json",
+      "bytes": 1078,
+      "sha256": "a9e6bacf10e87f4ebfb0a8d19c8334485ff555fb8083ecf80ec03d7fe448a9ab",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-candidate/stdout.json.gz",
+      "bytes": 227,
+      "sha256": "4b6aa62bc2cca5cd23d8fc7a9b6b8252dda3cc158a7a5025c9271a3a39205272",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-candidate/validation.stdout",
+      "bytes": 160,
+      "sha256": "271aa37dbb77c2edf7d9987d63bb899c0a8b42ac81db142c1f8bab11d1e920e3",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-control/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "392242213b793e36529f9a19c2e34cb29cca2875e2fabbc2640f201ede5f5b59",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-control/gpu.csv",
+      "bytes": 12333,
+      "sha256": "a40900ca61e027bdd52212de337dc0103ce59996b72f64d99246a96fd5cab22f",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-control/manifest.json.gz",
+      "bytes": 1361301,
+      "sha256": "62d476631c2e90f508572a337c2fac388660c68cd6b7d7ce02722f39367f4cec",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-control/metrics.json",
+      "bytes": 2902,
+      "sha256": "265058903eb8c91f2da60fe5ca5180291ff4e296fb15cb91202702693f496dd5",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-control/process.json",
+      "bytes": 1075,
+      "sha256": "8035dbf1bf2f5e3a05fdb3126c3e4064bc83406298d4555bb3f29be812cf3412",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-control/stdout.json.gz",
+      "bytes": 225,
+      "sha256": "e760cdc3bf4a7473181333cc9104c312783ad4ffb358f00d85dd5d2fbff871ef",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-fast-3-control/validation.stdout",
+      "bytes": 158,
+      "sha256": "b188859c43d227ebbd17cb46cb40c02e1a3d3bbbb7faab162dac67b0eeb808cc",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "6cf219c82eb2c75999ca6b59e82aee2e58b04a7fc19d5303388471ff9f0b71c9",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-candidate/gpu.csv",
+      "bytes": 7074,
+      "sha256": "3c72ad1f7107b7474f5867b78dec0887c3ebea00d81ce16439627b0ac971f148",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-candidate/manifest.json.gz",
+      "bytes": 1389860,
+      "sha256": "76093bbd6ae1917bbf0bfc4cebf0eb1ddd1d884f9ce85c6cc55bd2b6b50a8bce",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-candidate/metrics.json",
+      "bytes": 3053,
+      "sha256": "bddbb1289c20343e0c5c2eff64b617c05ce5577166e35134ccc9aa9991e9b3ec",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-candidate/process.json",
+      "bytes": 1088,
+      "sha256": "8abadae1d6be350f0e7788541441f50d1a911a749edaf3d17fd36671588c6531",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-candidate/stdout.json.gz",
+      "bytes": 229,
+      "sha256": "658cd528fe2605c142f9625952fd2c8b44dcab026c5d76ac331209387c4b62a4",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-candidate/validation.stdout",
+      "bytes": 165,
+      "sha256": "a16058ca3ec35443a87228896dd7c394dbbc16740dd2b4300a6a207435df1af7",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-control/bundle-audit.json",
+      "bytes": 205,
+      "sha256": "71554423d47fa412a901b958fedcc3e1ea83917eaa4b95bdee8b2b4e594c345d",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-control/gpu.csv",
+      "bytes": 12489,
+      "sha256": "6c681cb5a14887c78967cffb067ad49f753c8e3f99b34020d51c3cbc97bd06fb",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-control/manifest.json.gz",
+      "bytes": 1389793,
+      "sha256": "206815dcaa4ef28c877eb350b673bcb9d4ed941a3e8043408e949dbc5c7f859d",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-control/metrics.json",
+      "bytes": 2927,
+      "sha256": "2b56a8e9ec4a1015abcb5fb1dffa65046243734e81e5b43e03fa517183a8b797",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-control/process.json",
+      "bytes": 1085,
+      "sha256": "21db7c836016f8f0c41de3cf85e1ecc54e60197cb98218442b798f58beab3bf8",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-control/stdout.json.gz",
+      "bytes": 228,
+      "sha256": "2319f7cf19b3d813b3012b1de1c7266f1f35afd4aecf6747471d49840ed932da",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-0-control/validation.stdout",
+      "bytes": 163,
+      "sha256": "2694e823ac63119575e0bbcaef75ef7c4e14d9d0434227b0c20f7137fb72fb8f",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "a8b74807fde0bb4bb464a75173dcebcd1841c0511d3686643b321adb6a82a252",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-candidate/gpu.csv",
+      "bytes": 6911,
+      "sha256": "4ae4baf956222441468c3ea10994b97ecff7bf716c64c1cfab372c5c7ab2f09e",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-candidate/manifest.json.gz",
+      "bytes": 1389866,
+      "sha256": "ac929fa195e7bdc1a8f9d85ac914e4d018b09ca8b7c76a0bc95e37cea4770bfb",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-candidate/metrics.json",
+      "bytes": 3070,
+      "sha256": "8798c9a33a38f9bf7dd1126c4b70f86e93eee477b50d957578bcd5ad92315fbf",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-candidate/process.json",
+      "bytes": 1080,
+      "sha256": "122a9fb20e88e683f6262ecbcc156725ac4cc457cbf77c40d8a08a64af1c8c14",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-candidate/stdout.json.gz",
+      "bytes": 229,
+      "sha256": "dcb128d5fd3756850e91199c8dac8ddba1ee8b58776885a279faa019064d2850",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-candidate/validation.stdout",
+      "bytes": 165,
+      "sha256": "aaab696564ed02c76153b51b662e628473d7dc7dfc1398cdee4d80dfcb61dc76",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-control/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "e9dcb6f3b9b4712751a209e85ab04fe369439e64c21de5bffa6b25f87f38a2c8",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-control/gpu.csv",
+      "bytes": 12152,
+      "sha256": "3f27de573317c4e5baa7493e79874268aebb9ad9d981019222a63dcf1b930c16",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-control/manifest.json.gz",
+      "bytes": 1389794,
+      "sha256": "98db3876f5628fe149a7cd529095b509198563999a567a0f7d0cb360b05a1fbe",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-control/metrics.json",
+      "bytes": 2927,
+      "sha256": "4ebcd93e8dcb2a0da1b7755ec0a5d14c1d595606be02528a041465cec5d20a11",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-control/process.json",
+      "bytes": 1084,
+      "sha256": "b433962424ee51c8cec7518f8782dc5ceeef06e7960f57b098e890491aa9a7a0",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-control/stdout.json.gz",
+      "bytes": 228,
+      "sha256": "d5a0ebf77d8059698e7b51c90c2ceaf425268e899648485e5d56749f6b9c6384",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-1-control/validation.stdout",
+      "bytes": 163,
+      "sha256": "c3d3540e75146dcc073b4ce4a45b7c9d760ee3977f2a0a1dadd19f76116f47cc",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "8c2d7f4f11da49b71ec0cb8f6099e9685cf98502c04c8c24276bed5be3008989",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-candidate/gpu.csv",
+      "bytes": 6910,
+      "sha256": "5777da7e891c2645f9d136004116edc850770409ddd82f64673f8cff5ac71767",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-candidate/manifest.json.gz",
+      "bytes": 1389859,
+      "sha256": "1219a97e5c71c550954b893e69e4b3c6347bfbdc8bc824ca4f04cc44377d7fce",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-candidate/metrics.json",
+      "bytes": 3067,
+      "sha256": "7e0cd9575e9ce21e6e443b57b08232f1c1329d10813d99e0ad22efa38c7247bc",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-candidate/process.json",
+      "bytes": 1089,
+      "sha256": "433dc4187bf2266c7d8e145f49d5db63f3c90f43b42a1b6a50ca9b42bd8fb786",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-candidate/stdout.json.gz",
+      "bytes": 229,
+      "sha256": "fc712c1e906a3f3b5a9ada8e22e236324a9d13c778fc9a27a2e55120e9d3e204",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-candidate/validation.stdout",
+      "bytes": 165,
+      "sha256": "0c73ecf9c0d2d6b1faee7636b404d6fce7908d5ad9ec136ae3099d8e95bedec5",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-control/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "299ee088b4c0c39617c842e5d2541a318357b8be4c1bd16a1f0cfbfeb304d5af",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-control/gpu.csv",
+      "bytes": 12093,
+      "sha256": "187c629baac941d5ffb84e2ce351b833e9b9759d20542489663c18860aa30777",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-control/manifest.json.gz",
+      "bytes": 1389797,
+      "sha256": "7e6a9f57b4ce9ed7dd1ff2965c5371801b32553dc78ea50f40e19230c8e0b85f",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-control/metrics.json",
+      "bytes": 2917,
+      "sha256": "86f7a09ec126d9c091b0d5429b1d19ab886d561a561a8c4a1e162913fc55ac65",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-control/process.json",
+      "bytes": 1084,
+      "sha256": "d7a82573deccdcf491451c2e27c319d6ca4fecf2b8ebc1c1bd199b42abec4ebc",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-control/stdout.json.gz",
+      "bytes": 229,
+      "sha256": "823ed2ab39209cc804a7af7d801d01c87b16b964238f5c3bc5edcbcef990b87e",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-2-control/validation.stdout",
+      "bytes": 163,
+      "sha256": "148f40492ffeb9da5d38329d9134082cf5ddd4c3dc0cfaf58dcd9a53d6c44c19",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "557446ce7d490b26be4eda336ee9e9577031b639be761ed59cc70b346fe5d396",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-candidate/gpu.csv",
+      "bytes": 6911,
+      "sha256": "fdbe6a609531ccacaa48e05eee35ab9ad66e060da1cad8e33f86e4535341bc6c",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-candidate/manifest.json.gz",
+      "bytes": 1389859,
+      "sha256": "cf5cdcef63a00f7fd201fa924b8c88e1df46dfa823175420ccafd910aa712c4c",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-candidate/metrics.json",
+      "bytes": 3070,
+      "sha256": "395f91402d76d35650479a37ceb087d419cd4c0811a2bd5fb652db0e261d07b4",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-candidate/process.json",
+      "bytes": 1087,
+      "sha256": "1f66fdf6fb4376b917171b24a01d7b726adeb4a977db51c0cb90ff3e48169f5e",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-candidate/stdout.json.gz",
+      "bytes": 229,
+      "sha256": "988bf5dde414398e41beb2839cc94caebc20429dab296d99251d9168156f3c1b",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-candidate/validation.stdout",
+      "bytes": 165,
+      "sha256": "ef9f6edc6d4b206bcfffa97b2331064d60d070d058a5df6aaf920ea3c3816ec3",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-control/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "47518cb361a9fb12b165d26cc8f692ee405c68712ad6b4980421f382f3a9674f",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-control/gpu.csv",
+      "bytes": 12096,
+      "sha256": "1cfa0c30ca3b0349bbb808180a4faf5d4e4456339fccf7b7cf527b480dcb4492",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-control/manifest.json.gz",
+      "bytes": 1389793,
+      "sha256": "507e8947a515a6fa7f578f9b3869f903802ca55c2f8dc91ea6cd089bc196e39c",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-control/metrics.json",
+      "bytes": 2925,
+      "sha256": "7ad3ec5c3220fccc483674262c358cff698f31a876f6ae2d36ff885d3571db61",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-control/process.json",
+      "bytes": 1084,
+      "sha256": "1cd3b9d873504e6c8fa00abfdab6f95cd445fd3405e8a8a28ceb8b3c5f35660d",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-control/stdout.json.gz",
+      "bytes": 229,
+      "sha256": "faa4a1095968341ca2fb4ef65e11ac4a7ac08ee7e2fde935745e83415ea44931",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/large-reference-3-control/validation.stdout",
+      "bytes": 163,
+      "sha256": "fa4f6009d4760b207c33688b598f552a037969beaabd6862a9dda4a57f378684",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/protocol.json",
+      "bytes": 1958,
+      "sha256": "0ec232063ea42bb65822140a4ce7124118a1d5d2c126c2307606793c4219dfb5",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "1ab00666003e64cea4c16616b4a364f7c4f17b28e82d5c7ad62def9268e0a2bc",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-candidate/gpu.csv",
+      "bytes": 1344,
+      "sha256": "828bc073238a756f003c23c4c222343f74b42505e58699391388f4d7128747a5",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-candidate/manifest.json.gz",
+      "bytes": 172034,
+      "sha256": "82e2dda5f42e0f425760fd8d3bebec2abf46ba54ad15559f38d11e6a35304831",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-candidate/metrics.json",
+      "bytes": 2978,
+      "sha256": "981fe273226bb80f0bc50cb905933fb197839461246edf2483af7321d75e55fc",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-candidate/process.json",
+      "bytes": 1084,
+      "sha256": "c338895d8337f150c8b365812788c5b72dff2f62ded468f660e10860ad3edfca",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-candidate/stdout.json.gz",
+      "bytes": 229,
+      "sha256": "0a3d645b421a4705e6cc90c3f8e53de2befea5a0349d99c53382cfc9d1d69a12",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-candidate/validation.stdout",
+      "bytes": 163,
+      "sha256": "e6a787fcbb84d4be7b9e6a14925bd7d002fb58179edc406c1eef71cb732b7694",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-control/bundle-audit.json",
+      "bytes": 205,
+      "sha256": "d4c4f7c7e9212e08b8bcfa8962d691ad0add71bcb527e59ee7f57223e0b3e192",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-control/gpu.csv",
+      "bytes": 2423,
+      "sha256": "a98f1f9dd6ef152632f30e04d8c2dbc473b31d3e2d62208861129b332ee688df",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-control/manifest.json.gz",
+      "bytes": 171960,
+      "sha256": "02ead5098d4401267eac0d6dc0cbbe2732568fc5135a7c0ee49c8ff867a1565b",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-control/metrics.json",
+      "bytes": 2873,
+      "sha256": "34a146bda0ea46098fb03f02d74c9dd48be4364da0fedd36ec626a29305f939c",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-control/process.json",
+      "bytes": 1081,
+      "sha256": "1b5c3ed1033c6bd3255ccf2d8195e90b4772729bebaf3d6875c3d579d0c9d62f",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-control/stdout.json.gz",
+      "bytes": 227,
+      "sha256": "401004a1ff6cbcbfec04b61b6859800bb247e8c0d2a0ac608cf4bafe824b8de1",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-0-control/validation.stdout",
+      "bytes": 161,
+      "sha256": "777876c3a8f0fb511f3c7cfc481754ebbbb4a8cc54d531e29df16a5f8927ff25",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "771abf34de5b97aaa43e4f23d5f62e9f7fc94b0d55af4f4df42176357804718f",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-candidate/gpu.csv",
+      "bytes": 1346,
+      "sha256": "49b651e64e73fb4c018108ed3a9dfc46c8d0b57803003931f0ec0f816fb68a29",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-candidate/manifest.json.gz",
+      "bytes": 172040,
+      "sha256": "872e253cf74c6436d5601c223b8fa3bf3fa710c2b8555610958c3a9fa94d7564",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-candidate/metrics.json",
+      "bytes": 2982,
+      "sha256": "e010a5f891ac825e13c3ba08ddcc1e47bca4f7b5d24601679339a6669c101712",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-candidate/process.json",
+      "bytes": 1084,
+      "sha256": "4a1b167dd489669454bd397e27f6570349d3cb03fc8799bbb7fdbba23a83759f",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-candidate/stdout.json.gz",
+      "bytes": 229,
+      "sha256": "1a8b8e98fbe11421dfc8120a49f99ad75591b6caeeab3306a936861092620211",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-candidate/validation.stdout",
+      "bytes": 163,
+      "sha256": "1b678c084935aee8c8394888b8620a6a4d0687c52890b21e61ad4d9c24c4ab90",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-control/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "1e6e9787fa5e2ab8dfbe14b4265afae5b6b2ce46283652761e67e4fa8a0a70e2",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-control/gpu.csv",
+      "bytes": 2426,
+      "sha256": "07d44d39a8b29c7d721054c6870bd63b92a6586d29ce318cb3678b38abbf29ca",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-control/manifest.json.gz",
+      "bytes": 171957,
+      "sha256": "f2ce2b3824e80e45be793da201b3c7cf43a24d6a5d5e44dfe7c36dc7e3f6b284",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-control/metrics.json",
+      "bytes": 2854,
+      "sha256": "fc217ee62b1736b8b60337f66fb7aaa7567bbbcfdd97c11cb759876b93a68195",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-control/process.json",
+      "bytes": 1079,
+      "sha256": "36f63e348ec0d5e29d61359bfa5e52f0c7c3aa41027d49c01fa5d9d3e8d5f120",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-control/stdout.json.gz",
+      "bytes": 228,
+      "sha256": "0a7779b1fa0b829cae413595003e70f5362e975b74948d51118d637b0d0320d4",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-1-control/validation.stdout",
+      "bytes": 161,
+      "sha256": "51833bf0294a3bee44717e2d45b2762d00addda37b45a406e726180874525695",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "920c1bc0f4e1b0c21758f5b3983be71890bd8350f162b6644f5d3c4f7570dd45",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-candidate/gpu.csv",
+      "bytes": 1344,
+      "sha256": "f96b09439464703c65fe46dab77304e5498b03e8bbf2ce67dd6bf85557f0f929",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-candidate/manifest.json.gz",
+      "bytes": 172038,
+      "sha256": "d7c8316fe55adc13a33dd9e04585362402e0c927c5a5e80191dcd8f2d2468007",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-candidate/metrics.json",
+      "bytes": 2979,
+      "sha256": "3b3056f041ac33f9b74793de68826a843ebfac6890ea44c8a81386906e916ab8",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-candidate/process.json",
+      "bytes": 1085,
+      "sha256": "722b1817260f2a60da7ce79c23fe581361dcdedd54de85ab5a647e931eff4aff",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-candidate/stdout.json.gz",
+      "bytes": 229,
+      "sha256": "b661724e067f06661aabeb940aae6d9700a5434ca26ac81365a856436cb47425",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-candidate/validation.stdout",
+      "bytes": 163,
+      "sha256": "7e729e6f79ea8ec484a5fd03d61e5cd34f06cd68719c83f68a4870a46ee5cca4",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-control/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "801064d403c673e061d2eaff5b6711da2741043e7a4769010876826f173c1974",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-control/gpu.csv",
+      "bytes": 2424,
+      "sha256": "6f97e0f19b29b0b3afe454383934ee5ae038081ba6987bef49fd3b5f3c761d8b",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-control/manifest.json.gz",
+      "bytes": 171960,
+      "sha256": "4887f8bae4c6ba591c21ea76aa2e49db610bf21848df651146727528ca38bacd",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-control/metrics.json",
+      "bytes": 2902,
+      "sha256": "a8431639c10cd0c9d8489dd731cf0e86247008c463463902a0f27e1813b0e66c",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-control/process.json",
+      "bytes": 1079,
+      "sha256": "776aed1cea992e14c265805930886627e168207b79ba85555cff01c27d83ca31",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-control/stdout.json.gz",
+      "bytes": 227,
+      "sha256": "919fb9677893542a54762ff93a2fd4ba8e0669139040c0b557a391f339f00334",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-2-control/validation.stdout",
+      "bytes": 161,
+      "sha256": "06e747400056b16dba8023ee37845e578def56ac7b0389c97c81b2f37d9a84e4",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "30fdb3cba8a4fcf60a4cf1bd41fcd723bc20242d823ac771ce00d035b902e50c",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-candidate/gpu.csv",
+      "bytes": 1347,
+      "sha256": "54ca515f3df128e288ea60ca8e0fc53eca543b2cb97aec7102064ed6a5901735",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-candidate/manifest.json.gz",
+      "bytes": 172034,
+      "sha256": "980658877995762dfec26ba6cedc35ba929e15c99ee21a7fac722b97e35f7901",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-candidate/metrics.json",
+      "bytes": 2979,
+      "sha256": "f4f9f964eac5f1435766dc1182c65ad28bc1ce628efbbba90b969e293a44d8a7",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-candidate/process.json",
+      "bytes": 1084,
+      "sha256": "97b78eece75373c3fe45ca494006b4b42b939cafd28fa6fb0ec030577702231c",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-candidate/stdout.json.gz",
+      "bytes": 229,
+      "sha256": "e0bd2d83575c83bc1bb0cf88b1ac40479db423e5993795df616ae0a6c94ac531",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-candidate/validation.stdout",
+      "bytes": 163,
+      "sha256": "5db7d08f539a70cffa701f2ce526a2e96a8a00c8d697b1af19af36d1a3cf574d",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-control/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "796f1d28996be3e81a90cf0bb97d080202bca9b8744fddd597fa2a5d5f974d44",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-control/gpu.csv",
+      "bytes": 2426,
+      "sha256": "141f99697982a7df4caa41c2481b7e66172e6978c1291b9cbcf7ad3b8fa717b8",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-control/manifest.json.gz",
+      "bytes": 171963,
+      "sha256": "af175f290e5e4fa98b3417fa38a3f49c223f97d1e6a1899b33e5479041cf0ea3",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-control/metrics.json",
+      "bytes": 2904,
+      "sha256": "c905a4734efb30d5285798b9ae49bfe2d74883678fb9cdb0e0a66d0e4da59289",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-control/process.json",
+      "bytes": 1079,
+      "sha256": "648db1669878133501cdfa653168ebbdcdf7f8f82b839d6a87fa57480ab625f7",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-control/stdout.json.gz",
+      "bytes": 227,
+      "sha256": "b517c082e1a0140e6740624100e6cbca4358e05402b53690bc82833a2eaaddf1",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-fast-3-control/validation.stdout",
+      "bytes": 161,
+      "sha256": "7e66880dc2ac8a84be3b971f6247466850fadd5cd100f578c25f0ca10e0b2ee6",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "83afab9c97d2422044acf5cef317439d3011628225de26808e9ae23fa0644e2f",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-candidate/gpu.csv",
+      "bytes": 1936,
+      "sha256": "32e9b258099a81d7432e29e4a4c8457bf035e752463801a025092e81a45d409d",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-candidate/manifest.json.gz",
+      "bytes": 200551,
+      "sha256": "fea50c23c0458860761afef9b50bc40e4c415b608e72910e7e913966e4ac8bce",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-candidate/metrics.json",
+      "bytes": 3041,
+      "sha256": "f6c5aeac08fd622205c4ee68c4b9142cb26b373162c2a15ea7549ecd98274780",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-candidate/process.json",
+      "bytes": 1085,
+      "sha256": "ca36803bb53d1910e33b1bc069e1aabd4b6c4686744652b9cc630679987ee54e",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-candidate/stdout.json.gz",
+      "bytes": 231,
+      "sha256": "a9a9c71e24613bdd512f6c58dd7d723428b2b5c4037fbed64d8692696f4ace38",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-candidate/validation.stdout",
+      "bytes": 168,
+      "sha256": "29e5ba28238f87e4ddd077a143a05a6afae53a9172dfcf6c6a2306c8dbcdf7ac",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-control/bundle-audit.json",
+      "bytes": 205,
+      "sha256": "15a5f5c6d1447872df65bd5063457c3d42e3795f9314670c160e9e587109c36f",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-control/gpu.csv",
+      "bytes": 3809,
+      "sha256": "ebe655c399fa149bde81ec189025df6285116b596afb1b78aff8cdf35f854cd0",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-control/manifest.json.gz",
+      "bytes": 200473,
+      "sha256": "dfd5058525628fac739387fbef50cbecfbe414fae558675ce35e371e91bef601",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-control/metrics.json",
+      "bytes": 2899,
+      "sha256": "6484ef01f2d13831e2f76892a6737bb6d99e26dd9040efa00041adb3619f9e88",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-control/process.json",
+      "bytes": 1072,
+      "sha256": "36014525fa2f93d57631674b25a5cdfce8d9a7d0e1867dbdca4654a7421ab768",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-control/stdout.json.gz",
+      "bytes": 229,
+      "sha256": "635be1576cc8965575aaae99e56a8f43fa581cc93a92c4f9b4a06dc6f02cc3ee",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-0-control/validation.stdout",
+      "bytes": 166,
+      "sha256": "d157f30256b84761df03c060a62b65e2fc204f61c246a2ef6859bc9abf1c9e80",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "4c8779cc9120982cad78fe89c01fd9fed09278224e5956c3db23dba95ea8b2b9",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-candidate/gpu.csv",
+      "bytes": 1941,
+      "sha256": "86be027a437d74d4d80692b4db11d5ba835eb33eb9dd30e465a1933717516131",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-candidate/manifest.json.gz",
+      "bytes": 200549,
+      "sha256": "bb5a2d42d5f0279a4fb7d44e7b28bd82890c93cdf4c3703ba43114f5315bd94c",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-candidate/metrics.json",
+      "bytes": 3033,
+      "sha256": "7bcf55252256ebfffe322a314797cfd4acd36ccc62739c0130e9884f7b260fff",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-candidate/process.json",
+      "bytes": 1084,
+      "sha256": "4a9540d0738d1ca9fdb761ff8e56dd2d7f4e653c5c5f018a2317dc30c879b85d",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-candidate/stdout.json.gz",
+      "bytes": 230,
+      "sha256": "fbbe758fac2fa477268862ca1d2b0bb5aebae089cf0368b02277bf51dc486c6f",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-candidate/validation.stdout",
+      "bytes": 168,
+      "sha256": "7a8b1bda4533d1dad2081091cb21ed7d2019c8797f1cfbebdf759d3b26ce0289",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-control/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "24623f2fac11f5f33d0e2a698f5dd9e091d0df8dd404055915bdb57ede6018b5",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-control/gpu.csv",
+      "bytes": 3339,
+      "sha256": "883a6ba37108650c7efe11b2bca2ef536361d5ab9230d4d57a70b198f1901632",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-control/manifest.json.gz",
+      "bytes": 200481,
+      "sha256": "e20dbeae9a014c29680e57fc1850f734a32c0fc350b2f791a66fdedfb5cb075d",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-control/metrics.json",
+      "bytes": 2926,
+      "sha256": "5701f8fbecc4d5208e4ed80d56754c3fe405f5d41be91db510d88870061c97de",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-control/process.json",
+      "bytes": 1072,
+      "sha256": "602715ea52dfeee049eba8d800548e082acd1ca90f5b07c0697f6cb77f35e90c",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-control/stdout.json.gz",
+      "bytes": 229,
+      "sha256": "85fe918c2d88f8b098f852acf0202dbe4bd5b87a86d4082f1a3bcc0afce0632f",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-1-control/validation.stdout",
+      "bytes": 166,
+      "sha256": "1a28afc38686d9030c86dc7f133948247fc88dc878580a235777edd4147c0c9f",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "222db69b4fd797dd083ca8b93fa6617a406d73581c6214e279441247605ae18a",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-candidate/gpu.csv",
+      "bytes": 1939,
+      "sha256": "806c6b45ff093fc1f10e1c4eff2efa14e4b0f39d0e64cdc69d90ee5033116b85",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-candidate/manifest.json.gz",
+      "bytes": 200549,
+      "sha256": "566b20cf119ac2c3d183834e0db1e6da9f573d35e810d2a78957f66cf3892277",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-candidate/metrics.json",
+      "bytes": 3052,
+      "sha256": "c86e40a6b25e4b85c6d43063145a3f299f0531956159f8f296ab45e635d0fc03",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-candidate/process.json",
+      "bytes": 1094,
+      "sha256": "f1e750aa329c8fa1aff277c603dd85e6a21db675ba0d49e7a60f0e3e446b5099",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-candidate/stdout.json.gz",
+      "bytes": 231,
+      "sha256": "c1df9f229a0af2e7ba739be2b7bebe488b11a497ca7625b1fc7e9c4ece811046",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-candidate/validation.stdout",
+      "bytes": 168,
+      "sha256": "5b11f15ee93c48b52a4990af956a189c5d3bc0c955c511b561e57990d49a460a",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-control/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "94a20fbea3bacea0be5549e6db3ab4aa87f7634b5912b611a0c12c318a1d1e0a",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-control/gpu.csv",
+      "bytes": 3384,
+      "sha256": "ae59a779a99637ccce6916cb355649ddbb6becae98b889373480075283d61971",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-control/manifest.json.gz",
+      "bytes": 200478,
+      "sha256": "1bf8d0887134384e599a950d0d58e6b69fcb31dcb733c6d7766436877e9529af",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-control/metrics.json",
+      "bytes": 2908,
+      "sha256": "da83a5ffcddf4d559aef20d5911587d0f50b86a6a5c2a6ff5317903a363644a5",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-control/process.json",
+      "bytes": 1072,
+      "sha256": "069ebf20d10b97f0b2297747344fb2cd3706b1cd207f80cce16ef370699fcd3f",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-control/stdout.json.gz",
+      "bytes": 229,
+      "sha256": "30e2693866eaad33b600e03446d840a23b8e693c6a5ff4b800cf84c15673bdc7",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-2-control/validation.stdout",
+      "bytes": 166,
+      "sha256": "3ae07a2a9c7452ca4a01536b7baa3104c86f92f958053319c9029b5744bbf778",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "bd8384d28741f8e0006e951f91e15b1cafd84d3dd23814261be839cf3cb9d2a7",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-candidate/gpu.csv",
+      "bytes": 1940,
+      "sha256": "09bf0ee9e531b9b48ac85411ff472a4a57b8cebe049dfbb77296fd3699438963",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-candidate/manifest.json.gz",
+      "bytes": 200546,
+      "sha256": "0ce1c95e9f07b243707c34ae2571648d3bace8c8e70c54da96acf52d513ae41c",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-candidate/metrics.json",
+      "bytes": 3031,
+      "sha256": "c8916d36f142ffc8e23c46df72a0409155c1bee5ab9348ee549954f896929701",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-candidate/process.json",
+      "bytes": 1095,
+      "sha256": "cdc6e94646ec662ac54a503d83de406cc4cfa82c57d16370a4b92913d2029e06",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-candidate/stdout.json.gz",
+      "bytes": 231,
+      "sha256": "d0c2339670ed7b2c2b3b044f53dea091fed21d6246204cfdb796072a8c4b0bf4",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-candidate/validation.stdout",
+      "bytes": 168,
+      "sha256": "c597e9d1de970758d29fad7ed177e09596c136d95849f891e84b77518b150d4e",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-control/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "ba3b1ef10671f2b5a2da01d25475439ab7d1cc4361d0c7d0bd5d8d2f1eb57f10",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-control/gpu.csv",
+      "bytes": 3442,
+      "sha256": "590091ba72b0ef34c128856b0b61f5513b7449292604da28bb69fc585563ae45",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-control/manifest.json.gz",
+      "bytes": 200474,
+      "sha256": "12b160e4c4ecc1100752a899a542f5d5909adca247b23fc19c19028ae3634214",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-control/metrics.json",
+      "bytes": 2884,
+      "sha256": "6e43fd1cba724198c2dbb5033bf3981e0e9c45b1e94dc524620dec88bc563be6",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-control/process.json",
+      "bytes": 1091,
+      "sha256": "b222168a6c5c31b7d48e7b51ea29ec3f878b336b1b773e8467ac60da5b0fe4c4",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-control/stdout.json.gz",
+      "bytes": 229,
+      "sha256": "c2f4e6b2b1ee9e55981b3c1f67606d0559fc4ccae9aa463155d93e2ebdd0c4ec",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/resolved-reference-3-control/validation.stdout",
+      "bytes": 166,
+      "sha256": "115e960d6a49dca8919e8211561c848f0c155405d9115ff0145fdd15162129e4",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure/summary.json",
+      "bytes": 8028,
+      "sha256": "e84f2027a9808c41ced04899110bab60019211bebbe67e28a7872d30225e30b0",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "measure.log",
+      "bytes": 1902,
+      "sha256": "2a4916c727f07caf08f2315d7fb044103723290361c2a1ec31144cf17e1db01b",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "8708ebbfb404507e79534d6c8d5ff02495364ffe34e5ffefe2c7faff3bc6c4d6",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-candidate/gpu.csv",
+      "bytes": 6847,
+      "sha256": "f43ad27a087b2bc87b5e7a94bb0a13c670c67b8b068cdaa2d22c1ec5586cf5da",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-candidate/manifest.json.gz",
+      "bytes": 1361364,
+      "sha256": "e41c87ab109f0840611f5291a4addf46da5fab40e49462433aaa7672dc4c5883",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-candidate/metrics.json",
+      "bytes": 1945,
+      "sha256": "a1297e00b0b74b02c6f882df21c0801a90eb64bbb90e587a612c95155ffc8713",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-candidate/process.json",
+      "bytes": 1077,
+      "sha256": "378010a18055d6a31f05f9e2cbf34ac809a3b39af1e53b188870fbb7b0bd1302",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-candidate/stdout.json.gz",
+      "bytes": 225,
+      "sha256": "59ad78ea1438e1c2bbf089345557b3265613b4070a553b157395d19f5104dd42",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-candidate/validation.stdout",
+      "bytes": 158,
+      "sha256": "b98986262bed7ffd6d0b25dfae935cf587f6373acbe8fae054581f735da0f030",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-control/bundle-audit.json",
+      "bytes": 205,
+      "sha256": "ef403d84d5307c73dd6ea5f610ebb350c0676f758f9cfde9cad2d50755273449",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-control/gpu.csv",
+      "bytes": 12269,
+      "sha256": "c1ee74afa089c2c5ea81935471373ac477a26ff795afd7ab0cb6eb7f540718eb",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-control/manifest.json.gz",
+      "bytes": 1361304,
+      "sha256": "2dadc7a3ae11c2023d9c9eb92693c4759354b62dcaaa5c9138ec39a54b5c40bc",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-control/metrics.json",
+      "bytes": 1782,
+      "sha256": "df445baaab55ed16a87185b213e3c859045b1037987c957aeb3a5df5e4637fd2",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-control/process.json",
+      "bytes": 1054,
+      "sha256": "8a9ec55c001a5995e49e9b88379cb57f6b98c236cb1b9ae82bb9172b4d44f515",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-control/stdout.json.gz",
+      "bytes": 225,
+      "sha256": "bcc3eb86e995230fb90ffacdd383580362492eb55a0cee2cbfdf555be9916918",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-0-control/validation.stdout",
+      "bytes": 156,
+      "sha256": "5eb40d7ce540f1027b595ccf4dd656e4227202f716b80a9260ea53ffc71a5f38",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "39757375c9f03672e7fd718485c0560cf6b8850fc05d9c7bcc485f50db32ab6d",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-candidate/gpu.csv",
+      "bytes": 6903,
+      "sha256": "9f170bf7fd7e89589c791352c98079e8247c0a12d24f8ad8e43acf14c827b4c6",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-candidate/manifest.json.gz",
+      "bytes": 1361367,
+      "sha256": "600b365b38a9b9a017192a57c2de25fdaa4343c787afb50f9108ba3ff4991987",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-candidate/metrics.json",
+      "bytes": 1945,
+      "sha256": "9137d6033fc115fd0c3022b79552b7a0d2198eb1e2b544fa0959b4080c28adb6",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-candidate/process.json",
+      "bytes": 1075,
+      "sha256": "4f80765f5238467e8808186f4b929514680522ca64ef569def2cdb73b6137614",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-candidate/stdout.json.gz",
+      "bytes": 225,
+      "sha256": "c55fb4009448c3389f9d1646a146f3d50fb5e7511c686b1ce9867c08bf2b7f02",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-candidate/validation.stdout",
+      "bytes": 158,
+      "sha256": "9f37157664ab8be7892d70840761025d13da63ec35cf79a680feded90d3dc3bf",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-control/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "4e2776cc03c64e14f29f8126177513771095b952b1ee5d9a11282d10d8fb60ce",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-control/gpu.csv",
+      "bytes": 13638,
+      "sha256": "df7570ac32e29ee1d71f31cb7c8aec64c64550e1d505be238dac93145288f38a",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-control/manifest.json.gz",
+      "bytes": 1361305,
+      "sha256": "f737d5a9724d346be29ebe7cf4a2370615008d34a91372ad75de6dc21eb1897a",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-control/metrics.json",
+      "bytes": 1800,
+      "sha256": "9b4cb1f7182da2660779b05ff6f64c31369963e09d08f2cfe441a7ecfe627c0b",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-control/process.json",
+      "bytes": 1071,
+      "sha256": "5127bade95c8fe9076fd2321062c5f0cfcc694952720a08bf94c4374ec9da043",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-control/stdout.json.gz",
+      "bytes": 225,
+      "sha256": "442091d88a092aa27d87fc8eea66d097dd0e5d0a1810cd0965119d926e87f651",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-fast-1-control/validation.stdout",
+      "bytes": 156,
+      "sha256": "39ac2ffe5b0ba79d1d05b5a5e66963237737aa91af0f2bf4c77bc346e2bebe6e",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "6b616ef5c9093ef1e91ea87401b77ef56bf23185a12139ac5afa035dbf6e8b86",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-candidate/gpu.csv",
+      "bytes": 7128,
+      "sha256": "6f6adaca67a50d32d81fd8db3ba914501acacd67caea5ab56daa33c9d5a14413",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-candidate/manifest.json.gz",
+      "bytes": 1389866,
+      "sha256": "1326034f412caed2c2e43d568466fc596e4ca7873feb0fb8efd928a744f7784a",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-candidate/metrics.json",
+      "bytes": 1959,
+      "sha256": "e4b3d23aa2e9de69ce8a2d410890443ac82c73bc23b9289f69d5202ec82bca77",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-candidate/process.json",
+      "bytes": 1079,
+      "sha256": "a11158fae2d8d4bec245b83e99aa0e6a4f692842ae7e97b5c558d7de6463d700",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-candidate/stdout.json.gz",
+      "bytes": 229,
+      "sha256": "b782b11616c16a576091d90b2efb7b288bd2e84e1fe7a8467c4928442a0483a2",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-candidate/validation.stdout",
+      "bytes": 163,
+      "sha256": "ab170dc7e012040b80de1e5c3b6b164b5083a962497ed9a7e0cc62948ac75a55",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-control/bundle-audit.json",
+      "bytes": 205,
+      "sha256": "0df079b54f3b0f1e0dbf3b416b700daed1034f7c98077a4f36965dedaf790aea",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-control/gpu.csv",
+      "bytes": 12097,
+      "sha256": "4a92a62c9c931d3e91892774053d121ac39072462fcc32166de08475351803ab",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-control/manifest.json.gz",
+      "bytes": 1389791,
+      "sha256": "a618e9c2c9391f8ed11d395672c9de85e522160a451825926e831cb91d19b355",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-control/metrics.json",
+      "bytes": 1799,
+      "sha256": "dc8bcfc0a8c3fa07af9e13b77c3448be2c306ccb6db52aa8ffea091cca3ee42e",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-control/process.json",
+      "bytes": 1073,
+      "sha256": "1c61c438625348406f863f4059fd86e0a0620feb5daf2e6b1a4a8915977f9a41",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-control/stdout.json.gz",
+      "bytes": 228,
+      "sha256": "f9446535216d77121afd8dd12ba0b0a605668895485a0f6e15900ce0cb45702a",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-0-control/validation.stdout",
+      "bytes": 161,
+      "sha256": "53242a4e6ce65efa067c8e0f84b6abd696ba969821db87520e37a5f415c35800",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "4390fbb6576de35382f89093e20e18dcb8f46bbaedc7fde7a27cf6a03f1d47a7",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-candidate/gpu.csv",
+      "bytes": 7186,
+      "sha256": "21452baf3ae4397b6729567268bfb3aad81f16d916c237d8ae147d73701baf6b",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-candidate/manifest.json.gz",
+      "bytes": 1389869,
+      "sha256": "7d54d9de6f213907f258c4fc59e99be0715ff5234b2a3c3e333970dc928f46b7",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-candidate/metrics.json",
+      "bytes": 1977,
+      "sha256": "e69c212029e54a3c5f37409fe2e009eece9cfb4d74068c80221151eddaa9757f",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-candidate/process.json",
+      "bytes": 1086,
+      "sha256": "3b0eaea89941efd8151a48020bac6320e836aecf43309482c69aec2bbe016a80",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-candidate/stdout.json.gz",
+      "bytes": 228,
+      "sha256": "48469fa7c92e07dd4538eaf37ee3847ddf5f85f7ddd33e828798e71aedc48d77",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-candidate/validation.stdout",
+      "bytes": 163,
+      "sha256": "f766d390597457c3f1e7096018198f1e8258688042dac752da7cbfe78ea7ca3e",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-control/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "dbe115ebf4e9242fbe537dbd77799c9ede69742661cd8eda9c9ac0e9e5cfbca6",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-control/gpu.csv",
+      "bytes": 12098,
+      "sha256": "03cdc06e1e6fc0e590f925ed0c26a5e53f5fa8b51b96eb16523ec592b2b65397",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-control/manifest.json.gz",
+      "bytes": 1389793,
+      "sha256": "ac6bff66bd9b22fcc3a7a66950b8264e205db8c11f84de29762797886fa5206c",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-control/metrics.json",
+      "bytes": 1816,
+      "sha256": "94289f28d39d1868aee3e04f7c7345a83792e4d849da3b9c7c23ea75b4136d29",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-control/process.json",
+      "bytes": 1081,
+      "sha256": "28dde3417b54ab1a9fd0fbb834065e224135418db2ec7d151529b4dd547ff65c",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-control/stdout.json.gz",
+      "bytes": 227,
+      "sha256": "ba24cdea203585c8160326496e112fd2f409745784c7b469798ab995faedb08b",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/large-reference-1-control/validation.stdout",
+      "bytes": 161,
+      "sha256": "842663c6c643030217ca43ae810a182e06e5e9c2c0048601d1308089f1689ba1",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/protocol.json",
+      "bytes": 794,
+      "sha256": "0d65694c242dc22ba8b9f101f3a9a2be7d81b0fe45a5a44b129a20f60ab57b4c",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "97a6ed5d77ea1ef9e040cf3d0a575a378fa01d1253b03619c9675e5c35ed1030",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-candidate/gpu.csv",
+      "bytes": 1614,
+      "sha256": "6f3bbd570d256d19551ab880f542d04f0dc3b4e0bb4b08b33bcdeffaf231dc31",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-candidate/manifest.json.gz",
+      "bytes": 172029,
+      "sha256": "00b54b58c8f393acb8eb7678cadc8249fa77bcee02f4914957ed3d180fe2d126",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-candidate/metrics.json",
+      "bytes": 1941,
+      "sha256": "6bbc5691590440badc448e754fea9867c24a89f84214bd3f760ef2430a7fe8c9",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-candidate/process.json",
+      "bytes": 1073,
+      "sha256": "ac607f6eb921ef18cfcd32dfa8fac0c80cc01c51849f091876cea117592ffa33",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-candidate/stdout.json.gz",
+      "bytes": 227,
+      "sha256": "e594b61729cd439595f773e902b3af14bf5febf2d8e272c99db64d3a2f63e293",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-candidate/validation.stdout",
+      "bytes": 161,
+      "sha256": "b3dcce8aeb58e1412537d25756a2d7da5d20f3fcd78f6c67612668c5307991a2",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-control/bundle-audit.json",
+      "bytes": 205,
+      "sha256": "316ea5f7af4ff501a6dbb93277f21c76f78a51dfb96242e53a1e0b1a3c87d6e6",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-control/gpu.csv",
+      "bytes": 2480,
+      "sha256": "3ead425fc4a8dc1b313fbeac6b109faea10e5dcfa1c29c2f5aefc0eed46d29f9",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-control/manifest.json.gz",
+      "bytes": 171959,
+      "sha256": "6ef83e365d04bf21569d4d4cfad78f2b07a96de8dd43f79072be846ef3722174",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-control/metrics.json",
+      "bytes": 1800,
+      "sha256": "7966c567efe7a6479163ade98544376323e738144a7807f3590ff361435b2fc1",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-control/process.json",
+      "bytes": 1079,
+      "sha256": "9ba9af4824f4508b83763e27b44c26c5ccbda82a8d91578eaa105da70e28ba4e",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-control/stdout.json.gz",
+      "bytes": 226,
+      "sha256": "0254d626c9a61878d6c493799482cf81718d81ead38917f8972c0f6bd8ec7411",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-0-control/validation.stdout",
+      "bytes": 159,
+      "sha256": "d13299eee95df100b7d5205fb8415ed05fe4a2efe1fa66d1bd2db2d7b5c7d0d1",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "5cb9193ff4070442803192fbd5d0c724bf11f7b0e8b2f299699280ad154a9aeb",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-candidate/gpu.csv",
+      "bytes": 1616,
+      "sha256": "b71626aa735dbe0651dd29139a5e2e1f06a77288dfc89cd2d2af66570ca8b988",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-candidate/manifest.json.gz",
+      "bytes": 172029,
+      "sha256": "8b1b61094a1bcfc9d9eedba6e3242c5d97ccdb81a9a06021486357d0bc55a312",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-candidate/metrics.json",
+      "bytes": 1951,
+      "sha256": "f520e9e2088b82f2aa743aca282ec2e702504465dbef2249f2b85258966d179b",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-candidate/process.json",
+      "bytes": 1082,
+      "sha256": "186721dd5726841dadabc046276edb4f9d3de0e00d452c5ffe1346bcb3306769",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-candidate/stdout.json.gz",
+      "bytes": 227,
+      "sha256": "c7bea600f9a62cebdf9c2f7cfd1190cace269a11699861f6d4f810eac4ba0462",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-candidate/validation.stdout",
+      "bytes": 161,
+      "sha256": "666e48ad62532ee45de8e14054abb654847ed5a72af933e377085da22df8cf28",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-control/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "8195a85669b618e4150c7876125896ab7f7475499d9b95c80f518ee7827d2a5c",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-control/gpu.csv",
+      "bytes": 2534,
+      "sha256": "566bc85b4973ff5f8010e216940986e88d954bfa120d20d93b9a88a63b073a0b",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-control/manifest.json.gz",
+      "bytes": 171963,
+      "sha256": "9b6ee8321ccedd52a71defc15310af4dbe40943d62af60f63776926d051ced8b",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-control/metrics.json",
+      "bytes": 1790,
+      "sha256": "2e3112cef79a9773fbbb1ffe459967a51d05041eb16a365159d3074f64cec6d0",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-control/process.json",
+      "bytes": 1068,
+      "sha256": "ca50224e1e9e4502f9e8cc6a33bcaacd563e68bd90da07b341c7f243626bc399",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-control/stdout.json.gz",
+      "bytes": 226,
+      "sha256": "a3bb6857a11e0c2ae4790f95198d9f78028e662de65f7e5816070015d07ec33a",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-fast-1-control/validation.stdout",
+      "bytes": 159,
+      "sha256": "0ba5ee61436a32314900182c8b6fa0e46d067add751a34c8d4776b5667be002e",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "fab4395c7ddcf4082fb881c63d2e65cc240b308bec3843d4d90b202a092999cb",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-candidate/gpu.csv",
+      "bytes": 2044,
+      "sha256": "c0bb5b139beb6ff950ce80949fd6bc0a5f597488099b9b853727b1b945f09aa1",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-candidate/manifest.json.gz",
+      "bytes": 200546,
+      "sha256": "1ab269c6fe4319ede8616e082aeb2b2f8940b6519c5612bc9c7ddf0a72af83e6",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-candidate/metrics.json",
+      "bytes": 1965,
+      "sha256": "f1476f12895471f35dc8fc5180fbc0056393ba1cc2dd7df86a652249a9262262",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-candidate/process.json",
+      "bytes": 1092,
+      "sha256": "2ac0b758ad1efd379287a9c560051fc217ad504080eb7d05c2d3be6c839841a1",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-candidate/stdout.json.gz",
+      "bytes": 230,
+      "sha256": "1c0d4959c9bbbdac3e6b5320f9d70850357c4877128d28015adac6da20ff0984",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-candidate/validation.stdout",
+      "bytes": 166,
+      "sha256": "80a3420b812fe17498e3e0669a9d1394e77a8ba57fe6571e425fe841fc50f2ec",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-control/bundle-audit.json",
+      "bytes": 205,
+      "sha256": "3e630f901b41912b555dc7037f461a47360e6611d464ce19d2695bb1ad3f33f8",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-control/gpu.csv",
+      "bytes": 3645,
+      "sha256": "d8648730d585168bf357d64771bfbe74fd471edadefd102c1b6fa642f78c7557",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-control/manifest.json.gz",
+      "bytes": 200464,
+      "sha256": "606e14628840319d82e2bc9930673a9a580c4cb425024c13e60bce513cdf5a22",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-control/metrics.json",
+      "bytes": 1795,
+      "sha256": "99ce6da01363e667fc1d64f79190f7ab8005ec52e8c78954551c45b95ea5190b",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-control/process.json",
+      "bytes": 1070,
+      "sha256": "4823ce5fccac7e597448098297273d61090a6fb231808861e653d2305ecc49b5",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-control/stdout.json.gz",
+      "bytes": 229,
+      "sha256": "3b456a597cd0c1ca983cea9dfab35c18a2ff7d9767debff6657e833eaba12045",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-0-control/validation.stdout",
+      "bytes": 164,
+      "sha256": "6f6f4be6cf5d0be585581e67da7396850693bf873ebd82d96bc0fd998f94d7a6",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-candidate/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "76ce9ce2359a800e663792711d1f5d490462cdd150c47e6809a4b9ee7c3e67e5",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-candidate/gpu.csv",
+      "bytes": 1994,
+      "sha256": "8f12ac1a5b9677cb00ebfc59fc00d207e0a07cc5053af7dbe742a06df2a27cb7",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-candidate/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-candidate/manifest.json.gz",
+      "bytes": 200544,
+      "sha256": "2b523f6633d857f05cb1b71b611ed53c82fb9953c29691e95ff76e15696ae0a6",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-candidate/metrics.json",
+      "bytes": 1957,
+      "sha256": "2e13cac5e943f0dc4de96c4b6bd039823e218b449d73943bac941eb3ac28855b",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-candidate/process.json",
+      "bytes": 1082,
+      "sha256": "92c97f7f6b9c546581c933e8b57242b6acd7f13c46e226d70473a67056c2797c",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-candidate/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-candidate/stdout.json.gz",
+      "bytes": 230,
+      "sha256": "e9e663b74eecd081a3c10451b9528f5821012ef0a410628fe6fc50d3a1c6f400",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-candidate/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-candidate/validation.stdout",
+      "bytes": 166,
+      "sha256": "dbc108584185773a63ae09fd92a5221dd8c01fb27d9adec48039f4c99a8084fd",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-control/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "1d5801ecd702016e7c6dc3261246ff95d44510aa1ee89dc4e0197029c45b8c64",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-control/gpu.csv",
+      "bytes": 3340,
+      "sha256": "f7b8a11fe556aa350359d434eae81c0d870da0c6d9b7d68454d843fe1f721508",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-control/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-control/manifest.json.gz",
+      "bytes": 200467,
+      "sha256": "eb087cf539cdc4bdede7fbc037e8665d5baaa321bfdf876d000b99b9bf5e8c8e",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-control/metrics.json",
+      "bytes": 1804,
+      "sha256": "6b81bdee5a2c300ea2e7756cb3385bec12291b071abafa816b0f33f346b959b3",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-control/process.json",
+      "bytes": 1079,
+      "sha256": "3e94870f8da53033a957cf141b872412da5c7992b5a3c7c3841b328dd1ca9e43",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-control/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-control/stdout.json.gz",
+      "bytes": 229,
+      "sha256": "b16e6f9cc3ecb9173584f3c808de5d5c3dcdf889aa09da51b1574f3a37338484",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-control/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/resolved-reference-1-control/validation.stdout",
+      "bytes": 164,
+      "sha256": "ac690fbc50b09fefc7687d928fb1ff28d4ef3f44ce9528710523c37dd16c8bcc",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot/summary.json",
+      "bytes": 6102,
+      "sha256": "003e60d42b540a51416b39cc0e474b54a3f6bb09c36b7239eaa3491cc50fbe38",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "pilot.log",
+      "bytes": 1019,
+      "sha256": "d524dbe1dc889665b9633abe4df2a9ce35a68aed1f5cceeba55d7834b93b306b",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "post-verification.json",
+      "bytes": 808,
+      "sha256": "fa7c789c0b13c0c71611fcbcc537fbefc60f3763c28f83e2cc7d37a58c520f62",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "probe-output/large-fast.jsonl",
+      "bytes": 34923,
+      "sha256": "0781a4331d9cf9c12c69724333b3abb4bc3b00b9978243af14951ce52d48d022",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "probe-output/large-fast.stderr",
+      "bytes": 36211,
+      "sha256": "4a1c50ca1db9f6b4cbe0c4089522c190af89314be76d317b999e8509f6f947ab",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "probe-output/large-reference.jsonl",
+      "bytes": 35390,
+      "sha256": "f5fe522581fedbcba1ce6778bb0ef533bdf3399b240f962a248404805c6fdf79",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "probe-output/large-reference.stderr",
+      "bytes": 36498,
+      "sha256": "3a9f0c1466d25b6143bef48629b7adfab5572bde572b33c73f837fe7cd219d87",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "probe-output/resolved-fast.jsonl",
+      "bytes": 35184,
+      "sha256": "ac150401b4d4a4cc83af63bcc8496e57fa68523070ef33fbb7d234e29a19d5e8",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "probe-output/resolved-fast.stderr",
+      "bytes": 36366,
+      "sha256": "c9aeea8d4e192135b16f5f3fd3eed2ffaf190dd14eca9a007011c98ee1d8d270",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "probe-output/resolved-reference.jsonl",
+      "bytes": 35635,
+      "sha256": "139ed6ee225eff1fdeb9331fa20641cc05e32e5de4cf90302afd4ecbc979cf79",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "probe-output/resolved-reference.stderr",
+      "bytes": 36547,
+      "sha256": "3ca36eac2c0e1346b923a81ddeb5014506d391c7f91732473b4aa9294d351b99",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "probe-requests-v2/large-fast.json",
+      "bytes": 23755444,
+      "sha256": "b84e376f2e615a6ec5f7d81561694f25d07f2b2f583adc6410ac86f2af964ba6",
+      "archive": "observations-000.tar.gz"
+    },
+    {
+      "name": "probe-requests-v2/large-reference.json",
+      "bytes": 23755800,
+      "sha256": "51c2d24f26fc90587137b7d7295adc0192ee3f44fb1dccb42ca86531d7604c80",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "probe-requests-v2/resolved-fast.json",
+      "bytes": 1705075,
+      "sha256": "625756bbbce9b870d78a1cd6d074bb71a6640c6645c760971c752451cd37b89d",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "probe-requests-v2/resolved-reference.json",
+      "bytes": 1705431,
+      "sha256": "71ef9cce3e84a57be9ca3102e38c858ced57f033718442d6269a6a2ff71e08a6",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "probe-summary.json",
+      "bytes": 64274,
+      "sha256": "7f13e5bdb479837f00eada5d06ea3ce496941a22368e0944f110c7c745a0d6bf",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profile-build.log",
+      "bytes": 5342,
+      "sha256": "8abfe25b5002f556be4a9d25f85e6543e59c49624ff48010116b7d69ef7c293b",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profile-summary.json",
+      "bytes": 5395,
+      "sha256": "1fcf90839eed8f19e63f3dcb67857376e7d544604b6b4ef8d2917992ae249e8f",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-fast/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "b37b50166e07b557a05d4aa07cc9da3c60873e432bdf5026f7b404b78501b350",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-fast/gpu.csv",
+      "bytes": 12282,
+      "sha256": "6afbee5c5cb8089e0441595a594852c912c7171922e40d020cb5f12bae055055",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-fast/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-fast/manifest.json.gz",
+      "bytes": 1361304,
+      "sha256": "47e7dbd2e19084ee0bf0bbaca6dbfe6e5a8962c2ed91c5ee014ade2c8a452977",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-fast/metrics.json",
+      "bytes": 1085,
+      "sha256": "e520c678983179919ad9c105ddcca6aa577a5c2a79cdcb4fd30bc68a07a4e935",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-fast/process.json",
+      "bytes": 1085,
+      "sha256": "e520c678983179919ad9c105ddcca6aa577a5c2a79cdcb4fd30bc68a07a4e935",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-fast/stderr",
+      "bytes": 163231,
+      "sha256": "1efca33c42261da5119ad9d731d1ea8be58c3f0a71f2c771e6b1a186a2fbb205",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-fast/stdout.json.gz",
+      "bytes": 221,
+      "sha256": "715784d6c25b51d5026247df5ea622adab8b858a154d8da05d741a1d7063e730",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-fast/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-fast/validation.stdout",
+      "bytes": 149,
+      "sha256": "7f7dc3e616c88c3cc9bb49a5a4b699119bbce1c5905a4febc3c6f2b6b5601b15",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-reference/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "9d36886f0bf69af0ec7558a61f34ebe242a5fbaf7b14807534bebabd564136ca",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-reference/gpu.csv",
+      "bytes": 12147,
+      "sha256": "ce8d30a6159533db41d74b05e70206acca44a8853235f55e98f15e31d9574756",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-reference/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-reference/manifest.json.gz",
+      "bytes": 1389797,
+      "sha256": "9be30b85a0780f57077d1951761429642b11fd4cc1a83d52de840c0d20dc8ae6",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-reference/metrics.json",
+      "bytes": 1097,
+      "sha256": "b06c4fb021c0355c2bde2dd8dc4a997ba1be271545be5b5947a4d907a8a4e628",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-reference/process.json",
+      "bytes": 1097,
+      "sha256": "b06c4fb021c0355c2bde2dd8dc4a997ba1be271545be5b5947a4d907a8a4e628",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-reference/stderr",
+      "bytes": 164454,
+      "sha256": "2d1e744b3199ee4f807e78c8eda02934c220ee67857d9f60fdc830329378adba",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-reference/stdout.json.gz",
+      "bytes": 222,
+      "sha256": "dd65d2639cc306e4a49369810fe3cb9a84741263ecc42c0eef523e142e81f53a",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-reference/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/large-reference/validation.stdout",
+      "bytes": 154,
+      "sha256": "aecc5a00f8781da647dcf529e794cf6db983c4180e357699e7647a8f22baca54",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-fast/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "5f526b42bec19efc7d728fa94b1483ca3b439d9bb0ab6a258d2b885e39104348",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-fast/gpu.csv",
+      "bytes": 2582,
+      "sha256": "d89558bf2ea2d39e8b862eb6bfd8fa8197376395a2912b5cd5ef151e47081b0d",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-fast/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-fast/manifest.json.gz",
+      "bytes": 171966,
+      "sha256": "11706c559dac443edb12963627aef9b1fe68090ebd0c7642519e6678cfe847bb",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-fast/metrics.json",
+      "bytes": 1092,
+      "sha256": "cf5627f96171567eb45e68be5eb616be649a007e9f6a7c05afcfb4be63470063",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-fast/process.json",
+      "bytes": 1092,
+      "sha256": "cf5627f96171567eb45e68be5eb616be649a007e9f6a7c05afcfb4be63470063",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-fast/stderr",
+      "bytes": 163223,
+      "sha256": "cf3d2785dd2ae1b28ba0b04ad6abb911733c627482d3e2605fd42da670288d30",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-fast/stdout.json.gz",
+      "bytes": 221,
+      "sha256": "1e4d8279a8078be274117a21a46d0738cca95d74520b10eb2efaf8934b3bfed0",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-fast/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-fast/validation.stdout",
+      "bytes": 152,
+      "sha256": "af255903a2ab8c1ec1a4345933bfc0cad57577713734a76ac6c6d3b6dc23d71b",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-reference/bundle-audit.json",
+      "bytes": 204,
+      "sha256": "d39267f55678fa80cdcfd5a0ff87d465a503f7f44a0654c16f294766d44de4de",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-reference/gpu.csv",
+      "bytes": 3540,
+      "sha256": "bcb0e395b99120bb2db9bd0b180010d92b92dc53de3ca24db549f18f0360f8e5",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-reference/gpu.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-reference/manifest.json.gz",
+      "bytes": 200470,
+      "sha256": "e2ab5f64a01dea08ed884bce2ad2acc76bdea9c3d044eedaffbb6beff9533bac",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-reference/metrics.json",
+      "bytes": 1084,
+      "sha256": "9f34fec86eac1933cda7a7f315d898cf725fb79816bde60e7209dad549848b2c",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-reference/process.json",
+      "bytes": 1084,
+      "sha256": "9f34fec86eac1933cda7a7f315d898cf725fb79816bde60e7209dad549848b2c",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-reference/stderr",
+      "bytes": 163128,
+      "sha256": "916c03921e1ace60a529d71e77c0b739ca220adfda7662278374afdbf834844b",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-reference/stdout.json.gz",
+      "bytes": 223,
+      "sha256": "6404c07cf11c04036846694143d66d989df35383d0e4a1de21b798eeb812870f",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-reference/validation.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles/resolved-reference/validation.stdout",
+      "bytes": 157,
+      "sha256": "9c4b5c72e217bc8a909373c1698dfba30f05446834ceed4452eea660eca18f1d",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "profiles.log",
+      "bytes": 132,
+      "sha256": "5818b06b468fe4af31a8ceb92990db98e1629854017e8096df5273d1805cf6e5",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "render_pipeline.py",
+      "bytes": 11616,
+      "sha256": "47ebfebf228d42b0d6ae3538a1e4a701de8bc81d41d3fd1b1896a002083e1901",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "render_probe.py",
+      "bytes": 15626,
+      "sha256": "daf8d26eac92b12588e3e0ca019beb23f30c78d94d5bf872bd0e55a709eb740e",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "retention-select.py",
+      "bytes": 1821,
+      "sha256": "720b0340d3bc52130723c37fd3d6703ce7ac52d851534afedffe4d3bf61a4a0b",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "retention.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "source-reconstruction.json",
+      "bytes": 341,
+      "sha256": "830d347acefe7289399463dc15f67c2ba4e8f37abddc2f2da188e3ab37ad9606",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "trace-campaign.log",
+      "bytes": 41,
+      "sha256": "2384285fab66825e222fd094b98b9064566ae01224e7712a50fffe33ac0775ce",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/compile-fast-stats.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/compile-fast-stats.stdout",
+      "bytes": 644,
+      "sha256": "3d0fd8a5c1000f00a05aa966406eefa54612ceab75de5d9554c94be1d4f7b677",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/compile-fast-stats_cuda_api_sum.csv",
+      "bytes": 921,
+      "sha256": "0bb7dfc7eb86ff1533d7d46b93a8dc92e7b65f765b619117829d5c48835e1761",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/compile-fast-stats_cuda_gpu_kern_sum.csv",
+      "bytes": 342,
+      "sha256": "d3a808f89a33b6a06642500b172e203a95219bec9563335307c4490687518a08",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/compile-fast-stats_osrt_sum.csv",
+      "bytes": 2573,
+      "sha256": "ddcde89f1ca395e546e5c1b7f482bc6b271a98dc34a0ab56989250570452351a",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/compile-fast.nsys-rep",
+      "bytes": 1958118,
+      "sha256": "e1e9c994d64335887c811d257214feb041ba9047ed58cd28106c5666b15f98f5",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/compile-fast.process.json",
+      "bytes": 1132,
+      "sha256": "456f4b90a53e750eec15b811c2dab7c8d5ec17a6a3fbf375bd883c86ab847aef",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/compile-fast.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/compile-reference-stats.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/compile-reference-stats.stdout",
+      "bytes": 684,
+      "sha256": "364284648d273f0572e1045b710ac8a520aa25fb2f705a82d13c3f905ca2cb34",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/compile-reference-stats_cuda_api_sum.csv",
+      "bytes": 928,
+      "sha256": "b1f55c97baf7bf45cb7c11f3f47594ae46594cbd653472ee45ef5729cbe5d9be",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/compile-reference-stats_cuda_gpu_kern_sum.csv",
+      "bytes": 343,
+      "sha256": "765f9527514325797b6852cafd3012c75947b40bf072036033c6662d42a96645",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/compile-reference-stats_osrt_sum.csv",
+      "bytes": 2664,
+      "sha256": "6e5defaa25df05f401892bf56223408925ec560d1c3584b6ed893f9123d1337a",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/compile-reference.nsys-rep",
+      "bytes": 3105971,
+      "sha256": "0aeb743c76f2f9a404f71e5977acf2c7e0080a684284c8c8a002dbcce914ab5d",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/headless-fast-stats.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/headless-fast-stats.stdout",
+      "bytes": 652,
+      "sha256": "a9f4cd519c633206fd279d39c80dd60a232b1b4f231349cfc56e043b72e16dac",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/headless-fast-stats_cuda_api_sum.csv",
+      "bytes": 934,
+      "sha256": "a1eb0b6c3369fce3d73ac45ac5089612e898512260a8ad8280c9dbb2c06bf9e6",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/headless-fast-stats_cuda_gpu_kern_sum.csv",
+      "bytes": 347,
+      "sha256": "787d9675e2204a14e5cbe1a13eb0b09a550f8bc5769208912d9ae15e9f762c25",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/headless-fast-stats_osrt_sum.csv",
+      "bytes": 1709,
+      "sha256": "244c1f75b89a2fd9925838696ec923357bf915b4e4439c8c9bdc7cceb009800f",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/headless-fast.nsys-rep",
+      "bytes": 22351854,
+      "sha256": "23f6e40c76d8758c7404bd045dabc1642b8ba60e739e7c35997210307ca746c7",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/headless-fast.process.json",
+      "bytes": 974,
+      "sha256": "b94a6c7f8d4dcc6731525c4c79fce27a6305436fd7bb0aef2e868c8fb2da220e",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/headless-fast.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/pipeline-fast-stats.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/pipeline-fast-stats.stdout",
+      "bytes": 652,
+      "sha256": "1bfe0523113f023572744ce22940d6603f55b85530a5ce8ae7fe51d1663fbaf9",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/pipeline-fast-stats_cuda_api_sum.csv",
+      "bytes": 921,
+      "sha256": "6d63c2e2f382a7cf929116d3e59d40e209e95a8eec232f87df6704efec74936f",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/pipeline-fast-stats_cuda_gpu_kern_sum.csv",
+      "bytes": 341,
+      "sha256": "6263199d6c6b4fbef0137df58031b3326a91c4657783ec03bccef0d648da4d94",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/pipeline-fast-stats_osrt_sum.csv",
+      "bytes": 2692,
+      "sha256": "2a95c0f6864d49ecec9366299ef4e2b12ff58d3ea0f696407c7e3a45d246613f",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/pipeline-fast.nsys-rep",
+      "bytes": 1944351,
+      "sha256": "2b7073e45d0f1ddb7d7477013d8f0573e50f515209444b5ba90607359b75b22c",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/pipeline-fast.process.json",
+      "bytes": 1135,
+      "sha256": "a1548eb44ee866ed18073c0ed5505b1a492d463175d04ca3e4a7d902c95c421c",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/pipeline-fast.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-001.tar.gz"
+    },
+    {
+      "name": "traces/reference.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive": "observations-001.tar.gz"
+    }
+  ]
+}

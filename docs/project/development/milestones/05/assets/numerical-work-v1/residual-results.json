@@ -1,0 +1,58 @@
+[
+  {
+    "scene": "resolved",
+    "steps": 2400,
+    "estimates": [
+      {
+        "correction_check": false,
+        "mean_applied_iterations": 2.025,
+        "iterations_saved_fraction": 0.746875,
+        "max_iterations_steps": 10,
+        "note": "Optimistic oracle: excludes check/copy/reduction cost and the extra density/correction group used to observe the residual."
+      },
+      {
+        "correction_check": true,
+        "mean_applied_iterations": 2.2,
+        "iterations_saved_fraction": 0.725,
+        "max_iterations_steps": 61,
+        "note": "Optimistic oracle: excludes check/copy/reduction cost and the extra density/correction group used to observe the residual."
+      }
+    ],
+    "endpoint_equal": true,
+    "cfl_only_rate_histogram_on_fixed_trajectory": {
+      "120": 2133,
+      "240": 159,
+      "480": 107,
+      "finer_than_480": 1
+    },
+    "cfl_note": "Velocity-only prospective bins, not a variable-timestep simulation. CFL does not bound density relaxation, volume or projection energy."
+  },
+  {
+    "scene": "large",
+    "steps": 2400,
+    "estimates": [
+      {
+        "correction_check": false,
+        "mean_applied_iterations": 2.172083333333333,
+        "iterations_saved_fraction": 0.7284895833333334,
+        "max_iterations_steps": 59,
+        "note": "Optimistic oracle: excludes check/copy/reduction cost and the extra density/correction group used to observe the residual."
+      },
+      {
+        "correction_check": true,
+        "mean_applied_iterations": 7.375416666666666,
+        "iterations_saved_fraction": 0.07807291666666671,
+        "max_iterations_steps": 2139,
+        "note": "Optimistic oracle: excludes check/copy/reduction cost and the extra density/correction group used to observe the residual."
+      }
+    ],
+    "endpoint_equal": true,
+    "cfl_only_rate_histogram_on_fixed_trajectory": {
+      "120": 1805,
+      "240": 165,
+      "480": 273,
+      "finer_than_480": 157
+    },
+    "cfl_note": "Velocity-only prospective bins, not a variable-timestep simulation. CFL does not bound density relaxation, volume or projection energy."
+  }
+]

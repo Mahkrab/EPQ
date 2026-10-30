@@ -1,0 +1,50 @@
+{
+  "scene": "large",
+  "policy": {
+    "id": "cubic-240-e01",
+    "dt": 0.004166666666666667,
+    "density_percent": 0.1,
+    "divergence_percent": 0.1,
+    "kernel": "cubic",
+    "support": 0.1
+  },
+  "binary_sha256": "7475ea033a8a3e683834d1037e89aceb86e881427ee2d1ad503a2367b44ea68a",
+  "process": {
+    "command": [
+      "/home/oliver/.local/share/maelstrom-experiments/dfsph-prototype-v1/dfsph-gpu",
+      "/home/oliver/.local/share/maelstrom-experiments/dfsph-prototype-v1/inputs/large.bin",
+      "0.004166666666666667",
+      "1200",
+      "2.8,3.0,2.8",
+      "0,-9.81,0",
+      "0.1",
+      "0.1",
+      "/home/oliver/.local/share/maelstrom-experiments/dfsph-prototype-v1/runs/large--cubic-240-e01/state",
+      "0.016666666666666666",
+      "0.025",
+      "solid"
+    ],
+    "exit_code": 0,
+    "failure": null,
+    "process_wall_s": 22.858314899000106
+  },
+  "completed": true,
+  "measurement": {
+    "particles": 110592,
+    "boundary_particles": 42240,
+    "steps": 1200,
+    "dt": 0.004166666883975267,
+    "simulated_s": 5.000000260770321,
+    "solver_s": 21.573511190999962,
+    "observation_s": 0.120964931,
+    "density_iterations": 25760,
+    "divergence_iterations": 1764,
+    "fluid_row_entry_visits": 212158843051,
+    "search_count_fill_passes": 2400,
+    "launches": 88648,
+    "cap_steps": 0,
+    "wall_contacts": 12056559,
+    "neighbour_capacity_entries": 8388608
+  },
+  "cost_s_per_sim_s": 4.338894998108985
+}

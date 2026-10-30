@@ -1,0 +1,12 @@
+{
+  "created_utc": "2026-10-29T00:26:55.918042+00:00",
+  "defect": "Some auxiliary anisotropic flat/depth samplers placed first centres closer to a solid plane than the configured half-spacing collision inset. First projection can inject spurious velocity; original collision blocks are clear of the walls and unaffected.",
+  "repair": "For new -valid initializers, use symmetric axis margins max(original half-cell spacing, collision inset), preserving the physical region, total count/mass and centre of mass. Reject aligned strata whose initial separation is below the distance target. No solver force/kernel/timestep change.",
+  "rejected_evidence": "Preserve old raw controls and record initial extent/separation violations. Do not use them as positive qualification.",
+  "repeat_scenes": [
+    "flat-valid n6,12,18",
+    "depth-valid L1.25,1.5,2.5,3.75",
+    "depth-ceil-valid L1.25,1.5,2.5,3.75"
+  ],
+  "criteria": "Original accuracy and stability limits unchanged. Geometric fit alone does not admit excessive initial kernel density."
+}

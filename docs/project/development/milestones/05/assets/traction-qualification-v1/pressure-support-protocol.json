@@ -1,0 +1,6 @@
+{
+  "created_utc": "2026-10-29T08:03:09.786711+00:00",
+  "trigger": "On sheared isochoric lattice, pressure gradient has unwanted tangential component at h=2dx. At gamma.3 leakage |ax/ay|=.005545; h4dx gives .0000736. Halving dx at fixed h/dx cannot remove this dimensionless quadrature error. This calculation has no viscosity, walls or timestep.",
+  "controls": "Mirrored Ny8 mixed shear g9.81,U.01,dt1/480,it24,nu.001,visc support2dx. Only pressure kernel support changed to3dx and4dx; mass/rho/physical geometry same; self kernel bias and eps=.02/h^2 recomputed consistently. No acceptance budgets revised.",
+  "interpretation": "This is a causal pressure quadrature control, not an optimisation or a proposed production policy. Wider smoothing may itself degrade free-surface/hydrostatic resolution. Pressure locking attribution remains a hypothesis unless controlled full results support it."
+}

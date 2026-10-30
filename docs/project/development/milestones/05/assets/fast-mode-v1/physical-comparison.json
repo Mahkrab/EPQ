@@ -1,0 +1,184 @@
+[
+  {
+    "scene": "resolved",
+    "reference": {
+      "p95_compression_peak": 0.19767402891253472,
+      "max_compression_peak": 0.4207955703018944,
+      "min_separation_over_dx": 0.544363610648107,
+      "volume_error_peak": 0.3377244262704975,
+      "energy_excess_peak": 0.0024372976497383314,
+      "CFL_warning_steps": 0,
+      "stability": true
+    },
+    "fast": {
+      "p95_compression_peak": 0.052732118560251395,
+      "max_compression_peak": 0.14948207732667096,
+      "min_separation_over_dx": 0.658731673803715,
+      "volume_error_peak": 0.29836916094631316,
+      "energy_excess_peak": 0.05851148168710759,
+      "CFL_warning_steps": 68,
+      "stability": true
+    },
+    "difference_fast_minus_reference": {
+      "p95_compression_peak": -0.14494191035228332,
+      "max_compression_peak": -0.27131349297522345,
+      "min_separation_over_dx": 0.11436806315560799,
+      "volume_error_peak": -0.03935526532418432,
+      "energy_excess_peak": 0.05607418403736926,
+      "CFL_warning_steps": 68
+    }
+  },
+  {
+    "scene": "large",
+    "reference": {
+      "p95_compression_peak": 0.463354968645701,
+      "max_compression_peak": 0.6949806749720324,
+      "min_separation_over_dx": 0.40308475494384766,
+      "volume_error_peak": 0.3346957907079663,
+      "energy_excess_peak": 0.001934475586507167,
+      "CFL_warning_steps": 404,
+      "stability": true
+    },
+    "fast": {
+      "p95_compression_peak": 0.09770980399807372,
+      "max_compression_peak": 0.21736602008881345,
+      "min_separation_over_dx": 0.5375965008132607,
+      "volume_error_peak": 0.2142048376057777,
+      "energy_excess_peak": 0.011773537431338328,
+      "CFL_warning_steps": 288,
+      "stability": true
+    },
+    "difference_fast_minus_reference": {
+      "p95_compression_peak": -0.3656451646476273,
+      "max_compression_peak": -0.47761465488321897,
+      "min_separation_over_dx": 0.13451174586941306,
+      "volume_error_peak": -0.1204909531021886,
+      "energy_excess_peak": 0.009839061844831161,
+      "CFL_warning_steps": -116
+    }
+  },
+  {
+    "scene": "hydro",
+    "reference": {
+      "p95_compression_peak": 0.11607670781454793,
+      "max_compression_peak": 0.161512567199392,
+      "min_separation_over_dx": 0.721964742299806,
+      "volume_error_peak": 0.30080423912044707,
+      "energy_excess_peak": 0.009577299424980448,
+      "CFL_warning_steps": 0,
+      "stability": true
+    },
+    "fast": {
+      "p95_compression_peak": 0.0618478460400258,
+      "max_compression_peak": 0.1479860750404689,
+      "min_separation_over_dx": 0.7212854267268968,
+      "volume_error_peak": 0.28947389154086767,
+      "energy_excess_peak": 0.4248000854362507,
+      "CFL_warning_steps": 1,
+      "stability": true
+    },
+    "difference_fast_minus_reference": {
+      "p95_compression_peak": -0.05422886177452213,
+      "max_compression_peak": -0.013526492158923098,
+      "min_separation_over_dx": -0.0006793155729092337,
+      "volume_error_peak": -0.011330347579579403,
+      "energy_excess_peak": 0.4152227860112703,
+      "CFL_warning_steps": 1
+    },
+    "hydrostatic_centroid_error": {
+      "reference": 0.2990172853495162,
+      "fast": 0.2460957063712116
+    }
+  },
+  {
+    "scene": "collision",
+    "reference": {
+      "p95_compression_peak": 0.1150398158591508,
+      "max_compression_peak": 0.28805752956757535,
+      "min_separation_over_dx": 0.5774267816683367,
+      "volume_error_peak": 0.36274181025535024,
+      "energy_excess_peak": 0.004428911738766343,
+      "CFL_warning_steps": 0,
+      "stability": true
+    },
+    "fast": {
+      "p95_compression_peak": 0.06939758856562483,
+      "max_compression_peak": 0.1493631360460479,
+      "min_separation_over_dx": 0.6710107253917735,
+      "volume_error_peak": 0.2993228826676654,
+      "energy_excess_peak": 0.1850837709443986,
+      "CFL_warning_steps": 23,
+      "stability": true
+    },
+    "difference_fast_minus_reference": {
+      "p95_compression_peak": -0.04564222729352596,
+      "max_compression_peak": -0.13869439352152746,
+      "min_separation_over_dx": 0.09358394372343681,
+      "volume_error_peak": -0.06341892758768486,
+      "energy_excess_peak": 0.18065485920563226,
+      "CFL_warning_steps": 23
+    }
+  },
+  {
+    "scene": "surface",
+    "reference": {
+      "p95_compression_peak": 0.10294379318442037,
+      "max_compression_peak": 0.18070215926695754,
+      "min_separation_over_dx": 0.7109178044616346,
+      "volume_error_peak": 0.4370254714799299,
+      "energy_excess_peak": 0.009577017316409248,
+      "CFL_warning_steps": 0,
+      "stability": true
+    },
+    "fast": {
+      "p95_compression_peak": 0.061854874852270036,
+      "max_compression_peak": 0.1474111135970133,
+      "min_separation_over_dx": 0.7212848657244482,
+      "volume_error_peak": 0.27427234699722336,
+      "energy_excess_peak": 0.4253678207238901,
+      "CFL_warning_steps": 1,
+      "stability": true
+    },
+    "difference_fast_minus_reference": {
+      "p95_compression_peak": -0.04108891833215034,
+      "max_compression_peak": -0.03329104566994423,
+      "min_separation_over_dx": 0.010367061262813615,
+      "volume_error_peak": -0.1627531244827065,
+      "energy_excess_peak": 0.41579080340748087,
+      "CFL_warning_steps": 1
+    }
+  },
+  {
+    "scene": "shear",
+    "reference": {
+      "p95_compression_peak": 0.030665903908848602,
+      "max_compression_peak": 0.0935402535238723,
+      "min_separation_over_dx": 0.7420668974123168,
+      "volume_error_peak": 0.11891007211627769,
+      "energy_excess_peak": 1.0710688774928498,
+      "CFL_warning_steps": 0,
+      "stability": true
+    },
+    "fast": {
+      "p95_compression_peak": 0.05275471562897627,
+      "max_compression_peak": 0.15029229244494058,
+      "min_separation_over_dx": 0.7207972287797717,
+      "volume_error_peak": 0.1701968538448142,
+      "energy_excess_peak": 8.057645979286235,
+      "CFL_warning_steps": 1,
+      "stability": true
+    },
+    "difference_fast_minus_reference": {
+      "p95_compression_peak": 0.022088811720127666,
+      "max_compression_peak": 0.05675203892106828,
+      "min_separation_over_dx": -0.02126966863254509,
+      "volume_error_peak": 0.05128678172853651,
+      "energy_excess_peak": 6.986577101793385,
+      "CFL_warning_steps": 1
+    },
+    "retained_shear_mode": {
+      "reference": 1.0500662649953372,
+      "fast": 0.7676954319950439
+    }
+  }
+]

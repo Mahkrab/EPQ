@@ -1,0 +1,21 @@
+{
+  "scope": "Bounded published/reference DFSPH prototype; immutable production PBF/native sources, no new pressure method.",
+  "boundary": "Test sampled-solid geometric volumes using reference Akinci pressure equations, dx=.05,h=.1,rho1000,m=rho*dx^3,solid ghost centres outside physical box; half-spacing collision extent. Surface pseudo-volume probe retained as failed control.",
+  "criteria": {
+    "p95_positive_compression": 0.05,
+    "maximum_compression": 0.25,
+    "hydro_centroid_error": 0.1,
+    "positive_mechanical_energy_excess": 0.1,
+    "shear_amplitude_error": 0.2,
+    "occupied_support_volume_proxy_error": 0.1,
+    "timestep_bulk_change": 0.1,
+    "minimum_separation_over_dx": 0.5,
+    "finite_contained_mass_conserved": true
+  },
+  "diagnostics": "Report density including wall support and fluid-only; mass, occupied-volume proxy, centroid/height, K/PE, momentum, pressure reactions, wall collisions, actualdt, actual pressure/divergence iterations, full neighbour visits/row sweeps, convergence caps and whole computation clocks. Density alone insufficient.",
+  "policies": "Fixed120/240/480Hz first, density tolerance0.01%, divergence0.1%,min2/1,max100/100; then at most3 error-tolerance/CFL variants if needed. No artificial pressure, arbitrary damping, XSPH or viscosity. No physical thresholds relaxed.",
+  "stages": "Reference wall admission and representative cases, matching GPU port, same particle inputs as previous frontier including compression, then110592 benchmark. Reject after specific unrepaired physical/workload blocker; no broader CFD study.",
+  "bounds": "At most3 wall-volume/geometry controls; at most6 numerical policies. Screen2s/shear.2; selected5s. Primary4070 important clocks one warmup+five alternating samples, no concurrent heavy work.",
+  "comparison": "PBF same geometry/count/initial velocities. Production implicit mass convention differs~0.97%; references use actualmass. Neither bit agreement nor failed-PBF speed qualifies physical accuracy. Report no equivalent-quality speedup if PBF cannot pass.",
+  "retention": "Complete raw sampled states, logs including rejected attempts, exact sources/patches/buildIDs, alltime/workload observations; durable primary+local verified archives."
+}

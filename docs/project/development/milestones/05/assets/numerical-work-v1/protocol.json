@@ -1,0 +1,22 @@
+{
+  "scope": "Independent numerical-work matrix; no production defaults or native kernels changed",
+  "fixed": {
+    "correction_scale": 0.5,
+    "relaxation_scale": 2.0,
+    "refine_timestep": 1
+  },
+  "reuse": "Five combinations per scene already covered. Preserve original measurements; run only seven missing combinations.",
+  "practical": {
+    "p95_compression": 0.05,
+    "max_compression": 0.25,
+    "min_separation_over_dx": 0.5,
+    "no_coincidences": true,
+    "contained_finite": true,
+    "volume_proxy_error": 0.1,
+    "mechanical_energy_excess": 0.1
+  },
+  "strict_errors": "Hydrostatics, shear and convergence reported separately; historical failures retained.",
+  "candidate_bound": "At most two stronger-correction/lower-regularisation policies after matrix, then one adaptive probe only if work elimination is plausible.",
+  "sustained": "Five simulated seconds, 8000/110592 particles, 60 Hz observations, warmup then five alternating pairs; all samples retained.",
+  "profiling": "Separate instrumented workload replay and CUDA trace; their clocks do not replace ordinary solver measurements."
+}

@@ -1,0 +1,95 @@
+--- tools/performance/traction_pbf_mirror.cpp
++++ tools/performance/pressure_probe.cpp
+@@ -1,6 +1,6 @@
+-// Reflected-fluid density support and its full Jacobian couple pressure to
+-// dimensional edge-strain viscosity. Raw states and every accepted stage remain
+-// independent of production code and include the physical wall reactions.
++// Instrumented one-step pressure-only copy of the retained reference.
++// Changes expose epsilon, neighbour identity freezing and full iteration arrays;
++// no alternative pressure formulation or production solver is introduced.
+ #include <algorithm>
+ #include <array>
+ #include <cmath>
+@@ -111,13 +111,14 @@
+ }
+ 
+ int main(int argc,char **argv) try {
+-    if(argc!=22)throw std::runtime_error("scene n layers dt duration iterations boundary inset_fraction threads calibration wall_volume nu contact density gravity ledger restart velocity_factor support");
++    if(argc!=24)throw std::runtime_error("scene n layers dt duration iterations boundary inset_fraction threads calibration wall_volume nu contact density gravity ledger restart velocity_factor support");
+     const std::string name=argv[1];const int resolution=std::stoi(argv[2]);const double layers=std::stod(argv[3]);
+     const double dt=std::stod(argv[4]),duration=std::stod(argv[5]);
+     const unsigned iterations=std::stoul(argv[6]);const bool boundary=std::stoi(argv[7]);
+     const double inset_fraction=std::stod(argv[8]);const int threads=std::stoi(argv[9]);
+     if(!(resolution>=4 && resolution<=24 && layers>=0 && layers<=1 && dt>0 && dt<=.02 && duration>=0 && duration<=12 && duration/dt<=100000 && iterations>0 && iterations<=128 && inset_fraction>=0 && inset_fraction<=.5 && threads>0 && threads<=24))
+         throw std::runtime_error("invalid spatial request");
++    if(std::stod(argv[22])<0 || std::stod(argv[22])>1)throw std::runtime_error("invalid diagnostic epsilon");
+     const std::string calibration=argv[10];const bool physical_wall=std::stoi(argv[11]);
+     const double nu=std::stod(argv[12]);const bool contact=std::stoi(argv[13]),density_enabled=std::stoi(argv[14]);
+     const double gravity=std::stod(argv[15]);const std::string ledger_path=argv[16],restart=argv[17];
+@@ -127,11 +128,11 @@
+     if((calibration!="raw" && calibration!="self" && calibration!="ratio") || !(nu>=0 && nu<=.01 && gravity>=0 && gravity<=10 && velocity_factor>=0 && velocity_factor<=1 && support_ratio>=2 && support_ratio<=4))throw std::runtime_error("invalid physical-model request");
+     dx=.05/resolution;h=support_ratio*dx;w_coefficient=21/(2*pi*h*h*h);g_coefficient=-20*w_coefficient/(h*h);
+     const double base_mass=1000/8270.744069418484;
+-    const std::string mass_scheme=argc==22 ? argv[21] : "inherited";
++    const std::string mass_scheme=argv[21];
+     if(mass_scheme!="inherited" && mass_scheme!="geometric")throw std::runtime_error("invalid mass convention");
+     const double mass=mass_scheme=="geometric" ? 1000*dx*dx*dx : base_mass*216/std::pow(resolution,3),rest=1000/mass;
+-    const double eps=.02/(h*h),scale=.5,inset=inset_fraction*dx,contact_distance=.51*dx;
+-    const bool poly=true,refresh=true;
++    const double eps=std::stod(argv[22])/(h*h),scale=.5,inset=inset_fraction*dx,contact_distance=.51*dx;
++    const bool poly=true,refresh=std::stoi(argv[23]);
+     const double ell=std::cbrt(mass/1000);double lattice=0;
+     const int extent=static_cast<int>(std::ceil(h/ell));
+     for(int x=-extent;x<=extent;++x)for(int y=-extent;y<=extent;++y)for(int z=-extent;z<=extent;++z)
+@@ -151,13 +152,17 @@
+         if(!input || input.peek()!=std::ifstream::traits_type::eof())throw std::runtime_error("invalid restart arrays");
+     }
+     for(auto &v:s.v)v=mul(v,velocity_factor);
++    if(nu!=0 || contact || std::lround(duration/dt)!=1)throw std::runtime_error("pressure diagnostic requires one step, nu0 and contactoff");
++    std::ofstream trace(ledger_path+".trace",std::ios::binary);if(!trace)throw std::runtime_error("cannot create iteration trace");
++    const std::uint32_t trace_header[]={0x50524431U,n,iterations};trace.write(reinterpret_cast<const char*>(trace_header),sizeof(trace_header));
++    const double trace_parameters[]={dx,h,dt,mass,eps,scale};trace.write(reinterpret_cast<const char*>(trace_parameters),sizeof(trace_parameters));
+     const unsigned steps=std::lround(duration/dt),stride=std::max(1L,std::lround(.05/dt));
+     const std::uint32_t header[]={0x50424634U,n,static_cast<unsigned>(s.wall.size()),steps};write_bytes(header,sizeof(header));
+     const double constants[]={dt,h,rest,mass,s.upper[0],s.upper[1],s.upper[2],2,dx,inset,contact_distance};write_bytes(constants,sizeof(constants));
+     write_bytes(s.wall.data(),s.wall.size()*sizeof(V));
+     Search walls(s.upper);walls.build(s.wall);
+     Search fluid(s.upper),contacts(s.upper),reflected(s.upper);
+-    std::vector<V> images;std::vector<unsigned> targets;
++    std::vector<V> images;std::vector<unsigned> targets;std::vector<int> reflection_sides;
+     std::vector<std::vector<std::pair<unsigned,V>>> jacobian(n);
+     auto save=[&](unsigned step) {
+         std::uint32_t id=step;write_bytes(&id,sizeof(id));write_bytes(s.p.data(),n*sizeof(V));write_bytes(s.v.data(),n*sizeof(V));std::cout.flush();
+@@ -187,14 +192,18 @@
+         free_prediction=predicted;const Energy prediction_energy=effective(predicted,old,dt,gravity);
+         for(unsigned it=0;it<iterations;++it) {
+             if(it==0 || refresh) {
+-                fluid.build(predicted);images.clear();targets.clear();
++                fluid.build(predicted);images.clear();targets.clear();reflection_sides.clear();
+                 if(boundary)for(unsigned j=0;j<n;++j)for(int side=0;side<2;++side) {
+                     const double plane=side ? s.upper[1] : 0;
+-                    if(std::abs(predicted[j][1]-plane)<h) {V p=predicted[j];p[1]=2*plane-p[1];images.push_back(p);targets.push_back(j);}
++                    if(std::abs(predicted[j][1]-plane)<h) {V p=predicted[j];p[1]=2*plane-p[1];images.push_back(p);targets.push_back(j);reflection_sides.push_back(side);}
+                 }
+                 reflected.build(images);
+                 #pragma omp parallel for schedule(static)
+                 for(unsigned i=0;i<n;++i) {rows[i]=fluid.row(predicted[i]);wall_rows[i]=boundary ? reflected.row(predicted[i]) : std::vector<unsigned>{};}
++            }
++            if(it>0 && !refresh)for(unsigned image=0;image<images.size();++image) {
++                images[image]=predicted[targets[image]];
++                images[image][1]=2*(reflection_sides[image] ? s.upper[1] : 0)-images[image][1];
+             }
+             #pragma omp parallel for schedule(static)
+             for(unsigned i=0;i<n;++i) {
+@@ -232,6 +241,11 @@
+                 for(const auto &entry:jacobian[i])correction[entry.first]=add(correction[entry.first],mul(entry.second,lambda[i]*scale));
+             }
+             for(V c:correction)wall_density_displacement[1]+=c[1];
++            trace.write(reinterpret_cast<const char*>(predicted.data()),n*sizeof(V));
++            for(double density:rho) {double c=density/rest-1;trace.write(reinterpret_cast<const char*>(&c),8);}
++            trace.write(reinterpret_cast<const char*>(lambda.data()),n*8);
++            trace.write(reinterpret_cast<const char*>(correction.data()),n*sizeof(V));
++            if(!trace)throw std::runtime_error("iteration trace write failed");
+             Energy before=effective(predicted,old,dt,gravity);
+             for(unsigned i=0;i<n;++i) {predicted[i]=add(predicted[i],correction[i]);for(double q:predicted[i])if(!std::isfinite(q))nonfinite=true;}
+             density_work.add_stage(before,effective(predicted,old,dt,gravity),correction);

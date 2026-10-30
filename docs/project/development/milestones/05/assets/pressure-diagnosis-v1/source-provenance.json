@@ -1,0 +1,116 @@
+{
+  "base_heads": {
+    "EPQ": "814f88a7f4122b1b24ea645b210d89e1200a0c44",
+    "Maelstrom": "250932784790ba26cdc55fc38a877ccefacbf054"
+  },
+  "status": "Uncommitted standalone experimental source snapshots, not a Git checkpoint. The instrumentation diff documents all native changes from the retained reference.",
+  "files": [
+    {
+      "source": "tests/performance/test_pressure_diagnosis.py",
+      "snapshot": "sources/test_pressure_diagnosis.py",
+      "sha256": "e28326ba58484e2812367954bb9d8ab9114ee55357dd90bf134ae4d8dd3ee3fb"
+    },
+    {
+      "source": "tools/performance/pressure_assessment.py",
+      "snapshot": "sources/pressure_assessment.py",
+      "sha256": "d203b8f047bfceda5eb35406a0ef0165742ef3016595944bdfa7400408319749"
+    },
+    {
+      "source": "tools/performance/pressure_audit.py",
+      "snapshot": "sources/pressure_audit.py",
+      "sha256": "bcab183fa30195e394a40375bc8962d22384a07b583d6252778097f513828467"
+    },
+    {
+      "source": "tools/performance/pressure_campaign.py",
+      "snapshot": "sources/pressure_campaign.py",
+      "sha256": "fc8c26399add35922a2c2ad345799f9c46e3eaa7266ce3334b567e39a8b720d8"
+    },
+    {
+      "source": "tools/performance/pressure_constitutive.py",
+      "snapshot": "sources/pressure_constitutive.py",
+      "sha256": "d74a953347c7f2c6d0e8f7d4d92d864048999443e78cbb0158b5ad02f05ac1b9"
+    },
+    {
+      "source": "tools/performance/pressure_controls.py",
+      "snapshot": "sources/pressure_controls.py",
+      "sha256": "9cbc6764ef798bfefceda78045faab42e83589ab070d3483eebe8df943a08dda"
+    },
+    {
+      "source": "tools/performance/pressure_operator.py",
+      "snapshot": "sources/pressure_operator.py",
+      "sha256": "b1f9d8d51c5fb576fa964c370697bda0148256b3fd4ac1639d478af5a7ea50e5"
+    },
+    {
+      "source": "tools/performance/pressure_plot.py",
+      "snapshot": "sources/pressure_plot.py",
+      "sha256": "bda046f750e092ac6257b09afbcf5491d19c87695073b073680ce5386f3c9215"
+    },
+    {
+      "source": "tools/performance/pressure_probe.cpp",
+      "snapshot": "sources/pressure_probe.cpp",
+      "sha256": "042fccbd666866ca5635ed3f44c13c03f45d2e8f4bbff4faf2f8a03cf3bae2d9"
+    },
+    {
+      "source": "tools/performance/pressure_retain.py",
+      "snapshot": "sources/pressure_retain.py",
+      "sha256": "71caa2daf5c475777667a6472f6d1a76c923248225503aeb3aa08d1184a227a5"
+    },
+    {
+      "source": "tools/performance/pressure_run.py",
+      "snapshot": "sources/pressure_run.py",
+      "sha256": "e5a2e65a29c86580dd8d8698f826ab1536c21d5388eb747ee55619d6bfdfc9db"
+    },
+    {
+      "source": "tools/performance/qualification_audit.py",
+      "snapshot": "sources/qualification_audit.py",
+      "sha256": "ac72b7f6b255603774b933deaab04e74be7341ce376202edfc42edf165b9ab25"
+    },
+    {
+      "source": "tools/performance/spatial_audit.py",
+      "snapshot": "sources/spatial_audit.py",
+      "sha256": "7dfca9b5e4812df1f0851fc6bf0ab8d6c6dcfb7be1f94fe402918cfc6ff37a12"
+    },
+    {
+      "source": "tools/performance/traction_audit.py",
+      "snapshot": "sources/traction_audit.py",
+      "sha256": "d34242eceab08b8e0adb2ac52bdaaab52b722605e5cecc3ccd2a93f0b2ed1425"
+    },
+    {
+      "source": "tools/performance/traction_pbf_mirror.cpp",
+      "snapshot": "sources/traction_pbf_mirror.cpp",
+      "sha256": "56af94ed60a0603114096417839394c755906c60b11d65ed60c08ec3f92a97e0"
+    },
+    {
+      "source": "tools/performance/traction_viscosity.hpp",
+      "snapshot": "sources/traction_viscosity.hpp",
+      "sha256": "37a258e25877eaca291b8150f0be611bffaf46aea8bd302d1f65e883a372714f"
+    },
+    {
+      "source": "docs/research/sources/004-macklin-muller-position-based-fluids.md",
+      "snapshot": "readings/004-macklin-muller-position-based-fluids.md",
+      "sha256": "df599dd2abfdacb406fd674e605e40899211129d60df73dfda2d5378899c77a2"
+    },
+    {
+      "source": "docs/research/sources/076-litvinov-sph-consistency.md",
+      "snapshot": "readings/076-litvinov-sph-consistency.md",
+      "sha256": "e996653f9ee8f5a1c1cbba5f919ebb8dfe5758aac1e199f12b863e0bd4818c45"
+    }
+  ],
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "dependencies": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2"
+  },
+  "primary_build_flags": [
+    "-std=c++17",
+    "-O3",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-fopenmp",
+    "-ffp-contract=off",
+    "-DMAELSTROM_DUMP_PRESSURE_JACOBIAN"
+  ],
+  "native_binary_sha256": "85511282ddd653f5c5237f5e7f6e9a3d12f134bfb7bbe3321e0aa74b76f043d0"
+}

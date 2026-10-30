@@ -1,0 +1,59 @@
+[
+  {
+    "name": "production-control",
+    "command": [
+      "Maelstrom/target/release/maelstrom",
+      "inspect",
+      "/home/mahkrab/.local/share/maelstrom-experiments/numerical-work-v1-local/inputs/scenes/resolved.toml",
+      "--config",
+      "Maelstrom/experiments/numerical-work/production-control.toml",
+      "--format",
+      "json",
+      "--refine-timestep",
+      "1"
+    ],
+    "valid": true,
+    "hz": 480,
+    "iterations": 8,
+    "correction_scale": 0.0625,
+    "relaxation_scale": 20
+  },
+  {
+    "name": "half-rate",
+    "command": [
+      "Maelstrom/target/release/maelstrom",
+      "inspect",
+      "/home/mahkrab/.local/share/maelstrom-experiments/numerical-work-v1-local/inputs/scenes/resolved.toml",
+      "--config",
+      "Maelstrom/experiments/numerical-work/half-rate.toml",
+      "--format",
+      "json",
+      "--refine-timestep",
+      "1"
+    ],
+    "valid": true,
+    "hz": 240,
+    "iterations": 8,
+    "correction_scale": 0.5,
+    "relaxation_scale": 2
+  },
+  {
+    "name": "half-iterations",
+    "command": [
+      "Maelstrom/target/release/maelstrom",
+      "inspect",
+      "/home/mahkrab/.local/share/maelstrom-experiments/numerical-work-v1-local/inputs/scenes/resolved.toml",
+      "--config",
+      "Maelstrom/experiments/numerical-work/half-iterations.toml",
+      "--format",
+      "json",
+      "--refine-timestep",
+      "1"
+    ],
+    "valid": true,
+    "hz": 480,
+    "iterations": 4,
+    "correction_scale": 0.5,
+    "relaxation_scale": 2
+  }
+]

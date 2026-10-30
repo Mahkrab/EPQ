@@ -1,0 +1,14 @@
+{
+  "original_sha256": "d98d3facd2bfb09ad6afbf1fc7f0f72cdbaa488c8632ddb224ef18c7912e9bf6",
+  "corrected_sha256": "a8466e937c1b668a34da9d8e03f2dbe2eb166b287df3a8d9aab4eda9841b0cd7",
+  "original_attempts": [
+    "analytic/contact",
+    "analytic-followup/contact"
+  ],
+  "corrected_attempts": [
+    "analytic-contact-corrected/contact",
+    "contact-final"
+  ],
+  "reused_exploratory_path": "inputs/contact.bin",
+  "interpretation": "Original contact fixture was outside its x/z planes; the corrected one keeps x=z=0.4 inside the box. Original ballistic precision failures remain failures."
+}

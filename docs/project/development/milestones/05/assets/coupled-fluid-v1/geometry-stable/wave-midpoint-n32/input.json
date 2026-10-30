@@ -1,0 +1,29 @@
+{
+  "label": "wave-midpoint-n32",
+  "grid": {
+    "nx": 32,
+    "ny": 16,
+    "lx": 0.2,
+    "ly": 0.1,
+    "periodic_y": false,
+    "rho_liquid": 1000.0,
+    "rho_gas": 1.2
+  },
+  "duration": 0.37417161957818534,
+  "steps": 256,
+  "dt": 0.0014616078889772865,
+  "gravity": 9.81,
+  "integrator": "midpoint",
+  "interface_method": "geometric",
+  "transport_only": false,
+  "speed": 0.1,
+  "shear": 0.0,
+  "source_sha256": {
+    "coupled_audit.py": "6180d90ed6c270d614971ab7c318f1e318e9d48800e933b9b46e162f9cff20c9",
+    "coupled_campaign.py": "beeeb4c5ccd4b6cfd2d2af9fe141bd9b71d1e3e2e1a512dbd1ffaa12175dcc66",
+    "coupled_grid.py": "34cda514186416ec5c4882b8397d6465ec906bd627a920eefc84cd321b2f7fb3",
+    "coupled_model.py": "330cfa6c4933116e6c5b6871891df69ec6903759331fbf468cafd8869119c374",
+    "coupled_reference.py": "d2c2f51e3336217ab92107d47eca317a1bd632a3a9827039d7420ca8e10ee929",
+    "coupled_transport.py": "76c18b9df59b5fae3bd403a947ed3089f14ac0de3c33b63c7faa3ac29dee34a1"
+  }
+}

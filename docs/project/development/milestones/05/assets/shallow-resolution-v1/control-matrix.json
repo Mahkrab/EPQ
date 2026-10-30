@@ -1,0 +1,27 @@
+{
+  "created_utc": "2026-10-28T23:43:06.419161+00:00",
+  "reason": "The first refinement already removes the centroid/height/volume discrepancy; controls are placed at n=6 and n=12 to test the transition. n=18/24 remain on the main spatial ladder.",
+  "flat_samples_per_block_axis": [
+    6,
+    12,
+    18
+  ],
+  "boundary_and_inset_controls_at_n": [
+    6,
+    12
+  ],
+  "depth_nominal_layers": [
+    1,
+    1.25,
+    1.5,
+    2,
+    2.5,
+    3,
+    3.75,
+    4
+  ],
+  "depth_sampling": "Equal-volume rectangular strata: nx=4n, ny=floor(L), nz=(8n/3)*L/ny; selected fractions have integral nz, constant m, and geometric volume=N*dx^3. Avoids only testing depths commensurate with one particle layer.",
+  "time_controls": "Half dt at n=6,12,18, unchanged model; sixteen iterations at n=12.",
+  "cost": "First ladder timings are exploratory and include an overlapping equivalence/build probe. A separate serial timing series provides admitted cost; no audits/builds or transfers during it.",
+  "unchanged": "All accuracy thresholds, physical collision geometry and total mass remain fixed."
+}

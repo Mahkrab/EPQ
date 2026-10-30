@@ -1,0 +1,141 @@
+{
+  "base_heads": {
+    "EPQ": "814f88a7f4122b1b24ea645b210d89e1200a0c44",
+    "Maelstrom": "250932784790ba26cdc55fc38a877ccefacbf054"
+  },
+  "status": "Standalone experimental snapshots from explicitly uncommitted work, not a Git checkpoint; production implementation untouched. Earlier native mirrored source without the optional Jacobian export rebuilds byte-identically with export disabled.",
+  "sources": [
+    {
+      "source": "tests/performance/test_traction.py",
+      "snapshot": "sources/final/test_traction.py",
+      "sha256": "1c95c7486be9d4f23a66245c628dc4a70dd8ddfa27d3eb1e078903afb2858829"
+    },
+    {
+      "source": "tools/performance/qualification_audit.py",
+      "snapshot": "sources/final/qualification_audit.py",
+      "sha256": "ac72b7f6b255603774b933deaab04e74be7341ce376202edfc42edf165b9ab25"
+    },
+    {
+      "source": "tools/performance/qualification_solver.cpp",
+      "snapshot": "sources/final/qualification_solver.cpp",
+      "sha256": "b425f579cf66e5d19eed085041b6f9717bdb77d2565c168291508a8957d89dfc"
+    },
+    {
+      "source": "tools/performance/qualification_viscosity.hpp",
+      "snapshot": "sources/final/qualification_viscosity.hpp",
+      "sha256": "4c4987f5f17b30cadc6c86cdd09cc4d086d571a796626c04a5479556f4eddb06"
+    },
+    {
+      "source": "tools/performance/spatial_audit.py",
+      "snapshot": "sources/final/spatial_audit.py",
+      "sha256": "7dfca9b5e4812df1f0851fc6bf0ab8d6c6dcfb7be1f94fe402918cfc6ff37a12"
+    },
+    {
+      "source": "tools/performance/traction_assessment.py",
+      "snapshot": "sources/final/traction_assessment.py",
+      "sha256": "939ad63856771735ed3f0ee4a418304af12a9a2eb2a1d31fe694d4e5cf5dc38b"
+    },
+    {
+      "source": "tools/performance/traction_audit.py",
+      "snapshot": "sources/final/traction_audit.py",
+      "sha256": "d34242eceab08b8e0adb2ac52bdaaab52b722605e5cecc3ccd2a93f0b2ed1425"
+    },
+    {
+      "source": "tools/performance/traction_campaign.py",
+      "snapshot": "sources/final/traction_campaign.py",
+      "sha256": "7e79e47e2c8b2493a0a79476ea81c9fec024f77520bbcca67b20e169b1eca99d"
+    },
+    {
+      "source": "tools/performance/traction_deformed.cpp",
+      "snapshot": "sources/final/traction_deformed.cpp",
+      "sha256": "2f1febc51869f85a73f306fe1bdc687b7c32a18195a1d3833e32e6e7356496d1"
+    },
+    {
+      "source": "tools/performance/traction_invariants.cpp",
+      "snapshot": "sources/final/traction_invariants.cpp",
+      "sha256": "144f814a708a6fc4dab26c6b5d9b1090605b6749e0db3cd393012cbd4c4b09f8"
+    },
+    {
+      "source": "tools/performance/traction_jacobian.py",
+      "snapshot": "sources/final/traction_jacobian.py",
+      "sha256": "8adea972f2fc3a0f3cef6e0e56f3bb9bc6b7ca4c031f85003eee6705545b3d6a"
+    },
+    {
+      "source": "tools/performance/traction_native_check.py",
+      "snapshot": "sources/final/traction_native_check.py",
+      "sha256": "4640e720dcffaf2d6bbb4516e8257e9d6a2d034f72b9dc4d019474ef2ce78a76"
+    },
+    {
+      "source": "tools/performance/traction_operator.py",
+      "snapshot": "sources/final/traction_operator.py",
+      "sha256": "98f5424b81a58a1d7171a758746be044e37e943439bf7b761b7e7cd85421fd8d"
+    },
+    {
+      "source": "tools/performance/traction_pbf.cpp",
+      "snapshot": "sources/final/traction_pbf.cpp",
+      "sha256": "f1fa01329f7f17d52a087da9abecad5c92ab553b532d7e4381e0befa0b057806"
+    },
+    {
+      "source": "tools/performance/traction_pbf_axis.cpp",
+      "snapshot": "sources/final/traction_pbf_axis.cpp",
+      "sha256": "d2be3c742f7a51f243463bcd3332b0e6a13a80c2f33faeffb9410edee084d1a7"
+    },
+    {
+      "source": "tools/performance/traction_pbf_mirror.cpp",
+      "snapshot": "sources/final/traction_pbf_mirror.cpp",
+      "sha256": "56af94ed60a0603114096417839394c755906c60b11d65ed60c08ec3f92a97e0"
+    },
+    {
+      "source": "tools/performance/traction_pbf_modal.cpp",
+      "snapshot": "sources/final/traction_pbf_modal.cpp",
+      "sha256": "ac224a8fcda9329909f0bab72ad73735ac9df9f78d8123c582f9f5ede2126d18"
+    },
+    {
+      "source": "tools/performance/traction_plot.py",
+      "snapshot": "sources/final/traction_plot.py",
+      "sha256": "5e79084e93b88a517a1708a5d3608310706f5f111b19e5b56575bb3124812cf8"
+    },
+    {
+      "source": "tools/performance/traction_prefix.py",
+      "snapshot": "sources/final/traction_prefix.py",
+      "sha256": "d6973ecb657c92a6c9b58fba9bb8e48c7b25285feae4a05ebe821780525d6d02"
+    },
+    {
+      "source": "tools/performance/traction_pressure_reference.py",
+      "snapshot": "sources/final/traction_pressure_reference.py",
+      "sha256": "12fabf67643a42aab17a44f944d323e5ebed4cfef5442a13a34c09b9a33285c1"
+    },
+    {
+      "source": "tools/performance/traction_probe.cpp",
+      "snapshot": "sources/final/traction_probe.cpp",
+      "sha256": "37638e760dbc747813cfef2ee00327b41f845281773a4fe631b4088ac27ec815"
+    },
+    {
+      "source": "tools/performance/traction_retain.py",
+      "snapshot": "sources/final/traction_retain.py",
+      "sha256": "95ee391fddbdd45c2257ea11e55c1b36a6cb861492b12f056db05b639ba7cba7"
+    },
+    {
+      "source": "tools/performance/traction_viscosity.hpp",
+      "snapshot": "sources/final/traction_viscosity.hpp",
+      "sha256": "37a258e25877eaca291b8150f0be611bffaf46aea8bd302d1f65e883a372714f"
+    }
+  ],
+  "local_test_python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "dependencies": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2"
+  },
+  "native_compile_flags": [
+    "-std=c++17",
+    "-O3",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-fopenmp",
+    "-ffp-contract=off"
+  ],
+  "mirrored_original_and_rebuilt_binary_sha256": "6a25890e9667839301f00b108a0c37ed5918931747da9ff8ca2400a26f00eca7",
+  "final_auditor_sha256": "d34242eceab08b8e0adb2ac52bdaaab52b722605e5cecc3ccd2a93f0b2ed1425"
+}

@@ -1,0 +1,44 @@
+{
+  "parameters": {
+    "n": 4,
+    "gamma": 0.3,
+    "eps": 0.02,
+    "iterations": 1,
+    "refresh": 1,
+    "dt": 0.0020833333333333333,
+    "support": 2,
+    "gravity": 0.0,
+    "replay": null
+  },
+  "command": [
+    "/home/mahkrab/.local/share/maelstrom-experiments/pressure-probe",
+    "channel-mixed",
+    "4",
+    "0",
+    "0.0020833333333333333",
+    "0.0020833333333333333",
+    "1",
+    "1",
+    ".5",
+    "4",
+    "self",
+    "1",
+    "0",
+    "0",
+    "1",
+    "0.0",
+    "/home/mahkrab/documents/programs/EPQ/docs/project/development/milestones/05/assets/pressure-diagnosis-v1/native/one-iteration.ledger",
+    "/home/mahkrab/documents/programs/EPQ/docs/project/development/milestones/05/assets/pressure-diagnosis-v1/native/one-iteration.initial",
+    "1",
+    "2",
+    "2",
+    "geometric",
+    "0.02",
+    "1"
+  ],
+  "binary_sha256": "85511282ddd653f5c5237f5e7f6e9a3d12f134bfb7bbe3321e0aa74b76f043d0",
+  "initial_sha256": "812ef556aa632742c9dd1ff9d392e03d4101353e8f233fecd2295f7792fe19da",
+  "environment": {
+    "OMP_WAIT_POLICY": "PASSIVE"
+  }
+}

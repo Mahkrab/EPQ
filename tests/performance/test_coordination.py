@@ -58,7 +58,11 @@ class CoordinationTests(unittest.TestCase):
 
     def test_overlay_rejects_source_drift_and_duplicate_application(self):
         root = Path(__file__).resolve().parents[2]
-        source = (root / "Maelstrom/src/cuda/solver.rs").read_text()
+        # This diagnostic targeted the source before the retained device prefix
+        # optimisation (Maelstrom 87145510a9e5d812066138c35f1fac82e4f593b0).
+        source = (root / "tests/performance/fixtures/coordination_solver.rs").read_text()
+        with self.assertRaisesRegex(ValueError, "anchor changed"):
+            instrument((root / "Maelstrom/src/cuda/solver.rs").read_text())
         output = instrument(source)
         self.assertIn('"MAELSTROM_COORDINATION_PROBE"', output)
         self.assertIn("self.coordination_step.checked_add(1)", output)

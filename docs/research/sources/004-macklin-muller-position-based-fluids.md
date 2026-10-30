@@ -20,6 +20,11 @@ Published in ACM Transactions on Graphics and accompanied by an author-hosted pr
 
 ## Reading notes
 
+- Re-read §3–4 and Algorithm 1 of the five-page author preprint at
+  https://matthias-research.github.io/pages/publications/pbf_sig_preprint.pdf on 29 October 2026
+  for the pressure-only diagnosis. The density constraint, relaxed per-constraint multiplier,
+  summed position corrections and subsequent division by timestep are distinct parts of the
+  method. The manufactured tests assess their physical consistency independently of this citation.
 - Defines the per-particle density constraint, equal-mass simplification, relaxed multiplier and pairwise PBF
   position correction.
 - Uses Poly6 for density and Spiky for constraint directions, and solves particle constraints in Jacobi fashion.

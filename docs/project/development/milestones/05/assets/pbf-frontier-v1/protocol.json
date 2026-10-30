@@ -1,0 +1,77 @@
+{
+  "created_utc": "2026-10-29T17:12:09.547182+00:00",
+  "scope": "Measured particle-PBF throughput/quality frontier and production-architecture residency feasibility. No custom grid work, no history/settings/default changes. All ten CUDA optimisations retained.",
+  "reuse": "Use previous physical/architecture results for triage and known consistency failures; do not rerun settled formulation studies. Fresh raw observations are necessary for multiscene independent-control frontier and current full-solver timings.",
+  "fixed_physics": {
+    "spacing_m": 0.05,
+    "support_m": 0.1,
+    "physical_rho_kg_m3": 1000.0,
+    "mass": "Keep exact Rust-resolved baseline mass/rest bits.",
+    "artificial_pressure": "Existing0.1*h^2, reference0.2h, exponent4 held fixed",
+    "constraint": "Production signed Poly6/Spiky; no clamping, boundary support or kernel change in first frontier.",
+    "velocity_effects": "XSPH and confinement disabled, as retained performance baseline.",
+    "geometry": "Immutable per scene; no resolution/spacing refinement in parameter sweep.",
+    "configuration": "Schema2, refine factor1. Explicit dt and correction independently pinned; resolved JSON bits checked before use."
+  },
+  "quality_tiers": {
+    "practical": {
+      "purpose": "Explicit application error budget for a visually useful bulk liquid; not research-grade incompressible/Newtonian validation. Historical stricter failures stay failed.",
+      "finite_contained_no_coincidence": true,
+      "p95_positive_compression_max": 0.05,
+      "maximum_positive_compression_max": 0.25,
+      "minimum_separation_over_dx": 0.5,
+      "geometric_occupied_volume_relative_error_max": 0.1,
+      "hydrostatic_centroid_relative_error_max": 0.1,
+      "mechanical_energy_excess_relative_max": 0.1,
+      "unforced_shear_amplitude_loss_max": 0.2,
+      "timestep_refinement_bulk_observable_relative_change_max": 0.1,
+      "notes": "Density5% retains original health screen.10% bulk/volume/energy and20% shear loss are prospective application tolerances allowing modest compressibility/dissipation, not fitted material laws. No quietness-at5s requirement: preserve prior result but assess energy/motion against independent references. CFL warnings reported, not silently suppressed; finite stability alone is insufficient."
+    },
+    "research": {
+      "density_positive_p95_max": 0.01,
+      "bulk_volume_hydrostatic_velocity_reference_error_max": 0.01,
+      "constant_pressure_and_shear_consistency": "Prior mathematical failures remain; not rerun or waived.",
+      "energy": "Match independent inviscid/viscous reference, not arbitrary damping.",
+      "convergence": "Spatial/timestep/iteration convergence and boundary/free-surface consistency required. No PBF parameter selection can erase established formulation limitations."
+    }
+  },
+  "frontier_design": {
+    "screen": "Production baseline and independent one-factor controls about a declared anchor, with remaining quantities bit-pinned. Reference anchor chosen from prior triage, not a qualified winner: dt1/240,I8,scale0.5,epsilon*h^2=2.",
+    "axes": {
+      "dt": [
+        0.008333333333333333,
+        0.004166666666666667,
+        0.0020833333333333333,
+        0.0010416666666666667
+      ],
+      "iterations": [
+        2,
+        4,
+        8,
+        16
+      ],
+      "scale": [
+        0.0625,
+        0.25,
+        0.5,
+        1.0
+      ],
+      "epsilon_h_squared": [
+        0.02,
+        0.2,
+        2.0,
+        20.0
+      ]
+    },
+    "scenes": "Resolved falling block8000; hydrostatic full-width3200; resolved collision3456; free-surface spreading3200; unforced volume-preserving shear8000. Large110592 falling block for admitted/near-frontier policies.",
+    "screen_duration_s": 2.0,
+    "shear_duration_s": 0.2,
+    "observation_period_s": 0.125,
+    "extension": "Selected fastest/nondominated policies and production baseline through5s, plus dt/iteration controls; all failures retained.",
+    "timing": "Full production CLI completed-step total per actual simulated second, output/setup/audits excluded. Native quality replay separately matched byte-for-byte to production endpoints; never called production timing. Final comparisons one warmup and3 alternating repeats; no concurrent GPU workload.",
+    "bounds": "No exhaustive Cartesian tuning. At most18 independent-control screen policies, then at most6 focused combinations justified by observed frontier and existing evidence.",
+    "residency": "Assess snapshot()/particles() ownership and failure/cancellation contracts. Test only safe explicit GPU-owned experimental execution in isolated production source export, preserving old API. Keep per-stage checks, dynamic rows and cell width; no fixed512 cap shortcut.",
+    "alternative_trigger": "If no efficient PBF policy passes practical criteria, run/assess pinned established DFSPH with explicit mass/kernel/boundary/timer differences before any further custom grid development."
+  },
+  "retention": "Durable local and primary-home evidence; exact inputs, source/build identities, raw sampled states, failure records, timings and checksummed readback. No temporary-only archive."
+}

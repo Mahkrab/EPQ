@@ -1,0 +1,37 @@
+{
+  "command": [
+    "/home/mahkrab/.local/share/maelstrom-experiments/traction-pressure-probe",
+    "channel-mixed",
+    "4",
+    "0",
+    "0.0020833333333333333",
+    "0.0020833333333333333",
+    "1",
+    "1",
+    "0",
+    "1",
+    "self",
+    "1",
+    "0",
+    "0",
+    "1",
+    "0",
+    "/home/mahkrab/documents/programs/EPQ/docs/project/development/milestones/05/assets/traction-qualification-v1/pressure-jacobian/pressure.ledger",
+    "/home/mahkrab/documents/programs/EPQ/docs/project/development/milestones/05/assets/traction-qualification-v1/pressure-jacobian/initial.bin",
+    "1",
+    "2",
+    "2",
+    "geometric"
+  ],
+  "binary_sha256": "30703c5435e7275725cc8e78b4a002d9cee0d5607c844a77c83b74847bf728b9",
+  "density_absolute_error": 1.6653345369377348e-15,
+  "maximum_directional_derivative_errors_per_m": [
+    8.835978348997742e-08,
+    7.47376560639168e-08,
+    7.728999307232698e-08
+  ],
+  "maximum_tangential_gradient_sum_per_m": 2.2926105458509483e-14,
+  "native_action_error_m": 1.3867464593769795e-17,
+  "epsilon_m": 1.25e-08,
+  "reference": "Independent point-kernel sum and central finite differences; three arbitrary directions include self-mirror, cross-target and normal ghost derivatives. Sheared and jittered volume sampling, no time evolution/viscosity/contact."
+}

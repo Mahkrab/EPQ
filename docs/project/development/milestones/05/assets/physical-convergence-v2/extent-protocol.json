@@ -1,0 +1,14 @@
+{
+  "created_utc": "2026-10-28T23:01:06.624671+00:00",
+  "hypothesis": "Point-centre plane projection permits the finite particle volume to straddle a wall. This error is proportionally larger in a thin pool, and wall density support alone does not enforce geometric extent.",
+  "one_change": "Inset the collision plane by half nominal spacing (0.025 m) while retaining the existing volumetric wall sample positions and all C2 candidate settings.",
+  "cases": [
+    "hydro-thin1",
+    "hydro",
+    "fall",
+    "collision"
+  ],
+  "duration_s": 6,
+  "criteria": "Original criteria unchanged. Centroid agreement alone cannot admit a partially wetted or granular-looking film; inspect raw spatial distributions.",
+  "scope": "Explicit changed boundary model in isolated reference only."
+}

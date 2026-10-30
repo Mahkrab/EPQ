@@ -1,0 +1,8 @@
+{
+  "created_utc": "2026-10-28T22:46:40.420944+00:00",
+  "observation": "0.0255 m contact prevents coincidence but 32-iteration Poly6 tank still about 11% too shallow despite tiny density residual.",
+  "hypothesis": "Kernel self-sampling and clustered quadrature permit a density-correct but volume-wrong particle configuration.",
+  "new_single_control": "Increase only contact distance from 0.0255 to 0.04 m (0.8 nominal spacing); compare at fixed other parameters, then compare Spiky and Poly6 separately.",
+  "caveat": "An active exclusion radius is a changed PBF particle model. Do not claim it is neutral or continuum physical accuracy; reject excess energy, shear-like piles, bad hydrostatics or nonconvergence.",
+  "criteria": "No changes to original acceptance criteria."
+}

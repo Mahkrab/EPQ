@@ -1,0 +1,93 @@
+{
+  "source_heads": {
+    "EPQ": "814f88a7f4122b1b24ea645b210d89e1200a0c44",
+    "Maelstrom": "250932784790ba26cdc55fc38a877ccefacbf054"
+  },
+  "native_source_identities": {
+    "spatial_sort.cuh": {
+      "expected_sha256": "9db7cdb4d9671d3cf105ad89241414df1d77d6b0e965589f9aac4308671fdcf7",
+      "current_sha256": "9db7cdb4d9671d3cf105ad89241414df1d77d6b0e965589f9aac4308671fdcf7",
+      "match": true
+    },
+    "power.cuh": {
+      "expected_sha256": "255aac4535d59a9d74d912960428b6681b6ae564909ea34cdb87ead71bf405d8",
+      "current_sha256": "255aac4535d59a9d74d912960428b6681b6ae564909ea34cdb87ead71bf405d8",
+      "match": true
+    },
+    "power_exhaustive.cu": {
+      "expected_sha256": "82cde6d20690c2657e20164499a371b2cf1adb74d83a343a97370de14e478e5b",
+      "current_sha256": "82cde6d20690c2657e20164499a371b2cf1adb74d83a343a97370de14e478e5b",
+      "match": true
+    },
+    "neighbours.cuh": {
+      "expected_sha256": "25c013791467057b68c47bf7b57fa65e1f8377bdec35f1f73de62fb0474e667f",
+      "current_sha256": "25c013791467057b68c47bf7b57fa65e1f8377bdec35f1f73de62fb0474e667f",
+      "match": true
+    },
+    "solver.h": {
+      "expected_sha256": "4302b0ed260c1357ff8505a37782f63aa109411fc83d3f8fbf2af200be728229",
+      "current_sha256": "4302b0ed260c1357ff8505a37782f63aa109411fc83d3f8fbf2af200be728229",
+      "match": true
+    },
+    "row_sort.cuh": {
+      "expected_sha256": "233607e3f241bd2fd2d858fbaba734c7d5792b208a07cf15189f4ee241d091ac",
+      "current_sha256": "233607e3f241bd2fd2d858fbaba734c7d5792b208a07cf15189f4ee241d091ac",
+      "match": true
+    },
+    "bridge.cpp": {
+      "expected_sha256": "5481c4a6ea29353f4848470b1a46d616586d8c4b6c07ef9e0557e61e5beb5042",
+      "current_sha256": "5481c4a6ea29353f4848470b1a46d616586d8c4b6c07ef9e0557e61e5beb5042",
+      "match": true
+    },
+    "solver.cu": {
+      "expected_sha256": "b13d44290b80aad7de5e6669aea1d0c5f1b4f150b653969568a65655a0eb1744",
+      "current_sha256": "b13d44290b80aad7de5e6669aea1d0c5f1b4f150b653969568a65655a0eb1744",
+      "match": true
+    },
+    "kernels.cu": {
+      "expected_sha256": "0ec2d7009e58fcf6cc7b5aac032a731bb77f0d514df40424cd0dc317d81dee8f",
+      "current_sha256": "0ec2d7009e58fcf6cc7b5aac032a731bb77f0d514df40424cd0dc317d81dee8f",
+      "match": true
+    },
+    "power-LICENSE": {
+      "expected_sha256": "296abd795697343af2ef7b707e3d3a8bd2d4fe93f86bb6b54ae2c9553f1f7d16",
+      "current_sha256": "296abd795697343af2ef7b707e3d3a8bd2d4fe93f86bb6b54ae2c9553f1f7d16",
+      "match": true
+    },
+    "roundtrip.cu": {
+      "expected_sha256": "bb3aa7c294671099db5f3ae77171a762bbe05d00a1586659670902f0138f4b6f",
+      "current_sha256": "bb3aa7c294671099db5f3ae77171a762bbe05d00a1586659670902f0138f4b6f",
+      "match": true
+    },
+    "probe.h": {
+      "expected_sha256": "b715638ad1326c8241157b1b9335c4bf3d9ffa255343dbb290a7f9dad7a070f2",
+      "current_sha256": "b715638ad1326c8241157b1b9335c4bf3d9ffa255343dbb290a7f9dad7a070f2",
+      "match": true
+    },
+    "state_observation.cuh": {
+      "expected_sha256": "85399e7b353756c719bc2b69609456044302fc410a66214b48e3153fcd98c106",
+      "current_sha256": "85399e7b353756c719bc2b69609456044302fc410a66214b48e3153fcd98c106",
+      "match": true
+    }
+  },
+  "production_writes": false,
+  "history_changes": false,
+  "system_setting_changes": false,
+  "primary_hardware": "AMD Ryzen 9 7900X 12-Core Processor",
+  "primary_compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "primary_build_flags": [
+    "-std=c++17",
+    "-O3",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-fopenmp",
+    "-ffp-contract=off"
+  ],
+  "worker_threads": 8,
+  "primary_results": "Physical experiments only. Concurrent CPU requests and stage instrumentation; solver_s is not comparative timing.",
+  "local_python": "3.12.3",
+  "local_platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "Maelstrom_existing_dirty_state": " D native/tests.cpp\n D src/cuda/active_tests.rs\n D src/cuda/correction_tests.rs\n D src/cuda/density_tests.rs\n D src/cuda/mirror_tests.rs\n D src/cuda/observation_tests.rs\n D src/cuda/plane_tests.rs\n D src/cuda/residency_tests.rs\n D src/cuda/search_tests.rs\n M src/cuda/solver.rs\n D src/cuda/solver_tests.rs\n D src/cuda/spatial_sort_tests.rs\n D src/cuda/vorticity_tests.rs\n?? tests/native/\n?? tests/unit/\n",
+  "note": "Existing test relocation, parent documents and unrelated tooling preserved. No fresh Rust/CUDA qualification claimed."
+}

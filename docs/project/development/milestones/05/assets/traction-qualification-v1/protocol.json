@@ -1,0 +1,49 @@
+{
+  "created_utc": "2026-10-29T07:15:06.552288+00:00",
+  "scope": "Isolated physical qualification of dimensional viscosity/traction; no production/performance/history changes. Preserve every earlier result.",
+  "heads": {
+    "EPQ": "814f88a7f4122b1b24ea645b210d89e1200a0c44",
+    "Maelstrom": "250932784790ba26cdc55fc38a877ccefacbf054"
+  },
+  "materials": {
+    "rho_kg_m3": 1000,
+    "nu_m2_s": [
+      1e-06,
+      0.001
+    ],
+    "coupled_material": "nu=.001, mu=1Pa s isothermal Newtonian model liquid; waterlike nu=.000001 evaluated separately, not interchanged to pass quietness."
+  },
+  "operator_model": {
+    "old": "Central pair strain approximation; omitted neighbours, h=4dx; reproduce old slab errors.",
+    "candidate": "Corrected first-order least-squares velocity gradient G; symmetric strain D; dissipation functional R=mu sum V D:D; force=-dR/dv=-2mu G^T V sym(Gv). No fitted damping.",
+    "support": "h_visc=2dx; compare fixed support ratios only to isolate quadrature, not fit material nu.",
+    "boundary": "Natural traction at free surfaces; solid mirror velocity even tangential/odd normal for free-slip, odd all components for no-slip. Ghost samples enter gradient support, not fluid mass/energy quadrature. Forces use exact adjoint including ghost mappings.",
+    "invariants": "Rigid translations/rotations cost zero strain for unconstrained fluid; pair-adjoint forces have zero total internal linear and angular impulse. Solid reaction accounted explicitly. Rank-deficient/ill-conditioned gradients are rejected, not pseudoinverted into a thin-film model."
+  },
+  "reference_cases": {
+    "horizontal_shear": "u_x=U sin(2pi*z/L), uniform y; periodic x,z and natural/free-slip y; amplitude exp(-nu*k^2*t), independent H.",
+    "vertical_shear": "u_x=U cos(pi*y/H) for free-slip/free-slip; sin(pi*y/H) for no-slip/no-slip; sin(pi*y/(2H)) for no-slip/free-surface. Same analytic diffusion eigenmodes.",
+    "resolution": "Fixed L=.2,H=.05 m for viscosity tests, n_y=2,4,8,12,16,24; horizontal cells L/dx, dx=H/n_y; native/full matrix test may reduce exact Fourier symmetries but must retain boundary profile and cross-component couplings.",
+    "tractions": "Compare integrated stationary-wall force with analytic mu*A*[du/dy(top)-du/dy(bottom)], and virtual-work/energy balance; no fluid momentum conservation demanded where walls exert traction.",
+    "quietness": "Retain original K<=.00125 J/kg at5..6s as LEGACY screen; independently calculate modal decay time and threshold crossing for specified nu,U,H,BC. Any replacement applies only to reference-controlled regimes and never erases original FAIL."
+  },
+  "criteria": {
+    "modal_amplitude_relative_max": 0.05,
+    "velocity_L2_over_initial_rms_max": 0.05,
+    "wall_traction_relative_max": 0.05,
+    "physical_decay_rate_relative_max": 0.05,
+    "viscous_energy_increase_J_kg_max": 1e-12,
+    "linear_angular_internal_impulse_per_kg_max": 1e-10,
+    "energy_budget_J_kg_max": 1e-09,
+    "hydrostatic_centroid_relative_max": 0.01,
+    "height_volume_relative_max": 0.1,
+    "transient_p95_compression_max": 0.05,
+    "transient_max_compression_max": 0.25,
+    "minimum_separation_over_dx": 0.5,
+    "boundary_violation_m_max": 1e-06,
+    "gradient_condition_max": 1000000.0,
+    "convergence": "Errors decrease with fixed-geometry spatial refinement; two finest tested endpoints pass. Half dt and additional pressure iterations preserve the physical assessment."
+  },
+  "sequence": "First validate operator/traction/conservation on fixed positions, regular and controlled disorder. Full PBF only after relevant operator regime passes; then coupled shear decay, hydrostatics and a bounded collision control where possible. Never infer collision quiescence from an unrelated shear mode.",
+  "retention": "New durable directory; immutable requests/protocol supplements, source identities, native/raw operator observations and full scheduled PBF states plus every-step energy ledgers; compressed/raw SHA256 readback, fsync and second primary-PC home copy. No /tmp canonical archive."
+}

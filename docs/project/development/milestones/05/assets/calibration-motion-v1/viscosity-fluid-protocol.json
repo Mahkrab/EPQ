@@ -1,0 +1,8 @@
+{
+  "created_utc": "2026-10-29T01:05:51.190409+00:00",
+  "decision": "Use viscosity support 4dx; density support unchanged at 2dx. Central pair form and material nu unchanged.",
+  "analytic_validation": "At fixed support ratio2 shear amplitude error approaches50.5%; ratio3 approaches7%; ratio4 is4.27% at18 cells/wavelength and2.25% at48. Same 5% criterion.",
+  "limits": "Only smooth shear wavelengths >=18dx meet the tested material-accuracy budget. Fine-scale and truncated free-surface operator errors remain explicit qualification limitations.",
+  "fluid_cases": "Compare nu0,1e-6,1e-3 on matched raw and self n12 collision; no global damping. Any candidate must retain full criteria and converge in space/time/iterations.",
+  "source_change": "New version adds separate viscosity search radius; raw arithmetic checked against version1. Existing pinned running binaries unchanged."
+}

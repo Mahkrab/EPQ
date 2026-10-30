@@ -1,0 +1,19 @@
+{
+  "scope": "Future child experiments only; process-local OpenMP wait policy avoids worker spinning during serial energy-ledger reductions. Active pinned executables unchanged; no system settings or physical arithmetic changed; no timing inference.",
+  "binaries": {
+    "solver": {
+      "native_sha256": "5cfd5ca9d0a6e486c43a58201fae1bb9a58182163acca1849b45c0581142b166",
+      "wrapper_sha256": "3238637de2ea2ffdd098df25afdd857397c879119ec15a1cb25ce62bddc6f0c1",
+      "wrapper": "#!/bin/sh\nexport OMP_WAIT_POLICY=PASSIVE\nexec /home/oliver/.local/share/maelstrom-experiments/calibration-motion-v1/work/bin/objects/5cfd5ca9d0a6e486c43a58201fae1bb9a58182163acca1849b45c0581142b166 \"$@\"\n"
+    },
+    "solver-v2": {
+      "native_sha256": "890ce2b2c473e37d23a3858a07b89b1509eece56b29908cd4ac863eb5d66be37",
+      "wrapper_sha256": "a1fdea3593d11b1edacb1a94dc8a8bf4fbd75da8b74970752e93123e46489ce3",
+      "wrapper": "#!/bin/sh\nexport OMP_WAIT_POLICY=PASSIVE\nexec /home/oliver/.local/share/maelstrom-experiments/calibration-motion-v1/work/bin/objects/890ce2b2c473e37d23a3858a07b89b1509eece56b29908cd4ac863eb5d66be37 \"$@\"\n"
+    }
+  },
+  "v3_launch_environment": {
+    "OMP_WAIT_POLICY": "PASSIVE",
+    "native_sha256": "6763268d35555afc92be1cca88a105f8dc5240540ea8b901c3769145ec728cc4"
+  }
+}

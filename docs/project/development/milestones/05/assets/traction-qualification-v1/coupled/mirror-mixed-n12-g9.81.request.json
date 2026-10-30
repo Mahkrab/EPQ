@@ -1,0 +1,44 @@
+{
+  "parameters": {
+    "ny": 12,
+    "amplitude": 0.01,
+    "gravity": 9.81,
+    "dt": 0.0020833333333333333,
+    "duration": 1.0125,
+    "iterations": 24,
+    "threads": 4,
+    "boundary": true,
+    "density": true,
+    "nu": 0.001,
+    "mode": "channel-mixed"
+  },
+  "command": [
+    "/home/oliver/.local/share/maelstrom-experiments/traction-qualification-v1/traction-pbf-mirror",
+    "channel-mixed",
+    "12",
+    "0.01",
+    "0.0020833333333333333",
+    "1.0125",
+    "24",
+    "1",
+    ".5",
+    "4",
+    "self",
+    "1",
+    "0.001",
+    "1",
+    "1",
+    "9.81",
+    "/home/oliver/.local/share/maelstrom-experiments/traction-qualification-v1/coupled/mirror-mixed-n12-g9.81.ledger",
+    "-",
+    "1",
+    "2",
+    "2",
+    "geometric"
+  ],
+  "binary_sha256": "6a25890e9667839301f00b108a0c37ed5918931747da9ff8ca2400a26f00eca7",
+  "started_utc": "2026-10-29T07:50:32.250257+00:00",
+  "environment": {
+    "OMP_WAIT_POLICY": "PASSIVE"
+  }
+}

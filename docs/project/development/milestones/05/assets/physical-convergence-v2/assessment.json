@@ -1,0 +1,1212 @@
+{
+  "cases": {
+    "c2-artificial-pressure": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.0052166811627329945,
+        "final_centroid_error": 0.0029438914980860023,
+        "final_surface_error": 0.00793102391376845,
+        "minimum_separation_m": 0.04180757848497994,
+        "expected_depth_m": 0.38690593895078557
+      },
+      "numerically_admitted": false
+    },
+    "c2-ballistic": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0,
+        "final_centroid_error": 150902.1178439349,
+        "final_surface_error": 76742.86268281408,
+        "minimum_separation_m": 0.04999999999999982,
+        "expected_depth_m": 7.738118779015712e-05
+      },
+      "numerically_admitted": false
+    },
+    "c2-no-wall-density": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.005771822937823856,
+        "final_centroid_error": 0.40073281431880253,
+        "final_surface_error": 0.3232401733307838,
+        "minimum_separation_m": 0.0254954957413919,
+        "expected_depth_m": 0.38690593895078557
+      },
+      "numerically_admitted": false
+    },
+    "c2-pressure-dt480": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": false
+      },
+      "metrics": {
+        "worst_p95_compression": 0.0008914805042659069,
+        "final_centroid_error": 0.003244118592619481,
+        "final_surface_error": 0.027127615091303754,
+        "minimum_separation_m": 0.04480711724801058,
+        "expected_depth_m": 0.38690593895078557
+      },
+      "numerically_admitted": false
+    },
+    "c2-pressure-iter32": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": false
+      },
+      "metrics": {
+        "worst_p95_compression": 0.0006907572276722007,
+        "final_centroid_error": 0.0038752244176102776,
+        "final_surface_error": 0.023717861563840623,
+        "minimum_separation_m": 0.045310669251541404,
+        "expected_depth_m": 0.38690593895078557
+      },
+      "numerically_admitted": false
+    },
+    "c2-signed-constraint": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": false
+      },
+      "metrics": {
+        "worst_p95_compression": 0.004412785238379291,
+        "final_centroid_error": 0.006591532392847848,
+        "final_surface_error": 0.007344601184322451,
+        "minimum_separation_m": 0.025499999999999943,
+        "expected_depth_m": 0.38690593895078557
+      },
+      "numerically_admitted": false
+    },
+    "contact-isolated": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.004991598584263679,
+        "final_centroid_error": 0.11329514535149823,
+        "final_surface_error": 0.11546877975300818,
+        "minimum_separation_m": 0.025414636785819594,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "contact-iter128": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 2.662818780141407e-06,
+        "final_centroid_error": 0.11125494546282023,
+        "final_surface_error": 0.11266711857882127,
+        "minimum_separation_m": 0.025499900190810946,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "contact-iter32": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.00038653096420837585,
+        "final_centroid_error": 0.11138127125715847,
+        "final_surface_error": 0.11280899589019197,
+        "minimum_separation_m": 0.025494570430367902,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "contact-spiky": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.0007019814388713463,
+        "final_centroid_error": 0.05144839759836968,
+        "final_surface_error": 0.049913385099768434,
+        "minimum_separation_m": 0.025498062221872786,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "contact-spiky32-parallel": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.0007019814388713463,
+        "final_centroid_error": 0.05144839759836968,
+        "final_surface_error": 0.049913385099768434,
+        "minimum_separation_m": 0.025498062221872786,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "distribution-poly": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.00038653096420837585,
+        "final_centroid_error": 0.09300720561340127,
+        "final_surface_error": 0.10032385857944383,
+        "minimum_separation_m": 0.03998467111325433,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "distribution-spiky": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.0006253705944077037,
+        "final_centroid_error": 0.05122424246120072,
+        "final_surface_error": 0.05535653894945991,
+        "minimum_separation_m": 0.03998962943128722,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "extent-collision": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": false,
+        "surface": true,
+        "settled_motion": false
+      },
+      "metrics": {
+        "worst_p95_compression": 0.00295432278952501,
+        "final_centroid_error": 0.08102843673127741,
+        "final_surface_error": 0.08102843673127945,
+        "minimum_separation_m": 0.02538338380120619,
+        "expected_depth_m": 0.05440864766495422,
+        "mean_settled_centroid_m": 0.025000023926590825,
+        "mean_settled_surface_m": 0.05,
+        "max_settled_kinetic_J_kg": 0.0023402463330318944,
+        "bulk_observations": 0
+      },
+      "numerically_admitted": false
+    },
+    "extent-collision-dt120": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": false,
+        "surface": true,
+        "settled_motion": false
+      },
+      "metrics": {
+        "worst_p95_compression": 0.00884576164361306,
+        "final_centroid_error": 0.08102843673127741,
+        "final_surface_error": 0.08102843673127945,
+        "minimum_separation_m": 0.025172915229205457,
+        "expected_depth_m": 0.05440864766495422,
+        "mean_settled_centroid_m": 0.02500000000000006,
+        "mean_settled_surface_m": 0.05,
+        "max_settled_kinetic_J_kg": 0.0016965924500484432,
+        "bulk_observations": 0
+      },
+      "numerically_admitted": false
+    },
+    "extent-collision-dt480": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": false,
+        "surface": true,
+        "settled_motion": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.0008946164730769812,
+        "final_centroid_error": 0.0810281025850076,
+        "final_surface_error": 0.08102843673127945,
+        "minimum_separation_m": 0.025471423080339135,
+        "expected_depth_m": 0.05440864766495422,
+        "mean_settled_centroid_m": 0.025000009352694197,
+        "mean_settled_surface_m": 0.05,
+        "max_settled_kinetic_J_kg": 0.0010410382905199794,
+        "bulk_observations": 0
+      },
+      "numerically_admitted": false
+    },
+    "extent-fall": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": true,
+        "surface": true,
+        "settled_motion": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.005588645889679222,
+        "final_centroid_error": 0.03335290895341045,
+        "final_surface_error": 0.03988748726404314,
+        "minimum_separation_m": 0.0253703580441491,
+        "expected_depth_m": 0.09672648473769639,
+        "mean_settled_centroid_m": 0.049995283102928646,
+        "mean_settled_surface_m": 0.10076067859852673,
+        "max_settled_kinetic_J_kg": 0.000678821659366367,
+        "bulk_observations": 0
+      },
+      "numerically_admitted": true
+    },
+    "extent-hydro": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": true,
+        "surface": true,
+        "settled_motion": true,
+        "bulk_density": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.00211678615019828,
+        "final_centroid_error": 0.02998973956156833,
+        "final_surface_error": 0.017013980494015157,
+        "minimum_separation_m": 0.02549999999999996,
+        "expected_depth_m": 0.38690593895078557,
+        "mean_settled_centroid_m": 0.1992571199407556,
+        "mean_settled_surface_m": 0.39412176509290586,
+        "max_settled_kinetic_J_kg": 0.00014993018643352028,
+        "bulk_observations": 21
+      },
+      "numerically_admitted": true
+    },
+    "extent-hydro-thin1": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": true,
+        "surface": true,
+        "settled_motion": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0,
+        "final_centroid_error": 0.033843008677309494,
+        "final_surface_error": 0.03384300867731064,
+        "minimum_separation_m": 0.04999999999992005,
+        "expected_depth_m": 0.048363242368848196,
+        "mean_settled_centroid_m": 0.024999999999999974,
+        "mean_settled_surface_m": 0.05,
+        "max_settled_kinetic_J_kg": 2.2186712959340957e-29,
+        "bulk_observations": 0
+      },
+      "numerically_admitted": true
+    },
+    "gradient-eps.0001": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": false,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.044787297820118255,
+        "final_centroid_error": 0.07561830181423959,
+        "final_surface_error": 0.06388364301936723,
+        "minimum_separation_m": 0.00012982964728354123,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "gradient-eps.02": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": false,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.04599632929939301,
+        "final_centroid_error": 0.07219218320107253,
+        "final_surface_error": 0.054127013166650424,
+        "minimum_separation_m": 0.0022666192517816646,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "gradient-eps2": {
+      "completed": true,
+      "checks": {
+        "compression_p95": false,
+        "compression_tail": true,
+        "separation": false,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.11401045097834883,
+        "final_centroid_error": 0.12086576277662361,
+        "final_surface_error": 0.09090761218891726,
+        "minimum_separation_m": 0.001263614947616455,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "gradient-poly": {
+      "completed": true,
+      "checks": {
+        "compression_p95": false,
+        "compression_tail": false,
+        "separation": false,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.4179613555893058,
+        "final_centroid_error": 0.3531295467584914,
+        "final_surface_error": 0.27383909878781343,
+        "minimum_separation_m": 0,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "gradient-poly-low-eps": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": false,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.025967806529920923,
+        "final_centroid_error": 0.16142938662639902,
+        "final_surface_error": 0.14721870267743656,
+        "minimum_separation_m": 1.1046409642607692e-07,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "gradient-poly-low-eps-scale.5": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": false,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.004991598584263679,
+        "final_centroid_error": 0.15130721550887422,
+        "final_surface_error": 0.14785323898596953,
+        "minimum_separation_m": 1.3172637561056934e-07,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "gradient-scale.5": {
+      "completed": true,
+      "checks": {
+        "compression_p95": false,
+        "compression_tail": true,
+        "separation": false,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.10973368086072077,
+        "final_centroid_error": 0.11291879640584118,
+        "final_surface_error": 0.08965080160869399,
+        "minimum_separation_m": 0.0001981232387828494,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "gradient-scale1": {
+      "completed": true,
+      "checks": {
+        "compression_p95": false,
+        "compression_tail": true,
+        "separation": false,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.06598221539024829,
+        "final_centroid_error": 0.08715492847541448,
+        "final_surface_error": 0.0740100283451676,
+        "minimum_separation_m": 0.0011790487176628062,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "gradient-spiky-low-eps-scale.5": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": false,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.00573920901513425,
+        "final_centroid_error": 0.05075603902925701,
+        "final_surface_error": 0.04215649685469282,
+        "minimum_separation_m": 0.0005159265523297096,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "mechanisms-clamp": {
+      "completed": true,
+      "checks": {
+        "compression_p95": false,
+        "compression_tail": false,
+        "separation": true,
+        "containment": true,
+        "energy": false
+      },
+      "metrics": {
+        "worst_p95_compression": 0.30032734401508243,
+        "final_centroid_error": 0.4788815260715619,
+        "final_surface_error": 0.36482836369654775,
+        "minimum_separation_m": 0.030679187047039657,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "mechanisms-clamp-wall": {
+      "completed": true,
+      "checks": {
+        "compression_p95": false,
+        "compression_tail": false,
+        "separation": true,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.3251678935764237,
+        "final_centroid_error": 0.28901529602638293,
+        "final_surface_error": 0.19905174170950662,
+        "minimum_separation_m": 0.036780542601091495,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "mechanisms-clamp-wall-no-pressure": {
+      "completed": true,
+      "checks": {
+        "compression_p95": false,
+        "compression_tail": false,
+        "separation": false,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.41416240048868547,
+        "final_centroid_error": 0.30533184247631434,
+        "final_surface_error": 0.2415525587671802,
+        "minimum_separation_m": 0.001977256479565163,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "mechanisms-clamp-wall-scaled-pressure": {
+      "completed": true,
+      "checks": {
+        "compression_p95": false,
+        "compression_tail": false,
+        "separation": true,
+        "containment": true,
+        "energy": false
+      },
+      "metrics": {
+        "worst_p95_compression": 0.2946516715277854,
+        "final_centroid_error": 0.26031269072738145,
+        "final_surface_error": 0.15846984538552233,
+        "minimum_separation_m": 0.04365148412776962,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "mechanisms-signed": {
+      "completed": true,
+      "checks": {
+        "compression_p95": false,
+        "compression_tail": false,
+        "separation": true,
+        "containment": true,
+        "energy": false
+      },
+      "metrics": {
+        "worst_p95_compression": 0.3395014839480701,
+        "final_centroid_error": 0.4939184503441109,
+        "final_surface_error": 0.387603324538958,
+        "minimum_separation_m": 0.026050457423309963,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "mechanisms-wall-signed": {
+      "completed": true,
+      "checks": {
+        "compression_p95": false,
+        "compression_tail": false,
+        "separation": true,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.3723047486349147,
+        "final_centroid_error": 0.29040488010166066,
+        "final_surface_error": 0.2252850916741209,
+        "minimum_separation_m": 0.03695999667774763,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "primary-c2-hydro-iter128-retry": {
+      "completed": false,
+      "numerically_admitted": false
+    },
+    "primary-c2-hydro-iter128-retry2": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": true,
+        "surface": true,
+        "settled_motion": true,
+        "bulk_density": true
+      },
+      "metrics": {
+        "worst_p95_compression": 2.6812634543293967e-05,
+        "final_centroid_error": 0.0060467901359669085,
+        "final_surface_error": 0.011366447469839187,
+        "minimum_separation_m": 0.02549999999999997,
+        "expected_depth_m": 0.38690593895078557,
+        "mean_settled_centroid_m": 0.19229348370509444,
+        "mean_settled_surface_m": 0.3826102936624564,
+        "max_settled_kinetic_J_kg": 0.00044039489629993947,
+        "bulk_observations": 21
+      },
+      "numerically_admitted": true
+    },
+    "primary-c2-hydro-iter32": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": true,
+        "surface": true,
+        "settled_motion": true,
+        "bulk_density": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.000656357517429651,
+        "final_centroid_error": 0.006154551219117001,
+        "final_surface_error": 0.011608995031137439,
+        "minimum_separation_m": 0.025499999999999974,
+        "expected_depth_m": 0.38690593895078557,
+        "mean_settled_centroid_m": 0.19226943300883945,
+        "mean_settled_surface_m": 0.38242764913802624,
+        "max_settled_kinetic_J_kg": 0.0003148193739124255,
+        "bulk_observations": 21
+      },
+      "numerically_admitted": true
+    },
+    "primary-c2-hydro-iter8": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": true,
+        "surface": true,
+        "settled_motion": true,
+        "bulk_density": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.0053024716875238465,
+        "final_centroid_error": 0.008812609063450164,
+        "final_surface_error": 0.01459330239076476,
+        "minimum_separation_m": 0.02549999999999996,
+        "expected_depth_m": 0.38690593895078557,
+        "mean_settled_centroid_m": 0.19175548724496455,
+        "mean_settled_surface_m": 0.3819931544016099,
+        "max_settled_kinetic_J_kg": 0.00046300327080809397,
+        "bulk_observations": 21
+      },
+      "numerically_admitted": true
+    },
+    "primary-c2-hydro-large": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": true,
+        "surface": true,
+        "settled_motion": true,
+        "bulk_density": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.004014106993176059,
+        "final_centroid_error": 0.004315550129057772,
+        "final_surface_error": 0.0008895747921744603,
+        "minimum_separation_m": 0.02549999999999989,
+        "expected_depth_m": 0.38690593895078557,
+        "mean_settled_centroid_m": 0.19430216922629787,
+        "mean_settled_surface_m": 0.38668895551804267,
+        "max_settled_kinetic_J_kg": 0.0005093053114255323,
+        "bulk_observations": 21
+      },
+      "numerically_admitted": true
+    },
+    "qual-c2-collision": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": false,
+        "surface": false,
+        "settled_motion": false
+      },
+      "metrics": {
+        "worst_p95_compression": 0.0032104025287735816,
+        "final_centroid_error": 0.2547712241227854,
+        "final_surface_error": 0.4443798200859967,
+        "minimum_separation_m": 0.025498898612094284,
+        "expected_depth_m": 0.05440864766495422,
+        "mean_settled_centroid_m": 0.020326138880826038,
+        "mean_settled_surface_m": 0.07830462802036363,
+        "max_settled_kinetic_J_kg": 0.0023231597274230276,
+        "bulk_observations": 0
+      },
+      "numerically_admitted": false
+    },
+    "qual-c2-fall": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": false,
+        "surface": true,
+        "settled_motion": false
+      },
+      "metrics": {
+        "worst_p95_compression": 0.006314078566737269,
+        "final_centroid_error": 0.09691157283104557,
+        "final_surface_error": 0.051316710464371286,
+        "minimum_separation_m": 0.025499999999999884,
+        "expected_depth_m": 0.09672648473769639,
+        "mean_settled_centroid_m": 0.0437235957835362,
+        "mean_settled_surface_m": 0.09211459723652393,
+        "max_settled_kinetic_J_kg": 0.0016168849643174224,
+        "bulk_observations": 0
+      },
+      "numerically_admitted": false
+    },
+    "qual-c2-hydro-dt120": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": true,
+        "surface": true,
+        "settled_motion": true,
+        "bulk_density": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.02279857705765176,
+        "final_centroid_error": 0.016641872901504026,
+        "final_surface_error": 0.019591880676065036,
+        "minimum_separation_m": 0.025499999999999957,
+        "expected_depth_m": 0.38690593895078557,
+        "mean_settled_centroid_m": 0.19024582024388068,
+        "mean_settled_surface_m": 0.3793681626994805,
+        "max_settled_kinetic_J_kg": 0.00033726901712196727,
+        "bulk_observations": 21
+      },
+      "numerically_admitted": true
+    },
+    "qual-c2-hydro-dt240": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": true,
+        "surface": true,
+        "settled_motion": true,
+        "bulk_density": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.0053024716875238465,
+        "final_centroid_error": 0.008812609063450164,
+        "final_surface_error": 0.01459330239076476,
+        "minimum_separation_m": 0.02549999999999996,
+        "expected_depth_m": 0.38690593895078557,
+        "mean_settled_centroid_m": 0.19175548724496455,
+        "mean_settled_surface_m": 0.3819931544016099,
+        "max_settled_kinetic_J_kg": 0.00046300327080809397,
+        "bulk_observations": 21
+      },
+      "numerically_admitted": true
+    },
+    "qual-c2-hydro-dt480": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": true,
+        "surface": true,
+        "settled_motion": true,
+        "bulk_density": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.0010174125070390172,
+        "final_centroid_error": 0.006702190640124129,
+        "final_surface_error": 0.011097504920371227,
+        "minimum_separation_m": 0.02549999999999994,
+        "expected_depth_m": 0.38690593895078557,
+        "mean_settled_centroid_m": 0.1921832411855184,
+        "mean_settled_surface_m": 0.382899973334816,
+        "max_settled_kinetic_J_kg": 0.0010179806663456758,
+        "bulk_observations": 21
+      },
+      "numerically_admitted": true
+    },
+    "qual-c2-hydro-iter128": {
+      "completed": false,
+      "numerically_admitted": false
+    },
+    "qual-c2-hydro-iter32": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": true,
+        "surface": true,
+        "settled_motion": true,
+        "bulk_density": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.000656357517429651,
+        "final_centroid_error": 0.006154551219117001,
+        "final_surface_error": 0.011608995031137439,
+        "minimum_separation_m": 0.025499999999999974,
+        "expected_depth_m": 0.38690593895078557,
+        "mean_settled_centroid_m": 0.19226943300883945,
+        "mean_settled_surface_m": 0.38242764913802624,
+        "max_settled_kinetic_J_kg": 0.0003148193739124255,
+        "bulk_observations": 21
+      },
+      "numerically_admitted": true
+    },
+    "resolution-hydro-thin1": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": false,
+        "surface": false,
+        "settled_motion": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.0007967444027749959,
+        "final_centroid_error": 0.4449516492349547,
+        "final_surface_error": 0.13577307618954906,
+        "minimum_separation_m": 0.03966667890869088,
+        "expected_depth_m": 0.048363242368848196,
+        "mean_settled_centroid_m": 0.013422943539054747,
+        "mean_settled_surface_m": 0.04184531845357532,
+        "max_settled_kinetic_J_kg": 0.00013819236320295643,
+        "bulk_observations": 0
+      },
+      "numerically_admitted": false
+    },
+    "resolution-hydro-thin2-retry": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": false,
+        "surface": true,
+        "settled_motion": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.00047430108294310713,
+        "final_centroid_error": 0.10110818756303216,
+        "final_surface_error": 0.045874418480809476,
+        "minimum_separation_m": 0.02549999999999994,
+        "expected_depth_m": 0.09672648473769639,
+        "mean_settled_centroid_m": 0.043504306454533084,
+        "mean_settled_surface_m": 0.09229979512039257,
+        "max_settled_kinetic_J_kg": 0.0008742963287916113,
+        "bulk_observations": 0
+      },
+      "numerically_admitted": false
+    },
+    "resolution-hydro-thin4": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": true,
+        "surface": true,
+        "settled_motion": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.0014702021527897013,
+        "final_centroid_error": 0.031179927252097766,
+        "final_surface_error": 0.025110079505385515,
+        "minimum_separation_m": 0.025499999999999978,
+        "expected_depth_m": 0.19345296947539278,
+        "mean_settled_centroid_m": 0.09372726262249567,
+        "mean_settled_surface_m": 0.18865491232015272,
+        "max_settled_kinetic_J_kg": 0.0009256626097194939,
+        "bulk_observations": 0
+      },
+      "numerically_admitted": true
+    },
+    "resolution-resolved-collision": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": true,
+        "surface": true,
+        "settled_motion": true,
+        "bulk_density": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.014425528004155197,
+        "final_centroid_error": 0.005515330761959714,
+        "final_surface_error": 0.00711440574217204,
+        "minimum_separation_m": 0.02549999999999992,
+        "expected_depth_m": 0.3439163901784761,
+        "mean_settled_centroid_m": 0.1710497305737538,
+        "mean_settled_surface_m": 0.3415749781007217,
+        "max_settled_kinetic_J_kg": 0.0011060885612482188,
+        "bulk_observations": 21
+      },
+      "numerically_admitted": true
+    },
+    "resolution-resolved-fall": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true,
+        "centroid": true,
+        "surface": true,
+        "settled_motion": true,
+        "bulk_density": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.021997137390410648,
+        "final_centroid_error": 0.004280294509720792,
+        "final_surface_error": 0.005525954086360812,
+        "minimum_separation_m": 0.025499999999999932,
+        "expected_depth_m": 0.33585584978366806,
+        "mean_settled_centroid_m": 0.16724018531849935,
+        "mean_settled_surface_m": 0.33401943259561256,
+        "max_settled_kinetic_J_kg": 0.0011349762755316808,
+        "bulk_observations": 21
+      },
+      "numerically_admitted": true
+    },
+    "row-filter-equivalence": {
+      "completed": true,
+      "checks": {
+        "compression_p95": false,
+        "compression_tail": false,
+        "separation": true,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.3251678935764237,
+        "final_centroid_error": 0.28901529602638293,
+        "final_surface_error": 0.19905174170950662,
+        "minimum_separation_m": 0.036780542601091495,
+        "expected_depth_m": 0.39612778479203586
+      },
+      "numerically_admitted": false
+    },
+    "wendland-contact-iter32": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.000656357517429651,
+        "final_centroid_error": 0.004450767095839023,
+        "final_surface_error": 0.006866799879141113,
+        "minimum_separation_m": 0.025499999999999974,
+        "expected_depth_m": 0.38690593895078557
+      },
+      "numerically_admitted": false
+    },
+    "wendland-contact-iter8": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": true,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.0053024716875238465,
+        "final_centroid_error": 0.006292241163530274,
+        "final_surface_error": 0.004740631508573625,
+        "minimum_separation_m": 0.02549999999999996,
+        "expected_depth_m": 0.38690593895078557
+      },
+      "numerically_admitted": false
+    },
+    "wendland-iter32": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": false,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.000656357517429651,
+        "final_centroid_error": 0.004588601146520605,
+        "final_surface_error": 0.00990449247889065,
+        "minimum_separation_m": 0.0017876098822263283,
+        "expected_depth_m": 0.38690593895078557
+      },
+      "numerically_admitted": false
+    },
+    "wendland-iter8": {
+      "completed": true,
+      "checks": {
+        "compression_p95": true,
+        "compression_tail": true,
+        "separation": false,
+        "containment": true,
+        "energy": true
+      },
+      "metrics": {
+        "worst_p95_compression": 0.0053024716875238465,
+        "final_centroid_error": 0.0059518534034257225,
+        "final_surface_error": 0.006266795915818504,
+        "minimum_separation_m": 0.0006989676125787048,
+        "expected_depth_m": 0.38690593895078557
+      },
+      "numerically_admitted": false
+    }
+  },
+  "convergence": {
+    "timestep": {
+      "complete": true,
+      "results": {
+        "mean_settled_centroid_m": {
+          "values": [
+            0.19024582024388068,
+            0.19175548724496455,
+            0.1921832411855184
+          ],
+          "changes_m": [
+            0.0015096670010838753,
+            0.00042775394055385996
+          ],
+          "within_bound": true,
+          "decreasing": true
+        },
+        "mean_settled_surface_m": {
+          "values": [
+            0.3793681626994805,
+            0.3819931544016099,
+            0.382899973334816
+          ],
+          "changes_m": [
+            0.002624991702129431,
+            0.0009068189332060994
+          ],
+          "within_bound": true,
+          "decreasing": true
+        }
+      },
+      "passed": true
+    },
+    "iterations": {
+      "complete": true,
+      "results": {
+        "mean_settled_centroid_m": {
+          "values": [
+            0.19175548724496455,
+            0.19226943300883945,
+            0.19229348370509444
+          ],
+          "changes_m": [
+            0.0005139457638748957,
+            2.4050696254995785e-05
+          ],
+          "within_bound": true,
+          "decreasing": true
+        },
+        "mean_settled_surface_m": {
+          "values": [
+            0.3819931544016099,
+            0.38242764913802624,
+            0.3826102936624564
+          ],
+          "changes_m": [
+            0.0004344947364163243,
+            0.00018264452443017554
+          ],
+          "within_bound": true,
+          "decreasing": true
+        }
+      },
+      "passed": true
+    }
+  },
+  "combined_original_scene_gate": false,
+  "cost_campaign_authorised_by_physical_gate": false,
+  "production_change_admitted": false,
+  "note": "Bulk tests without interior samples are unavailable, not evidence of bulk accuracy. Snapshot gates are not continuous-time bounds."
+}

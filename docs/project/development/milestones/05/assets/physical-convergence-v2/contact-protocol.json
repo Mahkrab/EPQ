@@ -1,0 +1,7 @@
+{
+  "created_utc": "2026-10-28T22:44:44.719949+00:00",
+  "reason": "Zero/near-zero separation observed in density-only alternatives, despite improved density percentiles.",
+  "one_change": "Additional immutable-snapshot equal-mass distance-constraint projection after each density/projection pass. Target 0.0255 m gives 0.0005 m margin above unchanged 0.025 m observation guard.",
+  "controls": "Compare poly-low-eps-scale.5 with identical epsilon .02, scale .5, pressure0, dt1/240, eight passes; only contact differs. Then separately increase iterations, change dt or change direction kernel.",
+  "acceptance": "Original protocol unchanged; no admission on separation/density alone."
+}

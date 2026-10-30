@@ -1,0 +1,59 @@
+{
+  "created_utc": "2026-10-28T22:39:21.467987+00:00",
+  "production_commit": "250932784790ba26cdc55fc38a877ccefacbf054",
+  "scope": "Isolated PBF alternatives; no production changes or cost measurements until combined admission.",
+  "raw_storage": "Per-request immutable files under this repository evidence directory, outside temporary storage; gzip raw complete scheduled observations, fsync and SHA256 after each run; mirror final package to PC home durable directory.",
+  "observation_schedule_s": 0.05,
+  "screen_duration_s": 2.0,
+  "qualification_duration_s": 6.0,
+  "settled_window_s": [
+    5.0,
+    6.0
+  ],
+  "criteria": {
+    "all_checkpoints": {
+      "p95_positive_density_error_max": 0.05,
+      "max_positive_density_error_max": 0.25,
+      "minimum_separation_m": 0.025,
+      "boundary_violation_m_max": 1e-06,
+      "nonfinite_or_coincident": 0,
+      "mechanical_energy_increase_J_kg_max": 0.004905
+    },
+    "hydrostatic": {
+      "centroid_relative_error_max": 0.05,
+      "p95_height_plus_half_spacing_relative_error_max": 0.1,
+      "bulk_absolute_density_error_p95_max": 0.05,
+      "settled_kinetic_J_kg_max": 0.00125
+    },
+    "convergence": {
+      "timestep_series_s": [
+        0.008333333333333333,
+        0.004166666666666667,
+        0.0020833333333333333
+      ],
+      "iteration_series": [
+        8,
+        32,
+        128
+      ],
+      "centroid_change_m_max": 0.005,
+      "surface_height_change_m_max": 0.005,
+      "refinement_changes_must_decrease": true
+    },
+    "ballistic": {
+      "COM_error_bound": "0.5*g*T*dt + 1e-8 (semi-implicit Euler), internal horizontal COM drift <= 1e-8 m"
+    }
+  },
+  "model_ladder": [
+    "production-equation reference",
+    "compression-only (one change)",
+    "static volumetric wall density and its fixed-particle gradient (one change)",
+    "zero artificial pressure (one change)",
+    "regularisation epsilon*h^2 independently varied",
+    "complete correction scale independently varied",
+    "true Poly6 gradient replacing Spiky (one change)",
+    "independent timestep/iteration sweeps on fixed model"
+  ],
+  "classification": "Bulk and surface diagnostics use analytical tank height H=M/(rho*A), not a density-threshold label. Signed and compression-only errors both retained. Wall region distance<h; free-surface region y>H-h.",
+  "unqualified": "Pressure-field CFD accuracy, surface tension, turbulent velocity validation, curved/moving walls and production API semantics."
+}

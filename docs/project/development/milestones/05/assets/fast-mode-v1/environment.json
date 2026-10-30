@@ -1,0 +1,47 @@
+{
+  "created_utc": "2026-10-30T00:16:42.017548+00:00",
+  "source_base_commit": "250932784790ba26cdc55fc38a877ccefacbf054",
+  "source_state": "Isolated export of working source; application mode patch and pre-existing test relocation; no history operations",
+  "binary_sha256": "1b4f57d61d11d350cd5be26755cc0b1534cbff1359989bdd46b05c79e695ede9",
+  "source_manifest_sha256": "a411532aa283e5e31ee26ad2edb5857db4735aee38fe81ddfdbe69252f26946e",
+  "commands": [
+    {
+      "command": [
+        "uname",
+        "-a"
+      ],
+      "stdout": "Linux OliverPC 6.6.87.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux\n",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "nvidia-smi",
+        "--query-gpu=name,memory.total,driver_version",
+        "--format=csv"
+      ],
+      "stdout": "name, memory.total [MiB], driver_version\nNVIDIA GeForce RTX 4070, 12282 MiB, 610.88\n",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/home/oliver/.cargo/bin/rustc",
+        "--version",
+        "--verbose"
+      ],
+      "stdout": "rustc 1.96.0 (ac68faa20 2026-05-25)\nbinary: rustc\ncommit-hash: ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96\ncommit-date: 2026-05-25\nhost: x86_64-unknown-linux-gnu\nrelease: 1.96.0\nLLVM version: 22.1.2\n",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/usr/local/cuda/bin/nvcc",
+        "--version"
+      ],
+      "stdout": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2026 NVIDIA Corporation\nBuilt on Tue_Jun_09_02:43:40_PM_PDT_2026\nCuda compilation tools, release 13.3, V13.3.73\nBuild cuda_13.3.r13.3/compiler.38244171_0\n",
+      "stderr": "",
+      "exit_code": 0
+    }
+  ]
+}

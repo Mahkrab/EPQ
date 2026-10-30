@@ -1,0 +1,74 @@
+{
+  "created_utc": "2026-10-29T07:34:04.109902+00:00",
+  "equation": "u_t=nu*u_yy or nu*u_zz; K(t)=K0 exp(-2nu*k^2*t)",
+  "interpretation": "Independent exact admissible viscous flows refute a universal5s quietness law. They do not predict nonlinear collision decay; old collision FAIL results preserved.",
+  "legacy_threshold": 0.00125,
+  "records": [
+    {
+      "nu": 1e-06,
+      "mode": "no-slip-bed/free-surface vertical",
+      "H": 0.05625,
+      "wavelength": 0.8,
+      "U": 0.1,
+      "initial_K": 0.0025000000000000005,
+      "rate_per_s": 0.0007798205946539739,
+      "amplitude_at5": 0.9961084886586715,
+      "K_at5": 0.0024805803029446572,
+      "time_to_legacy_threshold_s": 444.427337077134
+    },
+    {
+      "nu": 1e-06,
+      "mode": "free-slip horizontal periodic",
+      "H": 0.05625,
+      "wavelength": 0.8,
+      "U": 0.1,
+      "initial_K": 0.0025000000000000005,
+      "rate_per_s": 6.168502750680848e-05,
+      "amplitude_at5": 0.9996916224206092,
+      "K_at5": 0.002498458349844875,
+      "time_to_legacy_threshold_s": 5618.439421814633
+    },
+    {
+      "nu": 1e-06,
+      "mode": "free-slip uniform translation, periodic horizontal channel",
+      "initial_K": 0.005000000000000001,
+      "rate_per_s": 0,
+      "K_at5": 0.005000000000000001,
+      "time_to_legacy_threshold_s": null,
+      "reason": "Conserved mean tangential momentum with zero boundary shear traction; viscosity cannot remove rigid translation."
+    },
+    {
+      "nu": 0.001,
+      "mode": "no-slip-bed/free-surface vertical",
+      "H": 0.05625,
+      "wavelength": 0.8,
+      "U": 0.1,
+      "initial_K": 0.0025000000000000005,
+      "rate_per_s": 0.779820594653974,
+      "amplitude_at5": 0.02026007712777325,
+      "K_at5": 1.0261768130583022e-06,
+      "time_to_legacy_threshold_s": 0.44442733707713394
+    },
+    {
+      "nu": 0.001,
+      "mode": "free-slip horizontal periodic",
+      "H": 0.05625,
+      "wavelength": 0.8,
+      "U": 0.1,
+      "initial_K": 0.0025000000000000005,
+      "rate_per_s": 0.061685027506808494,
+      "amplitude_at5": 0.7346029443286333,
+      "K_at5": 0.0013491037145407431,
+      "time_to_legacy_threshold_s": 5.618439421814632
+    },
+    {
+      "nu": 0.001,
+      "mode": "free-slip uniform translation, periodic horizontal channel",
+      "initial_K": 0.005000000000000001,
+      "rate_per_s": 0,
+      "K_at5": 0.005000000000000001,
+      "time_to_legacy_threshold_s": null,
+      "reason": "Conserved mean tangential momentum with zero boundary shear traction; viscosity cannot remove rigid translation."
+    }
+  ]
+}

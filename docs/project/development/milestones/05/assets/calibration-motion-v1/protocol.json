@@ -1,0 +1,93 @@
+{
+  "created_utc": "2026-10-29T00:57:45.745884+00:00",
+  "scope": "Independent calibration and motion investigation; no production/CUDA/cost campaign.",
+  "source_heads": {
+    "EPQ": "814f88a7f4122b1b24ea645b210d89e1200a0c44",
+    "Maelstrom": "250932784790ba26cdc55fc38a877ccefacbf054"
+  },
+  "fixed_collision": {
+    "mass_kg": 52.23230175835605,
+    "box_m": [
+      1.2,
+      1.2,
+      0.8
+    ],
+    "blocks_m": [
+      [
+        0.1,
+        0.375,
+        0.2
+      ],
+      [
+        0.8,
+        0.375,
+        0.2
+      ]
+    ],
+    "block_extent_m": [
+      0.3,
+      0.3,
+      0.3
+    ],
+    "rho_kg_m3": 1000,
+    "dx": ".3/n",
+    "h": "2*dx",
+    "inset": ".5*dx",
+    "contact": ".51*dx",
+    "dt": "(1/240)*6/n",
+    "iterations": 8,
+    "epsilon_h_squared": 0.02,
+    "correction_scale": 0.5,
+    "artificial_pressure": 0
+  },
+  "calibration_hypotheses": {
+    "raw": "Inherited mass and unit-integral C2 kernel.",
+    "self": "Subtract constant B=sum W(lattice at ell)-1/ell^3 at particle sites only; ell=(m/rho)^(1/3). Matching gradient unchanged because B is constant. Physical mass, support, unit integral unchanged.",
+    "ratio": "Divide density and matching gradient by D=ell^3 sum W(ell lattice). Discrete normalization control; kernel unit-integral loss recorded, not automatically qualified.",
+    "wallmass": "Separately change fixed wall sample volume from m/rho to dx^3; no wall impulse assigned to fluid conservation."
+  },
+  "motion_ledger": "Every accepted step records K,U,E,linear/angular momentum and signed/positive/negative stage energy changes, correction size, contact/plane activity and velocity reconstruction. Raw p/v every .05 s. Gravity prediction budget independently checked against semi-implicit Euler; stage closure independent at stored observations.",
+  "physical_viscosity": {
+    "equation": "rho Dv/Dt=-grad(p)+mu laplacian(v)+rho*g, constant incompressible Newtonian liquid",
+    "nu_m2_s": [
+      1e-06,
+      0.001
+    ],
+    "mu_Pa_s_at_rho1000": [
+      0.001,
+      1.0
+    ],
+    "selection": "Waterlike and specified viscous model fluid, fixed before runs, not fitted to quiescence or centroid. No global velocity damping.",
+    "boundaries": "Impermeable free-slip walls; no viscous wall drag. Fluid pair strain dissipation, natural free surface.",
+    "operator": "Symmetric central pair strain Laplacian, 2(d+2)=10 factor, physical particle volume m/rho. Linear/angular momentum conserved, rigid rotation has zero strain. Explicit step row-sum bound checked."
+  },
+  "criteria": {
+    "sampled_transient_p95_compression_max": 0.05,
+    "sampled_transient_max_compression_max": 0.25,
+    "separation_fraction_dx_min": 0.5,
+    "plane_violation_m_max": 1e-06,
+    "settled_window_s": [
+      5,
+      6
+    ],
+    "settled_centroid_relative_max": 0.05,
+    "strict_calibration_centroid_relative_max": 0.01,
+    "settled_height_relative_max": 0.1,
+    "settled_volume_relative_max": 0.1,
+    "settled_interparticle_field_p95_max": 0.1,
+    "settled_kinetic_J_kg_max": 0.00125,
+    "energy_gain_J_kg_max": 0.004905,
+    "gravity_and_stage_closure_J_kg_max": 1e-09,
+    "isolated_impulse_m_s_max": 1e-10,
+    "viscous_energy_increase_J_kg_max": 1e-12,
+    "shear_decay_amplitude_relative_error_max": 0.05,
+    "convergence": "Physical error must decrease with spatial refinement; strict 1% calibration budget at two finest tested endpoints. Half dt and doubled iterations must preserve physical pass and change centroid <1% target; energy/momentum must remain consistent. A cheap centroid crossing alone is not convergence."
+  },
+  "stages": {
+    "initial_screen": "raw vs self vs ratio in deep tank and collision n12; isolated wall-volume n12; raw reference n6 equivalence.",
+    "qualification": "Self vs raw fixed-geometry spatial n6,12,18,24 if screen finite; deep tank plus static shallow pool; half dt and doubled iterations at n12/18.",
+    "motion": "Stage ledger on same matched trajectories, late-time restart and mechanism removal only as diagnostic controls if needed; longer tail if wave persistence remains ambiguous.",
+    "viscosity": "Validate periodic shear and rigid-motion/dissipation/conservation before fluid cases; raw+self with fixed nu at n12 then spatial/time/iteration endpoints for any physical candidate."
+  },
+  "durability": "Immutable requests; source/binary hashes; scheduled p/v plus complete every-step ledgers; gzip/fsync/raw readback before raw removal. Durable primary home and local evidence copy, checksum manifests and independent mirror verification; failures retained."
+}
