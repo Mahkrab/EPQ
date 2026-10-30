@@ -82,9 +82,12 @@ retains fixed-schema buffered hashing after byte-exact saved-state checks and co
 comparisons. It removes the large fast-mode output wait while preserving canonical JSON, hashes,
 the parallel pipeline and all numerical policies. Its timings remain separate from the pipeline campaign.
 
-By subsequent explicit user instruction, fast is now the application default. Reference remains
-available through `--numerical-mode reference` or the `numerical_mode` application preference.
-This changes the default selection, not either preset; historical assessments above retain their original decisions.
+An earlier explicit user instruction selected fast as the application default. The subsequent
+instruction on 30 October 2026 restores reference as the default and saves the reference schedule
+in every built-in scene package. Fast remains opt-in through `--numerical-mode fast` or the
+`numerical_mode` application preference. Both presets retain their values; historical assessments
+above retain their original decisions. The [catalogue record](/docs/project/development/milestones/05/builtin-scenes.md)
+describes the corresponding output-stride revision.
 
 The [built-in scene overhaul](/docs/project/development/milestones/05/builtin-scenes.md)
 packages varied examples with energy colouring and fitted cameras. Its retained full-compilation

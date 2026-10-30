@@ -10,10 +10,11 @@ vorticity confinement; the other examples retain the default disabled effects.
 
 Every package uses schema 2, inherited particle spacing, deterministic group
 identities, a finite container, kinetic-energy colouring in joules and a fitted
-camera. Fast is the application's default numerical mode. Each scene requests
-three simulated seconds and a stride of four, giving 60 Hz at the fast preset's
-240 Hz step rate. Explicit reference mode remains available; stride eight gives
-60 Hz at its 480 Hz step rate. The render ranges are fixed display choices, not
+camera. Reference is the application's default numerical mode, and every package
+saves its 480 Hz, eight-iteration schedule with correction 0.0625 and relaxation 20.
+Each scene requests three simulated seconds and a stride of eight, giving 60 Hz
+output. Fast remains opt-in through `--numerical-mode fast`; stride four gives
+60 Hz at its 240 Hz step rate. The render ranges are fixed display choices, not
 physical acceptance thresholds. A scene's editable numerical values remain
 available with `--numerical-mode scene`; the two presets override their scheduling
 fields unless an explicit `--set` overrides the preset.
@@ -35,6 +36,18 @@ original flat scenes and companion configurations remain byte-preserved under
 resolve their recorded historical scene paths to those fixtures. An older host
 coordination overlay is tested against its frozen pre-optimisation source and
 continues to reject the current source rather than silently instrumenting it.
+
+The catalogue originally shipped with fast defaults and stride four. The user-requested
+revision on 30 October 2026 selects reference in the application and every package,
+including the saved relaxation value in opposing jets. Its velocity effects remain enabled.
+The verification and installed-executable identities below describe the earlier catalogue;
+they do not verify this default revision.
+
+The default revision passed local `cargo test --locked --offline`, the seven viewer
+CLI unit tests with `--features viewer --bin maelstrom`, a viewer-enabled binary
+build check and formatting checks. Catalogue tests check every package's saved
+numerical values, output stride and copied configuration. CUDA and rendered-runtime
+checks were not repeated, and installed executables were not replaced.
 
 Verification is retained in [assets/builtin-scenes-v2](/docs/project/development/milestones/05/assets/builtin-scenes-v2).
 The PC runs compile every scene for three seconds at 640×480, 60 Hz in both modes,
