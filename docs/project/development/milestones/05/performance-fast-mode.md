@@ -75,3 +75,7 @@ The wider parent tooling run, using its declared NumPy/SciPy versions through `u
 **GO for the selectable fast mode; keep the current default and explicit reference fallback.** The sustained headless gain and better bulk compression/separation justify retaining the option despite exceeding the historical 5% target. A universal default change is not justified by this evidence: low-excitation energy and shear regress, and the large rendered compilation workload gains nothing. This assessment uses the overall practical benefit and regressions, not a single threshold. Both policies retain known physical limitations; reference is a comparison/fallback, not a physical ground truth.
 
 No installed executable, remote checkout, gitlink, branch, tag or commit was changed. The tested CUDA/viewer release binary and raw observations remain in the primary PC's durable `fast-mode-v1` root. [Evidence, source identities and reproduction](/docs/project/development/milestones/05/assets/fast-mode-v1/README.md).
+
+The subsequent [PBF contract reassessment](/docs/project/development/milestones/05/performance-pbf-contract.md)
+isolates the cohesive fast response and adds a separate experimental policy against reference visuals.
+The measurements and earlier retention decision on this page remain historical evidence.

@@ -1,0 +1,46 @@
+   Compiling maelstrom v0.1.0 (/home/oliver/.local/share/maelstrom-experiments/pbf-contract-v1/source)
+    Finished `release` profile [optimized] target(s) in 3.54s
+     Running unittests src/main.rs (../target/release/deps/maelstrom-cddc1d157eb2d59a)
+
+running 7 tests
+test cli::bundled::tests::built_in_defaults_do_not_supply_a_configuration_document ... ok
+test cli::bundled::tests::references_resolve_without_access_to_the_source_tree ... ok
+test cli::viewer::tests::invalid_settings_and_selected_paths_have_explicit_redacted_feedback ... ok
+test cli::viewer::tests::external_and_bundled_selection_share_precedence_and_identity ... ok
+test cli::viewer::tests::draft_numerical_mode_is_validated_and_refines_once ... ok
+test cli::viewer::tests::scene_selected_configuration_errors_hide_the_external_input_directory ... ok
+test cli::viewer::tests::presentation_saves_to_scene_unless_an_output_is_explicitly_selected ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cli_usability.rs (../target/release/deps/cli_usability-edd20d00a4165170)
+
+running 12 tests
+test paths_obey_flags_then_environment_then_xdg_without_creating_libraries ... ok
+test diagnostic_discovery_and_completions_have_no_installation_side_effects ... ok
+test help_is_example_free_and_legacy_commands_are_not_advertised ... ok
+test explicit_resources_are_recorded_and_rerun_without_the_scene_library ... ok
+test paced_and_unpaced_execution_keep_identical_accepted_results ... ok
+test preferences_are_explicit_and_cannot_change_scene_physics ... ok
+test scene_packages_are_editable_portable_and_do_not_shadow_bundled_names ... ok
+test numerical_modes_match_explicit_values_and_preserve_physics_and_replay ... ok
+test compiled_runs_relocate_validate_and_rerun_without_original_scenes ... ok
+test large_run_documents_are_listed_validated_and_shown_without_a_size_cutoff ... ok
+test every_bundled_scene_matches_its_file_and_copies_its_own_configuration ... ok
+test reference_is_default_and_fast_is_opt_in_by_flag_or_preferences ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.11s
+
+     Running tests/cuda_execution.rs (../target/release/deps/cuda_execution-4810f04aec230c57)
+
+running 7 tests
+test invalid_device_settings_and_cpu_scheduler_pairings_fail_without_a_driver ... ok
+test hardware::workflow_restores_replay_settings_and_rejects_incompatible_options ... ok
+test hardware::asymmetric_stages_reject_stale_membership_in_place_updates_and_wrong_work ... ok
+test hardware::empty_single_coincident_and_independent_lifetimes_keep_accepted_bits ... ok
+test hardware::numerical_error_precedence_projection_and_rollback_match_serial ... ok
+test hardware::workflow_keeps_empty_audits_warnings_partial_failure_and_cancellation ... ok
+test hardware::all_cancellation_polls_rollback_after_acceptance_and_retry_with_no_stale_buffers ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 44.53s
+

@@ -294,6 +294,11 @@ Here $s_p$ is the finite dimensionless `correction_scale`, with $0<s_p\leq1$ and
 reference value 1.0. Evaluate the original complete correction before applying this
 scale; the unit case retains the original arithmetic without another multiplication.
 
+The application also exposes a separately calibrated 240 Hz `experimental` policy.
+Its relationship between timestep, iteration count and correction strength, evidence and operating
+limits are owned by the [numerical-policy reassessment](/docs/project/development/milestones/05/performance-pbf-contract.md).
+It leaves the reference and fast schedules and the historical refinement recipe intact.
+
 The reference uses exactly eight iterations $l=0,\ldots,7$. An explicitly recorded numerical variant
 may select a fixed count $L\in[1,64]$ instead. For every configured iteration, each density, constraint, substituted direction and
 $\lambda_i^{(l)}$ is calculated from the immutable snapshot $\mathbf{p}^{(l)}$ and fixed membership

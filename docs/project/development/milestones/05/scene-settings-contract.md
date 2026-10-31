@@ -16,7 +16,7 @@ Existing numerical inputs, equations and solver acceptance remain unchanged by t
 
 An editable scene package has `scene.toml`, `config.toml` and optional `render.toml` beside one another.
 These are user inputs, not a prescribed Rust module layout. A scene may still refer to a shared
-numerical configuration instead of its own `config.toml`.
+numerical configuration when it has no adjacent `config.toml`.
 
 | Concern | Authoritative home | Rule |
 | --- | --- | --- |
@@ -44,13 +44,21 @@ copy of every setting. Derived inputs are assertions, not independent values to 
 | Rendering | Built-in presentation defaults → selected render document → explicit presentation flags | `--render-config` replaces scene-local `render.toml`, rather than merging both files |
 | Execution | Existing automatic selection → application preferences → explicit execution flags | Retain current resource-conflict checks and explicit-backend behaviour |
 
-`--config` replaces the scene-selected base configuration, retaining its overlay. Environment
+For local scenes, an adjacent `config.toml` selects the base configuration automatically,
+ahead of a reference inside the scene. `--config` replaces that selection, retaining the scene
+overlay. A missing adjacent file falls back to the scene reference or built-in defaults; a malformed
+or unreadable adjacent file fails explicitly. Local scenes use saved numerical settings by default;
+bundled scenes retain the reference preset default. A numerical mode selected explicitly through
+CLI or application preferences still supplies its preset overrides, with explicit `--set` values
+taking priority.
+
+Environment
 variables select storage roots only. Scene/configuration paths resolve against the scene file's
 directory; explicit CLI paths resolve against the invocation directory. No parent-directory search
 or working-directory fallback selects another scene's settings. Bundled inputs use their embedded
 resources, never a neighbouring checkout file.
 
-For new numerical inputs, resolve all primary overrides, select refinement `N` in `1..=16`, divide
+For new numerical inputs using the empirical formulation, resolve all primary overrides, select refinement `N` in `1..=16`, divide
 the selected timestep by `N` and correction scale by `N²`, then validate and derive. `--refine-timestep`
 and CLI `--set refine_timestep=...` are alternative spellings of one selection and conflict together.
 A CLI factor of 1 overrides saved refinement. Supplied primary values must satisfy their individual
@@ -58,6 +66,14 @@ types, finite-value rules and domains even when shadowed. Every supplied derived
 the final derived values; contradictory assertions fail, including those in a lower layer.
 Inspection records unrefined values, the selected factor and its origin, and effective values.
 Recorded runs store effective values, not a recipe to apply again during rerun.
+
+The independent `paper-baseline` extension records `pbf_formulation = "paper2013"` and
+uses nominal cubic particle mass and full Jacobi corrections. For that formulation, refinement
+divides only timestep; correction scale must remain one. Omitted formulation fields retain the
+historical empirical mass and refinement semantics. The
+[published-equation contract](/docs/project/development/milestones/05/performance-paper-baseline.md)
+owns its assumptions, calibrated constants and bounded comparison; it does not replace the
+reference, fast or experimental policies.
 
 `[run]` accepts only `steps` (a non-negative TOML integer representable as `u64`) or `duration_s`
 (finite, non-negative seconds).
@@ -216,3 +232,16 @@ Design-step verification parsed all three TOML examples and checked their spacin
 camera and colour consistency. Repository links and whitespace checks passed, as did the three
 existing Markdown tests. That initial check established document consistency; executable acceptance
 and its original drawing limitation are covered by the resolution record.
+
+
+## Last compiled playback and compile feedback
+
+A successful `compile` records its absolute output path in `last.json` in the selected run library.
+`play --last` opens that saved image sequence without simulation; it conflicts with an explicit run
+selector. Failed and cancelled compiles retain the previous selection. This also covers explicit
+output directories; moving or deleting that output makes playback fail through normal validation.
+
+Compile reports the expected frame count including endpoints and nominal cadence
+`1 / (fixed_timestep_s * step_stride)` in Hz. A final short interval retains the requested endpoint.
+An interactive terminal receives a throttled single-line bar tracking closed published frames;
+redirected diagnostics contain no cursor controls or repeated progress lines.

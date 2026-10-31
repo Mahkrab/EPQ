@@ -1,0 +1,9 @@
+{"exit_code": 5, "process_wall_s": 1.438471899018623, "scene": "slope-slide", "policy": "reference", "backend": "cuda", "requested_simulated_s": 3.0, "repeat": 0}
+Traceback (most recent call last):
+  File "/home/oliver/.local/share/maelstrom-experiments/pbf-contract-v1/campaign.py", line 98, in <module>
+    main()
+  File "/home/oliver/.local/share/maelstrom-experiments/pbf-contract-v1/campaign.py", line 83, in main
+    collect(args.root.resolve(), args.binary.resolve(), scene, policy,
+  File "/home/oliver/.local/share/maelstrom-experiments/pbf-contract-v1/campaign.py", line 63, in collect
+    raise RuntimeError(f"Failed case retained at {folder}")
+RuntimeError: Failed case retained at /home/oliver/.local/share/maelstrom-experiments/pbf-contract-v1/screen2/compile-slope-slide-reference-0

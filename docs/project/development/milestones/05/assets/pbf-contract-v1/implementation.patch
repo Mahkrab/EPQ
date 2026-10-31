@@ -1,0 +1,214 @@
+diff --git a/docs/usage.md b/docs/usage.md
+index b4793e8..bc7fdc8 100644
+--- a/docs/usage.md
++++ b/docs/usage.md
+@@ -78,7 +78,7 @@ maelstrom inspect builtin:falling-block-04 --backend cuda --format json
+ ## Numerical modes
+ 
+ `run`, `view`, `compile`, `inspect` and `validate` accept
+-`--numerical-mode fast` or `--numerical-mode reference`. **Reference is the default.**
++`--numerical-mode reference`, `fast`, `experimental` or `scene`. **Reference is the default.**
+ Opt into fast with `--numerical-mode fast`, or save
+ `numerical_mode = "fast"` in the application preferences at
+ `$XDG_CONFIG_HOME/maelstrom/config.toml` (normally `~/.config/maelstrom/config.toml`):
+@@ -100,12 +100,19 @@ changes how often those effects are applied per simulated second.
+ |---|---:|---:|---:|---:|
+ | `reference` | 480 | 8 | 0.0625 | 20 |
+ | `fast` | 240 | 8 | 0.5 | 2 |
++| `experimental` | 240 | 8 | 0.25 | 20 |
+ 
+ Fast mode reduces numerical work and changes the physical trajectory. It is a
+ throughput/quality trade-off, not a promise of the same fluid response. Both modes
+ retain the existing PBF physical limitations. Fast mode can improve compression
+ and separation while adding projection energy or changing shear response.
+ 
++Experimental mode retains reference regularisation and Jacobi count while halving the step rate. It matches the approximate response `iterations × correction_scale / dt²`
++of reference, using four times the correction per pass. This is an empirical visual
++calibration, not a convergence law: impact detail and trajectories differ, and
++legacy refinement still scales timestep and correction together. Its qualification
++uses disabled velocity effects; enabled effects need separate calibration.
++
+ These commands start new simulations for five simulated seconds. The first uses
+ reference mode unless an application preference selects another mode; the second
+ explicitly selects fast:
+@@ -117,7 +124,7 @@ maelstrom run builtin:falling-block-20 --numerical-mode fast --duration 5 --unpa
+ 
+ Built-in scenes also save the reference schedule in their configuration files.
+ Their output stride is eight, giving 60 Hz at 480 steps per simulated second.
+-For 60 Hz output with fast mode, add `--frame-stride 4` to `compile`.
++For 60 Hz output with fast or experimental mode, add `--frame-stride 4` to `compile`.
+ 
+ Explicit `--set` values take precedence over a preset. Presets reset inherited
+ timestep refinement to one; an explicit `--refine-timestep N` still divides the
+diff --git a/src/cli/arguments.rs b/src/cli/arguments.rs
+index 3a5dd45..def7ada 100644
+--- a/src/cli/arguments.rs
++++ b/src/cli/arguments.rs
+@@ -154,7 +154,7 @@ pub(super) struct Inputs {
+     #[arg(long, value_name = "FILE")]
+     pub config: Option<PathBuf>,
+     /// Numerical preset (default: reference, or application preference). Explicit --set values win
+-    #[arg(long, value_parser = ["reference", "fast", "scene"])]
++    #[arg(long, value_parser = ["reference", "fast", "experimental", "scene"])]
+     pub numerical_mode: Option<String>,
+     /// Primary numerical override expressed as a TOML literal
+     #[arg(long = "set", value_name = "FIELD=VALUE")]
+diff --git a/src/cli/storage.rs b/src/cli/storage.rs
+index c88ea82..d669f15 100644
+--- a/src/cli/storage.rs
++++ b/src/cli/storage.rs
+@@ -67,10 +67,10 @@ impl Storage {
+         }
+         if p.numerical_mode
+             .as_deref()
+-            .is_some_and(|v| !["reference", "fast", "scene"].contains(&v))
++            .is_some_and(|v| !["reference", "fast", "experimental", "scene"].contains(&v))
+         {
+             return Err(CliError::input(
+-                "application preferences: numerical_mode must be reference, fast or scene".into(),
++                "application preferences: numerical_mode must be reference, fast, experimental or scene".into(),
+             ));
+         }
+         if p.threads.is_some_and(|n| !(1..=256).contains(&n)) {
+diff --git a/src/cli/viewer.rs b/src/cli/viewer.rs
+index 888b553..6077ac2 100644
+--- a/src/cli/viewer.rs
++++ b/src/cli/viewer.rs
+@@ -315,6 +315,20 @@ mod tests {
+             reference.scene.configuration.numerical.relaxation_scale,
+             20.0
+         );
++        d.numerical_mode = "experimental".into();
++        let experimental = resolve(&d, &[], None).unwrap();
++        assert_eq!(
++            experimental.scene.configuration.numerical.solver_iterations,
++            8
++        );
++        assert_eq!(
++            experimental.scene.configuration.numerical.relaxation_scale,
++            20.0
++        );
++        assert_eq!(
++            experimental.scene.configuration.numerical.correction_scale,
++            0.25
++        );
+         d.numerical_mode = "unknown".into();
+         assert!(
+             resolve(&d, &[], None)
+diff --git a/src/config/mode.rs b/src/config/mode.rs
+index d18d6bb..13fc83a 100644
+--- a/src/config/mode.rs
++++ b/src/config/mode.rs
+@@ -12,6 +12,8 @@ pub enum NumericalMode {
+     Reference,
+     /// Reduced-work 240 Hz, eight-iteration policy.
+     Fast,
++    /// Experimental reference-response calibration at half the step rate.
++    Experimental,
+ }
+ 
+ impl std::str::FromStr for NumericalMode {
+@@ -22,9 +24,11 @@ impl std::str::FromStr for NumericalMode {
+             "scene" => Ok(Self::Scene),
+             "reference" => Ok(Self::Reference),
+             "fast" => Ok(Self::Fast),
++            "experimental" => Ok(Self::Experimental),
+             _ => Err(ConfigError::InvalidField {
+                 field: "numerical_mode",
+-                reason: "must be reference or fast, or scene to use saved settings".into(),
++                reason: "must be reference or fast, experimental, or scene to use saved settings"
++                    .into(),
+             }),
+         }
+     }
+@@ -36,13 +40,17 @@ impl NumericalMode {
+     /// refinement cannot silently refine the preset a second time. An explicit
+     /// refinement still divides timestep by N and correction scale by N².
+     pub fn fill_overrides(self, values: &mut NumericalOverrides) {
+-        let (timestep, correction, relaxation) = match self {
++        let (timestep, iterations, correction, relaxation) = match self {
+             Self::Scene => return,
+-            Self::Reference => (1.0 / 480.0, 0.0625, 20.0),
+-            Self::Fast => (1.0 / 240.0, 0.5, 2.0),
++            Self::Reference => (1.0 / 480.0, 8, 0.0625, 20.0),
++            Self::Fast => (1.0 / 240.0, 8, 0.5, 2.0),
++            // Match I * scale / dt² to reference while retaining its
++            // regularisation and artificial pressure. This is an empirical
++            // response calibration, not an incompressibility/convergence law.
++            Self::Experimental => (1.0 / 240.0, 8, 0.25, 20.0),
+         };
+         values.fixed_timestep_s.get_or_insert(timestep);
+-        values.solver_iterations.get_or_insert(8);
++        values.solver_iterations.get_or_insert(iterations);
+         values.correction_scale.get_or_insert(correction);
+         values.relaxation_scale.get_or_insert(relaxation);
+         values.refine_timestep.get_or_insert(1);
+diff --git a/src/viewer/model.rs b/src/viewer/model.rs
+index c008426..eee9cad 100644
+--- a/src/viewer/model.rs
++++ b/src/viewer/model.rs
+@@ -14,7 +14,7 @@ pub struct Draft {
+     pub config: String,
+     /// brute-force, serial-grid, threaded-grid or cuda-grid.
+     pub mode: String,
+-    /// reference, fast, scene, or blank to use the application default/preference.
++    /// reference, fast, experimental, scene, or blank to use the application default/preference.
+     pub numerical_mode: String,
+     /// Threaded CPU pool size.
+     pub workers: String,
+@@ -36,7 +36,7 @@ impl Draft {
+             ("CUDA block", &self.block_size),
+             ("Steps", &self.steps),
+             (
+-                "Numerics (default / reference / fast / scene)",
++                "Numerics (default / reference / fast / experimental / scene)",
+                 &self.numerical_mode,
+             ),
+         ]
+diff --git a/tests/cli_usability.rs b/tests/cli_usability.rs
+index e6eb538..1c106fe 100644
+--- a/tests/cli_usability.rs
++++ b/tests/cli_usability.rs
+@@ -130,9 +130,10 @@ fn reference_is_default_and_fast_is_opt_in_by_flag_or_preferences() {
+ #[test]
+ fn numerical_modes_match_explicit_values_and_preserve_physics_and_replay() {
+     let lib = Library::new();
+-    for (name, timestep, correction, relaxation) in [
+-        ("fast", "0.004166666666666667", "0.5", "2.0"),
+-        ("reference", "0.0020833333333333333", "0.0625", "20.0"),
++    for (name, timestep, correction, relaxation, iterations) in [
++        ("fast", "0.004166666666666667", "0.5", "2.0", "8"),
++        ("experimental", "0.004166666666666667", "0.25", "20.0", "8"),
++        ("reference", "0.0020833333333333333", "0.0625", "20.0", "8"),
+     ] {
+         let base = [
+             "run",
+@@ -149,6 +150,7 @@ fn numerical_modes_match_explicit_values_and_preserve_physics_and_replay() {
+         let dt = format!("fixed_timestep_s={timestep}");
+         let scale = format!("correction_scale={correction}");
+         let epsilon = format!("relaxation_scale={relaxation}");
++        let passes = format!("solver_iterations={iterations}");
+         let mut explicit = base.to_vec();
+         explicit.extend([
+             "--refine-timestep",
+@@ -160,7 +162,7 @@ fn numerical_modes_match_explicit_values_and_preserve_physics_and_replay() {
+             "--set",
+             &epsilon,
+             "--set",
+-            "solver_iterations=8",
++            &passes,
+         ]);
+         let expected = lib.json(&explicit);
+         assert_eq!(
+diff --git a/tests/cuda_execution.rs b/tests/cuda_execution.rs
+index 07b625c..9ce9e47 100644
+--- a/tests/cuda_execution.rs
++++ b/tests/cuda_execution.rs
+@@ -186,6 +186,7 @@ mod hardware {
+             None,
+             Some(maelstrom::config::NumericalMode::Reference),
+             Some(maelstrom::config::NumericalMode::Fast),
++            Some(maelstrom::config::NumericalMode::Experimental),
+         ] {
+             let mut overlay = maelstrom::config::ConfigurationOverlay::default();
+             if let Some(mode) = mode {

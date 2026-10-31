@@ -1,0 +1,23 @@
+{
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA GeForce RTX 4070, 610.88",
+  "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+  "binary_sha256": "9c258cb80d63eaee1190e07f8cf5c1cb9d1b167b68e0839132c35149142429aa",
+  "measurement": "Five simulated seconds; one warmup and five measured rounds per mode and size, reversing order; no concurrent campaign builds, tests, renders or audits",
+  "tests": {
+    "pc-tests-complete.log": {
+      "passed": 411,
+      "ignored": 0,
+      "suites": 37,
+      "failure": false
+    },
+    "cuda-tests-final.log": {
+      "passed": 8,
+      "ignored": 0,
+      "suites": 1,
+      "failure": false
+    }
+  },
+  "live_fps": null,
+  "live_viewer_limitation": "WSLg/X11 connection failure before counter capture"
+}

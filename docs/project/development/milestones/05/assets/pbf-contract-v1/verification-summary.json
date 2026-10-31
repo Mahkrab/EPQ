@@ -1,0 +1,24 @@
+{
+  "baseline_all_features": {
+    "passed": 405,
+    "failed": 0,
+    "ignored": 0,
+    "environment": "ssh pc, live base source before mode addition"
+  },
+  "final_changed_surfaces": {
+    "passed": 26,
+    "failed": 0,
+    "ignored": 0,
+    "environment": "ssh pc, final eight-pass source"
+  },
+  "frontier_tool_tests": {
+    "command": "python3 -m unittest tests.performance.test_frontier -v",
+    "passed": 8,
+    "failed": 0,
+    "environment": "local"
+  },
+  "formatting": "cargo fmt --check passed",
+  "diff_whitespace": "both Git diff --check passed",
+  "native_files": "13 unchanged",
+  "hosted_checks": "not run"
+}

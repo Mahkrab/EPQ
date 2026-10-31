@@ -1,0 +1,24 @@
+{"exit_code": 0, "process_wall_s": 4.518487471010303, "scene": "slope-slide", "policy": "reference", "backend": "cuda", "requested_simulated_s": 5.0, "repeat": 0, "solver_s": 4.112137308, "completed_steps": "2400", "solver_s_per_sim_s": 0.8224274616}
+{"exit_code": 0, "process_wall_s": 1.8011098160059191, "scene": "slope-slide", "policy": "four240", "backend": "cuda", "requested_simulated_s": 5.0, "repeat": 0, "solver_s": 1.424205151, "completed_steps": "1200", "solver_s_per_sim_s": 0.2848410302}
+{"exit_code": 0, "process_wall_s": 2.552177932986524, "scene": "slope-slide", "policy": "fast", "backend": "cuda", "requested_simulated_s": 5.0, "repeat": 0, "solver_s": 2.165567563, "completed_steps": "1200", "solver_s_per_sim_s": 0.43311351260000003}
+{"exit_code": 0, "process_wall_s": 6.215888271020958, "scene": "falling-block-20", "policy": "reference", "backend": "cuda", "requested_simulated_s": 5.0, "repeat": 0, "solver_s": 4.922328429, "completed_steps": "2400", "solver_s_per_sim_s": 0.9844656858}
+{"exit_code": 0, "process_wall_s": 2.9208064139820635, "scene": "falling-block-20", "policy": "four240", "backend": "cuda", "requested_simulated_s": 5.0, "repeat": 0, "solver_s": 1.667943474, "completed_steps": "1200", "solver_s_per_sim_s": 0.33358869480000003}
+{"exit_code": 0, "process_wall_s": 3.592599944997346, "scene": "falling-block-20", "policy": "fast", "backend": "cuda", "requested_simulated_s": 5.0, "repeat": 0, "solver_s": 2.343857736, "completed_steps": "1200", "solver_s_per_sim_s": 0.46877154719999997}
+{"exit_code": 0, "process_wall_s": 4.363419594999868, "scene": "two-blocks", "policy": "reference", "backend": "cuda", "requested_simulated_s": 5.0, "repeat": 0, "solver_s": 3.868455324, "completed_steps": "2400", "solver_s_per_sim_s": 0.7736910648}
+{"exit_code": 0, "process_wall_s": 1.8553568740026094, "scene": "two-blocks", "policy": "four240", "backend": "cuda", "requested_simulated_s": 5.0, "repeat": 0, "solver_s": 1.33693196, "completed_steps": "1200", "solver_s_per_sim_s": 0.26738639200000003}
+{"exit_code": 0, "process_wall_s": 2.4794247999961954, "scene": "two-blocks", "policy": "fast", "backend": "cuda", "requested_simulated_s": 5.0, "repeat": 0, "solver_s": 1.989339414, "completed_steps": "1200", "solver_s_per_sim_s": 0.3978678828}
+{"exit_code": 0, "process_wall_s": 5.4428239059925545, "scene": "shallow-tank", "policy": "reference", "backend": "cuda", "requested_simulated_s": 5.0, "repeat": 0, "solver_s": 4.946818687, "completed_steps": "2400", "solver_s_per_sim_s": 0.9893637374}
+{"exit_code": 0, "process_wall_s": 2.9168385099910665, "scene": "shallow-tank", "policy": "four240", "backend": "cuda", "requested_simulated_s": 5.0, "repeat": 0, "solver_s": 2.439856177, "completed_steps": "1200", "solver_s_per_sim_s": 0.4879712354}
+{"exit_code": 0, "process_wall_s": 2.5914966209966224, "scene": "shallow-tank", "policy": "fast", "backend": "cuda", "requested_simulated_s": 5.0, "repeat": 0, "solver_s": 2.119884744, "completed_steps": "1200", "solver_s_per_sim_s": 0.42397694880000003}
+{"exit_code": -15, "process_wall_s": 86.82492815400474, "scene": "large-impact", "policy": "reference", "backend": "cuda", "requested_simulated_s": 5.0, "repeat": 0}
+Traceback (most recent call last):
+  File "/home/oliver/.local/share/maelstrom-experiments/pbf-contract-v1/campaign.py", line 129, in <module>
+    for scene in args.scenes:
+^^^^^^
+  File "/home/oliver/.local/share/maelstrom-experiments/pbf-contract-v1/campaign.py", line 114, in main
+    parser.add_argument("--duration", type=float, default=3)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oliver/.local/share/maelstrom-experiments/pbf-contract-v1/campaign.py", line 93, in collect
+    str(derived["particle_mass_kg"]), str(model["external_acceleration_m_s2"]["y"]),
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Failed case retained at /home/oliver/.local/share/maelstrom-experiments/pbf-contract-v1/quality/audit-large-impact-reference-0
