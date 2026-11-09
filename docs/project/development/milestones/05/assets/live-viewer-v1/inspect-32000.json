@@ -1,0 +1,285 @@
+{
+  "applicability": {
+    "numerical": [
+      "run",
+      "view",
+      "compile"
+    ],
+    "play": "recorded images only; current scene defaults are not loaded",
+    "presentation": [
+      "view",
+      "compile",
+      "export"
+    ],
+    "run_defaults": [
+      "run",
+      "view",
+      "compile"
+    ],
+    "step_stride": [
+      "compile",
+      "export"
+    ]
+  },
+  "application_version": "0.1.0",
+  "configuration": {
+    "comparison_key": "configuration-comparison-v1|binary32|right_handed_y_up_metres_seconds_kilograms|fixed|poly6|spiky|jacobi_immutable_snapshot|00000000,c11cf5c3,00000000|3b888889|3ecccccd|3d4ccccd|40000000|447a0000|8|41a00000|true|3dcccccd|3e4ccccd|40800000|strict_less_than|static_plane_projection|once_after_prediction|ascending_particle_identity|false|false|3d4ccccd|3dcccccd|45fc7198|3dfd8598|44f9ffff|3a83126f|3ca3d70b|27|correction-scale:3e800000",
+    "derived": {
+      "artificial_pressure_reference_separation_m": 0.020000001415610313,
+      "artificial_pressure_strength_m2": 0.0010000000474974513,
+      "lattice_offset_count": 27,
+      "normalised_rest_density_per_m3": 8078.19921875,
+      "particle_diameter_m": 0.05000000074505806,
+      "particle_mass_kg": 0.1237899661064148,
+      "relaxation_per_m2": 1999.9998779296875,
+      "support_radius_m": 0.10000000149011612
+    },
+    "description": "Reference numerical model for falling-block-20; spacing is inherited by every particle group",
+    "name": "falling-block-20-model",
+    "numerical": {
+      "artificial_pressure_enabled": true,
+      "artificial_pressure_exponent": 4.0,
+      "artificial_pressure_reference_separation_ratio": 0.20000000298023224,
+      "artificial_pressure_strength_scale": 0.10000000149011612,
+      "boundary_model": "static_plane_projection",
+      "cfl_factor": 0.4000000059604645,
+      "coordinate_system": "right_handed_y_up_metres_seconds_kilograms",
+      "correction_kernel": "spiky",
+      "correction_scale": 0.25,
+      "density_kernel": "poly6",
+      "external_acceleration_m_s2": {
+        "x": 0.0,
+        "y": -9.8100004196167,
+        "z": 0.0
+      },
+      "fixed_timestep_s": 0.004166666883975267,
+      "neighbour_rebuild_policy": "once_after_prediction",
+      "particle_order_policy": "ascending_particle_identity",
+      "particle_spacing_m": 0.05000000074505806,
+      "physical_rest_density_kg_m3": 1000.0,
+      "relaxation_scale": 20.0,
+      "scalar_precision": "binary32",
+      "solver_iterations": 8,
+      "solver_update_policy": "jacobi_immutable_snapshot",
+      "support_policy": "strict_less_than",
+      "support_radius_ratio": 2.0,
+      "timestep_policy": "fixed",
+      "vorticity_confinement_enabled": false,
+      "xsph_viscosity_enabled": false
+    },
+    "provenance": {
+      "artificial_pressure_enabled": "built_in_default",
+      "artificial_pressure_exponent": "built_in_default",
+      "artificial_pressure_reference_separation_ratio": "built_in_default",
+      "artificial_pressure_strength_scale": "built_in_default",
+      "boundary_model": "built_in_default",
+      "cfl_factor": "built_in_default",
+      "coordinate_system": "built_in_default",
+      "correction_kernel": "built_in_default",
+      "correction_scale": "command_line",
+      "density_kernel": "built_in_default",
+      "external_acceleration_m_s2": "configuration_file",
+      "fixed_timestep_s": "command_line",
+      "neighbour_rebuild_policy": "built_in_default",
+      "particle_order_policy": "built_in_default",
+      "particle_spacing_m": "configuration_file",
+      "physical_rest_density_kg_m3": "built_in_default",
+      "relaxation_scale": "command_line",
+      "scalar_precision": "built_in_default",
+      "solver_iterations": "command_line",
+      "solver_update_policy": "built_in_default",
+      "support_policy": "built_in_default",
+      "support_radius_ratio": "built_in_default",
+      "timestep_policy": "built_in_default",
+      "vorticity_confinement_enabled": "configuration_file",
+      "vorticity_confinement_strength_m_s": "built_in_default",
+      "xsph_viscosity_coefficient": "built_in_default",
+      "xsph_viscosity_enabled": "configuration_file"
+    },
+    "schema_version": 2
+  },
+  "documents": [
+    {
+      "domain": "numerical_mode",
+      "label": "experimental",
+      "sha256": "748be63c87c9fad252fbd0a2e16d0bdd446d2f7acb456b820ed417e9b1f451df"
+    },
+    {
+      "domain": "scene",
+      "label": "32000.toml",
+      "sha256": "c1b1725e330de16f72ca57c9c8ca09928fe9e05dca53c61bee35166115e8139e"
+    },
+    {
+      "domain": "configuration",
+      "label": "config.toml",
+      "sha256": "ddb5af0c35202ab91710e2e0d1d44c116ed329e141cd0a39b0382d9daa143523"
+    }
+  ],
+  "execution": {
+    "discovery": "UniformGrid",
+    "provenance": {
+      "backend": "command_line",
+      "block_size": "automatic",
+      "device": "automatic",
+      "threads": "automatic"
+    },
+    "resources": {
+      "device": 0,
+      "mode": "cuda",
+      "threads": 128
+    }
+  },
+  "operation": "inspect",
+  "presentation": {
+    "document": {
+      "domain": "render",
+      "label": "render.toml",
+      "sha256": "7d8313dd13f341eb7edd15892c9ebb4ca559afd166767a5c36dbe9971fbe4dfe"
+    },
+    "drawing_supported": true,
+    "effective": {
+      "camera_mode": "fit",
+      "particles": {
+        "colour_mode": "kinetic_energy",
+        "max_energy_j": 1.962,
+        "min_energy_j": 0.0
+      },
+      "schema_version": 2,
+      "settings": {
+        "camera": {
+          "eye_m": [
+            1.2,
+            1.0,
+            1.2
+          ],
+          "far_m": 100.0,
+          "near_m": 0.001,
+          "target_m": [
+            0.3,
+            0.4,
+            0.3
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "format": "png",
+        "height": 720,
+        "step_stride": 8,
+        "width": 1280
+      }
+    },
+    "provenance": {
+      "camera": "built_in_default",
+      "camera.eye_m": "built_in_default",
+      "camera.far_m": "built_in_default",
+      "camera.near_m": "built_in_default",
+      "camera.target_m": "built_in_default",
+      "camera.up": "built_in_default",
+      "camera.vertical_fov_deg": "built_in_default",
+      "camera_mode": "render.toml",
+      "format": "render.toml",
+      "height": "render.toml",
+      "particles": "render.toml",
+      "particles.colour": "built_in_default",
+      "particles.colour_mode": "render.toml",
+      "particles.max_energy_j": "render.toml",
+      "particles.min_energy_j": "render.toml",
+      "step_stride": "render.toml",
+      "width": "render.toml"
+    }
+  },
+  "refinement": {
+    "correction_scale_source": "command_line",
+    "factor": 1,
+    "source": "command_line",
+    "timestep_source": "command_line",
+    "unrefined_correction_scale": 0.25,
+    "unrefined_timestep_s": 0.004166666883975267
+  },
+  "run": {
+    "source": "scene",
+    "steps": 720
+  },
+  "run_defaults": {
+    "duration_s": 3.0
+  },
+  "scene": {
+    "container": {
+      "max_m": [
+        2.799999952316284,
+        3.0,
+        2.799999952316284
+      ],
+      "min_m": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "description": "20 cubed particles falling into a closed box",
+    "name": "live-32000",
+    "particle_count": 32000,
+    "particle_groups": [
+      "block"
+    ],
+    "plane_count": 6,
+    "planes": [
+      {
+        "normal": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "offset_m": 0.0
+      },
+      {
+        "normal": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "offset_m": -2.799999952316284
+      },
+      {
+        "normal": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+        },
+        "offset_m": 0.0
+      },
+      {
+        "normal": {
+          "x": 0.0,
+          "y": -1.0,
+          "z": 0.0
+        },
+        "offset_m": -3.0
+      },
+      {
+        "normal": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+        },
+        "offset_m": 0.0
+      },
+      {
+        "normal": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+        },
+        "offset_m": -2.799999952316284
+      }
+    ],
+    "randomness": "none",
+    "schema_version": 2
+  },
+  "schema_version": 1,
+  "valid": true
+}

@@ -1,0 +1,371 @@
+--- a/src/application/mod.rs
++++ b/src/application/mod.rs
+@@ -136,6 +136,17 @@
+     pub warning_count: u64,
+     /// Sticky terminal failure, if any.
+     pub failure: Option<Failure>,
++    /// Cumulative coordinator wall time; neither GPU time nor simulated time.
++    pub timings: WorkerTimings,
++}
++
++/// Successful solver calls and the host copies used to publish their observations.
++#[derive(Clone, Copy, Debug, Default)]
++pub struct WorkerTimings {
++    /// Complete successful step calls, including CUDA dispatch and waits.
++    pub solver_s: f64,
++    /// Copies of accepted snapshots, outside the solver call.
++    pub snapshot_s: f64,
+ }
+ 
+ impl Observation {
+@@ -363,6 +374,7 @@
+                 last_cfl: None,
+                 warning_count: 0,
+                 failure: None,
++                timings: WorkerTimings::default(),
+             }),
+             changed: Condvar::new(),
+             cancelled: AtomicBool::new(false),
+--- a/src/application/tests.rs
++++ b/src/application/tests.rs
+@@ -170,6 +170,7 @@
+             last_cfl: None,
+             warning_count: 0,
+             failure: None,
++            timings: WorkerTimings::default(),
+         }),
+         changed: Condvar::new(),
+         cancelled: AtomicBool::new(false),
+--- a/src/application/worker.rs
++++ b/src/application/worker.rs
+@@ -6,6 +6,7 @@
+     atomic::{AtomicBool, Ordering},
+     mpsc::{Receiver, TryRecvError},
+ };
++use std::time::Instant;
+ 
+ use crate::simulation::{Simulation, StepError};
+ 
+@@ -49,11 +50,15 @@
+             return;
+         };
+         let shared = &self.shared;
++        let start = Instant::now();
+         match solver.step_with_cancellation(|| {
+             stopping.load(Ordering::Acquire) || shared.cancelled.load(Ordering::Acquire)
+         }) {
+             Ok(outcome) => {
++                let solver_s = start.elapsed().as_secs_f64();
++                let copy_start = Instant::now();
+                 let snapshot = Arc::new(solver.snapshot().clone());
++                let snapshot_s = copy_start.elapsed().as_secs_f64();
+                 if outcome.completed_steps == self.target {
+                     self.status = RunStatus::Completed;
+                 }
+@@ -62,6 +67,8 @@
+                     o.snapshot = Some(snapshot);
+                     o.last_cfl = Some(outcome.cfl);
+                     o.warning_count += u64::from(outcome.cfl.warning);
++                    o.timings.solver_s += solver_s;
++                    o.timings.snapshot_s += snapshot_s;
+                 });
+                 if self.status.is_terminal() {
+                     self.solver.take();
+--- a/src/cli/inputs.rs
++++ b/src/cli/inputs.rs
+@@ -93,7 +93,7 @@
+             .unwrap_or(if local_path.is_some() {
+                 "scene"
+             } else {
+-                "reference"
++                "experimental"
+             });
+         let mode = name
+             .parse::<maelstrom::config::NumericalMode>()
+--- a/src/cli/management.rs
++++ b/src/cli/management.rs
+@@ -23,7 +23,7 @@
+ pub(super) fn config(cli: &Cli, storage: &Storage) -> Result<u8, CliError> {
+     let p = storage.preferences()?;
+     let value = json!({"schema_version":1,"path":storage.preferences,"exists":storage.preferences.exists(),
+-        "numerical_mode":p.numerical_mode.as_deref().unwrap_or("reference"),
++        "numerical_mode":p.numerical_mode.as_deref().unwrap_or("experimental"),
+         "backend":p.backend.as_deref().unwrap_or("auto"),"threads":p.threads,"device":p.device,"block_size":p.block_size,
+         "precedence":"explicit command selection > application preferences > built-in auto policy; scene physics is separate"});
+     super::print_document(
+--- a/src/config/mode.rs
++++ b/src/config/mode.rs
+@@ -14,7 +14,7 @@
+     Paper2013,
+ }
+ 
+-/// Numerical presets selected by the application; reference is its default.
++/// Numerical presets selected by the application; experimental is its default.
+ #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+ pub enum NumericalMode {
+     /// Use the selected scene/configuration without applying a preset.
+--- a/src/render/gpu.rs
++++ b/src/render/gpu.rs
+@@ -7,7 +7,20 @@
+ };
+ use crate::scene::Particle;
+ use std::sync::{Arc, Mutex, OnceLock};
++use std::time::Instant;
+ use wgpu::util::DeviceExt;
++
++/// CPU wall intervals within one draw. Submission can include driver backpressure;
++/// these intervals do not measure GPU execution or display scan-out.
++#[derive(Clone, Copy, Debug, Default)]
++pub struct DrawTimings {
++    /// Camera conversion, validation, colours and particle packing.
++    pub prepare_s: f64,
++    /// Graphics buffer creation and upload calls.
++    pub upload_s: f64,
++    /// Command encoding, queue submission and asynchronous error polling.
++    pub submit_s: f64,
++}
+ 
+ // Mesa's D3D12 driver registers thread-local cleanup callbacks. Keep its loader
+ // alive until process exit so a rendering thread cannot unload those callbacks
+@@ -356,6 +369,17 @@
+         scene: &DrawScene<'_>,
+         overlay: &[f32],
+     ) -> Result<(), RenderError> {
++        self.draw_timed(target, depth, scene, overlay).map(|_| ())
++    }
++    /// Draws the same scene while reporting CPU stage intervals.
++    pub fn draw_timed(
++        &self,
++        target: &wgpu::TextureView,
++        depth: &wgpu::TextureView,
++        scene: &DrawScene<'_>,
++        overlay: &[f32],
++    ) -> Result<DrawTimings, RenderError> {
++        let start = Instant::now();
+         self.check()?;
+         scene
+             .camera
+@@ -453,9 +477,13 @@
+                     usage: wgpu::BufferUsages::VERTEX,
+                 }))
+         };
++        let prepare_s = start.elapsed().as_secs_f64();
++        let upload_start = Instant::now();
+         let centres_buffer = make_buffer("accepted centres", &centres)?;
+         let line_buffer = make_buffer("plane outlines", &lines)?;
+         let overlay_buffer = make_buffer("overlay", overlay)?;
++        let upload_s = upload_start.elapsed().as_secs_f64();
++        let submit_start = Instant::now();
+         let mut encoder = self.device.create_command_encoder(&Default::default());
+         {
+             let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+@@ -516,7 +544,12 @@
+             pass.draw(0..(overlay.len() / 5) as u32, 0..1);
+         }
+         self.queue.submit([encoder.finish()]);
+-        self.check()
++        self.check()?;
++        Ok(DrawTimings {
++            prepare_s,
++            upload_s,
++            submit_s: submit_start.elapsed().as_secs_f64(),
++        })
+     }
+ }
+ fn bytes(values: &[f32]) -> Vec<u8> {
+--- a/src/render/mod.rs
++++ b/src/render/mod.rs
+@@ -6,4 +6,4 @@
+ mod geometry;
+ mod gpu;
+ pub use geometry::BoundaryLines;
+-pub use gpu::{DrawScene, Graphics, GraphicsSelection};
++pub use gpu::{DrawScene, DrawTimings, Graphics, GraphicsSelection};
+--- a/src/viewer/mod.rs
++++ b/src/viewer/mod.rs
+@@ -4,6 +4,7 @@
+ 
+ mod model;
+ mod overlay;
++mod profile;
+ mod windowing;
+ pub(crate) use windowing::create as create_event_loop;
+ #[cfg(test)]
+@@ -79,14 +80,17 @@
+         model.fit(f64::from(settings.width) / f64::from(settings.height))?;
+     }
+     let mut app = Viewer::new(model, settings, graphics);
++    app.profile = profile::Profile::from_environment()?;
+     let event_result = event_loop
+         .run_app(&mut app)
+         .map_err(|e| window_error("window event loop", e));
+     // Event-loop failure still requests and joins worker teardown.
+     app.model.request_shutdown();
+     let joined = app.model.join();
++    let profile_result = app.profile.take().map_or(Ok(()), profile::Profile::finish);
+     event_result?;
+     joined?;
++    profile_result?;
+     if let Some(error) = app.error {
+         return Err(error);
+     }
+@@ -246,6 +250,7 @@
+     fps: f64,
+     fps_start: Instant,
+     next_redraw: Instant,
++    profile: Option<profile::Profile>,
+ }
+ impl Viewer {
+     fn new(model: Model, settings: Settings, selection: GraphicsSelection) -> Self {
+@@ -268,6 +273,7 @@
+             fps: 0.0,
+             fps_start: Instant::now(),
+             next_redraw: Instant::now(),
++            profile: None,
+         }
+     }
+ 
+@@ -496,6 +502,7 @@
+         lines
+     }
+     fn redraw(&mut self) -> Result<(), RenderError> {
++        let frame_start = Instant::now();
+         self.model.poll();
+         let window = self
+             .window
+@@ -546,6 +553,7 @@
+             self.refresh_surface = false;
+         }
+         let mut suboptimal = false;
++        let acquire_start = Instant::now();
+         let frame = match display.surface.get_current_texture() {
+             wgpu::CurrentSurfaceTexture::Success(frame) => frame,
+             wgpu::CurrentSurfaceTexture::Suboptimal(frame) => {
+@@ -568,15 +576,18 @@
+                 return Err(RenderError("surface acquisition validation failed".into()));
+             }
+         };
++        let acquire_s = acquire_start.elapsed().as_secs_f64();
+         let view = frame.texture.create_view(&Default::default());
+         let depth = display.depth.create_view(&Default::default());
++        let draw;
++        let mut observed = None;
+         if let Some(s) = self.model.displayed() {
+             let observation = s.handle.observe();
+             let particles = observation
+                 .snapshot
+                 .as_ref()
+                 .map_or(&[][..], |s| s.particles());
+-            display.graphics.draw(
++            draw = display.graphics.draw_timed(
+                 &view,
+                 &depth,
+                 &DrawScene {
+@@ -596,9 +607,10 @@
+                 },
+                 &overlay,
+             )?;
++            observed = Some(observation);
+         } else {
+             let empty = crate::render::BoundaryLines::new(&[], &[], 0.05)?;
+-            display.graphics.draw(
++            draw = display.graphics.draw_timed(
+                 &view,
+                 &depth,
+                 &DrawScene {
+@@ -614,8 +626,19 @@
+                 &overlay,
+             )?;
+         }
++        let present_start = Instant::now();
+         window.pre_present_notify();
+         display.graphics.queue.present(frame);
++        let present_s = present_start.elapsed().as_secs_f64();
++        if let Some(profile) = &mut self.profile {
++            profile.record(
++                observed.as_ref(),
++                draw,
++                acquire_s,
++                present_s,
++                frame_start.elapsed().as_secs_f64(),
++            );
++        }
+         if suboptimal {
+             display.resize(size.width, size.height)?;
+         }
+--- /dev/null
++++ b/src/viewer/profile.rs
+@@ -0,0 +1,73 @@
++//! Opt-in frame observations stay in memory during viewing. Writing the trace
++//! after worker shutdown keeps filesystem latency outside the measured frames.
++
++use crate::{
++    application::Observation,
++    render::{DrawTimings, RenderError},
++};
++use std::{
++    fs::File,
++    io::{BufWriter, Write},
++    time::Instant,
++};
++
++pub(super) struct Profile {
++    output: File,
++    start: Instant,
++    rows: Vec<String>,
++}
++impl Profile {
++    pub(super) fn from_environment() -> Result<Option<Self>, RenderError> {
++        std::env::var_os("MAELSTROM_VIEW_PROFILE")
++            .map(|path| {
++                let output = File::create_new(path)
++                    .map_err(|e| RenderError(format!("viewer profile output: {e}")))?;
++                Ok(Self {
++                    output,
++                    start: Instant::now(),
++                    rows: Vec::new(),
++                })
++            })
++            .transpose()
++    }
++    pub(super) fn record(
++        &mut self,
++        observation: Option<&Observation>,
++        draw: DrawTimings,
++        acquire_s: f64,
++        present_s: f64,
++        frame_s: f64,
++    ) {
++        // Bound opt-in memory even when a viewer is left open overnight.
++        if self.rows.len() >= 1_000_000 {
++            return;
++        }
++        let (generation, step, simulated, solver, snapshot, status) =
++            observation.map_or((0, 0, 0.0, 0.0, 0.0, "idle".to_owned()), |o| {
++                (
++                    o.generation,
++                    o.snapshot.as_ref().map_or(0, |s| s.completed_steps()),
++                    o.simulated_time_s().unwrap_or(0.0),
++                    o.timings.solver_s,
++                    o.timings.snapshot_s,
++                    format!("{:?}", o.status),
++                )
++            });
++        self.rows.push(format!("{:.9},{generation},{step},{simulated:.9},{solver:.9},{snapshot:.9},{status},{acquire_s:.9},{:.9},{:.9},{:.9},{present_s:.9},{frame_s:.9}",
++            self.start.elapsed().as_secs_f64(), draw.prepare_s, draw.upload_s, draw.submit_s));
++    }
++    pub(super) fn finish(self) -> Result<(), RenderError> {
++        let mut out = BufWriter::new(self.output);
++        let write = || -> std::io::Result<()> {
++            writeln!(
++                out,
++                "wall_s,generation,step,simulated_s,solver_s,snapshot_s,status,acquire_s,prepare_s,upload_s,submit_s,present_s,redraw_s"
++            )?;
++            for row in self.rows {
++                writeln!(out, "{row}")?;
++            }
++            out.flush()
++        };
++        write().map_err(|e| RenderError(format!("viewer profile write: {e}")))
++    }
++}

@@ -1,0 +1,1166 @@
+diff --git a/src/application/worker.rs b/src/application/worker.rs
+index c7e12e8..219f5d1 100644
+--- a/src/application/worker.rs
++++ b/src/application/worker.rs
+@@ -6,6 +6,7 @@ use std::sync::{
+     atomic::{AtomicBool, Ordering},
+     mpsc::{Receiver, TryRecvError},
+ };
++use std::time::Instant;
+ 
+ use crate::simulation::{Simulation, StepError};
+ 
+@@ -20,6 +21,53 @@ struct ActiveRun {
+     status: RunStatus,
+     target: u64,
+     generation: u64,
++    acceptance_trace: Option<AcceptanceTrace>,
++}
++
++// Capacity qualification needs every accepted boundary, rather than coalesced
++// display observations. Buffer opt-in timestamps and write only during teardown.
++struct AcceptanceTrace {
++    file: std::fs::File,
++    origin: Instant,
++    rows: Vec<(u64, u128)>,
++}
++impl AcceptanceTrace {
++    fn open() -> Option<Self> {
++        let path = std::env::var_os("MAELSTROM_ACCEPTANCE_PROFILE")?;
++        match std::fs::File::create_new(path) {
++            Ok(file) => Some(Self {
++                file,
++                origin: Instant::now(),
++                rows: vec![(0, 0)],
++            }),
++            Err(error) => {
++                eprintln!("maelstrom acceptance profile unavailable: {error}");
++                None
++            }
++        }
++    }
++    fn record(&mut self, step: u64, at: Instant) {
++        if self.rows.len() < 1_000_000 {
++            self.rows
++                .push((step, at.duration_since(self.origin).as_nanos()));
++        }
++    }
++}
++impl Drop for AcceptanceTrace {
++    fn drop(&mut self) {
++        use std::io::Write;
++        let mut writer = std::io::BufWriter::new(&self.file);
++        let result = (|| -> std::io::Result<()> {
++            writeln!(writer, "step,wall_ns")?;
++            for (step, time) in &self.rows {
++                writeln!(writer, "{step},{time}")?;
++            }
++            writer.flush()
++        })();
++        if let Err(error) = result {
++            eprintln!("maelstrom acceptance profile write: {error}");
++        }
++    }
+ }
+ 
+ impl ActiveRun {
+@@ -49,11 +97,16 @@ impl ActiveRun {
+             return;
+         };
+         let shared = &self.shared;
++        let start = Instant::now();
+         match solver.step_with_cancellation(|| {
+             stopping.load(Ordering::Acquire) || shared.cancelled.load(Ordering::Acquire)
+         }) {
+             Ok(outcome) => {
++                let accepted_at = self.acceptance_trace.as_ref().map(|_| Instant::now());
++                let solver_s = start.elapsed().as_secs_f64();
++                let copy_start = Instant::now();
+                 let snapshot = Arc::new(solver.snapshot().clone());
++                let snapshot_s = copy_start.elapsed().as_secs_f64();
+                 if outcome.completed_steps == self.target {
+                     self.status = RunStatus::Completed;
+                 }
+@@ -62,7 +115,12 @@ impl ActiveRun {
+                     o.snapshot = Some(snapshot);
+                     o.last_cfl = Some(outcome.cfl);
+                     o.warning_count += u64::from(outcome.cfl.warning);
++                    o.timings.solver_s += solver_s;
++                    o.timings.snapshot_s += snapshot_s;
+                 });
++                if let Some((trace, at)) = self.acceptance_trace.as_mut().zip(accepted_at) {
++                    trace.record(outcome.completed_steps, at);
++                }
+                 if self.status.is_terminal() {
+                     self.solver.take();
+                 }
+@@ -113,6 +171,7 @@ fn construct(spec: RunSpec, shared: Arc<SharedRun>, stopping: &AtomicBool) -> Ac
+         status: RunStatus::Constructing,
+         target: spec.steps,
+         generation,
++        acceptance_trace: None,
+     };
+     if active.cancelled(stopping) {
+         active.set_status(RunStatus::Cancelled);
+@@ -144,6 +203,7 @@ fn construct(spec: RunSpec, shared: Arc<SharedRun>, stopping: &AtomicBool) -> Ac
+                 o.snapshot = Some(snapshot);
+             });
+             active.solver = Some(solver);
++            active.acceptance_trace = AcceptanceTrace::open();
+             active.set_status(if active.cancelled(stopping) {
+                 RunStatus::Cancelled
+             } else if spec.steps == 0 {
+diff --git a/src/render/gpu.rs b/src/render/gpu.rs
+index 7b9c964..1f665cf 100644
+--- a/src/render/gpu.rs
++++ b/src/render/gpu.rs
+@@ -2,13 +2,27 @@
+ //! view or a caller-owned texture view; window creation stays outside rendering.
+ 
+ use super::{
+-    BoundaryLines, Camera, RenderError,
++    BoundaryLines, Camera, ParticleRenderer, RenderError,
+     camera::{dot, position, sub},
++    particle::{adaptive_level, projected_radius, sphere_mesh},
+ };
+ use crate::scene::Particle;
+ use std::sync::{Arc, Mutex, OnceLock};
++use std::time::Instant;
+ use wgpu::util::DeviceExt;
+ 
++/// CPU wall intervals within one draw. Submission can include driver backpressure;
++/// these intervals do not measure GPU execution or display scan-out.
++#[derive(Clone, Copy, Debug, Default)]
++pub struct DrawTimings {
++    /// Camera conversion, validation, colours and particle packing.
++    pub prepare_s: f64,
++    /// Graphics buffer creation and upload calls.
++    pub upload_s: f64,
++    /// Command encoding, queue submission and asynchronous error polling.
++    pub submit_s: f64,
++}
++
+ // Mesa's D3D12 driver registers thread-local cleanup callbacks. Keep its loader
+ // alive until process exit so a rendering thread cannot unload those callbacks
+ // before its own thread-local destructors run. Devices remain independently owned.
+@@ -56,10 +70,12 @@ pub struct Graphics {
+     uniform: wgpu::Buffer,
+     bind: wgpu::BindGroup,
+     sphere: wgpu::RenderPipeline,
++    impostor: wgpu::RenderPipeline,
++    particle_renderer: ParticleRenderer,
+     lines: wgpu::RenderPipeline,
+     overlay: wgpu::RenderPipeline,
+-    mesh: wgpu::Buffer,
+-    mesh_count: u32,
++    meshes: [ParticleMesh; 3],
++    quad: ParticleMesh,
+     failure: Arc<Mutex<Option<String>>>,
+ }
+ impl Graphics {
+@@ -246,6 +262,12 @@ impl Graphics {
+             "sphere",
+             "particle_colour",
+             wgpu::PrimitiveTopology::TriangleList,
++            &[Some(vertex.clone()), Some(instance_layout.clone())],
++        );
++        let impostor = make_pipeline(
++            "impostor",
++            "impostor_colour",
++            wgpu::PrimitiveTopology::TriangleList,
+             &[Some(vertex.clone()), Some(instance_layout)],
+         );
+         let lines = make_pipeline(
+@@ -283,13 +305,17 @@ impl Graphics {
+             multiview_mask: None,
+             cache: None,
+         });
+-        let mesh_data = sphere_mesh();
+-        let mesh_count = (mesh_data.len() / 3) as u32;
+-        let mesh = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+-            label: Some("unit sphere, 16 longitudes x 12 latitudes"),
+-            contents: &bytes(&mesh_data),
+-            usage: wgpu::BufferUsages::VERTEX,
++        let meshes = [(16, 12), (12, 8), (8, 6)].map(|(lon, lat)| {
++            let (vertices, indices) = sphere_mesh(lon, lat);
++            ParticleMesh::new(&device, &vertices, &indices)
+         });
++        let quad = ParticleMesh::new(
++            &device,
++            &[
++                -1.0, -1.0, 0.0, 1.0, -1.0, 0.0, -1.0, 1.0, 0.0, 1.0, 1.0, 0.0,
++            ],
++            &[0, 1, 2, 2, 1, 3],
++        );
+         if let Some(error) = scope.pop().await {
+             return Err(RenderError(format!("graphics pipeline: {error}")));
+         }
+@@ -301,13 +327,24 @@ impl Graphics {
+             uniform,
+             bind,
+             sphere,
++            impostor,
++            particle_renderer: ParticleRenderer::Indexed,
+             lines,
+             overlay,
+-            mesh,
+-            mesh_count,
++            meshes,
++            quad,
+             failure,
+         })
+     }
++    /// Selects opaque particle geometry without changing accepted data or camera.
++    /// Graphics created for offscreen output retain indexed rendering unless selected.
++    pub fn set_particle_renderer(&mut self, renderer: ParticleRenderer) {
++        self.particle_renderer = renderer;
++    }
++    /// Current requested representation; near-plane intersections use the indexed fallback.
++    pub fn particle_renderer(&self) -> ParticleRenderer {
++        self.particle_renderer
++    }
+     /// Returns a retained asynchronous graphics failure, if one was reported.
+     pub fn check(&self) -> Result<(), RenderError> {
+         self.device
+@@ -356,6 +393,17 @@ impl Graphics {
+         scene: &DrawScene<'_>,
+         overlay: &[f32],
+     ) -> Result<(), RenderError> {
++        self.draw_timed(target, depth, scene, overlay).map(|_| ())
++    }
++    /// Draws the same scene while reporting CPU stage intervals.
++    pub fn draw_timed(
++        &self,
++        target: &wgpu::TextureView,
++        depth: &wgpu::TextureView,
++        scene: &DrawScene<'_>,
++        overlay: &[f32],
++    ) -> Result<DrawTimings, RenderError> {
++        let start = Instant::now();
+         self.check()?;
+         scene
+             .camera
+@@ -423,10 +471,40 @@ impl Graphics {
+                 .checked_mul(4)
+                 .ok_or_else(|| RenderError("particle draw capacity overflow".into()))?,
+         );
++        let mut indexed_fallback = false;
++        let mut maximum_radius_px = 0.0_f64;
+         for particle in scene.particles {
+-            centres.extend(convert(position(particle))?);
++            let centre = convert(position(particle))?;
++            if self.particle_renderer != ParticleRenderer::Indexed {
++                indexed_fallback |= f64::from(centre[2] - radius) <= near;
++                if self.particle_renderer == ParticleRenderer::Impostor {
++                    let extent = centre.into_iter().map(f32::abs).fold(0.0, f32::max);
++                    indexed_fallback |= extent > 1e10 || radius <= extent * 1e-7;
++                }
++                if self.particle_renderer == ParticleRenderer::Adaptive {
++                    maximum_radius_px =
++                        maximum_radius_px.max(projected_radius(centre, radius, fy, scene.height));
++                }
++            }
++            centres.extend(centre);
+             centres.push(colours.fraction(particle)?);
+         }
++        let mesh_level = if indexed_fallback {
++            0
++        } else {
++            match self.particle_renderer {
++                ParticleRenderer::Indexed | ParticleRenderer::Impostor => 0,
++                ParticleRenderer::Low => 2,
++                ParticleRenderer::Adaptive => adaptive_level(maximum_radius_px),
++            }
++        };
++        let use_impostor =
++            self.particle_renderer == ParticleRenderer::Impostor && !indexed_fallback;
++        let particle_mesh = if use_impostor {
++            &self.quad
++        } else {
++            &self.meshes[mesh_level]
++        };
+         let lines = scene
+             .boundaries
+             .vertices_m
+@@ -453,9 +531,13 @@ impl Graphics {
+                     usage: wgpu::BufferUsages::VERTEX,
+                 }))
+         };
++        let prepare_s = start.elapsed().as_secs_f64();
++        let upload_start = Instant::now();
+         let centres_buffer = make_buffer("accepted centres", &centres)?;
+         let line_buffer = make_buffer("plane outlines", &lines)?;
+         let overlay_buffer = make_buffer("overlay", overlay)?;
++        let upload_s = upload_start.elapsed().as_secs_f64();
++        let submit_start = Instant::now();
+         let mut encoder = self.device.create_command_encoder(&Default::default());
+         {
+             let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+@@ -485,11 +567,17 @@ impl Graphics {
+                 ..Default::default()
+             });
+             pass.set_bind_group(0, &self.bind, &[]);
+-            pass.set_pipeline(&self.sphere);
+-            pass.set_vertex_buffer(0, self.mesh.slice(..));
++            pass.set_pipeline(if use_impostor {
++                &self.impostor
++            } else {
++                &self.sphere
++            });
++            pass.set_vertex_buffer(0, particle_mesh.vertices.slice(..));
+             pass.set_vertex_buffer(1, centres_buffer.slice(..));
+-            pass.draw(
+-                0..self.mesh_count,
++            pass.set_index_buffer(particle_mesh.indices.slice(..), wgpu::IndexFormat::Uint16);
++            pass.draw_indexed(
++                0..particle_mesh.count,
++                0,
+                 0..u32::try_from(scene.particles.len())
+                     .map_err(|_| RenderError("particle draw count exceeds u32".into()))?,
+             );
+@@ -516,32 +604,78 @@ impl Graphics {
+             pass.draw(0..(overlay.len() / 5) as u32, 0..1);
+         }
+         self.queue.submit([encoder.finish()]);
+-        self.check()
++        self.check()?;
++        Ok(DrawTimings {
++            prepare_s,
++            upload_s,
++            submit_s: submit_start.elapsed().as_secs_f64(),
++        })
+     }
+ }
+ fn bytes(values: &[f32]) -> Vec<u8> {
+     values.iter().flat_map(|x| x.to_ne_bytes()).collect()
+ }
+-fn sphere_mesh() -> Vec<f32> {
+-    let point = |lat: u32, lon: u32| {
+-        let t = std::f32::consts::PI * lat as f32 / 12.0;
+-        let p = std::f32::consts::TAU * lon as f32 / 16.0;
+-        [t.sin() * p.cos(), t.cos(), t.sin() * p.sin()]
+-    };
+-    let mut vertices = Vec::new();
+-    for lat in 0..12 {
+-        for lon in 0..16 {
+-            for (a, b) in [
+-                (lat, lon),
+-                (lat + 1, lon),
+-                (lat + 1, lon + 1),
+-                (lat, lon),
+-                (lat + 1, lon + 1),
+-                (lat, lon + 1),
+-            ] {
+-                vertices.extend(point(a, b));
++struct ParticleMesh {
++    vertices: wgpu::Buffer,
++    indices: wgpu::Buffer,
++    count: u32,
++}
++impl ParticleMesh {
++    fn new(device: &wgpu::Device, vertices: &[f32], indices: &[u16]) -> Self {
++        Self {
++            vertices: device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
++                label: Some("particle mesh vertices"),
++                contents: &bytes(vertices),
++                usage: wgpu::BufferUsages::VERTEX,
++            }),
++            indices: device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
++                label: Some("particle mesh indices"),
++                contents: &indices
++                    .iter()
++                    .flat_map(|x| x.to_ne_bytes())
++                    .collect::<Vec<_>>(),
++                usage: wgpu::BufferUsages::INDEX,
++            }),
++            count: indices.len() as u32,
++        }
++    }
++}
++
++#[cfg(test)]
++mod tests {
++    #[test]
++    fn indexed_sphere_preserves_every_triangle_coordinate_bit() {
++        let (vertices, indices) = super::sphere_mesh(16, 12);
++        assert_eq!(vertices.len(), 221 * 3);
++        assert_eq!(indices.len(), 1152);
++        let mut old = Vec::new();
++        for lat in 0..12 {
++            for lon in 0..16 {
++                for (a, b) in [
++                    (lat, lon),
++                    (lat + 1, lon),
++                    (lat + 1, lon + 1),
++                    (lat, lon),
++                    (lat + 1, lon + 1),
++                    (lat, lon + 1),
++                ] {
++                    let t = std::f32::consts::PI * a as f32 / 12.0;
++                    let p = std::f32::consts::TAU * b as f32 / 16.0;
++                    old.extend([t.sin() * p.cos(), t.cos(), t.sin() * p.sin()]);
++                }
+             }
+         }
++        let expanded = indices
++            .into_iter()
++            .flat_map(|i| {
++                vertices[usize::from(i) * 3..usize::from(i) * 3 + 3]
++                    .iter()
++                    .map(|x| x.to_bits())
++            })
++            .collect::<Vec<_>>();
++        assert_eq!(
++            expanded,
++            old.iter().map(|x| x.to_bits()).collect::<Vec<_>>()
++        );
+     }
+-    vertices
+ }
+diff --git a/src/render/mod.rs b/src/render/mod.rs
+index 9c7bf74..ceecd94 100644
+--- a/src/render/mod.rs
++++ b/src/render/mod.rs
+@@ -5,5 +5,7 @@ pub(crate) use crate::presentation::camera;
+ pub use crate::presentation::{Camera, RenderError, Settings};
+ mod geometry;
+ mod gpu;
++mod particle;
+ pub use geometry::BoundaryLines;
+-pub use gpu::{DrawScene, Graphics, GraphicsSelection};
++pub use gpu::{DrawScene, DrawTimings, Graphics, GraphicsSelection};
++pub use particle::ParticleRenderer;
+diff --git a/src/render/particles.wgsl b/src/render/particles.wgsl
+index 0a5b0e7..3cfe206 100644
+--- a/src/render/particles.wgsl
++++ b/src/render/particles.wgsl
+@@ -31,3 +31,54 @@ fn project(p: vec3<f32>) -> vec4<f32> {
+     return vec4(base * lighting,1.0);
+ }
+ @fragment fn line_colour() -> @location(0) vec4<f32> { return vec4(0.323143,0.391572,0.434154,1.0); }
++
++// Tangent bounds cover the perspective silhouette, including off-axis spheres.
++// Near/eye-plane intersections use the indexed mesh before reaching this pass.
++struct ImpostorVertex {
++    @builtin(position) position: vec4<f32>,
++    @location(0) @interpolate(linear) ray: vec2<f32>,
++    @location(1) @interpolate(flat) centre: vec3<f32>,
++    @location(2) @interpolate(flat) colour_fraction: f32,
++};
++@vertex fn impostor(@location(0) corner: vec3<f32>, @location(1) centre: vec3<f32>,
++                    @location(2) colour_fraction: f32) -> ImpostorVertex {
++    let radius = camera.light_radius.w;
++    let denominator = centre.z * centre.z - radius * radius;
++    let middle = centre.xy * centre.z / denominator;
++    let extent = radius * sqrt(centre.xy * centre.xy + vec2(denominator)) / denominator;
++    let slope = middle + corner.xy * (extent * 1.000002 + vec2(0.0000001));
++    var result: ImpostorVertex;
++    result.position = vec4(slope * camera.projection.xy, 0.0, 1.0);
++    result.ray = slope;
++    result.centre = centre;
++    result.colour_fraction = colour_fraction;
++    return result;
++}
++struct ImpostorFragment {
++    @location(0) colour: vec4<f32>,
++    @builtin(frag_depth) depth: f32,
++};
++@fragment fn impostor_colour(vertex: ImpostorVertex) -> ImpostorFragment {
++    let radius = camera.light_radius.w;
++    let ray = vec3(vertex.ray, 1.0);
++    let ray_squared = dot(ray, ray);
++    let middle = dot(ray, vertex.centre) / ray_squared;
++    // Closest approach avoids subtracting two almost equal squared distances.
++    let closest = vertex.centre - ray * middle;
++    let height_squared = radius * radius - dot(closest, closest);
++    if height_squared < 0.0 { discard; }
++    let half_chord = sqrt(max(height_squared, 0.0) / ray_squared);
++    let z = middle - half_chord;
++    if z <= 0.0 { discard; }
++    let depth = (z * camera.projection.z + camera.projection.w) / z;
++    if depth < 0.0 || depth > 1.0 { discard; }
++    let view_normal = (-closest - ray * half_chord) / radius;
++    let normal = view_normal.x * camera.right.xyz + view_normal.y * camera.up.xyz
++        + view_normal.z * camera.forward.xyz;
++    let lighting = 0.28 + 0.72 * max(dot(normalize(normal), normalize(vec3(-0.4,0.8,0.6))),0.0);
++    let base = mix(camera.colour_low.xyz, camera.colour_high.xyz, vertex.colour_fraction);
++    var result: ImpostorFragment;
++    result.colour = vec4(base * lighting, 1.0);
++    result.depth = depth;
++    return result;
++}
+diff --git a/src/viewer/mod.rs b/src/viewer/mod.rs
+index 163bf25..6b6739e 100644
+--- a/src/viewer/mod.rs
++++ b/src/viewer/mod.rs
+@@ -4,6 +4,7 @@
+ 
+ mod model;
+ mod overlay;
++mod profile;
+ mod windowing;
+ pub(crate) use windowing::create as create_event_loop;
+ #[cfg(test)]
+@@ -79,17 +80,20 @@ fn run_internal(
+         model.fit(f64::from(settings.width) / f64::from(settings.height))?;
+     }
+     let mut app = Viewer::new(model, settings, graphics);
++    app.profile = profile::Profile::from_environment()?;
+     let event_result = event_loop
+         .run_app(&mut app)
+         .map_err(|e| window_error("window event loop", e));
+     // Event-loop failure still requests and joins worker teardown.
+     app.model.request_shutdown();
+     let joined = app.model.join();
++    let profile_result = app.profile.take().map_or(Ok(()), profile::Profile::finish);
+     event_result?;
+     joined?;
+     if let Some(error) = app.error {
+         return Err(error);
+     }
++    profile_result?;
+     Ok(())
+ }
+ pub(crate) fn window_error(context: &str, error: impl std::fmt::Display) -> RenderError {
+@@ -161,7 +165,19 @@ impl Display {
+             .copied()
+             .find(|f| f.is_srgb())
+             .ok_or_else(|| RenderError("selected surface has no supported sRGB format".into()))?;
+-        let graphics = pollster::block_on(Graphics::from_adapter(adapter, Some(&surface), format))?;
++        let mut graphics =
++            pollster::block_on(Graphics::from_adapter(adapter, Some(&surface), format))?;
++        let renderer = match std::env::var("MAELSTROM_PARTICLE_RENDERER") {
++            Ok(value) => value.parse()?,
++            Err(std::env::VarError::NotPresent) => crate::render::ParticleRenderer::Impostor,
++            Err(std::env::VarError::NotUnicode(_)) => {
++                return Err(RenderError(
++                    "MAELSTROM_PARTICLE_RENDERER must contain a UTF-8 renderer name".into(),
++                ));
++            }
++        };
++        graphics.set_particle_renderer(renderer);
++        eprintln!("maelstrom particle renderer: {renderer:?}");
+         eprintln!(
+             "maelstrom graphics: {:?} {:?}; {}; driver {} {}; surface {:?}",
+             graphics.adapter_info.backend,
+@@ -246,6 +262,7 @@ struct Viewer {
+     fps: f64,
+     fps_start: Instant,
+     next_redraw: Instant,
++    profile: Option<profile::Profile>,
+ }
+ impl Viewer {
+     fn new(model: Model, settings: Settings, selection: GraphicsSelection) -> Self {
+@@ -268,6 +285,7 @@ impl Viewer {
+             fps: 0.0,
+             fps_start: Instant::now(),
+             next_redraw: Instant::now(),
++            profile: None,
+         }
+     }
+ 
+@@ -490,12 +508,13 @@ impl Viewer {
+         lines.push("Plane outlines are clipped depictions; metres, Y up".into());
+         lines.push(self.model.audit_message.clone());
+         lines.push(format!(
+-            "Redraw FPS: {:.1} | solver timing and throughput not measured",
++            "Redraw FPS: {:.1} | independent of simulation speed",
+             self.fps
+         ));
+         lines
+     }
+     fn redraw(&mut self) -> Result<(), RenderError> {
++        let frame_start = Instant::now();
+         self.model.poll();
+         let window = self
+             .window
+@@ -546,6 +565,7 @@ impl Viewer {
+             self.refresh_surface = false;
+         }
+         let mut suboptimal = false;
++        let acquire_start = Instant::now();
+         let frame = match display.surface.get_current_texture() {
+             wgpu::CurrentSurfaceTexture::Success(frame) => frame,
+             wgpu::CurrentSurfaceTexture::Suboptimal(frame) => {
+@@ -568,15 +588,18 @@ impl Viewer {
+                 return Err(RenderError("surface acquisition validation failed".into()));
+             }
+         };
++        let acquire_s = acquire_start.elapsed().as_secs_f64();
+         let view = frame.texture.create_view(&Default::default());
+         let depth = display.depth.create_view(&Default::default());
++        let draw;
++        let mut observed = None;
+         if let Some(s) = self.model.displayed() {
+             let observation = s.handle.observe();
+             let particles = observation
+                 .snapshot
+                 .as_ref()
+                 .map_or(&[][..], |s| s.particles());
+-            display.graphics.draw(
++            draw = display.graphics.draw_timed(
+                 &view,
+                 &depth,
+                 &DrawScene {
+@@ -596,9 +619,10 @@ impl Viewer {
+                 },
+                 &overlay,
+             )?;
++            observed = Some(observation);
+         } else {
+             let empty = crate::render::BoundaryLines::new(&[], &[], 0.05)?;
+-            display.graphics.draw(
++            draw = display.graphics.draw_timed(
+                 &view,
+                 &depth,
+                 &DrawScene {
+@@ -614,8 +638,19 @@ impl Viewer {
+                 &overlay,
+             )?;
+         }
++        let present_start = Instant::now();
+         window.pre_present_notify();
+         display.graphics.queue.present(frame);
++        let present_s = present_start.elapsed().as_secs_f64();
++        if let Some(profile) = &mut self.profile {
++            profile.record(
++                observed.as_ref(),
++                draw,
++                acquire_s,
++                present_s,
++                frame_start.elapsed().as_secs_f64(),
++            );
++        }
+         if suboptimal {
+             display.resize(size.width, size.height)?;
+         }
+diff --git a/src/render/particle.rs b/src/render/particle.rs
+new file mode 100644
+index 0000000..0e80108
+--- /dev/null
++++ b/src/render/particle.rs
+@@ -0,0 +1,108 @@
++//! Particle representations share accepted centres, colours and world-space
++//! lighting. Selection changes graphics geometry only, never simulation state.
++
++use super::RenderError;
++
++/// Opaque particle geometry, independent of numerical mode and scene inputs.
++#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
++pub enum ParticleRenderer {
++    /// Established indexed sphere with 16 longitudes and 12 latitude bands.
++    #[default]
++    Indexed,
++    /// An eight-longitude, six-band sphere for comparison at small projected sizes.
++    Low,
++    /// A perspective-correct analytic sphere bounded by a two-triangle rectangle.
++    Impostor,
++    /// Frame-wide mesh resolution chosen conservatively from the largest particle.
++    Adaptive,
++}
++impl std::str::FromStr for ParticleRenderer {
++    type Err = RenderError;
++    fn from_str(value: &str) -> Result<Self, Self::Err> {
++        match value {
++            "indexed" => Ok(Self::Indexed),
++            "low" => Ok(Self::Low),
++            "impostor" => Ok(Self::Impostor),
++            "adaptive" => Ok(Self::Adaptive),
++            _ => Err(RenderError(
++                "particle renderer must be indexed, low, impostor or adaptive".into(),
++            )),
++        }
++    }
++}
++
++/// Largest projected half-extent controls one mesh for the entire frame. This
++/// avoids regrouping particles or changing their identity/draw order.
++pub(super) fn adaptive_level(radius_px: f64) -> usize {
++    if radius_px <= 3.0 {
++        2
++    } else if radius_px <= 6.0 {
++        1
++    } else {
++        0
++    }
++}
++
++/// Half the exact perspective tangent interval, in pixels. The caller uses the
++/// indexed fallback when a sphere intersects the near plane or eye plane.
++pub(super) fn projected_radius(centre: [f32; 3], radius: f32, fy: f64, height: u32) -> f64 {
++    let [x, y, z] = centre.map(f64::from);
++    let r = f64::from(radius);
++    let denominator = z * z - r * r;
++    if denominator <= 0.0 {
++        return f64::INFINITY;
++    }
++    f64::from(height) * 0.5 * fy * r * ((x * x).max(y * y) + z * z - r * r).max(0.0).sqrt()
++        / denominator
++}
++
++pub(super) fn sphere_mesh(longitudes: u32, latitudes: u32) -> (Vec<f32>, Vec<u16>) {
++    let point = |lat: u32, lon: u32| {
++        let t = std::f32::consts::PI * lat as f32 / latitudes as f32;
++        let p = std::f32::consts::TAU * lon as f32 / longitudes as f32;
++        [t.sin() * p.cos(), t.cos(), t.sin() * p.sin()]
++    };
++    // Do not weld the seam or poles: their almost equal floats belong to the
++    // existing mesh's rasterisation and remain distinct in the control.
++    let mut vertices = Vec::new();
++    for lat in 0..=latitudes {
++        for lon in 0..=longitudes {
++            vertices.extend(point(lat, lon));
++        }
++    }
++    let mut indices = Vec::new();
++    for lat in 0..latitudes {
++        for lon in 0..longitudes {
++            for (a, b) in [
++                (lat, lon),
++                (lat + 1, lon),
++                (lat + 1, lon + 1),
++                (lat, lon),
++                (lat + 1, lon + 1),
++                (lat, lon + 1),
++            ] {
++                indices.push((a * (longitudes + 1) + b) as u16);
++            }
++        }
++    }
++    (vertices, indices)
++}
++
++#[cfg(test)]
++mod tests {
++    #[test]
++    fn lod_keeps_large_particles_and_promotes_at_each_threshold() {
++        assert_eq!(super::adaptive_level(2.0), 2);
++        assert_eq!(super::adaptive_level(3.0), 2);
++        assert_eq!(super::adaptive_level(3.001), 1);
++        assert_eq!(super::adaptive_level(6.0), 1);
++        assert_eq!(super::adaptive_level(6.001), 0);
++        assert_eq!(super::adaptive_level(f64::INFINITY), 0);
++    }
++    #[test]
++    fn perspective_radius_matches_axis_tangency_and_handles_eye_intersection() {
++        let value = super::projected_radius([0.0, 0.0, 5.0], 1.0, 1.0, 200);
++        assert!((value - 100.0 / 24.0_f64.sqrt()).abs() < 1e-12);
++        assert!(super::projected_radius([0.0, 0.0, 0.5], 1.0, 1.0, 200).is_infinite());
++    }
++}
+diff --git a/tests/particle_rendering.rs b/tests/particle_rendering.rs
+new file mode 100644
+index 0000000..ed006f5
+--- /dev/null
++++ b/tests/particle_rendering.rs
+@@ -0,0 +1,410 @@
++//! Analytic occlusion is checked against independent f64 rays. Visual sequences
++//! render the same immutable accepted state through every representation.
++#![cfg(feature = "viewer")]
++
++use maelstrom::{
++    math::Vec3,
++    render::{BoundaryLines, Camera, DrawScene, Graphics, GraphicsSelection, ParticleRenderer},
++    scene::Particle,
++};
++#[cfg(feature = "cuda")]
++use std::{fs, path::Path};
++use std::{sync::mpsc, time::Duration};
++
++struct Target {
++    colour: wgpu::Texture,
++    depth: wgpu::Texture,
++    readback: wgpu::Buffer,
++    width: u32,
++    height: u32,
++    padded: u32,
++}
++impl Target {
++    fn new(g: &Graphics, width: u32, height: u32) -> Self {
++        let padded = (width * 4).div_ceil(256) * 256;
++        Self {
++            colour: g.device.create_texture(&wgpu::TextureDescriptor {
++                label: Some("particle comparison"),
++                size: wgpu::Extent3d {
++                    width,
++                    height,
++                    depth_or_array_layers: 1,
++                },
++                mip_level_count: 1,
++                sample_count: 1,
++                dimension: wgpu::TextureDimension::D2,
++                format: wgpu::TextureFormat::Rgba8UnormSrgb,
++                usage: wgpu::TextureUsages::RENDER_ATTACHMENT | wgpu::TextureUsages::COPY_SRC,
++                view_formats: &[],
++            }),
++            depth: g.depth(width, height).unwrap(),
++            readback: g.device.create_buffer(&wgpu::BufferDescriptor {
++                label: Some("particle pixels"),
++                size: u64::from(padded) * u64::from(height),
++                usage: wgpu::BufferUsages::MAP_READ | wgpu::BufferUsages::COPY_DST,
++                mapped_at_creation: false,
++            }),
++            width,
++            height,
++            padded,
++        }
++    }
++    fn pixels(&self, g: &Graphics, scene: &DrawScene<'_>) -> Vec<u8> {
++        g.draw(
++            &self.colour.create_view(&Default::default()),
++            &self.depth.create_view(&Default::default()),
++            scene,
++            &[],
++        )
++        .unwrap();
++        let mut encoder = g.device.create_command_encoder(&Default::default());
++        encoder.copy_texture_to_buffer(
++            wgpu::TexelCopyTextureInfo {
++                texture: &self.colour,
++                mip_level: 0,
++                origin: wgpu::Origin3d::ZERO,
++                aspect: wgpu::TextureAspect::All,
++            },
++            wgpu::TexelCopyBufferInfo {
++                buffer: &self.readback,
++                layout: wgpu::TexelCopyBufferLayout {
++                    offset: 0,
++                    bytes_per_row: Some(self.padded),
++                    rows_per_image: Some(self.height),
++                },
++            },
++            wgpu::Extent3d {
++                width: self.width,
++                height: self.height,
++                depth_or_array_layers: 1,
++            },
++        );
++        g.queue.submit([encoder.finish()]);
++        let (tx, rx) = mpsc::sync_channel(1);
++        self.readback
++            .map_async(wgpu::MapMode::Read, .., move |result| {
++                let _ = tx.send(result);
++            });
++        g.device
++            .poll(wgpu::PollType::Wait {
++                submission_index: None,
++                timeout: Some(Duration::from_secs(30)),
++            })
++            .unwrap();
++        rx.recv_timeout(Duration::from_secs(30)).unwrap().unwrap();
++        let mapped = self.readback.get_mapped_range(..).unwrap();
++        let mut pixels = Vec::with_capacity((self.width * self.height * 4) as usize);
++        for row in mapped.chunks_exact(self.padded as usize) {
++            pixels.extend_from_slice(&row[..self.width as usize * 4]);
++        }
++        drop(mapped);
++        self.readback.unmap();
++        g.check().unwrap();
++        pixels
++    }
++}
++fn graphics(software: bool) -> Graphics {
++    let instance = Graphics::instance();
++    let g = pollster::block_on(Graphics::new(
++        &instance,
++        GraphicsSelection { index: 0, software },
++        None,
++        wgpu::TextureFormat::Rgba8UnormSrgb,
++    ))
++    .unwrap();
++    eprintln!("PARTICLE_ADAPTER {:?}", g.adapter_info);
++    g
++}
++
++#[test]
++#[ignore = "requires an explicitly available hardware graphics adapter"]
++fn analytic_overlap_depth_matches_independent_rays_and_near_fallback() {
++    check_analytic(false);
++}
++
++#[test]
++#[ignore = "requires an explicitly available software Vulkan adapter"]
++fn software_analytic_overlap_depth_matches_independent_rays() {
++    check_analytic(true);
++}
++
++fn check_analytic(software: bool) {
++    let mut g = graphics(software);
++    let target = Target::new(&g, 128, 128);
++    let boundaries = BoundaryLines::new(&[], &[], 0.05).unwrap();
++    let colours = serde_json::from_value(
++        serde_json::json!({"colour_mode":"kinetic_energy","min_energy_j":0.0,"max_energy_j":1.0}),
++    )
++    .unwrap();
++    let mut camera = Camera {
++        eye_m: [0.0, 0.0, 5.0],
++        target_m: [0.0; 3],
++        up: [0.0, 1.0, 0.0],
++        vertical_fov_deg: 90.0,
++        near_m: 0.1,
++        far_m: 10.0,
++    };
++    let mut particles = vec![
++        Particle {
++            identity: 0,
++            position_m: Vec3::new(-0.4, 0.0, 0.2),
++            velocity_m_s: Vec3::new(1.0, 0.0, 0.0),
++        },
++        Particle {
++            identity: 1,
++            position_m: Vec3::new(0.4, 0.0, -0.2),
++            velocity_m_s: Vec3::ZERO,
++        },
++    ];
++    fn scene<'a>(
++        particles: &'a [Particle],
++        camera: &'a Camera,
++        boundaries: &'a BoundaryLines,
++        colours: &'a maelstrom::presentation::ParticleColours,
++    ) -> DrawScene<'a> {
++        DrawScene {
++            particles,
++            boundaries,
++            radius_m: 1.0,
++            camera,
++            colours,
++            particle_mass_kg: 2.0,
++            width: 128,
++            height: 128,
++        }
++    }
++    g.set_particle_renderer(ParticleRenderer::Impostor);
++    let pixels = target.pixels(&g, &scene(&particles, &camera, &boundaries, &colours));
++    let mut checked = 0;
++    for y in 0..128 {
++        for x in 0..128 {
++            let d = [
++                (x as f64 + 0.5) / 64.0 - 1.0,
++                1.0 - (y as f64 + 0.5) / 64.0,
++                -1.0,
++            ];
++            let a = d.iter().map(|v| v * v).sum::<f64>();
++            let hit = |p: &Particle| {
++                let c = [
++                    f64::from(p.position_m.x),
++                    0.0,
++                    f64::from(p.position_m.z) - 5.0,
++                ];
++                let b = d.iter().zip(c).map(|(d, c)| d * c).sum::<f64>();
++                let discriminant = b * b - a * (c.iter().map(|v| v * v).sum::<f64>() - 1.0);
++                if discriminant > 0.01 {
++                    let distance = (b - discriminant.sqrt()) / a;
++                    assert!(distance > 0.0);
++                    Some(distance)
++                } else {
++                    None
++                }
++            };
++            if let (Some(a), Some(b)) = (hit(&particles[0]), hit(&particles[1])) {
++                if (a - b).abs() < 0.001 {
++                    continue;
++                }
++                let offset = (y * 128 + x) * 4;
++                let (red, blue) = (pixels[offset], pixels[offset + 2]);
++                if a < b {
++                    assert!(red > 0 && blue == 0, "front red at {x},{y}: {red},{blue}");
++                } else {
++                    assert!(blue > 0 && red == 0, "front blue at {x},{y}: {red},{blue}");
++                }
++                checked += 1;
++            }
++        }
++    }
++    assert!(checked > 200);
++    // Off-axis tangency needs a larger perspective rectangle than c.xy ± r.
++    particles.truncate(1);
++    particles[0].position_m = Vec3::new(3.0, 1.5, 0.0);
++    let off_axis = target.pixels(&g, &scene(&particles, &camera, &boundaries, &colours));
++    for y in 0..128 {
++        for x in 0..128 {
++            let d = [
++                (x as f64 + 0.5) / 64.0 - 1.0,
++                1.0 - (y as f64 + 0.5) / 64.0,
++                -1.0,
++            ];
++            let c = [3.0, 1.5, -5.0];
++            let a = d.iter().map(|v| v * v).sum::<f64>();
++            let b = d.iter().zip(c).map(|(d, c)| d * c).sum::<f64>();
++            let discriminant = b * b - a * (c.iter().map(|v| v * v).sum::<f64>() - 1.0);
++            let offset = (y * 128 + x) * 4;
++            let red = off_axis[offset] > 64 && off_axis[offset + 2] == 0;
++            if discriminant > 0.005 {
++                assert!(red, "missing off-axis interior at {x},{y}");
++            }
++            if discriminant < -0.005 {
++                assert!(!red, "off-axis rectangle leaked at {x},{y}");
++            }
++        }
++    }
++    for near_eye in [[0.0, 0.0, 0.5], [0.0, 0.0, 1.05]] {
++        camera.eye_m = near_eye;
++        particles.truncate(1);
++        particles[0].position_m = Vec3::ZERO;
++        g.set_particle_renderer(ParticleRenderer::Indexed);
++        let control = target.pixels(&g, &scene(&particles, &camera, &boundaries, &colours));
++        g.set_particle_renderer(ParticleRenderer::Impostor);
++        assert_eq!(
++            target.pixels(&g, &scene(&particles, &camera, &boundaries, &colours)),
++            control
++        );
++    }
++}
++
++#[cfg(feature = "cuda")]
++fn png(path: &Path, width: u32, height: u32, pixels: &[u8]) {
++    let file = fs::File::create_new(path).unwrap();
++    let mut encoder = png::Encoder::new(file, width, height);
++    encoder.set_color(png::ColorType::Rgba);
++    encoder.set_depth(png::BitDepth::Eight);
++    encoder.set_source_srgb(png::SrgbRenderingIntent::Perceptual);
++    let mut writer = encoder.write_header().unwrap();
++    writer.write_image_data(pixels).unwrap();
++    writer.finish().unwrap();
++}
++
++#[cfg(feature = "cuda")]
++#[test]
++#[ignore = "requires CUDA, hardware graphics, MAELSTROM_PARTICLE_INPUTS and a new MAELSTROM_PARTICLE_OUTPUT directory"]
++fn matched_particle_stills_and_motion() {
++    use maelstrom::{
++        config::{ConfigurationOverlay, NumericalMode},
++        execution::ExecutionMode,
++        neighbours::SearchBackend,
++        scene::load_resolved_scene,
++        simulation::Simulation,
++    };
++    use sha2::{Digest, Sha256};
++    let hex = |bytes: &[u8]| bytes.iter().map(|b| format!("{b:02x}")).collect::<String>();
++    let inputs = std::path::PathBuf::from(std::env::var_os("MAELSTROM_PARTICLE_INPUTS").unwrap());
++    let output = std::path::PathBuf::from(std::env::var_os("MAELSTROM_PARTICLE_OUTPUT").unwrap());
++    fs::create_dir(&output).unwrap();
++    let mut g = graphics(false);
++    let target = Target::new(&g, 1280, 720);
++    let mut records = Vec::new();
++    let colours = serde_json::from_value(
++        serde_json::json!({"colour_mode":"kinetic_energy","min_energy_j":0.0,"max_energy_j":1.962}),
++    )
++    .unwrap();
++    for count in [8000, 32000, 110592] {
++        let mut overlay = ConfigurationOverlay::default();
++        NumericalMode::Experimental.fill_overrides(&mut overlay.numerical);
++        let scene =
++            load_resolved_scene(&inputs.join(format!("{count}.toml")), Some(&overlay)).unwrap();
++        assert_eq!(scene.particles.len(), count);
++        let spacing = f64::from(scene.configuration.numerical.particle_spacing_m);
++        let boundaries = BoundaryLines::new(&scene.particles, &scene.planes, spacing).unwrap();
++        let mut camera = Camera::default();
++        camera
++            .fit_scene(
++                &scene.particles,
++                &scene.planes,
++                spacing / 2.0,
++                1280.0 / 720.0,
++            )
++            .unwrap();
++        let mut solver = Simulation::from_scene_with_execution(
++            &scene,
++            SearchBackend::UniformGrid,
++            ExecutionMode::Cuda {
++                device: 0,
++                threads: 128,
++            },
++        )
++        .unwrap();
++        for (name, _) in [
++            ("indexed", ParticleRenderer::Indexed),
++            ("low", ParticleRenderer::Low),
++            ("impostor", ParticleRenderer::Impostor),
++            ("adaptive", ParticleRenderer::Adaptive),
++        ] {
++            fs::create_dir(output.join(format!("{count}-{name}"))).unwrap();
++        }
++        let states = (0..=720).step_by(8).chain([1200]);
++        for (frame, step) in states.enumerate() {
++            while solver.snapshot().completed_steps() < step {
++                let _ = solver.step().unwrap();
++            }
++            let particles = solver.snapshot().particles();
++            let mut state = Sha256::new();
++            for p in particles {
++                state.update(p.identity.to_le_bytes());
++                for v in [
++                    p.position_m.x,
++                    p.position_m.y,
++                    p.position_m.z,
++                    p.velocity_m_s.x,
++                    p.velocity_m_s.y,
++                    p.velocity_m_s.z,
++                ] {
++                    state.update(v.to_bits().to_le_bytes());
++                }
++            }
++            let state_hash = hex(&state.finalize());
++            let mut selected = camera.clone();
++            // Hold the initial view through impact, then orbit and zoom smoothly.
++            if step > 360 && step <= 720 {
++                let t = (step - 360) as f64 / 360.0;
++                selected.orbit(0.7 * t, 0.2 * t).unwrap();
++                selected.zoom(1.0 - 0.4 * t).unwrap();
++            }
++            let views = if step == 0 || step == 240 || step == 720 || step == 1200 {
++                3
++            } else {
++                1
++            };
++            for view in 0..views {
++                let mut viewed = selected.clone();
++                if view == 1 {
++                    viewed = camera.clone();
++                    viewed.orbit(0.6, 0.25).unwrap();
++                }
++                if view == 2 {
++                    viewed = camera.clone();
++                    viewed
++                        .fit(particles, spacing / 2.0, 1280.0 / 720.0)
++                        .unwrap();
++                    viewed.zoom(0.65).unwrap();
++                }
++                for (name, mode) in [
++                    ("indexed", ParticleRenderer::Indexed),
++                    ("low", ParticleRenderer::Low),
++                    ("impostor", ParticleRenderer::Impostor),
++                    ("adaptive", ParticleRenderer::Adaptive),
++                ] {
++                    g.set_particle_renderer(mode);
++                    let pixels = target.pixels(
++                        &g,
++                        &DrawScene {
++                            particles,
++                            boundaries: &boundaries,
++                            radius_m: spacing / 2.0,
++                            camera: &viewed,
++                            colours: &colours,
++                            particle_mass_kg: scene.configuration.derived.particle_mass_kg,
++                            width: 1280,
++                            height: 720,
++                        },
++                    );
++                    let file = if view == 0 && step <= 720 {
++                        format!("{count}-{name}/frame-{frame:03}.png")
++                    } else {
++                        format!("{count}-{name}/still-{step}-{view}.png")
++                    };
++                    png(&output.join(&file), 1280, 720, &pixels);
++                    records.push(serde_json::json!({"file":file,"count":count,"step":step,"view":view,"renderer":name,
++                        "state_sha256":state_hash,"rgba_sha256":hex(&Sha256::digest(&pixels))}));
++                }
++            }
++        }
++    }
++    fs::write(
++        output.join("images.json"),
++        serde_json::to_vec_pretty(&records).unwrap(),
++    )
++    .unwrap();
++}

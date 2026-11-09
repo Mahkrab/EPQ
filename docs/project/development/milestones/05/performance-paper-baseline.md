@@ -1,7 +1,8 @@
 # A published-equation PBF baseline
 
 The independent `paper-baseline` mode reconstructs Macklin and Müller's equations and Algorithm 1,
-while keeping reference as the application default. It preserves the earlier
+while keeping reference as the application default during that comparison. Experimental is now
+the application default, as specified in the [settings contract](/docs/project/development/milestones/05/scene-settings-contract.md). It preserves the earlier
 [response-calibration findings](/docs/project/development/milestones/05/performance-pbf-contract.md).
 Those findings describe existing motion; they do not establish the minimum work needed by PBF.
 The [evidence index](/docs/project/development/milestones/05/assets/paper-baseline-v1/README.md)

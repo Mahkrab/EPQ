@@ -1,0 +1,105 @@
+{
+  "cpu": {
+    "command": [
+      "lscpu",
+      "--json"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n   \"lscpu\": [\n      {\n         \"field\": \"Architecture:\",\n         \"data\": \"x86_64\"\n      },{\n         \"field\": \"CPU op-mode(s):\",\n         \"data\": \"32-bit, 64-bit\"\n      },{\n         \"field\": \"Address sizes:\",\n         \"data\": \"48 bits physical, 48 bits virtual\"\n      },{\n         \"field\": \"Byte Order:\",\n         \"data\": \"Little Endian\"\n      },{\n         \"field\": \"CPU(s):\",\n         \"data\": \"24\"\n      },{\n         \"field\": \"On-line CPU(s) list:\",\n         \"data\": \"0-23\"\n      },{\n         \"field\": \"Vendor ID:\",\n         \"data\": \"AuthenticAMD\"\n      },{\n         \"field\": \"Model name:\",\n         \"data\": \"AMD Ryzen 9 7900X 12-Core Processor\"\n      },{\n         \"field\": \"CPU family:\",\n         \"data\": \"25\"\n      },{\n         \"field\": \"Model:\",\n         \"data\": \"97\"\n      },{\n         \"field\": \"Thread(s) per core:\",\n         \"data\": \"2\"\n      },{\n         \"field\": \"Core(s) per socket:\",\n         \"data\": \"12\"\n      },{\n         \"field\": \"Socket(s):\",\n         \"data\": \"1\"\n      },{\n         \"field\": \"Stepping:\",\n         \"data\": \"2\"\n      },{\n         \"field\": \"BogoMIPS:\",\n         \"data\": \"9382.17\"\n      },{\n         \"field\": \"Flags:\",\n         \"data\": \"fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves avx512_bf16 clzero xsaveerptr arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\"\n      },{\n         \"field\": \"Virtualization:\",\n         \"data\": \"AMD-V\"\n      },{\n         \"field\": \"Hypervisor vendor:\",\n         \"data\": \"Microsoft\"\n      },{\n         \"field\": \"Virtualization type:\",\n         \"data\": \"full\"\n      },{\n         \"field\": \"L1d cache:\",\n         \"data\": \"384 KiB (12 instances)\"\n      },{\n         \"field\": \"L1i cache:\",\n         \"data\": \"384 KiB (12 instances)\"\n      },{\n         \"field\": \"L2 cache:\",\n         \"data\": \"12 MiB (12 instances)\"\n      },{\n         \"field\": \"L3 cache:\",\n         \"data\": \"32 MiB (1 instance)\"\n      },{\n         \"field\": \"NUMA node(s):\",\n         \"data\": \"1\"\n      },{\n         \"field\": \"NUMA node0 CPU(s):\",\n         \"data\": \"0-23\"\n      },{\n         \"field\": \"Vulnerability Gather data sampling:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Itlb multihit:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability L1tf:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Mds:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Meltdown:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Mmio stale data:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Reg file data sampling:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Retbleed:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Spec rstack overflow:\",\n         \"data\": \"Vulnerable: Safe RET, no microcode\"\n      },{\n         \"field\": \"Vulnerability Spec store bypass:\",\n         \"data\": \"Mitigation; Speculative Store Bypass disabled via prctl\"\n      },{\n         \"field\": \"Vulnerability Spectre v1:\",\n         \"data\": \"Mitigation; usercopy/swapgs barriers and __user pointer sanitization\"\n      },{\n         \"field\": \"Vulnerability Spectre v2:\",\n         \"data\": \"Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP always-on; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected\"\n      },{\n         \"field\": \"Vulnerability Srbds:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Tsx async abort:\",\n         \"data\": \"Not affected\"\n      }\n   ]\n}\n",
+    "stderr": ""
+  },
+  "kernel": {
+    "command": [
+      "uname",
+      "-a"
+    ],
+    "exit_code": 0,
+    "stdout": "Linux OliverPC 6.6.87.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux\n",
+    "stderr": ""
+  },
+  "rustc": {
+    "command": [
+      "rustc",
+      "-Vv"
+    ],
+    "exit_code": 0,
+    "stdout": "rustc 1.96.0 (ac68faa20 2026-05-25)\nbinary: rustc\ncommit-hash: ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96\ncommit-date: 2026-05-25\nhost: x86_64-unknown-linux-gnu\nrelease: 1.96.0\nLLVM version: 22.1.2\n",
+    "stderr": ""
+  },
+  "cargo": {
+    "command": [
+      "cargo",
+      "-V"
+    ],
+    "exit_code": 0,
+    "stdout": "cargo 1.96.0 (30a34c682 2026-05-25)\n",
+    "stderr": ""
+  },
+  "nvcc": {
+    "command": [
+      "/usr/local/cuda/bin/nvcc",
+      "--version"
+    ],
+    "exit_code": 0,
+    "stdout": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2026 NVIDIA Corporation\nBuilt on Tue_Jun_09_02:43:40_PM_PDT_2026\nCuda compilation tools, release 13.3, V13.3.73\nBuild cuda_13.3.r13.3/compiler.38244171_0\n",
+    "stderr": ""
+  },
+  "nsys": {
+    "command": [
+      "nsys",
+      "--version"
+    ],
+    "exit_code": 0,
+    "stdout": "NVIDIA Nsight Systems version 2026.1.3.425-261338342291v0\n",
+    "stderr": ""
+  },
+  "graphics": {
+    "command": [
+      "glxinfo",
+      "-B"
+    ],
+    "exit_code": 0,
+    "stdout": "name of display: :0\ndisplay: :0  screen: 0\ndirect rendering: Yes\nExtended renderer info (GLX_MESA_query_renderer):\n    Vendor: Microsoft Corporation (0xffffffff)\n    Device: D3D12 (NVIDIA GeForce RTX 4070) (0xffffffff)\n    Version: 25.2.8\n    Accelerated: yes\n    Video memory: 27990MB\n    Unified memory: no\n    Preferred profile: core (0x1)\n    Max core profile version: 4.6\n    Max compat profile version: 4.6\n    Max GLES1 profile version: 1.1\n    Max GLES[23] profile version: 3.1\nMemory info (GL_ATI_meminfo):\n    VBO free memory - total: 11227 MB, largest block: 11227 MB\n    VBO free aux. memory - total: 0 MB, largest block: 0 MB\n    Texture free memory - total: 11227 MB, largest block: 11227 MB\n    Texture free aux. memory - total: 0 MB, largest block: 0 MB\n    Renderbuffer free memory - total: 11227 MB, largest block: 11227 MB\n    Renderbuffer free aux. memory - total: 0 MB, largest block: 0 MB\nMemory info (GL_NVX_gpu_memory_info):\n    Dedicated video memory: 12010 MB\n    Total available memory: 27990 MB\n    Currently available dedicated video memory: 11227 MB\nOpenGL vendor string: Microsoft Corporation\nOpenGL renderer string: D3D12 (NVIDIA GeForce RTX 4070)\nOpenGL core profile version string: 4.6 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4\nOpenGL core profile shading language version string: 4.60\nOpenGL core profile context flags: (none)\nOpenGL core profile profile mask: core profile\n\nOpenGL version string: 4.6 (Compatibility Profile) Mesa 25.2.8-0ubuntu0.24.04.4\nOpenGL shading language version string: 4.60\nOpenGL context flags: (none)\nOpenGL profile mask: compatibility profile\n\nOpenGL ES profile version string: OpenGL ES 3.1 Mesa 25.2.8-0ubuntu0.24.04.4\nOpenGL ES profile shading language version string: OpenGL ES GLSL ES 3.10\n\n",
+    "stderr": ""
+  },
+  "gpu": {
+    "command": [
+      "nvidia-smi",
+      "--query-gpu=name,driver_version,memory.total,clocks.current.sm,pstate",
+      "--format=csv"
+    ],
+    "exit_code": 0,
+    "stdout": "name, driver_version, memory.total [MiB], clocks.current.sm [MHz], pstate\nNVIDIA GeForce RTX 4070, 610.88, 12282 MiB, 2475 MHz, P2\n",
+    "stderr": ""
+  },
+  "parent-status": {
+    "command": [
+      "git",
+      "-C",
+      "/home/oliver/documents/programs/EPQ",
+      "status",
+      "--short"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "submodule-status": {
+    "command": [
+      "git",
+      "-C",
+      "/home/oliver/documents/programs/EPQ/Maelstrom",
+      "status",
+      "--short"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "display_environment": {
+    "DISPLAY": ":0",
+    "WAYLAND_DISPLAY": "/mnt/wslg/runtime-dir/wayland-0",
+    "XDG_RUNTIME_DIR": "/run/user/1000",
+    "MESA_D3D12_DEFAULT_ADAPTER_NAME": "NVIDIA"
+  }
+}

@@ -1,0 +1,23 @@
+--- a/src/viewer/mod.rs
++++ b/src/viewer/mod.rs
+@@ -90,10 +90,10 @@
+     let profile_result = app.profile.take().map_or(Ok(()), profile::Profile::finish);
+     event_result?;
+     joined?;
+-    profile_result?;
+     if let Some(error) = app.error {
+         return Err(error);
+     }
++    profile_result?;
+     Ok(())
+ }
+ pub(crate) fn window_error(context: &str, error: impl std::fmt::Display) -> RenderError {
+@@ -496,7 +496,7 @@
+         lines.push("Plane outlines are clipped depictions; metres, Y up".into());
+         lines.push(self.model.audit_message.clone());
+         lines.push(format!(
+-            "Redraw FPS: {:.1} | solver timing and throughput not measured",
++            "Redraw FPS: {:.1} | independent of simulation speed",
+             self.fps
+         ));
+         lines

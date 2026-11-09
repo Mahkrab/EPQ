@@ -1,0 +1,40 @@
+   Compiling maelstrom v0.1.0 (/tmp/maelstrom-particles-Co3l9z/source)
+error[E0506]: cannot assign to `camera.eye_m` because it is borrowed
+   --> tests/particle_rendering.rs:199:9
+    |
+158 |     let pixels = target.pixels(&g, &scene(&particles, &camera));
+    |                                                       ------- `camera.eye_m` is borrowed here
+...
+199 |         camera.eye_m = near_eye;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^ `camera.eye_m` is assigned to here but it was already borrowed
+...
+203 |         let control = target.pixels(&g, &scene(&particles, &camera));
+    |                                          ----- borrow later used here
+
+error[E0502]: cannot borrow `particles` as mutable because it is also borrowed as immutable
+   --> tests/particle_rendering.rs:200:9
+    |
+158 |     let pixels = target.pixels(&g, &scene(&particles, &camera));
+    |                                           ---------- immutable borrow occurs here
+...
+200 |         particles.truncate(1);
+    |         ^^^^^^^^^^^^^^^^^^^^^ mutable borrow occurs here
+...
+203 |         let control = target.pixels(&g, &scene(&particles, &camera));
+    |                                          ----- immutable borrow later used here
+
+error[E0502]: cannot borrow `particles` as mutable because it is also borrowed as immutable
+   --> tests/particle_rendering.rs:201:9
+    |
+158 |     let pixels = target.pixels(&g, &scene(&particles, &camera));
+    |                                           ---------- immutable borrow occurs here
+...
+201 |         particles[0].position_m = Vec3::ZERO;
+    |         ^^^^^^^^^ mutable borrow occurs here
+202 |         g.set_particle_renderer(ParticleRenderer::Indexed);
+203 |         let control = target.pixels(&g, &scene(&particles, &camera));
+    |                                          ----- immutable borrow later used here
+
+Some errors have detailed explanations: E0502, E0506.
+For more information about an error, try `rustc --explain E0502`.
+error: could not compile `maelstrom` (test "particle_rendering") due to 3 previous errors

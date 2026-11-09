@@ -1,0 +1,45 @@
+[
+  {
+    "paused": true,
+    "initial": "Maelstrom | gen 1 Paused | 0/100000 steps | warnings 0",
+    "resized": "Maelstrom | gen 1 Paused | 0/100000 steps | warnings 0",
+    "clean_close": true,
+    "command": [
+      "/tmp/maelstrom-live-Yp09cX/indexed",
+      "view",
+      "/tmp/maelstrom-live-Yp09cX/inputs/32000.toml",
+      "--backend",
+      "cuda",
+      "--numerical-mode",
+      "experimental",
+      "--steps",
+      "100000",
+      "--width",
+      "1280",
+      "--height",
+      "720",
+      "--paused"
+    ]
+  },
+  {
+    "paused": false,
+    "initial": "Maelstrom | gen 1 Running | 92/100000 steps | warnings 18",
+    "resized": "Maelstrom | gen 1 Running | 422/100000 steps | warnings 295",
+    "clean_close": true,
+    "command": [
+      "/tmp/maelstrom-live-Yp09cX/indexed",
+      "view",
+      "/tmp/maelstrom-live-Yp09cX/inputs/32000.toml",
+      "--backend",
+      "cuda",
+      "--numerical-mode",
+      "experimental",
+      "--steps",
+      "100000",
+      "--width",
+      "1280",
+      "--height",
+      "720"
+    ]
+  }
+]

@@ -82,6 +82,21 @@ retains fixed-schema buffered hashing after byte-exact saved-state checks and co
 comparisons. It removes the large fast-mode output wait while preserving canonical JSON, hashes,
 the parallel pipeline and all numerical policies. Its timings remain separate from the pipeline campaign.
 
+The separately requested [live viewer assessment](/docs/project/development/milestones/05/performance-live-viewer.md)
+preserves the subsequently selected experimental application default and retains an indexed sphere
+mesh after matched hardware client-window comparisons. It separates presentation cadence from
+accepted simulation throughput, rejects persistent upload buffers, and records the remaining WSLg
+desktop/input qualification boundary. These application results do not reopen numerical tuning or
+replace earlier solver and compilation campaigns.
+
+The subsequent [particle rendering comparison](/docs/project/development/milestones/05/performance-particle-rendering.md)
+retains analytic sphere impostors as the live default, with indexed fallback and
+comparison selection. Matched hardware runs compare low-resolution meshes and
+adaptive mesh selection as well. This improves large-scene simulation advancement
+through reduced graphics contention, while preserving the experimental numerical
+configuration and offline indexed rendering. The sustained capacity assessment
+uses every accepted-step timestamp rather than inferring progress between frames.
+
 An earlier explicit user instruction selected fast as the application default. The subsequent
 instruction on 30 October 2026 restores reference as the default and saves the reference schedule
 in every built-in scene package. Fast remains opt-in through `--numerical-mode fast` or the

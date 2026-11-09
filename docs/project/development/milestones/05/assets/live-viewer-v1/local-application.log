@@ -1,0 +1,18 @@
+   Compiling maelstrom v0.1.0 (/home/mahkrab/documents/programs/EPQ/Maelstrom)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 20.82s
+     Running tests/application_lifecycle.rs (Maelstrom/target/debug/deps/application_lifecycle-bd63f484179230a3)
+
+running 10 tests
+test pause_acknowledgement_is_a_stable_boundary_and_running_step_is_rejected ... ok
+test numerical_failure_retains_accepted_state_and_failure_across_controls_and_shutdown ... ok
+test cuda_selection_on_cpu_build_fails_explicitly_on_the_worker ... ok
+test cancellation_wakes_paused_worker_is_latched_and_retains_an_exact_prefix ... ok
+test invalid_setup_retains_previous_outcome_and_never_selects_a_fallback ... ok
+test shutdown_and_drop_join_idle_paused_running_and_queued_work ... ok
+test zero_step_empty_input_and_last_single_step_have_explicit_completion ... ok
+test restart_isolates_old_snapshots_commands_and_cancellation ... ok
+test slow_or_absent_display_cannot_backpressure_solver_or_lose_final_diagnostics ... ok
+test pause_step_resume_and_completion_preserve_every_accepted_bit ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.81s
+

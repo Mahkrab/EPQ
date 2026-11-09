@@ -1,0 +1,120 @@
+--- a/src/render/gpu.rs
++++ b/src/render/gpu.rs
+@@ -20,6 +20,58 @@
+     pub upload_s: f64,
+     /// Command encoding, queue submission and asynchronous error polling.
+     pub submit_s: f64,
++}
++
++#[derive(Default)]
++struct Uploads {
++    centres: VertexUpload,
++    lines: VertexUpload,
++    overlay: VertexUpload,
++}
++
++#[derive(Default)]
++struct VertexUpload {
++    buffer: Option<wgpu::Buffer>,
++}
++impl VertexUpload {
++    fn update(
++        &mut self,
++        device: &wgpu::Device,
++        queue: &wgpu::Queue,
++        label: &str,
++        values: &[f32],
++    ) -> Result<&wgpu::Buffer, RenderError> {
++        let values = if values.is_empty() {
++            &[0.0; 3][..]
++        } else {
++            values
++        };
++        let size = values
++            .len()
++            .checked_mul(4)
++            .and_then(|n| u64::try_from(n).ok())
++            .ok_or_else(|| RenderError("graphics buffer overflow".into()))?;
++        if size > device.limits().max_buffer_size {
++            return Err(RenderError("geometry exceeds graphics buffer limit".into()));
++        }
++        if self
++            .buffer
++            .as_ref()
++            .is_some_and(|buffer| buffer.size() < size)
++        {
++            self.buffer = None;
++        }
++        let buffer = self.buffer.get_or_insert_with(|| {
++            device.create_buffer(&wgpu::BufferDescriptor {
++                label: Some(label),
++                size,
++                usage: wgpu::BufferUsages::VERTEX | wgpu::BufferUsages::COPY_DST,
++                mapped_at_creation: false,
++            })
++        });
++        queue.write_buffer(buffer, 0, &bytes(values));
++        Ok(buffer)
++    }
+ }
+ 
+ // Mesa's D3D12 driver registers thread-local cleanup callbacks. Keep its loader
+@@ -74,6 +126,7 @@
+     mesh: wgpu::Buffer,
+     mesh_indices: wgpu::Buffer,
+     mesh_count: u32,
++    uploads: Mutex<Uploads>,
+     failure: Arc<Mutex<Option<String>>>,
+ }
+ impl Graphics {
+@@ -328,6 +381,7 @@
+             mesh,
+             mesh_indices,
+             mesh_count,
++            uploads: Mutex::new(Uploads::default()),
+             failure,
+         })
+     }
+@@ -470,28 +524,22 @@
+             .into_iter()
+             .flatten()
+             .collect::<Vec<_>>();
+-        let make_buffer = |label, data: &[f32]| -> Result<wgpu::Buffer, RenderError> {
+-            let data = if data.is_empty() { &[0.0; 3][..] } else { data };
+-            let size = data
+-                .len()
+-                .checked_mul(4)
+-                .ok_or_else(|| RenderError("graphics buffer overflow".into()))?;
+-            if size as u64 > self.device.limits().max_buffer_size {
+-                return Err(RenderError("geometry exceeds graphics buffer limit".into()));
+-            }
+-            Ok(self
+-                .device
+-                .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+-                    label: Some(label),
+-                    contents: &bytes(data),
+-                    usage: wgpu::BufferUsages::VERTEX,
+-                }))
+-        };
+         let prepare_s = start.elapsed().as_secs_f64();
+         let upload_start = Instant::now();
+-        let centres_buffer = make_buffer("accepted centres", &centres)?;
+-        let line_buffer = make_buffer("plane outlines", &lines)?;
+-        let overlay_buffer = make_buffer("overlay", overlay)?;
++        // Queue writes precede this draw's submission. Keep the same allocations
++        // until capacity grows; wgpu orders updates after earlier uses of them.
++        let mut uploads = self.uploads.lock().unwrap_or_else(|e| e.into_inner());
++        let Uploads {
++            centres: centre_upload,
++            lines: line_upload,
++            overlay: overlay_upload,
++        } = &mut *uploads;
++        let centres_buffer =
++            centre_upload.update(&self.device, &self.queue, "accepted centres", &centres)?;
++        let line_buffer =
++            line_upload.update(&self.device, &self.queue, "plane outlines", &lines)?;
++        let overlay_buffer =
++            overlay_upload.update(&self.device, &self.queue, "overlay", overlay)?;
+         let upload_s = upload_start.elapsed().as_secs_f64();
+         let submit_start = Instant::now();
+         let mut encoder = self.device.create_command_encoder(&Default::default());

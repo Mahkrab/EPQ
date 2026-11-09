@@ -1,7 +1,8 @@
 # Reference-like PBF motion with fewer corrections
 
 This revision prioritises the reference mode's visual response over the earlier physical-accuracy
-screens. It retains reference as the application default and preserves fast. The separate
+screens. At qualification it retained reference as the application default and preserved fast.
+Experimental is now the application default under the [settings contract](/docs/project/development/milestones/05/scene-settings-contract.md). The separate
 `experimental` mode selects **240 Hz, eight Jacobi iterations, correction scale 0.25 and relaxation
 scale 20**. It keeps the reference artificial pressure, kernels, support, mass and velocity effects.
 Explicit overrides still win. The evidence is in [pbf-contract-v1](/docs/project/development/milestones/05/assets/pbf-contract-v1/README.md).

@@ -1,0 +1,129 @@
+--- a/src/render/gpu.rs
++++ b/src/render/gpu.rs
+@@ -72,6 +72,7 @@
+     lines: wgpu::RenderPipeline,
+     overlay: wgpu::RenderPipeline,
+     mesh: wgpu::Buffer,
++    mesh_indices: wgpu::Buffer,
+     mesh_count: u32,
+     failure: Arc<Mutex<Option<String>>>,
+ }
+@@ -296,12 +297,20 @@
+             multiview_mask: None,
+             cache: None,
+         });
+-        let mesh_data = sphere_mesh();
+-        let mesh_count = (mesh_data.len() / 3) as u32;
++        let (mesh_data, indices) = sphere_mesh();
++        let mesh_count = indices.len() as u32;
+         let mesh = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+             label: Some("unit sphere, 16 longitudes x 12 latitudes"),
+             contents: &bytes(&mesh_data),
+             usage: wgpu::BufferUsages::VERTEX,
++        });
++        let mesh_indices = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
++            label: Some("unit sphere triangles"),
++            contents: &indices
++                .iter()
++                .flat_map(|x| x.to_ne_bytes())
++                .collect::<Vec<_>>(),
++            usage: wgpu::BufferUsages::INDEX,
+         });
+         if let Some(error) = scope.pop().await {
+             return Err(RenderError(format!("graphics pipeline: {error}")));
+@@ -317,6 +326,7 @@
+             lines,
+             overlay,
+             mesh,
++            mesh_indices,
+             mesh_count,
+             failure,
+         })
+@@ -516,8 +526,10 @@
+             pass.set_pipeline(&self.sphere);
+             pass.set_vertex_buffer(0, self.mesh.slice(..));
+             pass.set_vertex_buffer(1, centres_buffer.slice(..));
+-            pass.draw(
++            pass.set_index_buffer(self.mesh_indices.slice(..), wgpu::IndexFormat::Uint16);
++            pass.draw_indexed(
+                 0..self.mesh_count,
++                0,
+                 0..u32::try_from(scene.particles.len())
+                     .map_err(|_| RenderError("particle draw count exceeds u32".into()))?,
+             );
+@@ -555,13 +567,21 @@
+ fn bytes(values: &[f32]) -> Vec<u8> {
+     values.iter().flat_map(|x| x.to_ne_bytes()).collect()
+ }
+-fn sphere_mesh() -> Vec<f32> {
++fn sphere_mesh() -> (Vec<f32>, Vec<u16>) {
+     let point = |lat: u32, lon: u32| {
+         let t = std::f32::consts::PI * lat as f32 / 12.0;
+         let p = std::f32::consts::TAU * lon as f32 / 16.0;
+         [t.sin() * p.cos(), t.cos(), t.sin() * p.sin()]
+     };
+-    let mut vertices = Vec::new();
++    // Keep the seam and pole coordinates separately: recomputing or welding
++    // their nearly equal floats could change the established rasterisation.
++    let mut vertices = Vec::with_capacity(13 * 17 * 3);
++    for lat in 0..=12 {
++        for lon in 0..=16 {
++            vertices.extend(point(lat, lon));
++        }
++    }
++    let mut indices = Vec::with_capacity(12 * 16 * 6);
+     for lat in 0..12 {
+         for lon in 0..16 {
+             for (a, b) in [
+@@ -572,9 +592,48 @@
+                 (lat + 1, lon + 1),
+                 (lat, lon + 1),
+             ] {
+-                vertices.extend(point(a, b));
++                indices.push((a * 17 + b) as u16);
+             }
+         }
+     }
+-    vertices
+-}
++    (vertices, indices)
++}
++
++#[cfg(test)]
++mod tests {
++    #[test]
++    fn indexed_sphere_preserves_every_triangle_coordinate_bit() {
++        let (vertices, indices) = super::sphere_mesh();
++        assert_eq!(vertices.len(), 221 * 3);
++        assert_eq!(indices.len(), 1152);
++        let mut old = Vec::new();
++        for lat in 0..12 {
++            for lon in 0..16 {
++                for (a, b) in [
++                    (lat, lon),
++                    (lat + 1, lon),
++                    (lat + 1, lon + 1),
++                    (lat, lon),
++                    (lat + 1, lon + 1),
++                    (lat, lon + 1),
++                ] {
++                    let t = std::f32::consts::PI * a as f32 / 12.0;
++                    let p = std::f32::consts::TAU * b as f32 / 16.0;
++                    old.extend([t.sin() * p.cos(), t.cos(), t.sin() * p.sin()]);
++                }
++            }
++        }
++        let expanded = indices
++            .into_iter()
++            .flat_map(|i| {
++                vertices[usize::from(i) * 3..usize::from(i) * 3 + 3]
++                    .iter()
++                    .map(|x| x.to_bits())
++            })
++            .collect::<Vec<_>>();
++        assert_eq!(
++            expanded,
++            old.iter().map(|x| x.to_bits()).collect::<Vec<_>>()
++        );
++    }
++}

@@ -1,0 +1,23 @@
+{
+  "command": [
+    "/tmp/maelstrom-live-Yp09cX/indexed",
+    "run",
+    "/tmp/maelstrom-live-Yp09cX/inputs/32000.toml",
+    "--backend",
+    "cuda",
+    "--device",
+    "0",
+    "--block-size",
+    "128",
+    "--numerical-mode",
+    "experimental",
+    "--steps",
+    "1200",
+    "--unpaced",
+    "--measure",
+    "--format",
+    "json"
+  ],
+  "elapsed_s": 3.699727036000695,
+  "exit_code": 0
+}

@@ -1,0 +1,45 @@
+[
+  {
+    "paused": true,
+    "initial": "Maelstrom | gen 1 Paused | 0/100000 steps | warnings 0",
+    "resized": "Maelstrom | gen 1 Paused | 0/100000 steps | warnings 0",
+    "clean_close": true,
+    "command": [
+      "/home/oliver/.cache/maelstrom-particle-final-20261109/retained-final",
+      "view",
+      "/home/oliver/.cache/maelstrom-particle-final-20261109/inputs/32000.toml",
+      "--backend",
+      "cuda",
+      "--numerical-mode",
+      "experimental",
+      "--steps",
+      "100000",
+      "--width",
+      "1280",
+      "--height",
+      "720",
+      "--paused"
+    ]
+  },
+  {
+    "paused": false,
+    "initial": "Maelstrom | gen 1 Running | 103/100000 steps | warnings 29",
+    "resized": "Maelstrom | gen 1 Running | 387/100000 steps | warnings 260",
+    "clean_close": true,
+    "command": [
+      "/home/oliver/.cache/maelstrom-particle-final-20261109/retained-final",
+      "view",
+      "/home/oliver/.cache/maelstrom-particle-final-20261109/inputs/32000.toml",
+      "--backend",
+      "cuda",
+      "--numerical-mode",
+      "experimental",
+      "--steps",
+      "100000",
+      "--width",
+      "1280",
+      "--height",
+      "720"
+    ]
+  }
+]

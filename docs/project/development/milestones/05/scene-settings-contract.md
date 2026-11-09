@@ -48,7 +48,8 @@ For local scenes, an adjacent `config.toml` selects the base configuration autom
 ahead of a reference inside the scene. `--config` replaces that selection, retaining the scene
 overlay. A missing adjacent file falls back to the scene reference or built-in defaults; a malformed
 or unreadable adjacent file fails explicitly. Local scenes use saved numerical settings by default;
-bundled scenes retain the reference preset default. A numerical mode selected explicitly through
+bundled scenes default to the experimental preset (240 Hz, eight Jacobi iterations, correction
+scale 0.25 and relaxation 20). Reference remains explicitly selectable. A numerical mode selected explicitly through
 CLI or application preferences still supplies its preset overrides, with explicit `--set` values
 taking priority.
 
