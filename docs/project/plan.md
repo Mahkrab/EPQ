@@ -87,6 +87,42 @@ is complete within the platform scope recorded in its
 scene construction, camera behaviour and both fluid effects are implemented. The performance
 investigation remains open; numerical changes need renewed comparison evidence before final evaluation.
 
+### Proposed simulation cache work
+
+The [architecture review](/docs/project/development/simulation-cache-review.md) recommended
+reusable particle caches and independent rendering. The subsequent
+[production implementation](/docs/project/development/milestones/05/performance-cache-pipeline.md)
+adds headless baking, validated independent rendering, sparse image sequences and explicit staged
+compilation. Storage, producer, renderer and primary-PC comparison work below are implemented;
+direct `compile` remains the default. Output adapters and a broader default rollout remain future
+work. The historical serial prototype remains separate evidence.
+
+1. **Specify and test observation storage.** Finalise binary version/limits, exact f32/u64/time
+   representation, request/result identities, canonical hash binding, receipts and partial-state
+   rules. Add independent byte fixtures and corruption/overflow tests. Keep solver checkpoints
+   outside this contract. Review the schema before producing durable user caches.
+2. **Add a headless cache producer.** Observe the existing accepted solver at scheduled indices;
+   preserve all per-step diagnostics/cancellation/rollback and numerical modes. Use a bounded CPU
+   write/hash worker and exclusive publication. Qualify normal completion, disk failure and interrupted
+   prefixes at both workload sizes. A cache producer must not require graphics or change solver I/O.
+3. **Add an independent cache renderer.** Adapt validated frames to the existing indexed offscreen
+   renderer and bounded encoder. Support frame/range selection and repeat presentation settings;
+   preserve canonical provenance and qualify digest reuse. Add deliberate version dispatch for new
+   cache-derived image manifests and sparse schedules, while retaining old JSON/PNG readers.
+4. **Measure and migrate the application workflow.** Compare complete first and repeat exports on
+   the primary PC, including alternate camera/resolution, checksums, durable publication, memory and
+   failures. Integrate cache bake/render commands and then an explicit staged `compile` convenience
+   mode. Change its default only after compatibility and workflow evidence justify it; retain an
+   explicit streaming option. Keep `play` for images and distinguish cached viewing from live runs.
+5. **Add justified output adapters.** Start with a tested interoperable particle export and video
+   from saved images; direct video gets a separate manifest/failure contract. Compression, additional
+   CPU encoders, a GPU readback ring or concurrent simulation/rendering require focused evidence.
+   Surface reconstruction, foam, solver restart and numerical changes are separate future work.
+
+Each step requires review of its affected behaviour and retained evidence before the next depends
+on it. Preserve the current implementation until the independent path is qualified; first-export
+latency and repeated-presentation cost must both remain visible in the adoption decision.
+
 ## Milestone 05: comparative evaluation
 
 Complete the controlled correctness, performance and scalability comparison across brute-force search, uniform-grid partitioning, CPU multithreading and CUDA acceleration, then evaluate the results against the research question.

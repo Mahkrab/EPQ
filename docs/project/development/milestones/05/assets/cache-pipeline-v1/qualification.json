@@ -1,0 +1,35 @@
+{
+  "ordinary": {
+    "passed": 368,
+    "failed": 0,
+    "ignored": 69,
+    "log": "pc-tests.log"
+  },
+  "optin_library": {
+    "passed": 38,
+    "failed": 0,
+    "ignored": 0,
+    "log": "pc-optin-library.log"
+  },
+  "optin_integration": {
+    "passed": 21,
+    "failed": 0,
+    "ignored": 0,
+    "log": "pc-optin-integration.log"
+  },
+  "release_all_features_strict_clippy": true,
+  "additional_specialised_optins_not_run": 10,
+  "graphics_optin_adapter": "explicit Mesa lavapipe Vulkan; performance campaign uses hardware OpenGL/D3D12",
+  "ordinary_command": "CUDA_HOME=/usr/local/cuda CARGO_TARGET_DIR=ROOT/candidate-target cargo test --release --locked --all-features -- --test-threads=1",
+  "optin_library_command": "VK_DRIVER_FILES=/usr/share/vulkan/icd.d/lvp_icd.json cargo test --release --locked --all-features --lib -- --ignored --test-threads=1",
+  "optin_integration_tests": [
+    "cuda_execution",
+    "cuda_boundary",
+    "export_device",
+    "render_device",
+    "cache_workflow",
+    "cli_usability",
+    "saved_settings_cli"
+  ],
+  "clippy_command": "cargo clippy --release --locked --all-features --all-targets -- -D warnings"
+}

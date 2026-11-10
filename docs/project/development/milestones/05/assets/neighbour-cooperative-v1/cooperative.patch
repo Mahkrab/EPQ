@@ -1,0 +1,139 @@
+--- a/build.rs
++++ b/build.rs
+@@ -57,6 +57,7 @@
+         "native/solver.h",
+         "native/solver.cu",
+         "native/neighbours.cuh",
++        "native/discovery.cuh",
+         "native/row_sort.cuh",
+         "native/spatial_sort.cuh",
+         "native/state_observation.cuh",
+--- a/native/bridge.cpp
++++ b/native/bridge.cpp
+@@ -60,6 +60,7 @@
+     CUfunction kernel = nullptr;
+     CUfunction solver = nullptr;
+     CUfunction spatial_sort = nullptr;
++    CUfunction discovery = nullptr;
+     CUfunction observe_state = nullptr;
+     CUfunction prefix_counts = nullptr;
+     CUdeviceptr diagnostic = 0;
+@@ -109,6 +110,7 @@
+     if (!status.code && (code = d.cuModuleGetFunction_fn(&r.spatial_sort, r.module, "spatial_sort")) != CUDA_SUCCESS) status = {code, 5};
+     if (!status.code && (code = d.cuModuleGetFunction_fn(&r.observe_state, r.module, "observe_state")) != CUDA_SUCCESS) status = {code, 5};
+     if (!status.code && (code = d.cuModuleGetFunction_fn(&r.prefix_counts, r.module, "prefix_counts")) != CUDA_SUCCESS) status = {code, 5};
++    if (!status.code && (code = d.cuModuleGetFunction_fn(&r.discovery, r.module, "discover_neighbours")) != CUDA_SUCCESS) status = {code, 5};
+     // Pageable uploads may return before DMA finishes on the legacy stream.
+     // This private stream must inherit that dependency before reading the data.
+     if (!status.code && (code = d.cuStreamCreate_fn(&r.stream, CU_STREAM_DEFAULT)) != CUDA_SUCCESS) status = {code, 6};
+@@ -322,7 +324,9 @@
+         unsigned int kernel_operation=sort ? 3 : operation;
+         void *args[]={&buffers,&settings,&kernel_operation};
+         std::uint64_t count=(operation==2 || sort || kernel_operation==3) ? settings.padded : settings.count;
+-        CUfunction function=state ? r.observe_state : (sort ? r.spatial_sort : r.solver);
++        const bool discovery=(operation==4 || operation==12);
++        if (discovery) count*=32;
++        CUfunction function=discovery ? r.discovery : state ? r.observe_state : (sort ? r.spatial_sort : r.solver);
+         auto launch=[&]() -> Status {
+             // Conservatively mark before submission: even an immediate error
+             // must pass through the completion/poisoning boundary.
+@@ -340,6 +344,7 @@
+                     // Fill finishes on this stream before any row is sorted.
+                     // Keep both launches inside the same failure/readback boundary.
+                     kernel_operation=18;
++                    function=r.solver;
+                     count=static_cast<std::uint64_t>(settings.count)*32;
+                     status=launch();
+                     if (status.code) return status;
+--- /dev/null
++++ b/native/discovery.cuh
+@@ -0,0 +1,81 @@
++// A warp checks consecutive candidates for one spatially scheduled owner.
++// Ballots compact only integer membership; geometry and errors keep visit order.
++#pragma once
++extern "C" __global__ void discover_neighbours(SolverBuffers b, SolverSettings s, unsigned int operation) {
++    const auto row=(static_cast<std::uint64_t>(blockIdx.x)*blockDim.x+threadIdx.x)/32;
++    if (row>=s.count) return;
++    const unsigned int lane=threadIdx.x%32;
++    const auto i=b.cells[row].index;
++    Checked c;
++    if (s.validate_pairs) {
++        if (!lane) {
++            discover_row(b,s,i,c,operation==12);
++            b.errors[i]=c.error;
++            if (c.error && b.diagnostic) record_diagnostic(b,0,(static_cast<unsigned long long>(i)<<32)|c.error);
++        }
++        return;
++    }
++    const bool fill=operation==12;
++    const auto start=fill ? b.offsets[i] : 0;
++    const auto stop=fill ? b.offsets[i+1] : 0;
++    if (fill && (start>stop || stop>s.entries)) {
++        if (!lane) {
++            b.errors[i]=52;
++            if (b.diagnostic) record_diagnostic(b,0,(static_cast<unsigned long long>(i)<<32)|52);
++        }
++        return;
++    }
++    std::uint64_t cursor=start;
++    const Cell origin=cell(b.position[i],s.width,i);
++    for (int x=-1;x<=1;++x) for (int y=-1;y<=1;++y) {
++        Cell target{origin.x+x,origin.y+y,origin.z-1,0,0};
++        unsigned int lo=0,hi=s.count;
++        while (lo<hi) { auto mid=lo+(hi-lo)/2; if (less(b.cells[mid],target)) lo=mid+1; else hi=mid; }
++        auto k=static_cast<std::uint64_t>(lo);
++        for (int z=-1;z<=1;++z) {
++            target.z=origin.z+z;
++            while (true) {
++                const auto at=k+lane;
++                const bool present=at<s.count && same(b.cells[at],target);
++                const auto present_mask=__ballot_sync(0xffffffffU,present);
++                if (!present_mask) break;
++                Checked geometry;
++                unsigned int j=0;
++                bool member=false;
++                if (present) {
++                    j=b.cells[at].index;
++                    if (i!=j) member=separation(b.position[i],b.position[j],geometry)<s.radius;
++                }
++                const auto errors=__ballot_sync(0xffffffffU,geometry.error!=0);
++                const auto first_error=__shfl_sync(0xffffffffU,geometry.error,errors ? __ffs(errors)-1 : 0);
++                if (!c.error && errors) c.error=first_error;
++                const auto mask=__ballot_sync(0xffffffffU,member);
++                const auto members=__popc(mask);
++                if (fill) {
++                    if (cursor+members>stop) { c.error=52; break; }
++                    if (member) {
++                        const auto rank=__popc(mask&((1U<<lane)-1));
++                        auto offset=cursor+rank;
++                        if (s.neighbour_layout==1) {
++                            const auto offsets=reinterpret_cast<const std::uint64_t *>(b.cells+s.padded);
++                            offset=offsets[i/32]+(cursor-start+rank)*32+i%32;
++                        }
++                        b.neighbours[offset]=j;
++                    }
++                }
++                cursor+=members;
++                const auto visited=__popc(present_mask);
++                k+=visited;
++                if (visited<32) break;
++            }
++            if (c.error==52) break;
++        }
++        if (c.error==52) break;
++    }
++    if (!lane) {
++        if (fill) { if (cursor!=stop) c.error=52; }
++        else { if (!i) b.offsets[0]=0; b.offsets[i+1]=cursor; }
++        b.errors[i]=c.error;
++        if (c.error && b.diagnostic) record_diagnostic(b,0,(static_cast<unsigned long long>(i)<<32)|c.error);
++    }
++}
+--- a/native/solver.cu
++++ b/native/solver.cu
+@@ -327,3 +327,5 @@
+     // Checked already retained the first failing expression within that lane.
+     if (c.error && b.diagnostic) record_diagnostic(b,pass,(static_cast<unsigned long long>(i)<<32)|c.error);
+ }
++
++#include "discovery.cuh"

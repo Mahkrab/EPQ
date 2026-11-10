@@ -1,0 +1,66 @@
+{
+  "row8_comparison": true,
+  "tiled_comparison": true,
+  "final_comparison": true,
+  "reviewed_comparison": true,
+  "reviewed-trace_all_counts_readback": true,
+  "nvtx_all_counts_readback": true,
+  "trajectories": {
+    "pairs": 19,
+    "accepted_steps": 7440
+  },
+  "trajectories-reviewed": {
+    "pairs": 19,
+    "accepted_steps": 7440
+  },
+  "current_source_matches_reviewed_executable": "a37050dedbc13e1dc4847ac769ff825255d2122297b7c01a87a026e56944f792",
+  "reviewed_pixel_equivalence": 27,
+  "reruns_verified": 2,
+  "reviewed-empty-memcheck.log": true,
+  "reviewed-live-memcheck.log": true,
+  "affected_document_links": 4,
+  "patch_reconstruction": [
+    {
+      "patch": "implementation",
+      "source_sha256": "a37050dedbc13e1dc4847ac769ff825255d2122297b7c01a87a026e56944f792",
+      "files": 168,
+      "matched": true
+    },
+    {
+      "patch": "row8",
+      "source_sha256": "81d8c9ca705318f1c823c260815099c77cda2f11b5101633a620dac2446d4b8c",
+      "files": 168,
+      "matched": true
+    },
+    {
+      "patch": "tiled-prototype",
+      "source_sha256": "1ae72c4c83171340782ac382d26c00a60ca5cc0689906dca2c96b242f6a256b8",
+      "files": 168,
+      "matched": true
+    },
+    {
+      "patch": "pre-review",
+      "source_sha256": "58b731e8155b28710fce498b46a3d5c4861e07f8ce85ddfb13e6e44681eff56d",
+      "files": 168,
+      "matched": true
+    }
+  ],
+  "headless_raw_records": {
+    "invocations": 24,
+    "accepted_steps": 28800,
+    "physical_witnesses": {
+      "110592": "eb332254d7da14a16d9b186fec0154ee02f92e3ba4192508364a156902b97da1",
+      "32000": "b023219bc6dbda2de98d21e447afef313aaf7e6ffa4f8a6c9003ac88cd84de3b",
+      "8000": "3753fa99c072c569a7cac6a6a081f5a291f0b91919c573efd955db76dc5f9128"
+    }
+  },
+  "rerun_canonical_fields_including_signed_zero": true,
+  "tool_sha256": {
+    "tools/performance/live_viewer.py": "ca8c5f02c154d4b91e66374903a5864e339cf340cf455941f10713ee7e701b5e",
+    "tools/performance/timestep_headless.py": "7be2110513e4f4b18bbcd687dff994c606ee50026dd783067d282be6632c0c4f",
+    "tools/performance/timestep_report.py": "37d54278f4872feea275a8165b88d73f4a3f9e240a58fa109b11727088ae6615",
+    "tools/performance/timestep_trace.py": "bd1ee273cce127de42258bafc2a00a07d96d8106c454986ee9e82c6e2ca330ac",
+    "tools/performance/timestep_trajectory.rs": "84d557f84cab2b55b99b3731ae1dc3006c22f6f5f5d7117ad4db811db94dfbf3",
+    "tests/performance/test_timestep.py": "87cd172916e9d5e7c38756d83ffc22df09668b37e4feb3103a34e52caceab055"
+  }
+}

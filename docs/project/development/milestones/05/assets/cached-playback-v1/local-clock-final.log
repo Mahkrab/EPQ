@@ -1,0 +1,17 @@
+   Compiling maelstrom v0.1.0 (/home/mahkrab/documents/programs/EPQ/Maelstrom)
+    Finished `release` profile [optimized] target(s) in 19.89s
+     Running unittests src/lib.rs (Maelstrom/target/release/deps/maelstrom-f92fc1957e90fc83)
+
+running 9 tests
+test viewer::cache_clock::tests::slow_redraws_and_disk_stalls_skip_presentations_without_stopping_time ... ok
+test viewer::cache_clock::tests::terminal_hold_loop_and_long_elapsed_use_recorded_final_gap ... ok
+test viewer::cached::tests::portable_presentation_preserves_interactive_camera_and_colours_exactly ... ok
+test viewer::cached::tests::superseded_read_can_progress_realtime_but_never_satisfies_an_exact_seek ... ok
+test viewer::cache_clock::tests::exact_boundaries_and_speed_change_preserve_fractional_time ... ok
+test viewer::cached::tests::frame_accurate_requests_only_the_next_state_after_a_slow_redraw ... ok
+test viewer::cached::tests::realtime_pause_resume_and_speed_change_keep_fractional_position ... ok
+test viewer::cached::tests::bounded_reader_seeks_exact_states_and_reports_corruption ... ok
+test viewer::cached::tests::same_frame_seek_reanchors_and_paused_inspection_stays_exact ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 70 filtered out; finished in 0.17s
+

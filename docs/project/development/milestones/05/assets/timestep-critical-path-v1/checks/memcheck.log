@@ -1,0 +1,15 @@
+========= COMPUTE-SANITIZER
+maelstrom: UniformGrid; Cuda { device: 0, threads: 128 }; unpaced
+Maelstrom result schema 1: Completed
+Steps: 16/16 accepted; CFL warning steps: 0
+Application: 0.1.0; backend: cuda-uniform-grid-pbf-binary32-8-jacobi-v1
+CUDA execution: device 0; lanes per block: 128
+GPU: NVIDIA GeForce RTX 4070; target: compute_89; driver API: 13030
+Scene: "live-32000"; configuration: "falling-block-20-model"
+Run: sha256:5901a44a98fca8b773a1681dfb96bd85059d19f60e14a6986471e160a02cedd7
+Input: sha256:460bac6b240c5b186da21186fab07beadc99e27191790685750045ada923d4d5
+Configuration: sha256:2aa81310fa112d58e596d6c190fd20530e8eaf6c7983de5c8ab50164671887d9
+Target: linux/x86_64; debug assertions: false; build revision: "unavailable"
+Post-acceleration maximum speed: 2.0369816 m/s; tightest CFL limit: 0.00981845 s
+Checkpoints observed: 0/0
+========= ERROR SUMMARY: 0 errors

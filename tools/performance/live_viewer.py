@@ -217,7 +217,7 @@ def run(binary: Path, scene: Path, output: Path, steps: int, trace: bool = False
                "--numerical-mode", "experimental",
                "--block-size", "128", "--steps", str(steps), "--width", "1280", "--height", "720"]
     if trace:
-        command = ["nsys","profile","--sample=none","--cpuctxsw=none","--trace=cuda,opengl,osrt",
+        command = ["nsys","profile","--sample=none","--cpuctxsw=none","--trace=cuda,nvtx,opengl,osrt",
                    "--output=" + str(output / "timeline"), *command]
     with (output / "viewer.log").open("w",encoding="utf-8") as log, (output / "gpu.csv").open("w",encoding="utf-8") as gpu_log:
         gpu = subprocess.Popen(["nvidia-smi", "--query-gpu=timestamp,utilization.gpu,utilization.memory,memory.used,temperature.gpu,power.draw,clocks.sm,clocks.mem,pstate", "--format=csv,nounits", "-lms", "200"], stdout=gpu_log, stderr=subprocess.STDOUT)

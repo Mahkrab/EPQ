@@ -1,0 +1,40 @@
+EPQ HEAD
+e7664ee354246507928ac0d80758cffceef0072d
+
+EPQ branch
+phase/05-03-optimisation
+
+EPQ status
+ m Maelstrom
+ M docs/project/development/milestones/05/performance-plan.md
+ M tools/performance/live_viewer.py
+?? docs/project/development/milestones/05/assets/neighbour-cooperative-v1/
+?? docs/project/development/milestones/05/assets/timestep-critical-path-v1/
+?? docs/project/development/milestones/05/performance-neighbour-reuse.md
+?? docs/project/development/milestones/05/performance-timestep-critical-path.md
+?? tests/performance/test_timestep.py
+?? tools/performance/timestep_headless.py
+?? tools/performance/timestep_report.py
+?? tools/performance/timestep_trace.py
+?? tools/performance/timestep_trajectory.rs
+
+Maelstrom HEAD
+6bf2682325b7665e48f8a8647ce087d48ff13f0b
+
+Maelstrom branch
+phase/05-03-optimisation
+
+Maelstrom status
+ M docs/cuda.md
+ M native/bridge.cpp
+ M native/neighbours.cuh
+ M native/row_sort.cuh
+ M native/solver.cu
+ M native/solver.h
+ M native/state_observation.cuh
+ M src/cuda/solver.rs
+ M tests/native/tests.cpp
+?? tests/unit/cuda/tiled_tests.rs
+
+Parent gitlink
+160000 6bf2682325b7665e48f8a8647ce087d48ff13f0b 0	Maelstrom

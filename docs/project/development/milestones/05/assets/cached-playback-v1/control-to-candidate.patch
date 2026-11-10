@@ -1,0 +1,448 @@
+--- a/src/cli/arguments.rs
++++ b/src/cli/arguments.rs
+@@ -362,6 +362,12 @@
+     /// Particle read-ahead budget in MiB (includes decode workspace)
+     #[arg(long, default_value_t = 128)]
+     pub cache_memory_mb: usize,
++    /// Follow recorded time or present every observation (cached viewing only)
++    #[arg(long, requires="cache", default_value="real-time", value_parser=["real-time", "frame-accurate"])]
++    pub cache_playback: String,
++    /// Explicitly open an incomplete cache's committed prefix
++    #[arg(long, requires="cache")]
++    pub allow_partial: bool,
+     /// Cached preview geometry; indexed matches offline exports
+     #[arg(long, default_value="indexed", value_parser=["indexed", "impostor"])]
+     pub preview_renderer: String,
+--- a/src/cli/viewer.rs
++++ b/src/cli/viewer.rs
+@@ -14,7 +14,7 @@
+ 
+ pub(super) fn launch(view: &View, storage: &super::storage::Storage) -> Result<u8, CliError> {
+     if let Some(path) = &view.cache {
+-        let cache = maelstrom::cache::Cache::open(path, false)
++        let cache = maelstrom::cache::Cache::open(path, view.allow_partial)
+             .map_err(|e| CliError::input(e.to_string()))?;
+         let selected = super::presentation::resolve(
+             None,
+@@ -39,6 +39,9 @@
+             view.cache_memory_mb,
+             view.camera_output.clone(),
+             view.preview_renderer
++                .parse()
++                .map_err(|e: maelstrom::render::RenderError| CliError::input(e.to_string()))?,
++            view.cache_playback
+                 .parse()
+                 .map_err(|e: maelstrom::render::RenderError| CliError::input(e.to_string()))?,
+         )
+--- /dev/null
++++ b/src/viewer/cache_clock.rs
+@@ -0,0 +1,99 @@
++//! Recorded timestamps select exact observations. Wall time only decides which
++//! observation to request; it never creates or interpolates particle data.
++use crate::render::RenderError;
++
++/// How cached playback responds when presentation cannot keep up.
++#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
++pub enum CachePlayback {
++    /// Follow monotonic elapsed time, skipping intermediate presentations.
++    #[default]
++    RealTime,
++    /// Present each observation, allowing playback to run slower than requested.
++    FrameAccurate,
++}
++impl std::str::FromStr for CachePlayback {
++    type Err = RenderError;
++    fn from_str(value: &str) -> Result<Self, Self::Err> {
++        match value {
++            "real-time" => Ok(Self::RealTime),
++            "frame-accurate" => Ok(Self::FrameAccurate),
++            _ => Err(RenderError(
++                "cache playback must be real-time or frame-accurate".into(),
++            )),
++        }
++    }
++}
++
++/// Advances an already started clock. The terminal state gets one final recorded
++/// interval before looping or pausing; a one-state cache uses a 1/60 s hold.
++pub(super) fn advance(
++    position: &mut f64,
++    elapsed: f64,
++    speed: f64,
++    looping: bool,
++    terminal: f64,
++    hold: f64,
++) -> bool {
++    *position += elapsed * speed;
++    let cycle = terminal + hold;
++    if *position >= cycle {
++        if looping {
++            *position %= cycle;
++        } else {
++            *position = terminal;
++            return true;
++        }
++    }
++    false
++}
++
++/// Finds the most recent observation at or before the requested simulation time,
++/// including an irregular terminal gap, without allocating a timestamp array.
++pub(super) fn target(count: u64, position: f64, time: impl Fn(u64) -> f64) -> u64 {
++    let (mut first, mut end) = (0, count);
++    while first < end {
++        let middle = first + (end - first) / 2;
++        if time(middle) <= position {
++            first = middle + 1;
++        } else {
++            end = middle;
++        }
++    }
++    first.saturating_sub(1)
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++    #[test]
++    fn slow_redraws_and_disk_stalls_skip_presentations_without_stopping_time() {
++        let times = [0., 0.02, 0.04, 0.06, 0.065];
++        let mut position = 0.;
++        assert!(!advance(&mut position, 0.015, 4., false, 0.065, 0.005));
++        assert_eq!(target(5, position, |i| times[i as usize]), 3);
++        // No frame availability is an input to the real-time clock.
++        assert!(advance(&mut position, 0.1, 1., false, 0.065, 0.005));
++        assert_eq!(target(5, position, |i| times[i as usize]), 4);
++    }
++    #[test]
++    fn terminal_hold_loop_and_long_elapsed_use_recorded_final_gap() {
++        let mut position = 0.065;
++        assert!(!advance(&mut position, 0.004, 1., true, 0.065, 0.005));
++        assert_eq!(
++            target(5, position, |i| [0., 0.02, 0.04, 0.06, 0.065][i as usize]),
++            4
++        );
++        assert!(!advance(&mut position, 0.142, 1., true, 0.065, 0.005));
++        assert!((position - 0.001).abs() < 1e-12);
++        assert_eq!(target(1, 123., |_| 0.), 0);
++    }
++    #[test]
++    fn exact_boundaries_and_speed_change_preserve_fractional_time() {
++        let mut position = 0.;
++        advance(&mut position, 0.01, 1., false, 1., 0.02);
++        advance(&mut position, 0.01, 2., false, 1., 0.02);
++        assert!((position - 0.03).abs() < 1e-12);
++        assert_eq!(target(4, 0.02, |i| i as f64 * 0.02), 1);
++        assert_eq!(target(4, 0.019, |i| i as f64 * 0.02), 0);
++    }
++}
+--- a/src/viewer/cached.rs
++++ b/src/viewer/cached.rs
+@@ -27,6 +27,7 @@
+     frames: BTreeMap<u64, Frame>,
+     error: Option<String>,
+     stop: bool,
++    latest: Option<(u64, Frame)>,
+ }
+ struct Reader {
+     shared: Arc<(Mutex<Reads>, Condvar)>,
+@@ -56,6 +57,7 @@
+                 frames: BTreeMap::new(),
+                 error: None,
+                 stop: false,
++                latest: None,
+             }),
+             Condvar::new(),
+         ));
+@@ -93,7 +95,7 @@
+                                 .particles()
+                                 .iter()
+                                 .map(|p| p.particle())
+-                                .collect(),
++                                .collect::<Vec<_>>(),
+                         )
+                     });
+                     trace(|| serde_json::json!({"event":"loaded", "index":next, "seconds":started.elapsed().as_secs_f64()}));
+@@ -102,12 +104,15 @@
+                         Err(_) => return,
+                     };
+                     match loaded {
+-                        Ok(frame)
+-                            if next >= s.wanted && next < s.wanted.saturating_add(slots as u64) =>
+-                        {
+-                            s.frames.insert(next, frame);
++                        Ok(frame) => {
++                            // Keep one completed read even if wall time has moved
++                            // beyond it. Otherwise slow reads could starve playback
++                            // by always completing after their target was superseded.
++                            s.latest = Some((next, frame.clone()));
++                            if next >= s.wanted && next < s.wanted.saturating_add(slots as u64) {
++                                s.frames.insert(next, frame);
++                            }
+                         }
+-                        Ok(_) => {}
+                         Err(e) => {
+                             s.error = Some(e.to_string());
+                             return;
+@@ -122,6 +127,9 @@
+         })
+     }
+     fn get(&self, index: u64) -> Result<Option<Frame>, RenderError> {
++        Ok(self.request(index, index)?.map(|(_, frame)| frame))
++    }
++    fn request(&self, index: u64, minimum: u64) -> Result<Option<(u64, Frame)>, RenderError> {
+         let (lock, wake) = &*self.shared;
+         let mut s = lock
+             .lock()
+@@ -130,7 +138,20 @@
+             return Err(RenderError(e.clone()));
+         }
+         s.wanted = index;
+-        let result = s.frames.get(&index).cloned();
++        let buffered = s
++            .frames
++            .range(minimum..=index)
++            .next_back()
++            .map(|(i, f)| (*i, f.clone()));
++        let latest = s
++            .latest
++            .as_ref()
++            .filter(|(i, _)| *i >= minimum && *i <= index)
++            .cloned();
++        let result = match (buffered, latest) {
++            (Some(a), Some(b)) => Some(if a.0 >= b.0 { a } else { b }),
++            (a, b) => a.or(b),
++        };
+         wake.notify_one();
+         Ok(result)
+     }
+@@ -149,7 +170,8 @@
+ }
+ 
+ /// Opens exact cached observations in the shared viewer surface. Disk latency
+-/// stalls the animation clock; camera input and redraws continue without skipping states.
++/// never runs on the event thread. Real-time playback may skip presentations;
++/// frame-accurate playback waits for each exact observation.
+ #[allow(clippy::too_many_arguments)]
+ pub fn run_cache(
+     cache: Cache,
+@@ -160,6 +182,7 @@
+     budget_mb: usize,
+     save: Option<PathBuf>,
+     renderer: ParticleRenderer,
++    policy: CachePlayback,
+ ) -> Result<(), RenderError> {
+     settings.validate()?;
+     if cache.frame_count() == 0 {
+@@ -198,6 +221,9 @@
+         speed: 1.0,
+         last: Instant::now(),
+         remaining: 0.0,
++        policy,
++        position: 0.0,
++        seeking: true,
+         started: Instant::now(),
+         cursor: [0.0; 2],
+         drag: None,
+@@ -228,6 +254,9 @@
+     speed: f64,
+     last: Instant,
+     remaining: f64,
++    policy: CachePlayback,
++    position: f64,
++    seeking: bool,
+     started: Instant,
+     cursor: [f64; 2],
+     drag: Option<MouseButton>,
+@@ -240,9 +269,35 @@
+         self.cache.step(i).unwrap_or(0) as f64
+             * f64::from(self.cache.scene().configuration.numerical.fixed_timestep_s)
+     }
++    fn tick_realtime(&mut self, now: Instant) {
++        let elapsed = now.duration_since(self.last).as_secs_f64();
++        self.last = now;
++        if self.paused || self.seeking || self.current.is_none() {
++            return;
++        }
++        let last = self.cache.frame_count() - 1;
++        let terminal = self.time(last);
++        let hold = if last > 0 {
++            terminal - self.time(last - 1)
++        } else {
++            1.0 / 60.0
++        };
++        self.paused = super::cache_clock::advance(
++            &mut self.position,
++            elapsed,
++            self.speed,
++            self.looping,
++            terminal,
++            hold,
++        );
++        self.wanted =
++            super::cache_clock::target(self.cache.frame_count(), self.position, |i| self.time(i));
++    }
+     fn seek(&mut self, i: u64) {
+         self.wanted = i.min(self.cache.frame_count() - 1);
+         self.remaining = 0.0;
++        self.position = self.time(self.wanted);
++        self.seeking = true;
+         self.last = Instant::now();
+     }
+     fn save(&mut self) -> Result<(), RenderError> {
+@@ -266,6 +321,13 @@
+         Ok(())
+     }
+     fn key(&mut self, key: &Key, event_loop: &ActiveEventLoop) -> Result<(), RenderError> {
++        trace(
++            || serde_json::json!({"event":"key", "wall_s":self.started.elapsed().as_secs_f64(), "key":format!("{key:?}")}),
++        );
++        // Settle elapsed time at the old speed/pause state before controls change it.
++        if self.policy == CachePlayback::RealTime {
++            self.tick_realtime(Instant::now());
++        }
+         if let Some(text) = &mut self.seek {
+             match key {
+                 Key::Named(NamedKey::Escape) => self.seek = None,
+@@ -317,6 +379,14 @@
+                 "r" => self.seek(0),
+                 "l" => self.looping = !self.looping,
+                 "j" => self.seek = Some(String::new()),
++                "t" => {
++                    self.policy = if self.policy == CachePlayback::RealTime {
++                        CachePlayback::FrameAccurate
++                    } else {
++                        CachePlayback::RealTime
++                    };
++                    self.seek(self.index);
++                }
+                 "s" => self.save()?,
+                 "[" => self.speed = (self.speed / 2.0).max(0.0625),
+                 "]" => self.speed = (self.speed * 2.0).min(16.0),
+@@ -344,18 +414,40 @@
+         }
+         Ok(())
+     }
+-    fn redraw(&mut self) -> Result<(), RenderError> {
+-        let now = Instant::now();
++    fn update(&mut self, now: Instant) -> Result<(), RenderError> {
+         let elapsed = now.duration_since(self.last).as_secs_f64();
+-        self.last = now;
++        if self.policy == CachePlayback::RealTime {
++            self.tick_realtime(now);
++        } else {
++            self.last = now;
++        }
+         let was_loading = self.current.is_none() || self.index != self.wanted;
+         let had_frame = self.current.is_some();
+-        let loaded = self.reader.get(self.wanted)?;
++        let minimum = if self.policy == CachePlayback::RealTime && !self.seeking {
++            if self.wanted >= self.index {
++                self.index
++            } else {
++                0
++            }
++        } else {
++            self.wanted
++        };
++        let loaded = if minimum == self.wanted {
++            self.reader
++                .get(self.wanted)?
++                .map(|frame| (self.wanted, frame))
++        } else {
++            self.reader.request(self.wanted, minimum)?
++        };
+         let ready = loaded.is_some();
+-        if let Some(frame) = loaded {
+-            if was_loading {
++        if let Some((index, frame)) = loaded {
++            if was_loading || index != self.index || self.seeking {
+                 self.current = Some(frame);
+-                self.index = self.wanted;
++                self.index = index;
++                if self.seeking {
++                    self.seeking = false;
++                    self.last = Instant::now();
++                }
+                 self.remaining += if self.index + 1 < self.cache.frame_count() {
+                     self.time(self.index + 1) - self.time(self.index)
+                 } else if self.index > 0 {
+@@ -365,7 +457,7 @@
+                 };
+             }
+         }
+-        if !self.paused && ready && had_frame {
++        if self.policy == CachePlayback::FrameAccurate && !self.paused && ready && had_frame {
+             self.remaining -= elapsed * self.speed;
+             if self.remaining <= 0.0 {
+                 if self.index + 1 < self.cache.frame_count() {
+@@ -377,6 +469,10 @@
+                 }
+             }
+         }
++        Ok(())
++    }
++    fn redraw(&mut self) -> Result<(), RenderError> {
++        self.update(Instant::now())?;
+         let window = self
+             .window
+             .as_ref()
+@@ -389,14 +485,15 @@
+         self.settings.height = size.height;
+         let loading = self.current.is_none() || self.wanted != self.index;
+         let title = format!(
+-            "Maelstrom cache | frame {}/{} | {:.6} simulation s | {} {}x | {} | {:?}",
++            "Maelstrom cache | frame {}/{} | {:.6} simulation s | {} {}x | {} | {:?} | {:?}",
+             self.index,
+             self.cache.frame_count() - 1,
+             self.time(self.index),
+             if self.paused { "paused" } else { "playing" },
+             self.speed,
+             if loading { "loading" } else { "ready" },
+-            self.renderer
++            self.renderer,
++            self.policy
+         );
+         window.set_title(&title);
+         let dt = f64::from(self.cache.scene().configuration.numerical.fixed_timestep_s);
+@@ -404,7 +501,7 @@
+             title,
+             "Space play/pause | N/B step | J frame index | R/Home restart | End last | L loop"
+                 .into(),
+-            "Drag orbit | right-drag pan | wheel zoom | S save | P indexed/impostor | [ ] speed"
++            "Drag orbit | right-drag pan | wheel zoom | S save | P geometry | T timing | [ ] speed"
+                 .into(),
+             format!(
+                 "Solver {:.3} Hz | cache timing uses recorded step gaps | display target 60 Hz | loop {}",
+@@ -461,7 +558,9 @@
+         )?;
+         window.pre_present_notify();
+         display.graphics.queue.present(frame);
+-        trace(|| serde_json::json!({"event":"present", "wall_s":self.started.elapsed().as_secs_f64(), "index":self.index, "wanted":self.wanted, "simulation_s":self.time(self.index), "paused":self.paused, "speed":self.speed, "loading":loading, "prepare_s":draw.prepare_s, "upload_s":draw.upload_s, "submit_s":draw.submit_s}));
++        trace(
++            || serde_json::json!({"event":"present", "wall_s":self.started.elapsed().as_secs_f64(), "index":self.index, "wanted":self.wanted, "simulation_s":self.time(self.index), "timeline_s":self.position, "paused":self.paused, "speed":self.speed, "loading":loading, "camera":self.settings.camera, "width":size.width, "height":size.height, "policy":format!("{:?}",self.policy), "prepare_s":draw.prepare_s, "upload_s":draw.upload_s, "submit_s":draw.submit_s}),
++        );
+         Ok(())
+     }
+ }
+@@ -491,6 +590,9 @@
+                     self.selection,
+                     event_loop.owned_display_handle(),
+                 )?);
++                trace(
++                    || serde_json::json!({"event":"adapter", "features":format!("{:?}",self.display.as_ref().map(|d| d.graphics.adapter.features()))}),
++                );
+             }
+             Ok(())
+         })();
+--- a/src/viewer/mod.rs
++++ b/src/viewer/mod.rs
+@@ -3,6 +3,8 @@
+ //! cooperative shutdown and keep pumping events until that worker has exited.
+ 
+ mod cached;
++mod cache_clock;
++pub use cache_clock::CachePlayback;
+ pub use cached::run_cache;
+ mod model;
+ mod overlay;

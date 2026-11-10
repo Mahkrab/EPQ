@@ -1,0 +1,179 @@
+   Compiling maelstrom v0.1.0 (/home/oliver/.local/share/maelstrom-experiments/cached-playback-v1/final)
+    Finished `release` profile [optimized] target(s) in 14.23s
+     Running unittests src/lib.rs (../target/release/deps/maelstrom-ae149651470e7ac4)
+
+running 117 tests
+test application::tests::full_queue_rejects_restart_atomically_and_cancellation_bypasses_backpressure ... ok
+test application::tests::panic_retains_active_snapshot_marks_queued_runs_and_join_reports_failure ... ok
+test application::tests::queued_old_steps_are_discarded_and_new_generation_stays_paused_at_zero ... ok
+test application::tests::shutdown_with_full_queue_resolves_unconstructed_handles_and_receipts ... ok
+test cache::tests::schedule_has_exact_endpoints_and_rejects_unbounded_frame_counts ... ok
+test cuda::solver::active_tests::active_errors_precede_all_numerical_errors_without_publishing_results ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::active_tests::active_group_matches_separate_stages_at_support_and_coincident_positions ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::correction_tests::hardware_corrections_match_ordered_cpu_for_divergent_power_inputs ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::density_tests::density_errors_precede_speculative_owner_and_reciprocal_checks ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::density_tests::density_owner_fusion_matches_independent_intermediates_for_fixed_rows ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::mirror_tests::hardware_mapped_diagnostics_keep_minima_slots_and_reset_after_rejection ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::observation_tests::hardware_checked_prefix_matches_integer_oracle_and_rejects_bad_counts ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::observation_tests::hardware_compact_summaries_keep_lengths_extrema_and_stage_priority ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::plane_tests::hardware_deferred_plane_failures_keep_error_priority_cancellation_and_retry ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::native::tests::driver_status_preserves_submission_completion_and_retry_policy ... ok
+test cuda::solver::plane_tests::hardware_inclined_contact_repair_matches_cpu_bits ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::plane_tests::hardware_plane_certificate_matches_host_and_survives_velocity_replacement ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::residency_tests::hardware_resident_inputs_promote_after_acceptance_and_survive_retry ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::search_tests::hardware_discovery_keeps_discontinuous_columns_and_identity_order ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::spatial_sort_tests::hardware_spatial_sort_preserves_full_keys_padding_and_reused_storage ... ignored, requires an explicitly selected CUDA hardware test run
+test cache::tests::wire_fixture_preserves_offsets_signed_zero_and_maximum_identity ... ok
+test cuda::solver::tests::hardware_batched_sort_matches_integer_keys_and_individual_passes ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_compact_rows_grow_shrink_and_reject_inconsistent_offsets ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::capacity_arithmetic_rejects_unrepresentable_workspace_without_allocating ... ok
+test cuda::solver::tests::hardware_components_preserve_ordered_cpu_arithmetic ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_diagnostic_selection_preserves_particle_priority_and_clears_old_failures ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_failed_fill_does_not_sort_invalid_rows_and_can_retry ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_fixed_membership_and_independent_two_particle_equations ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_grid_covers_rounded_boundaries_dense_rows_and_extreme_domain ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_groups_preserve_stage_priority_and_skip_dependent_writes ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_identity_rows_sort_network_edges_dense_fallback_and_tail_warps ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_large_lattice_count_and_fill_match_independent_grid_rows ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_multiplier_errors_keep_owner_checks_before_prefix_squares ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_multiplier_prefix_keeps_self_order_and_rechecks_current_support ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_projection_group_keeps_candidate_failure_before_plane_failure ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::hardware_spatial_schedule_keeps_identity_rows_and_error_priority ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::neighbour_prefixes_preserve_empty_rows_and_reject_invalid_counts ... ok
+test cuda::solver::tests::xsph_candidate_is_separate_and_numerical_failure_can_retry_without_partial_commit ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tests::packed_diagnostics_preserve_quantities_and_reject_invalid_records ... ok
+test cuda::solver::tiled_tests::tiled_attempts_keep_every_cancellation_boundary_and_retry_from_accepted_state ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tiled_tests::tiled_density_matches_independent_intermediates_for_fixed_rows ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tiled_tests::tiled_empty_rows_need_no_neighbour_allocation_and_keep_the_self_term ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::tiled_tests::tiled_prefix_rejects_invalid_counts_before_reusing_sort_scratch ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::solver::vorticity_tests::confinement_stages_preserve_input_and_retry_both_numerical_failure_paths ... ignored, requires an explicitly selected CUDA hardware test run
+test cuda::tests::capacity_checks_do_not_allocate_or_need_a_device ... ok
+test execution::tests::unavailable_workers_are_a_typed_setup_failure ... ok
+test export::offscreen::tests::destroyed_device_rejects_offscreen_readback ... ignored, requires explicitly available software Vulkan
+test export::tests::cancellation_joins_pending_encoding_without_publishing_it ... ignored, requires explicitly available software Vulkan
+test execution::tests::joined_work_uses_distinct_workers_and_reports_lowest_index_failure ... ok
+test export::tests::stage_failures_retain_closed_frames_and_incomplete_progress ... ignored, requires explicitly available software Vulkan
+test export::timing::tests::profile_accounts_for_frame_work_and_rejects_overlapping_intervals ... ok
+test export::video::encoder_tests::real_encoder_order_duration_cleanup_and_no_overwrite ... ignored, requires FFmpeg with libx264 and ffprobe
+test export::offscreen::tests::invalid_rgba_lengths_fail_encoding ... ok
+test neighbours::grid::tests::invalid_index_and_capacity_operations_are_errors ... ok
+test export::video::tests::endpoint_policy_is_explicit ... ok
+test execution::tests::workers_are_reused_and_terminate_after_the_resource_is_dropped ... ok
+test neighbours::grid::tests::mapping_uses_floor_at_faces_edges_and_corners ... ok
+test playback::tests::clock_uses_recorded_intervals_speed_pause_seek_and_final_hold ... ok
+test playback::tests::letterboxing_preserves_aspect_and_centres_both_orientations ... ok
+test export::encoding::tests::worker_reports_encoding_failure_and_unexpected_unwind_without_deadlock ... ok
+test playback::tests::looping_holds_the_final_image_for_the_previous_interval ... ok
+test playback::tests::saved_pixels_keep_orientation_and_colour_through_the_graphics_pass ... ignored, requires explicitly available software Vulkan
+test export::encoding::tests::worker_preserves_bytes_and_hashes_with_one_outstanding_frame ... ok
+test playback::tests::selected_excerpt_starts_playback_at_its_first_image ... ok
+test render::gpu::tests::indexed_sphere_preserves_every_triangle_coordinate_bit ... ok
+test render::particle::tests::lod_keeps_large_particles_and_promotes_at_each_threshold ... ok
+test render::particle::tests::perspective_radius_matches_axis_tangency_and_handles_eye_intersection ... ok
+test simulation::tests::exhausted_step_counter_cannot_wrap_or_accept_another_step ... ok
+test viewer::cache_clock::tests::exact_boundaries_and_speed_change_preserve_fractional_time ... ok
+test viewer::cache_clock::tests::slow_redraws_and_disk_stalls_skip_presentations_without_stopping_time ... ok
+test viewer::cache_clock::tests::terminal_hold_loop_and_long_elapsed_use_recorded_final_gap ... ok
+test playback::tests::pixels_load_without_physical_inputs_or_the_recorded_cuda_device ... ok
+test playback::tests::missing_changed_invalid_and_wrong_sized_images_fail_without_regeneration ... ok
+test viewer::cached::tests::portable_presentation_preserves_interactive_camera_and_colours_exactly ... ok
+test playback::tests::zero_step_export_is_one_static_frame ... ok
+test playback::tests::malformed_or_incomplete_manifests_do_not_become_playback_requests ... ok
+test presentation::save::tests::invalid_documents_and_camera_are_rejected_before_writing ... ok
+test viewer::cached::tests::superseded_read_can_progress_realtime_but_never_satisfies_an_exact_seek ... ok
+test viewer::tests::close_during_running_work_retains_terminal_accepted_state ... ok
+test export::video::encoder_tests::missing_encoder_and_invalid_dimensions_do_not_create_output ... ok
+test playback::tests::symlinks_are_not_followed ... ok
+test playback::tests::unsafe_paths_order_steps_timestamps_hashes_and_dimensions_are_rejected ... ok
+test viewer::tests::overlay_is_bounded_to_the_drawable_and_has_complete_triangles ... ok
+test presentation::save::tests::symlinks_and_readonly_files_are_rejected_and_permissions_retained ... ok
+test viewer::tests::camera_save_uses_displayed_selection_and_does_not_change_accepted_state ... ok
+test presentation::save::tests::new_save_roundtrips_and_energy_settings_survive_replacement ... ok
+test export::video::subprocess_tests::encoder_exit_and_missing_codec_are_actionable_and_leave_no_output ... ok
+test presentation::save::tests::publication_failure_and_detected_concurrent_edit_preserve_target ... ok
+test presentation::save::tests::save_preserves_unrelated_values_comments_and_camera_field_comments ... ok
+test viewer::windowing::tests::window_transport_is_explicit_and_rejects_invalid_names ... ok
+test viewer::tests::zero_extent_and_occlusion_skip_graphics_configuration_and_drawing ... ok
+test viewer::tests::presentation_resolution_failure_retains_generation_camera_and_snapshot ... ok
+test workflow::record::snapshot_json::tests::canonical_bytes_preserve_empty_records_decimal_limits_and_signed_zero ... ok
+test workflow::output::tests::a_partial_write_failure_never_publishes_a_destination ... ok
+test viewer::tests::graphics_failure_requests_worker_teardown_and_preserves_accepted_state ... ok
+test workflow::record::snapshot_json::tests::invalid_records_fail_before_writing_and_sink_errors_remain_typed ... ok
+test workflow::tests::identity_digest_matches_the_standard_sha256_abc_vector ... ok
+test viewer::tests::invalid_draft_preserves_selection_and_resource_failure_retains_prior ... ok
+test viewer::tests::requested_audit_is_labelled_by_snapshot_and_does_not_change_acceptance ... ok
+test viewer::tests::receipts_are_polled_and_removed_without_blocking ... ok
+test workflow::record::snapshot_json::tests::canonical_numbers_match_derived_serialisation_across_finite_binary32_values ... ok
+test cache::tests::symlink_frames_are_rejected_even_when_the_target_has_valid_bytes ... ok
+test cache::tests::full_validation_detects_a_self_consistent_false_canonical_claim ... ok
+test cache::tests::missing_completion_is_explicit_even_if_all_frames_were_written ... ok
+test cache::tests::asynchronous_write_failure_retains_previous_receipt_without_deadlock ... ok
+test cache::tests::empty_initial_observation_has_a_valid_zero_payload_and_no_diagnostics ... ok
+test viewer::tests::presentation_cadence_camera_draft_and_reset_preserve_all_cpu_modes ... ok
+test cache::tests::cancellation_keeps_only_receipt_backed_prefix_and_never_completes ... ok
+test cache::tests::changed_receipts_payloads_and_truncation_cannot_reuse_a_digest ... ok
+test cache::tests::bake_round_trips_every_selected_accepted_state_and_diagnostic ... ok
+test viewer::cached::tests::frame_accurate_requests_only_the_next_state_after_a_slow_redraw ... ok
+test viewer::cached::tests::realtime_pause_resume_and_speed_change_keep_fractional_position ... ok
+test viewer::cached::tests::bounded_reader_seeks_exact_states_and_reports_corruption ... ok
+test viewer::cached::tests::same_frame_seek_reanchors_and_paused_inspection_stays_exact ... ok
+test application::tests::supported_scene_versions_construct_and_unknown_versions_fail_explicitly ... ok
+test playback::tests::large_particle_provenance_does_not_prevent_playing_existing_images ... ok
+test viewer::tests::cuda_viewer_observations_preserve_exact_headless_results_and_teardown ... ok
+
+test result: ok. 78 passed; 0 failed; 39 ignored; 0 measured; 0 filtered out; finished in 0.60s
+
+     Running unittests src/main.rs (../target/release/deps/maelstrom-cddc1d157eb2d59a)
+
+running 7 tests
+test cli::bundled::tests::built_in_defaults_do_not_supply_a_configuration_document ... ok
+test cli::bundled::tests::references_resolve_without_access_to_the_source_tree ... ok
+test cli::viewer::tests::invalid_settings_and_selected_paths_have_explicit_redacted_feedback ... ok
+test cli::viewer::tests::external_and_bundled_selection_share_precedence_and_identity ... ok
+test cli::viewer::tests::draft_numerical_mode_is_validated_and_refines_once ... ok
+test cli::viewer::tests::scene_selected_configuration_errors_hide_the_external_input_directory ... ok
+test cli::viewer::tests::presentation_saves_to_scene_unless_an_output_is_explicitly_selected ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/application_lifecycle.rs (../target/release/deps/application_lifecycle-f2a569e3f957667b)
+
+running 10 tests
+test cuda_context_lives_entirely_on_worker_across_step_restart_cancel_and_teardown ... ignored, requires an available qualified CUDA device
+test pause_acknowledgement_is_a_stable_boundary_and_running_step_is_rejected ... ok
+test numerical_failure_retains_accepted_state_and_failure_across_controls_and_shutdown ... ok
+test invalid_setup_retains_previous_outcome_and_never_selects_a_fallback ... ok
+test cancellation_wakes_paused_worker_is_latched_and_retains_an_exact_prefix ... ok
+test zero_step_empty_input_and_last_single_step_have_explicit_completion ... ok
+test shutdown_and_drop_join_idle_paused_running_and_queued_work ... ok
+test restart_isolates_old_snapshots_commands_and_cancellation ... ok
+test slow_or_absent_display_cannot_backpressure_solver_or_lose_final_diagnostics ... ok
+test pause_step_resume_and_completion_preserve_every_accepted_bit ... ok
+
+test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/application_motion.rs (../target/release/deps/application_motion-97cfa7d0a3b992a0)
+
+running 1 test
+test worker_single_steps_match_exact_constant_acceleration_motion ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/bundled_catalogue.rs (../target/release/deps/bundled_catalogue-5c44676a0a7d84fc)
+
+running 4 tests
+test catalogue_is_sorted_and_tracks_added_and_removed_files ... ok
+test filenames_must_be_selectable_through_the_cli ... ok
+test symbolic_links_cannot_pull_external_inputs_into_the_binary ... ok
+test complete_packages_embed_configuration_and_render_and_reject_missing_members ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cache_workflow.rs (../target/release/deps/cache_workflow-c6f42cb3319a0616)
+
+running 5 tests
+test cached_render_matches_direct_and_staged_compile_and_supports_sparse_views ... ignored, requires explicitly available software Vulkan
+test cached_video_and_png_conversion_preserve_selection_without_solver ... ignored, requires software graphics, FFmpeg with libx264 and ffprobe
+test incomplete_prefix_requires_explicit_selection_and_corrupt_frames_never_complete ... ignored, requires explicitly available software Vulkan
+test headless_cache_commands_validate_without_graphics_and_preserve_existing_output ... ok
+test cached_timing_and_partial_options_are_validated_before_viewer_startup has been running for over 60 seconds

@@ -1,0 +1,32 @@
+{
+  "command": [
+    "/home/oliver/.cache/maelstrom-neighbour-traversal-20261110/control-bin",
+    "run",
+    "/home/oliver/.cache/maelstrom-neighbour-traversal-20261110/inputs/110592.toml",
+    "--backend",
+    "cuda",
+    "--device",
+    "0",
+    "--block-size",
+    "128",
+    "--numerical-mode",
+    "experimental",
+    "--steps",
+    "1200",
+    "--unpaced",
+    "--measure",
+    "--format",
+    "json"
+  ],
+  "started_utc": "2026-11-10T08:05:41.564786+00:00",
+  "finished_utc": "2026-11-10T08:05:52.318811+00:00",
+  "wall_s": 8.5799491650032,
+  "exit_code": 0,
+  "timed_out": false,
+  "interrupted": false,
+  "killed_after_grace": false,
+  "stdout_sha256": "88d02858ecd2eb100a99566097228c4c32d9c7d908865df6fde8bc36ab7b695b",
+  "stdout_gzip_sha256": "56f6488b0f76775c04f68039786ffcafdef64d7bb36a99cde1d57f03c216cb59",
+  "stderr_sha256": "fb64f92cc7d944ef320163e2eca0d84c29e6547ba635cbb251ffc660503f01f1",
+  "parse_error": null
+}

@@ -1,0 +1,90 @@
+   Compiling maelstrom v0.1.0 (/home/mahkrab/documents/programs/EPQ/Maelstrom)
+    Finished `release` profile [optimized] target(s) in 31.50s
+     Running tests/cache_workflow.rs (target/release/deps/cache_workflow-fa340699ba8f777c)
+
+running 5 tests
+test cached_render_matches_direct_and_staged_compile_and_supports_sparse_views ... ignored, requires explicitly available software Vulkan
+test cached_video_and_png_conversion_preserve_selection_without_solver ... ignored, requires software graphics, FFmpeg with libx264 and ffprobe
+test incomplete_prefix_requires_explicit_selection_and_corrupt_frames_never_complete ... ignored, requires explicitly available software Vulkan
+test cached_timing_and_partial_options_are_validated_before_viewer_startup ... ok
+test headless_cache_commands_validate_without_graphics_and_preserve_existing_output ... ok
+
+test result: ok. 2 passed; 0 failed; 3 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/cli_usability.rs (target/release/deps/cli_usability-5c0c0e904e0f7a1d)
+
+running 14 tests
+test compiled_runs_relocate_validate_and_rerun_without_original_scenes ... ignored, requires a Vulkan software adapter
+test cached_view_and_video_help_explain_saved_inputs ... ok
+test paths_obey_flags_then_environment_then_xdg_without_creating_libraries ... ok
+test paper_baseline_records_its_equations_and_reruns_resolved_inputs ... ok
+test help_is_example_free_and_legacy_commands_are_not_advertised ... ok
+test diagnostic_discovery_and_completions_have_no_installation_side_effects ... ok
+test paced_and_unpaced_execution_keep_identical_accepted_results ... ok
+test preferences_are_explicit_and_cannot_change_scene_physics ... ok
+test explicit_resources_are_recorded_and_rerun_without_the_scene_library ... ok
+test experimental_is_default_and_explicit_modes_and_preferences_win ... ok
+test numerical_modes_match_explicit_values_and_preserve_physics_and_replay ... ok
+test scene_packages_are_editable_portable_and_do_not_shadow_bundled_names ... ok
+test large_run_documents_are_listed_validated_and_shown_without_a_size_cutoff ... ok
+test every_bundled_scene_matches_its_file_and_copies_its_own_configuration ... ok
+
+test result: ok. 13 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 1.52s
+
+     Running tests/cli_workflow.rs (target/release/deps/cli_workflow-ac454914fedb219d)
+
+running 33 tests
+test broken_stdout_returns_an_output_failure_without_panicking ... ok
+test dangling_symlinks_are_not_replaced ... ok
+test configuration_only_validation_never_executes_a_timestep ... ok
+test explicit_config_replaces_scene_selection_but_preserves_scene_values ... ok
+test external_scene_configuration_precedence_and_relative_paths_are_explicit ... ok
+test configured_iteration_work_is_identified_and_replays_exactly ... ok
+test invalid_inputs_and_malformed_records_are_distinct_from_usage_errors ... ok
+test help_version_and_operation_help_explain_the_workflow ... ok
+test grid_ctrl_c_publishes_its_last_accepted_state ... ok
+test ctrl_c_returns_a_cancelled_result_and_preserves_accepted_state ... ok
+test grid_publication_keeps_no_clobber_guarantees_and_snapshot_bits ... ok
+test referenced_configuration_errors_name_the_dependency_file ... ok
+test playback_rejects_raw_results_and_incomplete_exports_without_writing_files ... ok
+test replay_cannot_silently_discard_or_invent_worker_settings ... ok
+test replay_rejects_the_previous_projection_contract_explicitly ... ok
+test output_paths_refuse_replacement_aliases_and_missing_directories ... ok
+test saved_playback_command_is_optional_and_explains_its_non_numerical_input ... ok
+test simulation_failure_reports_the_last_accepted_state_and_returns_failure ... ok
+test diagnostic_and_checkpoint_choices_preserve_accepted_state ... ok
+test invalid_use_has_actionable_stderr_and_no_result_stdout ... ok
+test named_and_external_inputs_produce_identical_physical_results ... ok
+test threaded_default_uses_available_capacity_and_invalid_combinations_fail ... ok
+test measured_cli_retains_replay_identity_and_profiles_only_when_requested ... ok
+test result_publication_snapshots_and_replay_reproduce_the_entire_run ... ok
+test unsupported_discovery_and_replay_contracts_cannot_silently_substitute ... ok
+test cli_run_matches_independently_known_free_fall_state ... ok
+test threaded_selection_replay_and_environment_independence_are_public ... ok
+test timestep_refinement_matches_explicit_values_and_replays_without_the_recipe ... ok
+test historical_configuration_replays_its_recorded_values_after_defaults_change ... ok
+test bundled_scenes_and_defaults_are_discoverable_outside_the_checkout ... ok
+test supplied_scene_and_selected_configuration_replay_without_original_files ... ok
+test explicit_discovery_selection_preserves_inputs_and_replays_every_work_count ... ok
+test duration_uses_the_effective_fixed_timestep_and_rounds_up ... ok
+
+test result: ok. 33 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+
+     Running tests/saved_settings_cli.rs (target/release/deps/saved_settings_cli-4d3667d5acb9e1a8)
+
+running 12 tests
+test compilation_records_colours_with_identical_physical_observations ... ignored, requires explicitly available software Vulkan
+test compilation_uses_saved_limit_dimensions_and_stride_and_publishes_playable_images ... ignored, requires explicitly available software Vulkan
+test invalid_colour_requests_fail_before_graphics_or_output_creation ... ok
+test last_playback_requires_a_completed_compile_and_conflicts_with_a_selector ... ok
+test shared_config_and_scene_overlays_remain_visible_with_explicit_base_replacement ... ok
+test adjacent_config_is_discovered_without_links_or_a_numerical_preference ... ok
+test legacy_compounding_and_source_assertions_are_migrated_without_reinterpreting_them ... ok
+test presentation_discovery_replacement_and_relocation_work_without_graphics ... ok
+test migration_preserves_effective_physics_and_created_spacing_is_editable ... ok
+test saved_limits_and_refinement_reach_execution_and_recorded_inputs_do_not_reapply_them ... ok
+test saved_edits_and_cli_overrides_have_visible_origins_and_do_not_rewrite_files ... ok
+test malformed_packages_fail_without_changing_the_previously_accepted_inputs ... ok
+
+test result: ok. 10 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.05s
+

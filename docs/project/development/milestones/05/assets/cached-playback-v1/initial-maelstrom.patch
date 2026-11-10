@@ -1,0 +1,1330 @@
+diff --git a/README.md b/README.md
+index 836646c..51f0db8 100644
+--- a/README.md
++++ b/README.md
+@@ -46,8 +46,23 @@ to another machine to watch it there. See [compiled runs and playback](docs/expo
+ 
+ For headless execution, use `maelstrom run water --steps 120`. It targets 1x simulated
+ time; `--unpaced` removes waiting. A slow solver reports lag rather than skipping work.
+-`view` starts a fresh live simulation; `rerun` recomputes recorded inputs from zero.
+-Neither is saved playback.
++`view SCENE` starts a fresh live simulation; `rerun` recomputes recorded inputs from zero.
++`view --cache DIRECTORY` opens saved particle motion without a solver.
++
++To explore a cached simulation in 3D and export the chosen viewpoint:
++
++```sh
++# Starts a new simulation; subsequent commands use saved observations.
++maelstrom cache bake water --steps 480 --frame-stride 4 -o water-cache
++maelstrom view --cache water-cache --paused --camera-output chosen.toml
++# Press S in the window to save the camera, then export without simulating again.
++maelstrom video cache water-cache --render-config chosen.toml -o water.mp4
++```
++
++MP4 requires FFmpeg with libx264. `maelstrom video images <run-directory> -o water.mp4`
++also converts existing validated PNG sequences without a cache. See the
++[interactive cache and video guide](docs/video.md) for controls, camera portability,
++frame timing, quality and cancellation.
+ 
+ ## Choose the next guide
+ 
+diff --git a/build.rs b/build.rs
+index 64ef015..6566453 100644
+--- a/build.rs
++++ b/build.rs
+@@ -26,7 +26,6 @@ fn main() {
+     let catalogue = bundled::generate(&root).expect("generate bundled scene catalogue");
+     let out = PathBuf::from(env::var_os("OUT_DIR").expect("Cargo OUT_DIR"));
+     fs::write(out.join("bundled_inputs.rs"), catalogue).expect("write bundled scene catalogue");
+-    #[cfg(feature = "render")]
+     export_build_identity();
+     println!("cargo:rerun-if-env-changed=CARGO_FEATURE_CUDA");
+     if env::var_os("CARGO_FEATURE_CUDA").is_none() {
+@@ -131,7 +130,6 @@ fn main() {
+     println!("cargo:rustc-env=MAELSTROM_CUDA_ARCH={arch}");
+ }
+ 
+-#[cfg(feature = "render")]
+ fn export_build_identity() {
+     use sha2::{Digest, Sha256};
+     fn hex(bytes: &[u8]) -> String {
+diff --git a/docs/cuda.md b/docs/cuda.md
+index a23258a..87266b5 100644
+--- a/docs/cuda.md
++++ b/docs/cuda.md
+@@ -208,6 +208,16 @@ passes. Disabled or zero-strength effects launch none of their passes. Both effe
+ fixed neighbour rows and strict final-distance support; no extra discovery or device allocation is
+ introduced. Strengths and numerical revisions are part of recorded physical inputs.
+ 
++For inputs of at least 32,000 particles, neighbour rows are interleaved in tiles of
++32 identities. Each tile reserves its longest row for every lane; readers still
++visit exactly the original identity-sorted members, excluding padding. Compact
++CSR offsets retain logical row lengths, while a checked integer prefix supplies
++the physical allocation size. Tile offsets reuse the cell sort's finished scratch
++half. Cooperative row sorting uses the same network and unrestricted dense-row
++fallback with a stride of 32. Small inputs retain compact rows because their
++measured timestep saving did not repay tiled construction. This storage choice
++changes neither prediction membership nor the arithmetic/cancellation sequence.
++
+ The exhaustive power check is a standalone CUDA test, separate from the Driver API
+ solver and its production dependencies. It uses the toolkit's Runtime API only for
+ test setup, launches and counters. Build it with the solver's precise flags; its
+diff --git a/docs/viewer.md b/docs/viewer.md
+index 9d74f6f..35360b7 100644
+--- a/docs/viewer.md
++++ b/docs/viewer.md
+@@ -1,6 +1,8 @@
+ # View a live simulation
+ 
+-`view` starts a **fresh simulation**. To watch something already compiled, use
++`view SCENE` starts a **fresh simulation**. `view --cache DIRECTORY` opens saved particles
++with 3D camera controls; see [interactive cache playback and video](video.md).
++To watch images already compiled, use
+ [playback](export.md) instead. Install with `--features viewer`; a Vulkan or OpenGL ES driver,
+ display and supported native keyboard libraries are required.
+ 
+diff --git a/native/bridge.cpp b/native/bridge.cpp
+index 132b8cf..4118cef 100644
+--- a/native/bridge.cpp
++++ b/native/bridge.cpp
+@@ -276,7 +276,8 @@ static Status solver(Resource &r, SolverSettings settings, unsigned int operatio
+     if (r.poisoned) return {-3,14};
+     const bool state=observation==Observation::State;
+     const bool prefix=observation==Observation::CountPrefix || observation==Observation::Prefix;
+-    if ((observation!=Observation::None && (!diagnostic || grouped)) ||
++    const bool tiled=settings.neighbour_layout==1;
++    if (settings.neighbour_layout>1 || (observation!=Observation::None && (!diagnostic || grouped)) ||
+         (state && operation>1) || (prefix && operation!=4) ||
+         (grouped && (!diagnostic || (operation!=5 && operation!=9))) ||
+         (operation>17 && operation!=24) || ((operation==2 || (operation==4 && observation!=Observation::Prefix) || operation==12) && (!std::isfinite(settings.width) || settings.width<=0)) ||
+@@ -348,8 +349,9 @@ static Status solver(Resource &r, SolverSettings settings, unsigned int operatio
+                 function=r.prefix_counts;
+                 settings.stride=observation==Observation::CountPrefix;
+                 settings.span=static_cast<unsigned int>((static_cast<std::uint64_t>(settings.count)+threads)/threads);
+-                for (kernel_operation=21;kernel_operation<=23;++kernel_operation) {
+-                    count=kernel_operation==22 ? threads : static_cast<std::uint64_t>(settings.count)+1;
++                for (kernel_operation=21;kernel_operation<=(tiled ? 25U : 23U);++kernel_operation) {
++                    if (kernel_operation==24) continue;
++                    count=(kernel_operation==22 || kernel_operation==25) ? threads : static_cast<std::uint64_t>(settings.count)+1;
+                     const auto status=launch();
+                     if (status.code) return status;
+                 }
+diff --git a/native/neighbours.cuh b/native/neighbours.cuh
+index 64cbd6d..33547f2 100644
+--- a/native/neighbours.cuh
++++ b/native/neighbours.cuh
+@@ -1,21 +1,33 @@
+ // Prediction-time rows contain only actual neighbours, sorted by identity. The
+ // count and fill passes share geometry; checked prefix totals determine storage.
++// Tiled rows interleave 32 identities without changing their logical sequence.
++// Their offsets occupy the cell sort's unused second half after sorting finishes.
+ #pragma once
+ #include "row_sort.cuh"
+ 
+ struct Members {
+     const std::uint32_t *indices;
+     std::uint64_t cursor, stop;
+-    unsigned int owner;
++    unsigned int owner, stride;
+     bool include_self;
+-    __device__ Members(SolverBuffers b, SolverSettings, unsigned int i, bool self=false)
+-        :indices(b.neighbours),cursor(b.offsets[i]),stop(b.offsets[i+1]),owner(i),include_self(self) {}
++    __device__ Members(SolverBuffers b, SolverSettings s, unsigned int i, bool self=false)
++        :indices(b.neighbours),cursor(0),stop(b.offsets[i+1]-b.offsets[i]),owner(i),stride(1),include_self(self) {
++        // An empty tile can end at the allocation boundary (or have no
++        // allocation). Do not form a padded lane pointer for an empty row.
++        if (stop) {
++            if (s.neighbour_layout==1) {
++                const auto offsets=reinterpret_cast<const std::uint64_t *>(b.cells+s.padded);
++                indices=b.neighbours+offsets[i/32]+i%32;
++                stride=32;
++            } else indices=b.neighbours+b.offsets[i];
++        }
++    }
+     __device__ unsigned int next(unsigned int end) {
+-        if (include_self && (cursor==stop || owner<indices[cursor])) {
++        if (include_self && (cursor==stop || owner<indices[cursor*stride])) {
+             include_self=false;
+             return owner;
+         }
+-        return cursor==stop ? end : indices[cursor++];
++        return cursor==stop ? end : indices[(cursor++)*stride];
+     }
+ };
+ 
+@@ -58,7 +70,12 @@ __device__ void discover_row(SolverBuffers b, SolverSettings s, unsigned int i,
+                 if (i!=j && separation(b.position[i],b.position[j],c)<s.radius) {
+                     if (fill) {
+                         if (cursor==stop) { c.error=52; return; }
+-                        b.neighbours[cursor]=j;
++                        auto target=cursor;
++                        if (s.neighbour_layout==1) {
++                            const auto offsets=reinterpret_cast<const std::uint64_t *>(b.cells+s.padded);
++                            target=offsets[i/32]+(cursor-start)*32+i%32;
++                        }
++                        b.neighbours[target]=j;
+                     }
+                     ++cursor;
+                 }
+diff --git a/native/row_sort.cuh b/native/row_sort.cuh
+index 78697d9..3229430 100644
+--- a/native/row_sort.cuh
++++ b/native/row_sort.cuh
+@@ -4,20 +4,22 @@
+ #include <cstdint>
+ #include <climits>
+ 
++template<unsigned int Stride>
+ __device__ void sift_down(std::uint32_t *row, std::uint64_t root, std::uint64_t count) {
+     while (root<count/2) {
+         auto child=root*2+1;
+-        if (child+1<count && row[child]<row[child+1]) ++child;
+-        if (row[root]>=row[child]) return;
+-        auto value=row[root]; row[root]=row[child]; row[child]=value;
++        if (child+1<count && row[child*Stride]<row[(child+1)*Stride]) ++child;
++        if (row[root*Stride]>=row[child*Stride]) return;
++        auto value=row[root*Stride]; row[root*Stride]=row[child*Stride]; row[child*Stride]=value;
+         root=child;
+     }
+ }
++template<unsigned int Stride>
+ __device__ void sort_row(std::uint32_t *row, std::uint64_t count) {
+-    for (auto root=count/2;root>0;--root) sift_down(row,root-1,count);
++    for (auto root=count/2;root>0;--root) sift_down<Stride>(row,root-1,count);
+     for (auto end=count;end>1;--end) {
+-        auto value=row[0]; row[0]=row[end-1]; row[end-1]=value;
+-        sift_down(row,0,end-1);
++        auto value=row[0]; row[0]=row[(end-1)*Stride]; row[(end-1)*Stride]=value;
++        sift_down<Stride>(row,0,end-1);
+     }
+ }
+ 
+@@ -41,29 +43,30 @@ __device__ __forceinline__ void row_network(std::uint32_t (&values)[Width/32], u
+     else if constexpr (Span<Width) row_network<Width,Span*2,Span>(values,lane);
+ }
+ 
+-template<unsigned int Width>
++template<unsigned int Width, unsigned int Stride>
+ __device__ __forceinline__ void warp_sort_row(std::uint32_t *row, std::uint64_t count,
+                                              unsigned int lane) {
+     std::uint32_t values[Width/32];
+     #pragma unroll
+     for (unsigned int slot=0;slot<Width/32;++slot) {
+         const auto index=slot*32+lane;
+-        values[slot]=index<count ? row[index] : UINT_MAX;
++        values[slot]=index<count ? row[index*Stride] : UINT_MAX;
+     }
+     row_network<Width,2,1>(values,lane);
+     #pragma unroll
+     for (unsigned int slot=0;slot<Width/32;++slot) {
+         const auto index=slot*32+lane;
+-        if (index<count) row[index]=values[slot];
++        if (index<count) row[index*Stride]=values[slot];
+     }
+ }
+ 
++template<unsigned int Stride=1>
+ __device__ void sort_row_cooperatively(std::uint32_t *row, std::uint64_t count,
+                                       unsigned int lane) {
+     if (count<2) return;
+-    if (count<=32) warp_sort_row<32>(row,count,lane);
+-    else if (count<=64) warp_sort_row<64>(row,count,lane);
+-    else if (count<=128) warp_sort_row<128>(row,count,lane);
+-    else if (count<=256) warp_sort_row<256>(row,count,lane);
+-    else if (lane==0) sort_row(row,count);
++    if (count<=32) warp_sort_row<32,Stride>(row,count,lane);
++    else if (count<=64) warp_sort_row<64,Stride>(row,count,lane);
++    else if (count<=128) warp_sort_row<128,Stride>(row,count,lane);
++    else if (count<=256) warp_sort_row<256,Stride>(row,count,lane);
++    else if (lane==0) sort_row<Stride>(row,count);
+ }
+diff --git a/native/solver.cu b/native/solver.cu
+index 69e9ff9..c3f469a 100644
+--- a/native/solver.cu
++++ b/native/solver.cu
+@@ -101,7 +101,12 @@ extern "C" __global__ void solver(SolverBuffers b, SolverSettings s, unsigned in
+         const auto owner=static_cast<unsigned int>(row);
+         const auto start=b.offsets[owner], stop=b.offsets[owner+1];
+         if (b.errors[owner] || start>stop || stop>s.entries) return;
+-        if (start!=stop) sort_row_cooperatively(b.neighbours+start,stop-start,threadIdx.x%32);
++        if (start!=stop) {
++            if (s.neighbour_layout==1) {
++                const auto offsets=reinterpret_cast<const std::uint64_t *>(b.cells+s.padded);
++                sort_row_cooperatively<32>(b.neighbours+offsets[owner/32]+owner%32,stop-start,threadIdx.x%32);
++            } else sort_row_cooperatively(b.neighbours+start,stop-start,threadIdx.x%32);
++        }
+         return;
+     }
+     if (lane>=s.count) return;
+diff --git a/native/solver.h b/native/solver.h
+index 836dbc2..06bb9d0 100644
+--- a/native/solver.h
++++ b/native/solver.h
+@@ -27,6 +27,9 @@ struct SolverSettings {
+     std::uint32_t stride, span;
+     std::uint64_t entries;
+     float xsph, vorticity;
++    // Zero selects compact CSR; one selects identity-ordered rows interleaved
++    // in tiles of 32. Tile offsets reuse the finished cell sort's second half.
++    std::uint32_t neighbour_layout;
+ };
+ struct SolverBuffers {
+     Vector *old_position, *old_velocity, *position, *velocity;
+@@ -42,6 +45,6 @@ struct SolverBuffers {
+ };
+ static_assert(sizeof(Vector) == 12 && sizeof(DevicePlane) == 16 && sizeof(Cell) == 32);
+ static_assert(sizeof(PendingJacobi) == 16);
+-static_assert(sizeof(SolverSettings) == 96 && offsetof(SolverSettings, width) == 64);
++static_assert(sizeof(SolverSettings) == 104 && offsetof(SolverSettings, width) == 64);
+ static_assert(sizeof(SolverBuffers) == 128 && offsetof(SolverBuffers,diagnostic) == 112 &&
+               offsetof(SolverBuffers,first_operation) == 120);
+diff --git a/native/state_observation.cuh b/native/state_observation.cuh
+index 22723b4..f037f54 100644
+--- a/native/state_observation.cuh
++++ b/native/state_observation.cuh
+@@ -104,6 +104,36 @@ extern "C" __global__ void prefix_counts(SolverBuffers b, SolverSettings s, unsi
+     if (b.diagnostic[0]!=ULLONG_MAX) return;
+     const auto lane=threadIdx.x;
+     __shared__ std::uint64_t scan[256];
++    if (operation==25) {
++        // CSR offsets are complete and checked. Pad each group of 32 rows to
++        // its longest row, then scan tile sizes using contiguous lane-owned
++        // slices. The cell sort has finished with this second scratch half.
++        // A partial tile reserves all 32 lanes, so every numerical row uses
++        // the same stride without reading another row's padding.
++        if (blockIdx.x || b.diagnostic[1]!=ULLONG_MAX) return;
++        const auto tiles=(static_cast<std::uint64_t>(s.count)+31)/32;
++        auto *offsets=reinterpret_cast<std::uint64_t *>(b.cells+s.padded);
++        const auto chunk=(tiles+blockDim.x-1)/blockDim.x;
++        const auto first=lane*chunk, last=min(first+chunk,tiles);
++        std::uint64_t sum=0;
++        for (auto tile=first;tile<last;++tile) {
++            std::uint64_t largest=0;
++            for (auto i=tile*32;i<min((tile+1)*32,static_cast<std::uint64_t>(s.count));++i)
++                largest=max(largest,b.offsets[i+1]-b.offsets[i]);
++            offsets[tile]=largest*32;
++            sum+=largest*32;
++        }
++        scan[lane]=sum;
++        inclusive_block_prefix(scan);
++        auto carry=lane ? scan[lane-1] : 0;
++        for (auto tile=first;tile<last;++tile) {
++            const auto length=offsets[tile];
++            offsets[tile]=carry;
++            carry+=length;
++        }
++        if (lane==blockDim.x-1) offsets[tiles]=scan[lane];
++        return;
++    }
+     const auto n=static_cast<std::uint64_t>(s.count)+1;
+     auto *totals=reinterpret_cast<std::uint64_t *>(b.correction);
+     if (operation==22) {
+diff --git a/src/cli/arguments.rs b/src/cli/arguments.rs
+index 7faf294..0893191 100644
+--- a/src/cli/arguments.rs
++++ b/src/cli/arguments.rs
+@@ -90,7 +90,16 @@ pub(super) enum Command {
+     Rerun(Replay),
+     /// Simulate once and publish portable images for later playback
+     Compile(Compile),
+-    /// Start a fresh simulation with live visualisation
++    /// Bake, inspect or validate reusable particle observations
++    Cache {
++        #[command(subcommand)]
++        command: CacheCommand,
++    },
++    /// Render particle caches without executing fluid timesteps
++    Render(CacheRender),
++    /// Encode saved images or cached observations as H.264 MP4
++    Video(Video),
++    /// View a fresh simulation, or open saved observations with --cache
+     View(View),
+     /// Play existing images with no simulation or particle rendering
+     Play(Play),
+@@ -239,6 +248,9 @@ pub(super) struct Compile {
+     /// New bundle directory; omitted selects a new ID in the run library
+     #[arg(short, long)]
+     pub output: Option<PathBuf>,
++    /// Bake a new reusable cache here, then render it; omitted keeps direct compilation
++    #[arg(long)]
++    pub cache_output: Option<PathBuf>,
+     /// Human-readable catalogue label, not a lookup ID or overwrite permission
+     #[arg(long)]
+     pub name: Option<String>,
+@@ -262,6 +274,66 @@ pub(super) struct Compile {
+     #[arg(long, conflicts_with = "fit_camera")]
+     pub no_fit_camera: bool,
+ }
++#[derive(Subcommand)]
++pub(super) enum CacheCommand {
++    /// Start a new simulation and cache scheduled accepted states, with no graphics
++    Bake(Box<CacheBake>),
++    /// Inspect metadata and the committed prefix; never continue a solver
++    Inspect {
++        cache: PathBuf,
++        #[arg(long)]
++        allow_partial: bool,
++    },
++    /// Validate binary frames; --full independently recomputes canonical hashes
++    Validate {
++        cache: PathBuf,
++        #[arg(long)]
++        allow_partial: bool,
++        #[arg(long)]
++        full: bool,
++    },
++}
++#[derive(Args)]
++pub(super) struct CacheBake {
++    #[command(flatten)]
++    pub inputs: Inputs,
++    #[command(flatten)]
++    pub selection: Selection,
++    #[command(flatten)]
++    pub limit: Limit,
++    /// Sample accepted steps, retaining both endpoints
++    #[arg(long, default_value_t = 4)]
++    pub frame_stride: u64,
++    /// New cache directory; never overwrite existing output
++    #[arg(short, long)]
++    pub output: PathBuf,
++}
++#[derive(Args)]
++pub(super) struct CacheRender {
++    pub cache: PathBuf,
++    /// New image sequence directory
++    #[arg(short, long)]
++    pub output: PathBuf,
++    #[command(flatten)]
++    pub presentation: PresentationOptions,
++    /// Single cache-frame index; conflicts with range selection
++    #[arg(long, conflicts_with_all=["first_frame","last_frame","every"])]
++    pub frame: Option<u64>,
++    #[arg(long)]
++    pub first_frame: Option<u64>,
++    #[arg(long)]
++    pub last_frame: Option<u64>,
++    /// Increment in cached-frame indices, not fluid timesteps
++    #[arg(long)]
++    pub every: Option<u64>,
++    /// Render only an explicitly selected receipt-backed incomplete prefix
++    #[arg(long)]
++    pub allow_partial: bool,
++    #[arg(long, default_value_t = 0)]
++    pub graphics_adapter: usize,
++    #[arg(long)]
++    pub software: bool,
++}
+ #[derive(Args)]
+ pub(super) struct Play {
+     /// Run ID, completed export directory or manifest.json
+@@ -284,6 +356,15 @@ pub(super) struct Play {
+ }
+ #[derive(Args)]
+ pub(super) struct View {
++    /// Open saved observations without creating a solver
++    #[arg(long, conflicts_with_all=["scene", "config", "numerical_mode", "overrides", "refine_timestep", "backend", "threads", "device", "block_size", "execution", "steps", "duration"])]
++    pub cache: Option<PathBuf>,
++    /// Particle read-ahead budget in MiB (includes decode workspace)
++    #[arg(long, default_value_t = 128)]
++    pub cache_memory_mb: usize,
++    /// Cached preview geometry; indexed matches offline exports
++    #[arg(long, default_value="indexed", value_parser=["indexed", "impostor"])]
++    pub preview_renderer: String,
+     #[command(flatten)]
+     pub inputs: Inputs,
+     #[command(flatten)]
+@@ -373,3 +454,47 @@ pub(super) enum ExportSource {
+         selection: Selection,
+     },
+ }
++
++#[derive(Args)]
++pub(super) struct Video {
++    #[command(subcommand)]
++    pub source: VideoSource,
++    #[arg(short, long, global = true)]
++    pub output: Option<PathBuf>,
++    /// Constant video frame rate, independent of simulation frequency
++    #[arg(long, global = true, default_value_t = 60.0)]
++    pub fps: f64,
++    /// H.264 quality: 0 highest quality, 18 high quality, 51 lowest quality
++    #[arg(long, global=true, default_value_t=18, value_parser=clap::value_parser!(u8).range(0..=51))]
++    pub crf: u8,
++    #[arg(long, global = true, default_value = "ffmpeg")]
++    pub ffmpeg: PathBuf,
++    #[arg(long, global = true)]
++    pub width: Option<u32>,
++    #[arg(long, global = true)]
++    pub height: Option<u32>,
++    #[arg(long, global = true)]
++    pub first_frame: Option<u64>,
++    #[arg(long, global = true)]
++    pub last_frame: Option<u64>,
++    #[arg(long, global = true, default_value_t = 1)]
++    pub every: u64,
++    /// Explicitly omit the final selected observation from the video
++    #[arg(long, global = true)]
++    pub omit_terminal: bool,
++}
++#[derive(Subcommand)]
++pub(super) enum VideoSource {
++    /// Encode a validated PNG bundle; no cache needed
++    Images { sequence: PathBuf },
++    /// Stream cached rendering directly to FFmpeg
++    Cache {
++        cache: PathBuf,
++        #[arg(long)]
++        render_config: PathBuf,
++        #[arg(long, default_value_t = 0)]
++        graphics_adapter: usize,
++        #[arg(long)]
++        software: bool,
++    },
++}
+diff --git a/src/cli/bundle.rs b/src/cli/bundle.rs
+index 7197319..a1e003d 100644
+--- a/src/cli/bundle.rs
++++ b/src/cli/bundle.rs
+@@ -43,9 +43,9 @@ pub(super) fn source(storage: &Storage, selection: &Path) -> Result<String, CliE
+ fn read(storage: &Storage, selection: &str) -> Result<Value, CliError> {
+     let v: Value = serde_json::from_reader(open(storage, Path::new(selection))?)
+         .map_err(|e| CliError::input(format!("run manifest: {e}")))?;
+-    if v["schema_version"] != 1 || v["complete"] != true {
++    if !matches!(v["schema_version"].as_u64(), Some(1 | 2)) || v["complete"] != true {
+         return Err(CliError::input(
+-            "expected a completed schema-1 image manifest".into(),
++            "expected a completed image manifest".into(),
+         ));
+     }
+     Ok(v)
+@@ -87,7 +87,7 @@ pub(super) fn manage(cli: &Cli, storage: &Storage, command: &Runs) -> Result<u8,
+                         serde_json::from_reader::<_, Completion>(reader)
+                             .map_err(|e| CliError::input(e.to_string()))
+                     }) {
+-                        Ok(v) if v.schema_version == 1 && v.complete => {
++                        Ok(v) if matches!(v.schema_version, 1 | 2) && v.complete => {
+                             (true, "completed; frame integrity not checked")
+                         }
+                         _ => (false, "invalid manifest"),
+@@ -247,35 +247,80 @@ pub(super) fn compile(cli: &Cli, storage: &Storage, args: &Compile) -> Result<u8
+     use std::io::{IsTerminal, Write};
+     let terminal = std::io::stderr().is_terminal();
+     let mut last_update = std::time::Instant::now() - std::time::Duration::from_secs(1);
+-    let exported = maelstrom::export::export_with_progress(
+-        ExportRequest {
+-            source: Source::Direct {
++    let exported = if let Some(cache_path) = &args.cache_output {
++        if cache_path == &destination {
++            return Err(CliError::usage(
++                "--cache-output and --output must be different directories".into(),
++            ));
++        }
++        let baked = maelstrom::cache::bake(
++            maelstrom::cache::BakeRequest {
+                 scene,
+                 steps,
++                stride: settings.step_stride,
+                 options,
++                destination: cache_path,
++            },
++            || cancel.load(Ordering::Relaxed),
++            |_, _| {},
++        );
++        match baked {
++            Err(error) => Err(maelstrom::export::ExportError(error.to_string())),
++            Ok(_) => maelstrom::cache::Cache::open(cache_path, false)
++                .map_err(|e| maelstrom::export::ExportError(e.to_string()))
++                .and_then(|cache| {
++                    maelstrom::export::render_cache(
++                        maelstrom::export::CachedRenderRequest {
++                            selection: maelstrom::export::CacheSelection {
++                                first: 0,
++                                last: cache.frame_count() - 1,
++                                every: 1,
++                            },
++                            cache: &cache,
++                            settings,
++                            graphics: GraphicsSelection {
++                                index: args.graphics_adapter,
++                                software: args.software,
++                            },
++                            fit_camera,
++                            destination: &destination,
++                        },
++                        || cancel.load(Ordering::Relaxed),
++                        |_, _| {},
++                    )
++                }),
++        }
++    } else {
++        maelstrom::export::export_with_progress(
++            ExportRequest {
++                source: Source::Direct {
++                    scene,
++                    steps,
++                    options,
++                },
++                settings,
++                graphics: GraphicsSelection {
++                    index: args.graphics_adapter,
++                    software: args.software,
++                },
++                fit_camera,
++                destination: &destination,
+             },
+-            settings,
+-            graphics: GraphicsSelection {
+-                index: args.graphics_adapter,
+-                software: args.software,
++            || cancel.load(Ordering::Relaxed),
++            |done, total| {
++                if terminal && last_update.elapsed() >= std::time::Duration::from_millis(100) {
++                    let filled = done * 30 / total;
++                    eprint!(
++                        "\r\x1b[2K[{}{}] {done}/{total} frames",
++                        "=".repeat(filled),
++                        " ".repeat(30 - filled)
++                    );
++                    let _ = std::io::stderr().flush();
++                    last_update = std::time::Instant::now();
++                }
+             },
+-            fit_camera,
+-            destination: &destination,
+-        },
+-        || cancel.load(Ordering::Relaxed),
+-        |done, total| {
+-            if terminal && last_update.elapsed() >= std::time::Duration::from_millis(100) {
+-                let filled = done * 30 / total;
+-                eprint!(
+-                    "\r\x1b[2K[{}{}] {done}/{total} frames",
+-                    "=".repeat(filled),
+-                    " ".repeat(30 - filled)
+-                );
+-                let _ = std::io::stderr().flush();
+-                last_update = std::time::Instant::now();
+-            }
+-        },
+-    );
++        )
++    };
+     if terminal {
+         eprintln!(
+             "\r\x1b[2K{}",
+diff --git a/src/cli/mod.rs b/src/cli/mod.rs
+index d40b0c8..d750edf 100644
+--- a/src/cli/mod.rs
++++ b/src/cli/mod.rs
+@@ -5,6 +5,7 @@
+ mod arguments;
+ mod bundle;
+ mod bundled;
++mod cache;
+ #[cfg(feature = "render")]
+ mod export;
+ mod inputs;
+@@ -16,6 +17,7 @@ mod presentation;
+ mod scenes;
+ mod selection;
+ mod storage;
++mod video;
+ #[cfg(feature = "viewer")]
+ mod viewer;
+ 
+@@ -149,6 +151,9 @@ fn execute(cli: &Cli) -> Result<u8, CliError> {
+         Command::Completions { shell } => management::completions(shell),
+         Command::Runs { command } => bundle::manage(cli, &storage, command),
+         Command::Compile(args) => bundle::compile(cli, &storage, args),
++        Command::Cache { command } => cache::manage(cli, &storage, command),
++        Command::Render(args) => cache::render(cli, args),
++        Command::Video(args) => video::launch(cli, args),
+         Command::Validate(inputs) | Command::Inspect { inputs, .. } => {
+             let resolved = inputs::resolve_in(inputs, &storage)?;
+             let default_presentation = arguments::PresentationOptions::default();
+diff --git a/src/cli/viewer.rs b/src/cli/viewer.rs
+index 4c34516..ad7a435 100644
+--- a/src/cli/viewer.rs
++++ b/src/cli/viewer.rs
+@@ -13,6 +13,38 @@ use maelstrom::{
+ use std::fs;
+ 
+ pub(super) fn launch(view: &View, storage: &super::storage::Storage) -> Result<u8, CliError> {
++    if let Some(path) = &view.cache {
++        let cache = maelstrom::cache::Cache::open(path, false)
++            .map_err(|e| CliError::input(e.to_string()))?;
++        let selected = super::presentation::resolve(
++            None,
++            &super::arguments::PresentationOptions {
++                render_config: view.render_config.clone(),
++                width: view.width,
++                height: view.height,
++                fit_camera: view.fit_camera,
++                no_fit_camera: view.no_fit_camera,
++                ..Default::default()
++            },
++        )?;
++        maelstrom::viewer::run_cache(
++            cache,
++            selected.effective.settings,
++            GraphicsSelection {
++                index: view.graphics_adapter,
++                software: view.software,
++            },
++            selected.effective.camera_mode == maelstrom::presentation::CameraMode::Fit,
++            view.paused,
++            view.cache_memory_mb,
++            view.camera_output.clone(),
++            view.preview_renderer
++                .parse()
++                .map_err(|e: maelstrom::render::RenderError| CliError::input(e.to_string()))?,
++        )
++        .map_err(|e| CliError::input(e.to_string()))?;
++        return Ok(0);
++    }
+     let resolved = inputs::resolve_in(&view.inputs, storage)?;
+     let options = super::selection::resolve(&view.selection, &storage.preferences()?)?;
+     let steps = resolved.steps(&view.limit)?;
+diff --git a/src/cuda/solver.rs b/src/cuda/solver.rs
+index 1e55d2f..657ba10 100644
+--- a/src/cuda/solver.rs
++++ b/src/cuda/solver.rs
+@@ -39,9 +39,10 @@ pub(super) struct Settings {
+     entries: u64,
+     xsph: f32,
+     vorticity: f32,
++    neighbour_layout: u32,
+ }
+ const _: () = {
+-    assert!(size_of::<Settings>() == 96 && align_of::<Settings>() == 8);
++    assert!(size_of::<Settings>() == 104 && align_of::<Settings>() == 8);
+     assert!(std::mem::offset_of!(Settings, width) == 64);
+ };
+ 
+@@ -291,10 +292,17 @@ impl CudaSolver {
+         }
+         let record = self.context.inner.prefix(*s, self.threads, true)?;
+         diagnostic_error(record, s.count)?;
+-        s.entries = self
+-            .context
+-            .inner
+-            .download_at::<u64>(13, s.count as usize, 1)?[0];
++        s.entries = if s.neighbour_layout == 1 {
++            self.context.inner.download_at::<u64>(
++                10,
++                s.padded as usize * 4 + (s.count as usize).div_ceil(32),
++                1,
++            )?[0]
++        } else {
++            self.context
++                .inner
++                .download_at::<u64>(13, s.count as usize, 1)?[0]
++        };
+         let required = storage_sizes(*s)?[11];
+         // Membership changes as the block moves. Geometric growth avoids a
+         // device reallocation for every small increase, without capping a row.
+@@ -376,6 +384,9 @@ impl CudaSolver {
+         while s.width < minimum {
+             s.width *= 2.0;
+         }
++        // The PC comparison favours compact rows for small inputs. Larger
++        // inputs amortise tiled construction across repeated numerical passes.
++        s.neighbour_layout = u32::from(particles.len() >= 32_000);
+         self.discover_with_width(&mut s)?;
+         check_cancellation(cancelled)?;
+         clock.mark(Stage::NeighbourSearch);
+@@ -557,3 +568,7 @@ mod plane_tests;
+ #[cfg(test)]
+ #[path = "../../tests/unit/cuda/mirror_tests.rs"]
+ mod mirror_tests;
++
++#[cfg(test)]
++#[path = "../../tests/unit/cuda/tiled_tests.rs"]
++mod tiled_tests;
+diff --git a/src/export/encoding.rs b/src/export/encoding.rs
+index 3ae3a26..e57ad2f 100644
+--- a/src/export/encoding.rs
++++ b/src/export/encoding.rs
+@@ -9,8 +9,27 @@ use std::{
+     time::Instant,
+ };
+ 
++pub(super) enum Observation {
++    Recorded(SnapshotRecord),
++    Cached(crate::cache::ValidatedFrame),
++}
++impl Observation {
++    pub fn snapshot(&self) -> &SnapshotRecord {
++        match self {
++            Self::Recorded(s) => s,
++            Self::Cached(f) => f.snapshot(),
++        }
++    }
++    fn canonical(&self) -> Result<String, ExportError> {
++        match self {
++            Self::Recorded(s) => Ok(super::format_digest(s.canonical_sha256().map_err(fail)?)),
++            Self::Cached(f) => Ok(f.canonical_sha256()),
++        }
++    }
++}
++
+ pub(super) struct Job {
+-    pub snapshot: SnapshotRecord,
++    pub observation: Observation,
+     pub rgba: Vec<u8>,
+     pub width: u32,
+     pub height: u32,
+@@ -33,12 +52,12 @@ fn encode(job: Job) -> Result<Encoded, ExportError> {
+     let start = Instant::now();
+     let frame = Frame {
+         index: job.index,
+-        step: job.snapshot.completed_steps().to_string(),
+-        simulated_seconds: job.snapshot.completed_steps() as f64 * job.dt,
++        step: job.observation.snapshot().completed_steps().to_string(),
++        simulated_seconds: job.observation.snapshot().completed_steps() as f64 * job.dt,
+         file: format!("frame-{:08}.png", job.index),
+         png_sha256: super::hash(&png),
+         rgba_sha256: super::hash(&job.rgba),
+-        snapshot_sha256: super::format_digest(job.snapshot.canonical_sha256().map_err(fail)?),
++        snapshot_sha256: job.observation.canonical()?,
+     };
+     timings.hashing = start.elapsed();
+     Ok(Encoded {
+@@ -119,10 +138,12 @@ mod tests {
+ 
+     fn job() -> Job {
+         Job {
+-            snapshot: SnapshotRecord::from_json(
+-                r#"{"schema_version":1,"completed_steps":"7","particles":[]}"#,
+-            )
+-            .unwrap(),
++            observation: Observation::Recorded(
++                SnapshotRecord::from_json(
++                    r#"{"schema_version":1,"completed_steps":"7","particles":[]}"#,
++                )
++                .unwrap(),
++            ),
+             rgba: vec![16, 24, 32, 255],
+             width: 1,
+             height: 1,
+@@ -137,7 +158,7 @@ mod tests {
+         let request = job();
+         let expected_png = (request.encode)(1, 1, &request.rgba).unwrap();
+         let expected_snapshot_hash =
+-            super::super::hash(request.snapshot.to_json().unwrap().as_bytes());
++            super::super::hash(request.observation.snapshot().to_json().unwrap().as_bytes());
+         let mut worker = Worker::new().unwrap();
+         assert!(worker.collect().unwrap().is_none());
+         worker.submit(request).unwrap();
+diff --git a/src/export/mod.rs b/src/export/mod.rs
+index 8dbe2a5..b6daa94 100644
+--- a/src/export/mod.rs
++++ b/src/export/mod.rs
+@@ -1,7 +1,10 @@
+ //! Offline sequences sample accepted step indices. One CPU frame job overlaps
+ //! later simulation and drawing; ordered publication applies bounded backpressure.
+ 
++mod cached;
+ mod encoding;
++pub mod video;
++pub use cached::{CacheSelection, CachedRenderRequest, render_cache};
+ mod offscreen;
+ mod source;
+ mod timing;
+@@ -446,7 +449,17 @@ fn collect_frame(
+     progress: &mut Value,
+     progress_time: &mut std::time::Duration,
+ ) -> Result<(), ExportError> {
+-    if let Some(frame) = writer.collect()? {
++    collect_frame_cancellable(writer, frames, progress, progress_time, &mut || false)
++}
++
++fn collect_frame_cancellable(
++    writer: &mut offscreen::FrameWriter<'_>,
++    frames: &mut Vec<Frame>,
++    progress: &mut Value,
++    progress_time: &mut std::time::Duration,
++    cancelled: &mut impl FnMut() -> bool,
++) -> Result<(), ExportError> {
++    if let Some(frame) = writer.collect_with_cancellation(cancelled)? {
+         if progress["source_mode"] == "saved" || progress.get("accepted_steps").is_none() {
+             progress["accepted_steps"] = json!(frame.step);
+         }
+diff --git a/src/export/offscreen.rs b/src/export/offscreen.rs
+index 434a0cc..4649177 100644
+--- a/src/export/offscreen.rs
++++ b/src/export/offscreen.rs
+@@ -153,6 +153,26 @@ impl FrameWriter<'_> {
+         snapshot: &SnapshotRecord,
+         index: usize,
+     ) -> Result<super::encoding::Job, ExportError> {
++        let start = std::time::Instant::now();
++        let observation = super::encoding::Observation::Recorded(snapshot.clone());
++        self.timings.particle_copy += start.elapsed();
++        self.prepare_observation(observation, index)
++    }
++
++    pub fn prepare_cached(
++        &mut self,
++        frame: crate::cache::ValidatedFrame,
++        index: usize,
++    ) -> Result<super::encoding::Job, ExportError> {
++        self.prepare_observation(super::encoding::Observation::Cached(frame), index)
++    }
++
++    fn prepare_observation(
++        &mut self,
++        observation: super::encoding::Observation,
++        index: usize,
++    ) -> Result<super::encoding::Job, ExportError> {
++        let snapshot = observation.snapshot();
+         let start = std::time::Instant::now();
+         let particles: Vec<_> = snapshot.particles().iter().map(|p| p.particle()).collect();
+         self.timings.particle_copy += start.elapsed();
+@@ -173,7 +193,7 @@ impl FrameWriter<'_> {
+         self.timings.graphics_readback += start.elapsed();
+         let start = std::time::Instant::now();
+         let job = super::encoding::Job {
+-            snapshot: snapshot.clone(),
++            observation,
+             rgba,
+             width: self.settings.width,
+             height: self.settings.height,
+@@ -189,13 +209,19 @@ impl FrameWriter<'_> {
+         self.worker.submit(job)
+     }
+ 
+-    pub fn collect(&mut self) -> Result<Option<super::Frame>, ExportError> {
++    pub fn collect_with_cancellation(
++        &mut self,
++        cancelled: &mut impl FnMut() -> bool,
++    ) -> Result<Option<super::Frame>, ExportError> {
+         let start = std::time::Instant::now();
+         let encoded = self.worker.collect()?;
+         self.timings.output_wait += start.elapsed();
+         let Some(encoded) = encoded else {
+             return Ok(None);
+         };
++        if cancelled() {
++            return Err(fail("cached rendering cancelled before frame publication"));
++        }
+         self.timings.png_encoding += encoded.timings.png_encoding;
+         self.timings.hashing += encoded.timings.hashing;
+         let start = std::time::Instant::now();
+diff --git a/src/lib.rs b/src/lib.rs
+index db7b0b3..3cc6eba 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -6,6 +6,7 @@
+ 
+ pub mod application;
+ pub mod boundary;
++pub mod cache;
+ pub mod config;
+ pub mod cuda;
+ pub mod diagnostics;
+diff --git a/src/playback/clock.rs b/src/playback/clock.rs
+index d624987..0c157f7 100644
+--- a/src/playback/clock.rs
++++ b/src/playback/clock.rs
+@@ -12,7 +12,7 @@ pub(super) struct Clock {
+ }
+ impl Clock {
+     pub fn new(
+-        times: Vec<f64>,
++        mut times: Vec<f64>,
+         speed: f64,
+         paused: bool,
+         repeat: bool,
+@@ -22,6 +22,13 @@ impl Clock {
+                 "playback speed must be finite and within 0.01..=100".into(),
+             ));
+         }
++        // A cached excerpt may begin at a nonzero simulation time. Playback
++        // starts at the first image; the manifest keeps the original timestamps.
++        if let Some(origin) = times.first().copied() {
++            for time in &mut times {
++                *time -= origin;
++            }
++        }
+         let playing = !paused && times.len() > 1;
+         Ok(Self {
+             times,
+diff --git a/src/playback/sequence.rs b/src/playback/sequence.rs
+index a9ba821..c1d8891 100644
+--- a/src/playback/sequence.rs
++++ b/src/playback/sequence.rs
+@@ -16,6 +16,14 @@ use std::{
+ #[derive(Deserialize)]
+ struct Manifest {
+     schema_version: u32,
++    #[serde(default)]
++    kind: Option<String>,
++    #[serde(default)]
++    source_cache: Option<CacheSource>,
++    #[serde(default)]
++    cache_selection: Option<crate::export::CacheSelection>,
++    #[serde(default)]
++    timestep_bits: Option<u32>,
+     complete: bool,
+     frame_count: usize,
+     accepted_steps: String,
+@@ -25,6 +33,12 @@ struct Manifest {
+     render: Dimensions,
+ }
+ #[derive(Deserialize)]
++struct CacheSource {
++    steps: String,
++    stride: String,
++    frames: u64,
++}
++#[derive(Deserialize)]
+ struct Dimensions {
+     width: u32,
+     height: u32,
+@@ -137,9 +151,9 @@ impl Sequence {
+             .map_err(|e| error(format!("sequence manifest: {}", e.kind())))?;
+         let m: Manifest = serde_json::from_reader(BufReader::new(file))
+             .map_err(|e| error(format!("sequence manifest: {e}")))?;
+-        if m.schema_version != 1 || !m.complete {
++        if !matches!(m.schema_version, 1 | 2) || !m.complete {
+             return Err(error(
+-                "play requires a completed sequence with manifest schema 1",
++                "play requires a completed sequence with manifest schema 1 or 2",
+             ));
+         }
+         if m.render.format != "png"
+@@ -160,23 +174,69 @@ impl Sequence {
+             .checked_div(stride)
+             .and_then(|n| n.checked_add(1))
+             .and_then(|n| n.checked_add(u64::from(!last.is_multiple_of(stride))));
++        let cached = if m.schema_version == 2 {
++            if m.kind.as_deref() != Some("maelstrom-cache-render") {
++                return Err(error("unsupported schema-2 render kind"));
++            }
++            let source = m
++                .source_cache
++                .as_ref()
++                .ok_or_else(|| error("missing source cache schedule"))?;
++            let selection = m
++                .cache_selection
++                .ok_or_else(|| error("missing cached frame selection"))?;
++            let schedule = crate::cache::Schedule::new(
++                source
++                    .steps
++                    .parse()
++                    .map_err(|_| error("invalid cached steps"))?,
++                source
++                    .stride
++                    .parse()
++                    .map_err(|_| error("invalid cached stride"))?,
++            )
++            .map_err(|e| error(e.to_string()))?;
++            if source.frames > schedule.len() {
++                return Err(error("invalid cached frame availability"));
++            }
++            let selected = selection
++                .count(source.frames)
++                .map_err(|e| error(e.to_string()))?;
++            let dt = f32::from_bits(
++                m.timestep_bits
++                    .ok_or_else(|| error("missing cached timestep"))?,
++            );
++            if !dt.is_finite() || dt <= 0.0 || selected != m.frames.len() as u64 {
++                return Err(error("invalid cached timestep or selection count"));
++            }
++            Some((schedule, selection, f64::from(dt)))
++        } else {
++            None
++        };
+         if m.frames.is_empty()
+             || m.frames.len() > 1_000_000
+             || m.frame_count != m.frames.len()
+-            || count != Some(m.frames.len() as u64)
++            || (cached.is_none() && count != Some(m.frames.len() as u64))
+         {
+             return Err(error(
+                 "sequence frame count or sampling schedule is inconsistent",
+             ));
+         }
+         for (i, f) in m.frames.iter().enumerate() {
+-            let expected_step = (i as u64).checked_mul(stride).unwrap_or(last).min(last);
++            let expected_step = if let Some((schedule, selection, _)) = cached {
++                schedule
++                    .step(selection.first + i as u64 * selection.every)
++                    .ok_or_else(|| error("invalid cached frame mapping"))?
++            } else {
++                (i as u64).checked_mul(stride).unwrap_or(last).min(last)
++            };
+             if f.index != i
+                 || f.file != format!("frame-{i:08}.png")
+                 || f.step != expected_step.to_string()
+                 || !f.simulated_seconds.is_finite()
+                 || !(0.0..=1e12).contains(&f.simulated_seconds)
+-                || (i == 0 && f.simulated_seconds != 0.0)
++                || (cached.is_none() && i == 0 && f.simulated_seconds != 0.0)
++                || cached.is_some_and(|(_, _, dt)| f.simulated_seconds != expected_step as f64 * dt)
+                 || (i > 0 && f.simulated_seconds <= m.frames[i - 1].simulated_seconds)
+                 || !valid_hash(&f.png_sha256)
+                 || !valid_hash(&f.rgba_sha256)
+@@ -199,6 +259,16 @@ impl Sequence {
+         })
+     }
+ 
++    /// Validated image dimensions.
++    pub fn dimensions(&self) -> (u32, u32) {
++        (self.width, self.height)
++    }
++
++    /// Ordered simulation timestamps, independent of video frame rate.
++    pub fn timestamps(&self) -> Vec<f64> {
++        self.frames.iter().map(|f| f.simulated_seconds).collect()
++    }
++
+     /// Number of recorded images; always at least one.
+     pub fn frame_count(&self) -> usize {
+         self.frames.len()
+diff --git a/src/playback/tests.rs b/src/playback/tests.rs
+index 612e068..c9494d1 100644
+--- a/src/playback/tests.rs
++++ b/src/playback/tests.rs
+@@ -95,6 +95,19 @@ fn pixels_load_without_physical_inputs_or_the_recorded_cuda_device() {
+     assert_eq!(fs::read_dir(&f.root).unwrap().count(), 5);
+ }
+ 
++#[test]
++fn selected_excerpt_starts_playback_at_its_first_image() {
++    let mut clock = Clock::new(vec![10.0, 10.25, 10.5], 1.0, false, false).unwrap();
++    assert_eq!(clock.frame(), 0);
++    clock.advance(0.25);
++    assert_eq!(clock.frame(), 1);
++    clock.seek(2);
++    assert_eq!(clock.position, 0.5);
++    clock.restart();
++    assert_eq!(clock.position, 0.0);
++    assert_eq!(clock.frame(), 0);
++}
++
+ #[test]
+ fn large_particle_provenance_does_not_prevent_playing_existing_images() {
+     use std::io::Write;
+diff --git a/src/viewer/mod.rs b/src/viewer/mod.rs
+index 6b6739e..d88daae 100644
+--- a/src/viewer/mod.rs
++++ b/src/viewer/mod.rs
+@@ -2,6 +2,8 @@
+ //! Solver resources stay on the controller worker; graphics failures request
+ //! cooperative shutdown and keep pumping events until that worker has exited.
+ 
++mod cached;
++pub use cached::run_cache;
+ mod model;
+ mod overlay;
+ mod profile;
+diff --git a/src/viewer/overlay.rs b/src/viewer/overlay.rs
+index c4e7c59..03756b8 100644
+--- a/src/viewer/overlay.rs
++++ b/src/viewer/overlay.rs
+@@ -90,3 +90,26 @@ fn rect(out: &mut Vec<f32>, box_px: [f32; 4], colour: [f32; 3], width: u32, heig
+         ]);
+     }
+ }
++
++/// A visible seek strip uses the same pixel coordinates as cached pointer input.
++pub(super) fn scrubber(out: &mut Vec<f32>, width: u32, height: u32, fraction: f64) {
++    rect(
++        out,
++        [0.0, height.saturating_sub(30) as f32, width as f32, 30.0],
++        [0.02, 0.03, 0.04],
++        width,
++        height,
++    );
++    rect(
++        out,
++        [
++            0.0,
++            height.saturating_sub(20) as f32,
++            (fraction.clamp(0.0, 1.0) * width as f64) as f32,
++            10.0,
++        ],
++        [0.1, 0.5, 0.8],
++        width,
++        height,
++    );
++}
+diff --git a/src/workflow/mod.rs b/src/workflow/mod.rs
+index a57b0cb..ca23679 100644
+--- a/src/workflow/mod.rs
++++ b/src/workflow/mod.rs
+@@ -11,7 +11,6 @@ mod output;
+ mod record;
+ 
+ pub use measurement::{MeasurementMode, RunMeasurements};
+-#[cfg(feature = "render")]
+ pub(crate) use output::publish_bytes;
+ pub use output::{OutputError, OutputFormat};
+ pub use record::{ParticleRecord, RecordError, RecordedInput, SCHEMA_VERSION, SnapshotRecord};
+@@ -623,6 +622,8 @@ pub fn replay_execution(
+ #[derive(Deserialize)]
+ struct Replay {
+     schema_version: u32,
++    #[serde(default)]
++    kind: Option<String>,
+     backend: String,
+     #[serde(default)]
+     execution: ExecutionMode,
+@@ -654,7 +655,9 @@ pub fn replay_options_from_reader(
+ fn resolve_replay(
+     replay: Replay,
+ ) -> Result<(ResolvedScene, RunRequest, ExecutionOptions), RecordError> {
+-    record::version(replay.schema_version)?;
++    if !(replay.schema_version == 2 && replay.kind.as_deref() == Some("maelstrom-cache-render")) {
++        record::version(replay.schema_version)?;
++    }
+     let iterations = replay
+         .input
+         .as_ref()
+diff --git a/src/workflow/record.rs b/src/workflow/record.rs
+index 54da7ad..b6546e8 100644
+--- a/src/workflow/record.rs
++++ b/src/workflow/record.rs
+@@ -6,7 +6,6 @@ use std::{collections::BTreeMap, fmt};
+ 
+ use serde::{Deserialize, Serialize};
+ 
+-#[cfg(any(feature = "render", test))]
+ #[path = "snapshot_json.rs"]
+ mod snapshot_json;
+ 
+@@ -111,6 +110,19 @@ pub struct SnapshotRecord {
+ }
+ 
+ impl SnapshotRecord {
++    /// Validates owned observation data without constructing a simulation.
++    pub(crate) fn from_particles(
++        particles: Vec<Particle>,
++        completed_steps: u64,
++    ) -> Result<Self, RecordError> {
++        let record = Self {
++            schema_version: SCHEMA_VERSION,
++            completed_steps,
++            particles: particles.iter().map(ParticleRecord::from).collect(),
++        };
++        record.validate()?;
++        Ok(record)
++    }
+     /// Copies a solver snapshot into a portable record. Call between steps so
+     /// observation remains outside the primary solver timing boundary.
+     #[must_use]
+@@ -277,6 +289,15 @@ impl RecordedInput {
+     /// Reconstructs and validates the recorded values without applying defaults
+     /// or re-resolving external files. Derived values must still match exactly.
+     pub fn resolve(&self) -> Result<ResolvedScene, RecordError> {
++        self.resolve_checked(true)
++    }
++
++    /// Cache rendering validates records and display inputs without acquiring a solver.
++    pub(crate) fn resolve_observation(&self) -> Result<ResolvedScene, RecordError> {
++        self.resolve_checked(false)
++    }
++
++    fn resolve_checked(&self, solver_validation: bool) -> Result<ResolvedScene, RecordError> {
+         version(self.schema_version)?;
+         scene_version(self.scene_schema_version)?;
+         if self.scene_schema_version != self.configuration.schema_version {
+@@ -399,7 +420,14 @@ impl RecordedInput {
+                 .map(ParticleRecord::particle)
+                 .collect(),
+         };
+-        SerialSimulation::from_scene(&scene)?;
++        if solver_validation {
++            SerialSimulation::from_scene(&scene)?;
++        } else {
++            scene
++                .configuration
++                .pbf_parameters()
++                .map_err(StepError::from)?;
++        }
+         if scene.comparison_key() != self.comparison_key {
+             return Err(RecordError::Invalid(
+                 "scene comparison key disagrees with values".into(),
+diff --git a/tests/cli_usability.rs b/tests/cli_usability.rs
+index 38aecff..c8e16b1 100644
+--- a/tests/cli_usability.rs
++++ b/tests/cli_usability.rs
+@@ -838,3 +838,45 @@ fn paper_baseline_records_its_equations_and_reruns_resolved_inputs() {
+         .success()
+     );
+ }
++
++#[test]
++fn cached_view_and_video_help_explain_saved_inputs() {
++    let binary = env!("CARGO_BIN_EXE_maelstrom");
++    for args in [["view", "--help"], ["video", "--help"]] {
++        let output = std::process::Command::new(binary)
++            .args(args)
++            .output()
++            .unwrap();
++        assert!(
++            output.status.success(),
++            "{}",
++            String::from_utf8_lossy(&output.stderr)
++        );
++        let text = String::from_utf8_lossy(&output.stdout);
++        assert!(text.contains(if args[0] == "view" {
++            "--cache"
++        } else {
++            "images"
++        }));
++    }
++    let output = std::process::Command::new(binary)
++        .args(["view", "--cache", "missing", "--backend", "cuda"])
++        .output()
++        .unwrap();
++    assert_eq!(output.status.code(), Some(2));
++    let output = std::process::Command::new(binary)
++        .args(["video", "images", "missing"])
++        .output()
++        .unwrap();
++    assert_eq!(
++        output.status.code(),
++        Some(if cfg!(feature = "render") { 2 } else { 3 })
++    );
++    assert!(
++        String::from_utf8_lossy(&output.stderr).contains(if cfg!(feature = "render") {
++            "--output"
++        } else {
++            "video requires"
++        })
++    );
++}
+diff --git a/tests/native/tests.cpp b/tests/native/tests.cpp
+index 3931592..873b6e8 100644
+--- a/tests/native/tests.cpp
++++ b/tests/native/tests.cpp
+@@ -586,11 +586,12 @@ static void submission_boundaries() {
+ }
+ 
+ static void compact_observation_failures() {
+-    for (auto prefix : {false,true}) for (auto failure : {0,9,10,13,16}) {
+-        const auto passes=prefix ? 4 : 1;
++    for (auto layout : {0U,1U}) for (auto prefix : {false,true}) for (auto failure : {0,9,10,13,16}) {
++        const auto passes=prefix ? 4+static_cast<int>(layout) : 1;
+         for (int launch=1;launch<=passes;++launch) {
+             observed={};Resource r;ready(r);
+             SolverSettings s{};s.count=5;s.padded=8;s.width=1;
++            s.neighbour_layout=layout;
+             for (unsigned int slot=0;slot<14;++slot)
+                 assert(maelstrom_cuda_storage(&r,slot,nullptr,512,0).code==0);
+             assert(maelstrom_cuda_begin_attempt(&r).code==0);
+@@ -613,6 +614,10 @@ static void compact_observation_failures() {
+                     assert(observed.launches[0].operation==4);
+                     for (int pass=1;pass<4;++pass)
+                         assert(observed.launches[pass].operation==20U+pass);
++                    if (layout) {
++                        assert(observed.launches[4].operation==25);
++                        assert(observed.launches[4].grid==1);
++                    }
+                 }
+             }
+             if (failure) assert(maelstrom_cuda_prefix(&r,s,128,1,results).stage==14);

@@ -23,6 +23,19 @@ not independently measured performance or numerical equivalence with Maelstrom.
 
 ## Reading notes
 
+- On 10 November 2026, separately inspected release 2.19.1 at
+  [`dba6b26b9387ab6bdd187d6df0a7c9d490d03500`](https://github.com/InteractiveComputerGraphics/SPlisHSPlasH/tree/dba6b26b9387ab6bdd187d6df0a7c9d490d03500)
+  for the simulation-cache review. This does not replace the older comparator revision below.
+  Read `Simulator/SimulatorBase.cpp`, particle Partio/VTK exporters, `Utilities/PartioReaderWriter.cpp`,
+  `Tools/PartioViewer/PartioViewer.cpp`, bundled Partio `BGEO.cpp`, and the exporter, getting-started,
+  replicability and PartioViewer documentation. `SimulatorBase::step` schedules particle and state
+  exports independently by time; Partio copies position, ID and selected fields before optionally
+  launching one asynchronous write. The bundled writer emits gzip-capable, big-endian BGEO v5.
+  VTK output is a binary legacy unstructured grid with vertex cells and attributes.
+  `saveState` adds scheduling, parameters, time-manager and simulation state to particle files;
+  `loadState` checks a scene-file MD5 and warns on disagreement. This is not a portable checkpoint guarantee.
+  PartioViewer reads the saved sequence and generates JPEGs or pipes RGB frames to ffmpeg;
+  its inspected generation loops are sequential. No upstream throughput benchmark was run.
 - Read the pinned [README](https://github.com/InteractiveComputerGraphics/SPlisHSPlasH/blob/7586ffa25948c6ce3bc6c238cda30ad8d35f60a0/README.md)
   and [PBF implementation](https://github.com/InteractiveComputerGraphics/SPlisHSPlasH/blob/7586ffa25948c6ce3bc6c238cda30ad8d35f60a0/SPlisHSPlasH/PBF/TimeStepPBF.cpp).
 - The PBF path uses OpenMP loops, minimum/maximum iterations and a density-error stopping condition.

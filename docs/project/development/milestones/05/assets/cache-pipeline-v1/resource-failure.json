@@ -1,0 +1,57 @@
+{
+  "returncode": 5,
+  "stderr": "maelstrom: cache I/O: File too large (os error 27)\n",
+  "failure": {
+    "accepted_steps": "530",
+    "committed_frames": 132,
+    "complete": false,
+    "error": "cache I/O: File too large (os error 27)",
+    "schema_version": 1
+  },
+  "prefix": {
+    "backend": "serial-uniform-grid-pbf-binary32-8-jacobi-v2",
+    "build": {
+      "commit": "unavailable",
+      "debug_assertions": false,
+      "dirty": "unavailable",
+      "features": {
+        "cuda": true,
+        "render": true,
+        "viewer": true
+      },
+      "lock_sha256": "sha256:ecb21f75f53ae52ac9ef1d3a6630586c5ed535635b891c91859a095880f58b56",
+      "opt_level": "3",
+      "profile": "release",
+      "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+      "rustflags_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_sha256": "sha256:b46486fa569de6cf7345f213bbbf1f913824ae040042dcfc91675a0250f57ecc",
+      "target": "x86_64-unknown-linux-gnu"
+    },
+    "cache_id": "incomplete:sha256:4501e0dab35f43a1f7cd8d17b9cb8259019ee45760537b640e8acab1f5f692cf:132",
+    "complete": false,
+    "execution": {
+      "mode": "serial"
+    },
+    "expected_frames": 301,
+    "frames": 132,
+    "kind": "maelstrom-particle-cache",
+    "metadata": {
+      "application_version": "0.1.0",
+      "backend": "serial-uniform-grid-pbf-binary32-8-jacobi-v2",
+      "build_revision": null,
+      "configuration_id": "sha256:2aa81310fa112d58e596d6c190fd20530e8eaf6c7983de5c8ab50164671887d9",
+      "debug_assertions": false,
+      "input_id": "sha256:dc7da356780104bb30ed04c95a8458b8dcb180523fa13b1938ec0c2a91acd822",
+      "run_id": "sha256:9c4c8cbe45e5bc86a633286a9cd0727c1fa2e9b0512564a299f69b3afedd1b5e",
+      "target_arch": "x86_64",
+      "target_os": "linux"
+    },
+    "particle_count": 64,
+    "request_sha256": "sha256:4501e0dab35f43a1f7cd8d17b9cb8259019ee45760537b640e8acab1f5f692cf",
+    "schema_version": 1,
+    "steps": "1200",
+    "stride": "4"
+  },
+  "full_prefix_validation": true,
+  "fault": "child-only RLIMIT_FSIZE=49152; SIGXFSZ ignored; no system-wide setting changed"
+}

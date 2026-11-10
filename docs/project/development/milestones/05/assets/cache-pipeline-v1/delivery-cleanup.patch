@@ -1,0 +1,26 @@
+diff --git a/build.rs b/build.rs
+index 756900d..6566453 100644
+--- a/build.rs
++++ b/build.rs
+@@ -1,4 +1,3 @@
+-
+ //! CPU builds never inspect the CUDA environment. The optional bridge uses a
+ //! system toolkit and embeds PTX, so execution needs no source or toolkit paths.
+ 
+diff --git a/tests/cache_workflow.rs b/tests/cache_workflow.rs
+index f212ded..56bf927 100644
+--- a/tests/cache_workflow.rs
++++ b/tests/cache_workflow.rs
+@@ -1,9 +1,11 @@
+ //! Public commands exercise cache ownership, independent rendering and migration.
+ //! Hardware-independent checks run normally; software graphics checks are explicit.
+ use serde_json::Value;
++#[cfg(feature = "render")]
++use std::path::Path;
+ use std::{
+     fs,
+-    path::{Path, PathBuf},
++    path::PathBuf,
+     process::{Command, Output},
+     sync::atomic::{AtomicU64, Ordering},
+ };

@@ -1,0 +1,171 @@
+diff --git a/Maelstrom b/Maelstrom
+--- a/Maelstrom
++++ b/Maelstrom
+@@ -1 +1 @@
+-Subproject commit 6bf2682325b7665e48f8a8647ce087d48ff13f0b
++Subproject commit 6bf2682325b7665e48f8a8647ce087d48ff13f0b-dirty
+diff --git a/docs/project/development/milestones/05/performance-plan.md b/docs/project/development/milestones/05/performance-plan.md
+index 7ad7d1c..74f4ddc 100644
+--- a/docs/project/development/milestones/05/performance-plan.md
++++ b/docs/project/development/milestones/05/performance-plan.md
+@@ -97,6 +97,18 @@ through reduced graphics contention, while preserving the experimental numerical
+ configuration and offline indexed rendering. The sustained capacity assessment
+ uses every accepted-step timestamp rather than inferring progress between frames.
+ 
++The requested [complete CUDA timestep investigation](/docs/project/development/milestones/05/performance-timestep-critical-path.md)
++retains interleaved neighbour rows for larger inputs after matched live-viewer
++comparisons and exact accepted-state qualification. It preserves the numerical
++work and observation boundaries, records rejected cooperative correction work,
++and separates full-motion device attribution from ordinary throughput and
++machine-state variation. The large scene remains below real time.
++
++The subsequent requested [neighbour/traversal reassessment](/docs/project/development/milestones/05/performance-neighbour-reuse.md)
++implements and rejects cooperative discovery, spatially grouped tiled rows and exact
++per-membership geometry reuse after fresh matched RTX 4070 comparisons. It preserves
++the current production implementation and records the remaining real-time shortfall.
++
+ An earlier explicit user instruction selected fast as the application default. The subsequent
+ instruction on 30 October 2026 restores reference as the default and saves the reference schedule
+ in every built-in scene package. Fast remains opt-in through `--numerical-mode fast` or the
+diff --git a/docs/project/plan.md b/docs/project/plan.md
+index c7ac752..56bff73 100644
+--- a/docs/project/plan.md
++++ b/docs/project/plan.md
+@@ -87,6 +87,42 @@ is complete within the platform scope recorded in its
+ scene construction, camera behaviour and both fluid effects are implemented. The performance
+ investigation remains open; numerical changes need renewed comparison evidence before final evaluation.
+ 
++### Proposed simulation cache work
++
++The [architecture review](/docs/project/development/simulation-cache-review.md) recommended
++reusable particle caches and independent rendering. The subsequent
++[production implementation](/docs/project/development/milestones/05/performance-cache-pipeline.md)
++adds headless baking, validated independent rendering, sparse image sequences and explicit staged
++compilation. Storage, producer, renderer and primary-PC comparison work below are implemented;
++direct `compile` remains the default. Output adapters and a broader default rollout remain future
++work. The historical serial prototype remains separate evidence.
++
++1. **Specify and test observation storage.** Finalise binary version/limits, exact f32/u64/time
++   representation, request/result identities, canonical hash binding, receipts and partial-state
++   rules. Add independent byte fixtures and corruption/overflow tests. Keep solver checkpoints
++   outside this contract. Review the schema before producing durable user caches.
++2. **Add a headless cache producer.** Observe the existing accepted solver at scheduled indices;
++   preserve all per-step diagnostics/cancellation/rollback and numerical modes. Use a bounded CPU
++   write/hash worker and exclusive publication. Qualify normal completion, disk failure and interrupted
++   prefixes at both workload sizes. A cache producer must not require graphics or change solver I/O.
++3. **Add an independent cache renderer.** Adapt validated frames to the existing indexed offscreen
++   renderer and bounded encoder. Support frame/range selection and repeat presentation settings;
++   preserve canonical provenance and qualify digest reuse. Add deliberate version dispatch for new
++   cache-derived image manifests and sparse schedules, while retaining old JSON/PNG readers.
++4. **Measure and migrate the application workflow.** Compare complete first and repeat exports on
++   the primary PC, including alternate camera/resolution, checksums, durable publication, memory and
++   failures. Integrate cache bake/render commands and then an explicit staged `compile` convenience
++   mode. Change its default only after compatibility and workflow evidence justify it; retain an
++   explicit streaming option. Keep `play` for images and distinguish cached viewing from live runs.
++5. **Add justified output adapters.** Start with a tested interoperable particle export and video
++   from saved images; direct video gets a separate manifest/failure contract. Compression, additional
++   CPU encoders, a GPU readback ring or concurrent simulation/rendering require focused evidence.
++   Surface reconstruction, foam, solver restart and numerical changes are separate future work.
++
++Each step requires review of its affected behaviour and retained evidence before the next depends
++on it. Preserve the current implementation until the independent path is qualified; first-export
++latency and repeated-presentation cost must both remain visible in the adoption decision.
++
+ ## Milestone 05: comparative evaluation
+ 
+ Complete the controlled correctness, performance and scalability comparison across brute-force search, uniform-grid partitioning, CPU multithreading and CUDA acceleration, then evaluate the results against the research question.
+diff --git a/docs/research/references.bib b/docs/research/references.bib
+index 3e11ace..f328713 100644
+--- a/docs/research/references.bib
++++ b/docs/research/references.bib
+@@ -804,6 +804,38 @@
+   note = {Selected sections of author manuscript v2 read}
+ }
+ 
++@online{sidefxSimulationCaches,
++  author = {{SideFX}},
++  title = {File Cache 2.0; Caching simulations; USD Render},
++  url = {https://www.sidefx.com/docs/houdini/nodes/sop/filecache.html},
++  urldate = {2026-11-10},
++  note = {Online documentation displayed Houdini 22.0; proprietary implementation not inspected}
++}
++
++@software{blenderMantaflowCache450,
++  author = {{Blender Foundation and contributors}},
++  title = {Blender: Mantaflow cache implementation},
++  year = {2025},
++  version = {4.5.0},
++  url = {https://github.com/blender/blender/tree/8cb6b388974a817afedf1317ce26f0c75aa5f181},
++  urldate = {2026-11-10}
++}
++
++@online{disneyPartio,
++  author = {{Walt Disney Animation Studios}},
++  title = {Partio},
++  url = {https://www.disneyanimation.com/open-source/partio/},
++  urldate = {2026-11-10}
++}
++
++@online{openvdbOverview,
++  author = {{OpenVDB contributors}},
++  title = {OpenVDB Overview},
++  url = {https://www.openvdb.org/documentation/doxygen/overview.html},
++  urldate = {2026-11-10},
++  note = {Online API documentation displayed version 14.0.0}
++}
++
+ @article{rudmanVolumeTracking1998,
+   author = {Rudman, Murray},
+   title = {A volume-tracking method for incompressible multifluid flows with large density variations},
+diff --git a/docs/research/source-register.md b/docs/research/source-register.md
+index 6f513d0..2275997 100644
+--- a/docs/research/source-register.md
++++ b/docs/research/source-register.md
+@@ -51,6 +51,10 @@
+ | [S058](sources/058-xdg-base-directory-specification.md) | Bastian et al. (2021) | Official specification | User data and configuration roots for the proposed scene library and durable compiled runs. | [Version 0.8 specification](https://specifications.freedesktop.org/basedir/latest/) |
+ | [S059](sources/059-clap-completion-generation.md) | clap contributors (n.d.) | Official crate API documentation | Generate shell completions from the application's actual command declarations. | [Version 4.6.11 documentation](https://docs.rs/clap_complete/4.6.11/clap_complete/) |
+ | [S060](sources/060-splishsplash-pbf-implementation.md) | Bender and contributors (n.d.) | Upstream software and documentation | Runnable PBF comparator and iteration, constraint and boundary implementation reference. | [Pinned repository](https://github.com/InteractiveComputerGraphics/SPlisHSPlasH/tree/7586ffa25948c6ce3bc6c238cda30ad8d35f60a0) |
++| [S082](sources/082-sidefx-simulation-geometry-caching.md) | SideFX (n.d.) | Official Houdini documentation | Geometry caches, simulation checkpoints and independent rendering. | [File Cache](https://www.sidefx.com/docs/houdini/nodes/sop/filecache.html) |
++| [S083](sources/083-blender-mantaflow-cache-implementation.md) | Blender Foundation and contributors (2025) | Pinned Blender 4.5.0 source | Baked data, separate derived products and additional resumable state. | [Pinned repository](https://github.com/blender/blender/tree/8cb6b388974a817afedf1317ce26f0c75aa5f181) |
++| [S084](sources/084-disney-partio.md) | Walt Disney Animation Studios (n.d.) | Official library documentation | Optional particle-format conversion around an internal cache. | [Partio](https://www.disneyanimation.com/open-source/partio/) |
++| [S085](sources/085-openvdb-overview.md) | OpenVDB contributors (n.d.) | Official library documentation | Sparse-volume format trade-offs for particle observations. | [Overview](https://www.openvdb.org/documentation/doxygen/overview.html) |
+ | [S061](sources/061-compactnsearch.md) | Koschier and contributors (n.d.) | Upstream library documentation | Compact hashing, local neighbour queries and optional spatial ordering. | [Pinned repository](https://github.com/InteractiveComputerGraphics/CompactNSearch/tree/b40afcf47fe1963b363eba2371f04b42720fcb1d) |
+ | [S062](sources/062-gpusph-cuda-fluid-solver.md) | GPUSPH developers (n.d.) | Upstream software documentation | CUDA fluid architecture investigation; WCSPH context, not equivalent PBF timing. | [Pinned repository](https://github.com/GPUSPH/gpusph/tree/08ffd94ddc4a076361f0e5f6e2bfde7874ba087f) |
+ | [S063](sources/063-nsight-systems-profiling.md) | NVIDIA (n.d.) | Official profiler documentation | Focused CPU/CUDA timeline collection and profiling-overhead limits. | [User guide](https://docs.nvidia.com/nsight-systems/UserGuide/index.html) |
+diff --git a/docs/research/sources/060-splishsplash-pbf-implementation.md b/docs/research/sources/060-splishsplash-pbf-implementation.md
+index 9c1e89c..3e9ab08 100644
+--- a/docs/research/sources/060-splishsplash-pbf-implementation.md
++++ b/docs/research/sources/060-splishsplash-pbf-implementation.md
+@@ -23,6 +23,19 @@ not independently measured performance or numerical equivalence with Maelstrom.
+ 
+ ## Reading notes
+ 
++- On 10 November 2026, separately inspected release 2.19.1 at
++  [`dba6b26b9387ab6bdd187d6df0a7c9d490d03500`](https://github.com/InteractiveComputerGraphics/SPlisHSPlasH/tree/dba6b26b9387ab6bdd187d6df0a7c9d490d03500)
++  for the simulation-cache review. This does not replace the older comparator revision below.
++  Read `Simulator/SimulatorBase.cpp`, particle Partio/VTK exporters, `Utilities/PartioReaderWriter.cpp`,
++  `Tools/PartioViewer/PartioViewer.cpp`, bundled Partio `BGEO.cpp`, and the exporter, getting-started,
++  replicability and PartioViewer documentation. `SimulatorBase::step` schedules particle and state
++  exports independently by time; Partio copies position, ID and selected fields before optionally
++  launching one asynchronous write. The bundled writer emits gzip-capable, big-endian BGEO v5.
++  VTK output is a binary legacy unstructured grid with vertex cells and attributes.
++  `saveState` adds scheduling, parameters, time-manager and simulation state to particle files;
++  `loadState` checks a scene-file MD5 and warns on disagreement. This is not a portable checkpoint guarantee.
++  PartioViewer reads the saved sequence and generates JPEGs or pipes RGB frames to ffmpeg;
++  its inspected generation loops are sequential. No upstream throughput benchmark was run.
+ - Read the pinned [README](https://github.com/InteractiveComputerGraphics/SPlisHSPlasH/blob/7586ffa25948c6ce3bc6c238cda30ad8d35f60a0/README.md)
+   and [PBF implementation](https://github.com/InteractiveComputerGraphics/SPlisHSPlasH/blob/7586ffa25948c6ce3bc6c238cda30ad8d35f60a0/SPlisHSPlasH/PBF/TimeStepPBF.cpp).
+ - The PBF path uses OpenMP loops, minimum/maximum iterations and a density-error stopping condition.
+diff --git a/tools/performance/live_viewer.py b/tools/performance/live_viewer.py
+index b00bd1f..d961dc7 100644
+--- a/tools/performance/live_viewer.py
++++ b/tools/performance/live_viewer.py
+@@ -217,7 +217,7 @@ def run(binary: Path, scene: Path, output: Path, steps: int, trace: bool = False
+                "--numerical-mode", "experimental",
+                "--block-size", "128", "--steps", str(steps), "--width", "1280", "--height", "720"]
+     if trace:
+-        command = ["nsys","profile","--sample=none","--cpuctxsw=none","--trace=cuda,opengl,osrt",
++        command = ["nsys","profile","--sample=none","--cpuctxsw=none","--trace=cuda,nvtx,opengl,osrt",
+                    "--output=" + str(output / "timeline"), *command]
+     with (output / "viewer.log").open("w",encoding="utf-8") as log, (output / "gpu.csv").open("w",encoding="utf-8") as gpu_log:
+         gpu = subprocess.Popen(["nvidia-smi", "--query-gpu=timestamp,utilization.gpu,utilization.memory,memory.used,temperature.gpu,power.draw,clocks.sm,clocks.mem,pstate", "--format=csv,nounits", "-lms", "200"], stdout=gpu_log, stderr=subprocess.STDOUT)

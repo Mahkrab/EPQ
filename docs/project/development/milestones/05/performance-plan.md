@@ -97,6 +97,18 @@ through reduced graphics contention, while preserving the experimental numerical
 configuration and offline indexed rendering. The sustained capacity assessment
 uses every accepted-step timestamp rather than inferring progress between frames.
 
+The requested [complete CUDA timestep investigation](/docs/project/development/milestones/05/performance-timestep-critical-path.md)
+retains interleaved neighbour rows for larger inputs after matched live-viewer
+comparisons and exact accepted-state qualification. It preserves the numerical
+work and observation boundaries, records rejected cooperative correction work,
+and separates full-motion device attribution from ordinary throughput and
+machine-state variation. The large scene remains below real time.
+
+The subsequent requested [neighbour/traversal reassessment](/docs/project/development/milestones/05/performance-neighbour-reuse.md)
+implements and rejects cooperative discovery, spatially grouped tiled rows and exact
+per-membership geometry reuse after fresh matched RTX 4070 comparisons. It preserves
+the current production implementation and records the remaining real-time shortfall.
+
 An earlier explicit user instruction selected fast as the application default. The subsequent
 instruction on 30 October 2026 restores reference as the default and saves the reference schedule
 in every built-in scene package. Fast remains opt-in through `--numerical-mode fast` or the

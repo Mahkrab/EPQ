@@ -1,0 +1,1324 @@
+[
+  {
+    "scene": "falling-block-20",
+    "samples": [
+      {
+        "round": 0,
+        "warmup": true,
+        "cache_bytes": 57799224,
+        "streaming_profile": {
+          "boundary": "export_entry_to_before_manifest",
+          "components_s": {
+            "comparison": 4.1125e-05,
+            "frame_output_wait": 0.174166324,
+            "frame_particle_copy": 0.005985506,
+            "frame_publication": 0.603279641,
+            "graphics_readback": 0.98386743,
+            "other": 0.007066766,
+            "progress": 0.658907846,
+            "setup": 0.912914795,
+            "snapshot_capture": 0.009801104,
+            "solver_steps": 2.609431076
+          },
+          "schema_version": 2,
+          "total_s": 5.965461613,
+          "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+          "worker_components_s": {
+            "frame_hashing": 0.633428315,
+            "png_encoding": 3.016723141
+          }
+        },
+        "bake_profile": {
+          "canonical_s": 0.49413622899999976,
+          "complete": true,
+          "inside_elapsed_s": 4.017736714,
+          "mode": "bake",
+          "probe_schema": 1,
+          "solver_s": 2.5686085559999987,
+          "write_pack_hash_sync_s": 0.7426947530000005
+        },
+        "render_profile": {
+          "complete": true,
+          "graphics_readback_s": 1.29978071,
+          "hashing_s": 0.63280306,
+          "inside_elapsed_s": 5.406051013,
+          "mode": "render",
+          "output_wait_s": 2.304040518,
+          "png_encoding_s": 3.01461952,
+          "probe_schema": 1,
+          "progress_s": 0.668460545,
+          "publication_s": 0.681798536,
+          "read_decode_validate_s": 0.083422935
+        },
+        "alt_profile": {
+          "complete": true,
+          "graphics_readback_s": 2.524812789,
+          "hashing_s": 0.929586807,
+          "inside_elapsed_s": 9.523595628,
+          "mode": "render-alt",
+          "output_wait_s": 4.659800485,
+          "png_encoding_s": 6.307375247,
+          "probe_schema": 1,
+          "progress_s": 0.887017711,
+          "publication_s": 0.978128488,
+          "read_decode_validate_s": 0.09734970599999991
+        },
+        "a": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/maelstrom",
+            "compile",
+            "builtin:falling-block-20",
+            "--numerical-mode",
+            "experimental",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--width",
+            "640",
+            "--height",
+            "480",
+            "--output",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/a-0-bundle",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/library",
+            "--format",
+            "json"
+          ],
+          "wall_s": 6.132782918997691,
+          "returncode": 0,
+          "user_s": 6.48,
+          "system_s": 0.68,
+          "max_rss_kib": 299672.0
+        },
+        "bake": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "bake",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/request.json",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-0-cache",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-0-bake-images"
+          ],
+          "wall_s": 4.0856256389961345,
+          "returncode": 0,
+          "user_s": 2.89,
+          "system_s": 0.42,
+          "max_rss_kib": 133404.0
+        },
+        "render": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "render",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/request.json",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-0-cache",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-0-render-images"
+          ],
+          "wall_s": 5.473057094990509,
+          "returncode": 0,
+          "user_s": 4.02,
+          "system_s": 0.53,
+          "max_rss_kib": 201972.0
+        },
+        "alt": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "render-alt",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/request.json",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-0-cache",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-0-render-alt-images"
+          ],
+          "wall_s": 9.583987338002771,
+          "returncode": 0,
+          "user_s": 7.57,
+          "system_s": 0.67,
+          "max_rss_kib": 209636.0
+        },
+        "simulate": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "simulate",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/request.json",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/unused",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/unused"
+          ],
+          "wall_s": 2.626732226999593,
+          "returncode": 0,
+          "user_s": 2.19,
+          "system_s": 0.21,
+          "max_rss_kib": 132560.0
+        },
+        "first_staged_s": 9.558682733986643
+      },
+      {
+        "round": 1,
+        "warmup": false,
+        "cache_bytes": 57799224,
+        "streaming_profile": {
+          "boundary": "export_entry_to_before_manifest",
+          "components_s": {
+            "comparison": 4.0694e-05,
+            "frame_output_wait": 0.198693289,
+            "frame_particle_copy": 0.006707522,
+            "frame_publication": 0.806362849,
+            "graphics_readback": 0.946038914,
+            "other": 0.007755561,
+            "progress": 0.879973088,
+            "setup": 0.53029897,
+            "snapshot_capture": 0.009657989,
+            "solver_steps": 2.5958333810000003
+          },
+          "schema_version": 2,
+          "total_s": 5.981362257,
+          "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+          "worker_components_s": {
+            "frame_hashing": 0.636594104,
+            "png_encoding": 3.023811775
+          }
+        },
+        "bake_profile": {
+          "canonical_s": 0.4846120149999998,
+          "complete": true,
+          "inside_elapsed_s": 4.191484725,
+          "mode": "bake",
+          "probe_schema": 1,
+          "solver_s": 2.5086323989999944,
+          "write_pack_hash_sync_s": 0.9837339780000001
+        },
+        "render_profile": {
+          "complete": true,
+          "graphics_readback_s": 1.315942446,
+          "hashing_s": 0.629267934,
+          "inside_elapsed_s": 5.789452302,
+          "mode": "render",
+          "output_wait_s": 2.275299306,
+          "png_encoding_s": 3.009624556,
+          "probe_schema": 1,
+          "progress_s": 0.875715024,
+          "publication_s": 0.858014944,
+          "read_decode_validate_s": 0.09018077299999998
+        },
+        "alt_profile": {
+          "complete": true,
+          "graphics_readback_s": 2.5682847090000003,
+          "hashing_s": 0.93064875,
+          "inside_elapsed_s": 9.502043795,
+          "mode": "render-alt",
+          "output_wait_s": 4.602578975,
+          "png_encoding_s": 6.284721922,
+          "probe_schema": 1,
+          "progress_s": 0.887045949,
+          "publication_s": 0.970547653,
+          "read_decode_validate_s": 0.09273639300000001
+        },
+        "a": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/maelstrom",
+            "compile",
+            "builtin:falling-block-20",
+            "--numerical-mode",
+            "experimental",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--width",
+            "640",
+            "--height",
+            "480",
+            "--output",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/a-1-bundle",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/library",
+            "--format",
+            "json"
+          ],
+          "wall_s": 6.132066866994137,
+          "returncode": 0,
+          "user_s": 6.41,
+          "system_s": 0.66,
+          "max_rss_kib": 301552.0
+        },
+        "bake": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "bake",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/request.json",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-1-cache",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-1-bake-images"
+          ],
+          "wall_s": 4.259533229007502,
+          "returncode": 0,
+          "user_s": 2.77,
+          "system_s": 0.47,
+          "max_rss_kib": 133424.0
+        },
+        "render": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "render",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/request.json",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-1-cache",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-1-render-images"
+          ],
+          "wall_s": 5.849990019007237,
+          "returncode": 0,
+          "user_s": 4.06,
+          "system_s": 0.5,
+          "max_rss_kib": 202360.0
+        },
+        "alt": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "render-alt",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/request.json",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-1-cache",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-1-render-alt-images"
+          ],
+          "wall_s": 9.562353289002203,
+          "returncode": 0,
+          "user_s": 7.6,
+          "system_s": 0.59,
+          "max_rss_kib": 209784.0
+        },
+        "simulate": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "simulate",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/request.json",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/unused",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/unused"
+          ],
+          "wall_s": 2.60618990000512,
+          "returncode": 0,
+          "user_s": 2.18,
+          "system_s": 0.21,
+          "max_rss_kib": 132652.0
+        },
+        "first_staged_s": 10.109523248014739
+      },
+      {
+        "round": 2,
+        "warmup": false,
+        "cache_bytes": 57799224,
+        "streaming_profile": {
+          "boundary": "export_entry_to_before_manifest",
+          "components_s": {
+            "comparison": 8.3867e-05,
+            "frame_output_wait": 0.252153376,
+            "frame_particle_copy": 0.006861855,
+            "frame_publication": 0.855272949,
+            "graphics_readback": 0.913025948,
+            "other": 0.007627686,
+            "progress": 1.019240464,
+            "setup": 0.504200793,
+            "snapshot_capture": 0.01001864,
+            "solver_steps": 2.5628314960000003
+          },
+          "schema_version": 2,
+          "total_s": 6.131317074,
+          "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+          "worker_components_s": {
+            "frame_hashing": 0.636848741,
+            "png_encoding": 3.027005228
+          }
+        },
+        "bake_profile": {
+          "canonical_s": 0.48955681100000004,
+          "complete": true,
+          "inside_elapsed_s": 4.914150373,
+          "mode": "bake",
+          "probe_schema": 1,
+          "solver_s": 2.5605025800000014,
+          "write_pack_hash_sync_s": 1.6465891279999987
+        },
+        "render_profile": {
+          "complete": true,
+          "graphics_readback_s": 1.514283324,
+          "hashing_s": 0.630122948,
+          "inside_elapsed_s": 6.728019176,
+          "mode": "render",
+          "output_wait_s": 2.084483758,
+          "png_encoding_s": 3.01613621,
+          "probe_schema": 1,
+          "progress_s": 1.386965796,
+          "publication_s": 1.291526315,
+          "read_decode_validate_s": 0.08687718300000005
+        },
+        "alt_profile": {
+          "complete": true,
+          "graphics_readback_s": 2.68079776,
+          "hashing_s": 0.92527429,
+          "inside_elapsed_s": 10.368963174,
+          "mode": "render-alt",
+          "output_wait_s": 4.478970679,
+          "png_encoding_s": 6.279258774,
+          "probe_schema": 1,
+          "progress_s": 1.2782302620000001,
+          "publication_s": 1.461929789,
+          "read_decode_validate_s": 0.09534741399999999
+        },
+        "a": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/maelstrom",
+            "compile",
+            "builtin:falling-block-20",
+            "--numerical-mode",
+            "experimental",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--width",
+            "640",
+            "--height",
+            "480",
+            "--output",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/a-2-bundle",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/library",
+            "--format",
+            "json"
+          ],
+          "wall_s": 6.297906587002217,
+          "returncode": 0,
+          "user_s": 6.41,
+          "system_s": 0.66,
+          "max_rss_kib": 301100.0
+        },
+        "bake": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "bake",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/request.json",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-2-cache",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-2-bake-images"
+          ],
+          "wall_s": 4.99165825000091,
+          "returncode": 0,
+          "user_s": 2.9,
+          "system_s": 0.4,
+          "max_rss_kib": 133424.0
+        },
+        "render": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "render",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/request.json",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-2-cache",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-2-render-images"
+          ],
+          "wall_s": 6.796424604995991,
+          "returncode": 0,
+          "user_s": 4.12,
+          "system_s": 0.44,
+          "max_rss_kib": 202164.0
+        },
+        "alt": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "render-alt",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/request.json",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-2-cache",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-2-render-alt-images"
+          ],
+          "wall_s": 10.429369945006329,
+          "returncode": 0,
+          "user_s": 7.67,
+          "system_s": 0.53,
+          "max_rss_kib": 209888.0
+        },
+        "simulate": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "simulate",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/request.json",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/unused",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/unused"
+          ],
+          "wall_s": 2.6280323659884743,
+          "returncode": 0,
+          "user_s": 2.19,
+          "system_s": 0.2,
+          "max_rss_kib": 132352.0
+        },
+        "first_staged_s": 11.788082854996901
+      },
+      {
+        "round": 3,
+        "warmup": false,
+        "cache_bytes": 57799224,
+        "streaming_profile": {
+          "boundary": "export_entry_to_before_manifest",
+          "components_s": {
+            "comparison": 7.6386e-05,
+            "frame_output_wait": 0.172205599,
+            "frame_particle_copy": 0.006847783,
+            "frame_publication": 1.519114735,
+            "graphics_readback": 0.970608165,
+            "other": 0.008152145,
+            "progress": 1.4298218679999999,
+            "setup": 0.54226508,
+            "snapshot_capture": 0.009936725,
+            "solver_steps": 2.613868527
+          },
+          "schema_version": 2,
+          "total_s": 7.272897013,
+          "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+          "worker_components_s": {
+            "frame_hashing": 0.635854971,
+            "png_encoding": 3.027827034
+          }
+        },
+        "bake_profile": {
+          "canonical_s": 0.48556364000000024,
+          "complete": true,
+          "inside_elapsed_s": 4.934960277,
+          "mode": "bake",
+          "probe_schema": 1,
+          "solver_s": 2.513207186000002,
+          "write_pack_hash_sync_s": 1.7179508239999985
+        },
+        "render_profile": {
+          "complete": true,
+          "graphics_readback_s": 1.37635716,
+          "hashing_s": 0.629206329,
+          "inside_elapsed_s": 6.53316651,
+          "mode": "render",
+          "output_wait_s": 2.219446196,
+          "png_encoding_s": 3.019207617,
+          "probe_schema": 1,
+          "progress_s": 1.321052261,
+          "publication_s": 1.157847359,
+          "read_decode_validate_s": 0.09221806599999999
+        },
+        "alt_profile": {
+          "complete": true,
+          "graphics_readback_s": 2.796990701,
+          "hashing_s": 0.931361878,
+          "inside_elapsed_s": 10.74661418,
+          "mode": "render-alt",
+          "output_wait_s": 4.406018548,
+          "png_encoding_s": 6.316645352,
+          "probe_schema": 1,
+          "progress_s": 1.52139676,
+          "publication_s": 1.5472839619999998,
+          "read_decode_validate_s": 0.09384721800000002
+        },
+        "a": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/maelstrom",
+            "compile",
+            "builtin:falling-block-20",
+            "--numerical-mode",
+            "experimental",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--width",
+            "640",
+            "--height",
+            "480",
+            "--output",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/a-3-bundle",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/library",
+            "--format",
+            "json"
+          ],
+          "wall_s": 7.448967378004454,
+          "returncode": 0,
+          "user_s": 6.49,
+          "system_s": 0.68,
+          "max_rss_kib": 301296.0
+        },
+        "bake": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "bake",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/request.json",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-3-cache",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-3-bake-images"
+          ],
+          "wall_s": 5.012127390000387,
+          "returncode": 0,
+          "user_s": 2.85,
+          "system_s": 0.41,
+          "max_rss_kib": 133616.0
+        },
+        "render": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "render",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/request.json",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-3-cache",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-3-render-images"
+          ],
+          "wall_s": 6.601717250989168,
+          "returncode": 0,
+          "user_s": 4.02,
+          "system_s": 0.54,
+          "max_rss_kib": 202352.0
+        },
+        "alt": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "render-alt",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/request.json",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-3-cache",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/b-3-render-alt-images"
+          ],
+          "wall_s": 10.818608746994869,
+          "returncode": 0,
+          "user_s": 7.67,
+          "system_s": 0.64,
+          "max_rss_kib": 209632.0
+        },
+        "simulate": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "simulate",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/request.json",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/unused",
+            "/tmp/maelstrom-cache-review-20261110/falling-block-20/unused"
+          ],
+          "wall_s": 2.5982431690063095,
+          "returncode": 0,
+          "user_s": 2.15,
+          "system_s": 0.24,
+          "max_rss_kib": 132468.0
+        },
+        "first_staged_s": 11.613844640989555
+      }
+    ],
+    "median_s": {
+      "a": 6.297906587002217,
+      "bake": 4.99165825000091,
+      "render": 6.601717250989168,
+      "alt": 10.429369945006329,
+      "simulate": 2.60618990000512
+    },
+    "first_staged_median_s": 11.613844640989555,
+    "a_alt_process": {
+      "command": [
+        "/tmp/maelstrom-cache-review-20261110/target/release/maelstrom",
+        "compile",
+        "builtin:falling-block-20",
+        "--numerical-mode",
+        "experimental",
+        "--backend",
+        "cuda",
+        "--device",
+        "0",
+        "--block-size",
+        "128",
+        "--steps",
+        "1200",
+        "--frame-stride",
+        "4",
+        "--width",
+        "1280",
+        "--height",
+        "720",
+        "--output",
+        "/tmp/maelstrom-cache-review-20261110/falling-block-20/a-1-alt-bundle",
+        "--runs-dir",
+        "/tmp/maelstrom-cache-review-20261110/falling-block-20/library",
+        "--format",
+        "json"
+      ],
+      "wall_s": 10.555993167989072,
+      "returncode": 0,
+      "user_s": 10.32,
+      "system_s": 0.74,
+      "max_rss_kib": 301396.0
+    },
+    "same_camera_pngs_exact": 1204,
+    "alternative_resolution_state_hashes_exact": 301
+  },
+  {
+    "scene": "large-impact",
+    "samples": [
+      {
+        "round": 0,
+        "warmup": true,
+        "cache_bytes": 798923832,
+        "streaming_profile": {
+          "boundary": "export_entry_to_before_manifest",
+          "components_s": {
+            "comparison": 7.5315e-05,
+            "frame_output_wait": 0.056839566,
+            "frame_particle_copy": 0.105481799,
+            "frame_publication": 1.684513832,
+            "graphics_readback": 2.94840986,
+            "other": 0.010542971,
+            "progress": 0.93314187,
+            "setup": 0.566338811,
+            "snapshot_capture": 0.161109598,
+            "solver_steps": 14.008532213
+          },
+          "schema_version": 2,
+          "total_s": 20.474985835,
+          "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+          "worker_components_s": {
+            "frame_hashing": 6.820613263,
+            "png_encoding": 2.908974576
+          }
+        },
+        "bake_profile": {
+          "canonical_s": 6.589972143000004,
+          "complete": true,
+          "inside_elapsed_s": 23.838711233,
+          "mode": "bake",
+          "probe_schema": 1,
+          "solver_s": 14.070501570000014,
+          "write_pack_hash_sync_s": 2.4851687440000014
+        },
+        "render_profile": {
+          "complete": true,
+          "graphics_readback_s": 5.614076006,
+          "hashing_s": 6.706220175,
+          "inside_elapsed_s": 11.793143883,
+          "mode": "render",
+          "output_wait_s": 2.939731845,
+          "png_encoding_s": 2.888598681,
+          "probe_schema": 1,
+          "progress_s": 0.645996799,
+          "publication_s": 0.729008714,
+          "read_decode_validate_s": 0.9994752140000006
+        },
+        "alt_profile": {
+          "complete": true,
+          "graphics_readback_s": 7.729957091,
+          "hashing_s": 7.001600022,
+          "inside_elapsed_s": 15.905076094,
+          "mode": "render-alt",
+          "output_wait_s": 4.757908485,
+          "png_encoding_s": 6.586524807,
+          "probe_schema": 1,
+          "progress_s": 0.654464793,
+          "publication_s": 0.847722443,
+          "read_decode_validate_s": 1.0605792879999996
+        },
+        "a": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/maelstrom",
+            "compile",
+            "builtin:large-impact",
+            "--numerical-mode",
+            "experimental",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--width",
+            "640",
+            "--height",
+            "480",
+            "--output",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/a-0-bundle",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/library",
+            "--format",
+            "json"
+          ],
+          "wall_s": 21.180206551012816,
+          "returncode": 0,
+          "user_s": 24.32,
+          "system_s": 0.99,
+          "max_rss_kib": 589660.0
+        },
+        "bake": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "bake",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/request.json",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-0-cache",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-0-bake-images"
+          ],
+          "wall_s": 24.025837031003903,
+          "returncode": 0,
+          "user_s": 20.53,
+          "system_s": 1.59,
+          "max_rss_kib": 588648.0
+        },
+        "render": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "render",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/request.json",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-0-cache",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-0-render-images"
+          ],
+          "wall_s": 11.951685715001076,
+          "returncode": 0,
+          "user_s": 11.39,
+          "system_s": 0.82,
+          "max_rss_kib": 657572.0
+        },
+        "alt": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "render-alt",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/request.json",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-0-cache",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-0-render-alt-images"
+          ],
+          "wall_s": 16.061623606001376,
+          "returncode": 0,
+          "user_s": 15.37,
+          "system_s": 0.89,
+          "max_rss_kib": 658344.0
+        },
+        "simulate": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "simulate",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/request.json",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/unused",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/unused"
+          ],
+          "wall_s": 14.56875802698778,
+          "returncode": 0,
+          "user_s": 13.48,
+          "system_s": 0.48,
+          "max_rss_kib": 588452.0
+        },
+        "first_staged_s": 35.97752274600498
+      },
+      {
+        "round": 1,
+        "warmup": false,
+        "cache_bytes": 798923832,
+        "streaming_profile": {
+          "boundary": "export_entry_to_before_manifest",
+          "components_s": {
+            "comparison": 0.000151265,
+            "frame_output_wait": 0.057091963,
+            "frame_particle_copy": 0.106174127,
+            "frame_publication": 1.880498709,
+            "graphics_readback": 2.925058781,
+            "other": 0.010758555,
+            "progress": 0.763294132,
+            "setup": 0.577148617,
+            "snapshot_capture": 0.166434211,
+            "solver_steps": 13.962911292
+          },
+          "schema_version": 2,
+          "total_s": 20.449521652,
+          "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+          "worker_components_s": {
+            "frame_hashing": 6.868545414,
+            "png_encoding": 2.9017247
+          }
+        },
+        "bake_profile": {
+          "canonical_s": 6.5276940670000005,
+          "complete": true,
+          "inside_elapsed_s": 23.770032204,
+          "mode": "bake",
+          "probe_schema": 1,
+          "solver_s": 13.964747920999999,
+          "write_pack_hash_sync_s": 2.6281371590000013
+        },
+        "render_profile": {
+          "complete": true,
+          "graphics_readback_s": 5.5914521950000005,
+          "hashing_s": 6.696213921,
+          "inside_elapsed_s": 11.763636992,
+          "mode": "render",
+          "output_wait_s": 2.93958772,
+          "png_encoding_s": 2.87958158,
+          "probe_schema": 1,
+          "progress_s": 0.64492235,
+          "publication_s": 0.723293683,
+          "read_decode_validate_s": 0.9946344939999998
+        },
+        "alt_profile": {
+          "complete": true,
+          "graphics_readback_s": 7.991651545,
+          "hashing_s": 7.004404121,
+          "inside_elapsed_s": 16.590600401,
+          "mode": "render-alt",
+          "output_wait_s": 4.540926467,
+          "png_encoding_s": 6.627393711,
+          "probe_schema": 1,
+          "progress_s": 0.678833012,
+          "publication_s": 1.465912882,
+          "read_decode_validate_s": 1.0580241019999987
+        },
+        "a": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/maelstrom",
+            "compile",
+            "builtin:large-impact",
+            "--numerical-mode",
+            "experimental",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--width",
+            "640",
+            "--height",
+            "480",
+            "--output",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/a-1-bundle",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/library",
+            "--format",
+            "json"
+          ],
+          "wall_s": 21.186657313999604,
+          "returncode": 0,
+          "user_s": 24.34,
+          "system_s": 0.99,
+          "max_rss_kib": 589820.0
+        },
+        "bake": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "bake",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/request.json",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-1-cache",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-1-bake-images"
+          ],
+          "wall_s": 23.94012720999308,
+          "returncode": 0,
+          "user_s": 20.45,
+          "system_s": 1.58,
+          "max_rss_kib": 588260.0
+        },
+        "render": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "render",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/request.json",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-1-cache",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-1-render-images"
+          ],
+          "wall_s": 11.923230770000373,
+          "returncode": 0,
+          "user_s": 11.42,
+          "system_s": 0.76,
+          "max_rss_kib": 657572.0
+        },
+        "alt": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "render-alt",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/request.json",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-1-cache",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-1-render-alt-images"
+          ],
+          "wall_s": 16.75238505100424,
+          "returncode": 0,
+          "user_s": 15.42,
+          "system_s": 0.88,
+          "max_rss_kib": 658148.0
+        },
+        "simulate": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "simulate",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/request.json",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/unused",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/unused"
+          ],
+          "wall_s": 14.64123252799618,
+          "returncode": 0,
+          "user_s": 13.54,
+          "system_s": 0.49,
+          "max_rss_kib": 588836.0
+        },
+        "first_staged_s": 35.86335797999345
+      },
+      {
+        "round": 2,
+        "warmup": false,
+        "cache_bytes": 798923832,
+        "streaming_profile": {
+          "boundary": "export_entry_to_before_manifest",
+          "components_s": {
+            "comparison": 0.000101508,
+            "frame_output_wait": 0.057240324,
+            "frame_particle_copy": 0.106413145,
+            "frame_publication": 1.2372164429999999,
+            "graphics_readback": 2.918839992,
+            "other": 0.010563601,
+            "progress": 0.642817102,
+            "setup": 0.550219389,
+            "snapshot_capture": 0.172546554,
+            "solver_steps": 14.010406836
+          },
+          "schema_version": 2,
+          "total_s": 19.706364894,
+          "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+          "worker_components_s": {
+            "frame_hashing": 6.887833241,
+            "png_encoding": 2.9151437749999998
+          }
+        },
+        "bake_profile": {
+          "canonical_s": 6.539890392000005,
+          "complete": true,
+          "inside_elapsed_s": 23.735392529,
+          "mode": "bake",
+          "probe_schema": 1,
+          "solver_s": 13.989441606000009,
+          "write_pack_hash_sync_s": 2.445967766999998
+        },
+        "render_profile": {
+          "complete": true,
+          "graphics_readback_s": 5.600168999,
+          "hashing_s": 6.771638688,
+          "inside_elapsed_s": 11.704711188,
+          "mode": "render",
+          "output_wait_s": 3.032525277,
+          "png_encoding_s": 2.904218493,
+          "probe_schema": 1,
+          "progress_s": 0.563059395,
+          "publication_s": 0.645563706,
+          "read_decode_validate_s": 0.9920798890000001
+        },
+        "alt_profile": {
+          "complete": true,
+          "graphics_readback_s": 7.641750174,
+          "hashing_s": 7.044820423,
+          "inside_elapsed_s": 15.73477977,
+          "mode": "render-alt",
+          "output_wait_s": 4.906099621,
+          "png_encoding_s": 6.597087832,
+          "probe_schema": 1,
+          "progress_s": 0.550391837,
+          "publication_s": 0.714722024,
+          "read_decode_validate_s": 1.0555139770000008
+        },
+        "a": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/maelstrom",
+            "compile",
+            "builtin:large-impact",
+            "--numerical-mode",
+            "experimental",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--width",
+            "640",
+            "--height",
+            "480",
+            "--output",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/a-2-bundle",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/library",
+            "--format",
+            "json"
+          ],
+          "wall_s": 20.43923961900873,
+          "returncode": 0,
+          "user_s": 24.39,
+          "system_s": 1.01,
+          "max_rss_kib": 589912.0
+        },
+        "bake": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "bake",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/request.json",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-2-cache",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-2-bake-images"
+          ],
+          "wall_s": 23.900781567004742,
+          "returncode": 0,
+          "user_s": 20.54,
+          "system_s": 1.64,
+          "max_rss_kib": 588360.0
+        },
+        "render": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "render",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/request.json",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-2-cache",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-2-render-images"
+          ],
+          "wall_s": 11.865910237000207,
+          "returncode": 0,
+          "user_s": 11.43,
+          "system_s": 0.78,
+          "max_rss_kib": 657768.0
+        },
+        "alt": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "render-alt",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/request.json",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-2-cache",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-2-render-alt-images"
+          ],
+          "wall_s": 15.891582502998062,
+          "returncode": 0,
+          "user_s": 15.47,
+          "system_s": 0.81,
+          "max_rss_kib": 658340.0
+        },
+        "simulate": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "simulate",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/request.json",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/unused",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/unused"
+          ],
+          "wall_s": 14.544335015991237,
+          "returncode": 0,
+          "user_s": 13.38,
+          "system_s": 0.54,
+          "max_rss_kib": 588456.0
+        },
+        "first_staged_s": 35.76669180400495
+      },
+      {
+        "round": 3,
+        "warmup": false,
+        "cache_bytes": 798923832,
+        "streaming_profile": {
+          "boundary": "export_entry_to_before_manifest",
+          "components_s": {
+            "comparison": 0.000178329,
+            "frame_output_wait": 0.057795413,
+            "frame_particle_copy": 0.101469799,
+            "frame_publication": 0.582632822,
+            "graphics_readback": 2.937739403,
+            "other": 0.010084089,
+            "progress": 0.529445667,
+            "setup": 0.57403852,
+            "snapshot_capture": 0.160353885,
+            "solver_steps": 13.930583295
+          },
+          "schema_version": 2,
+          "total_s": 18.884321222,
+          "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+          "worker_components_s": {
+            "frame_hashing": 6.878736839,
+            "png_encoding": 2.9130963
+          }
+        },
+        "bake_profile": {
+          "canonical_s": 6.538899214999997,
+          "complete": true,
+          "inside_elapsed_s": 23.629514145999998,
+          "mode": "bake",
+          "probe_schema": 1,
+          "solver_s": 13.987758656000011,
+          "write_pack_hash_sync_s": 2.4438859649999984
+        },
+        "render_profile": {
+          "complete": true,
+          "graphics_readback_s": 5.602612036,
+          "hashing_s": 6.729799253,
+          "inside_elapsed_s": 11.634309301,
+          "mode": "render",
+          "output_wait_s": 2.955361613,
+          "png_encoding_s": 2.888626275,
+          "probe_schema": 1,
+          "progress_s": 0.559451536,
+          "publication_s": 0.639469797,
+          "read_decode_validate_s": 1.0146417349999994
+        },
+        "alt_profile": {
+          "complete": true,
+          "graphics_readback_s": 7.378973555,
+          "hashing_s": 7.039002572,
+          "inside_elapsed_s": 15.7886071,
+          "mode": "render-alt",
+          "output_wait_s": 5.142464309,
+          "png_encoding_s": 6.600527069,
+          "probe_schema": 1,
+          "progress_s": 0.548656009,
+          "publication_s": 0.702153379,
+          "read_decode_validate_s": 1.0778587079999993
+        },
+        "a": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/maelstrom",
+            "compile",
+            "builtin:large-impact",
+            "--numerical-mode",
+            "experimental",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--width",
+            "640",
+            "--height",
+            "480",
+            "--output",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/a-3-bundle",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/library",
+            "--format",
+            "json"
+          ],
+          "wall_s": 19.646561353001744,
+          "returncode": 0,
+          "user_s": 24.38,
+          "system_s": 0.9,
+          "max_rss_kib": 589884.0
+        },
+        "bake": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "bake",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/request.json",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-3-cache",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-3-bake-images"
+          ],
+          "wall_s": 23.798089698000695,
+          "returncode": 0,
+          "user_s": 20.52,
+          "system_s": 1.56,
+          "max_rss_kib": 588452.0
+        },
+        "render": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "render",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/request.json",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-3-cache",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-3-render-images"
+          ],
+          "wall_s": 11.79558195899881,
+          "returncode": 0,
+          "user_s": 11.4,
+          "system_s": 0.84,
+          "max_rss_kib": 657956.0
+        },
+        "alt": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "render-alt",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/request.json",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-3-cache",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/b-3-render-alt-images"
+          ],
+          "wall_s": 15.952766279995558,
+          "returncode": 0,
+          "user_s": 15.48,
+          "system_s": 0.92,
+          "max_rss_kib": 657752.0
+        },
+        "simulate": {
+          "command": [
+            "/tmp/maelstrom-cache-review-20261110/target/release/cache-review",
+            "simulate",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/request.json",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/unused",
+            "/tmp/maelstrom-cache-review-20261110/large-impact/unused"
+          ],
+          "wall_s": 14.685277889002464,
+          "returncode": 0,
+          "user_s": 13.56,
+          "system_s": 0.52,
+          "max_rss_kib": 588644.0
+        },
+        "first_staged_s": 35.593671656999504
+      }
+    ],
+    "median_s": {
+      "a": 20.43923961900873,
+      "bake": 23.900781567004742,
+      "render": 11.865910237000207,
+      "alt": 15.952766279995558,
+      "simulate": 14.64123252799618
+    },
+    "first_staged_median_s": 35.76669180400495,
+    "a_alt_process": {
+      "command": [
+        "/tmp/maelstrom-cache-review-20261110/target/release/maelstrom",
+        "compile",
+        "builtin:large-impact",
+        "--numerical-mode",
+        "experimental",
+        "--backend",
+        "cuda",
+        "--device",
+        "0",
+        "--block-size",
+        "128",
+        "--steps",
+        "1200",
+        "--frame-stride",
+        "4",
+        "--width",
+        "1280",
+        "--height",
+        "720",
+        "--output",
+        "/tmp/maelstrom-cache-review-20261110/large-impact/a-1-alt-bundle",
+        "--runs-dir",
+        "/tmp/maelstrom-cache-review-20261110/large-impact/library",
+        "--format",
+        "json"
+      ],
+      "wall_s": 20.72950748799485,
+      "returncode": 0,
+      "user_s": 28.46,
+      "system_s": 0.95,
+      "max_rss_kib": 590924.0
+    },
+    "same_camera_pngs_exact": 1204,
+    "alternative_resolution_state_hashes_exact": 301
+  }
+]

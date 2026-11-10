@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "warmups": 1,
+  "rounds": 3,
+  "steps": 1200,
+  "stride": 4,
+  "frames": 301,
+  "numerical_mode": "experimental",
+  "size": [
+    640,
+    480
+  ],
+  "alt_size": [
+    1280,
+    720
+  ],
+  "base_commit": "6bf2682325b7665e48f8a8647ce087d48ff13f0b",
+  "binaries": {
+    "maelstrom": "e8459c6a14138c5c71f45a6076468b423bb17ecb3511da8d5d02dbeea1f37467",
+    "cache-review": "33206d148b628e1ac3fa26c9742be84a61d25e40e21da230abf665ab237e6a19"
+  },
+  "limits": "serial cache packing/canonical hashing; render rehashes snapshots; warm OS cache; no cold-disk claim"
+}

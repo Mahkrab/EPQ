@@ -1,0 +1,16 @@
+camera journey
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/oliver/.local/share/maelstrom-experiments/cached-playback-v1/tools/performance/cached_post.py", line 56, in <module>
+    execute(args.root,args.existing)
+  File "/home/oliver/.local/share/maelstrom-experiments/cached-playback-v1/tools/performance/cached_post.py", line 35, in execute
+    journey(binary,cache,root/"journey")
+  File "/home/oliver/.local/share/maelstrom-experiments/cached-playback-v1/tools/performance/cached_journey.py", line 92, in journey
+    change(mode+"-pan",pan)
+  File "/home/oliver/.local/share/maelstrom-experiments/cached-playback-v1/tools/performance/cached_journey.py", line 72, in change
+    after=wait_for(log,lambda f:f["camera"]!=before["camera"],process)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oliver/.local/share/maelstrom-experiments/cached-playback-v1/tools/performance/cached_journey.py", line 50, in wait_for
+    raise TimeoutError("viewer did not reach requested state")
+TimeoutError: viewer did not reach requested state

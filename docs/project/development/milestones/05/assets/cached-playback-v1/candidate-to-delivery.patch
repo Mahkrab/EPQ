@@ -1,0 +1,220 @@
+--- a/src/cli/arguments.rs
++++ b/src/cli/arguments.rs
+@@ -363,10 +363,10 @@
+     #[arg(long, default_value_t = 128)]
+     pub cache_memory_mb: usize,
+     /// Follow recorded time or present every observation (cached viewing only)
+-    #[arg(long, requires="cache", default_value="real-time", value_parser=["real-time", "frame-accurate"])]
+-    pub cache_playback: String,
++    #[arg(long, requires="cache", value_parser=["real-time", "frame-accurate"])]
++    pub cache_playback: Option<String>,
+     /// Explicitly open an incomplete cache's committed prefix
+-    #[arg(long, requires="cache")]
++    #[arg(long, requires = "cache")]
+     pub allow_partial: bool,
+     /// Cached preview geometry; indexed matches offline exports
+     #[arg(long, default_value="indexed", value_parser=["indexed", "impostor"])]
+--- a/src/cli/viewer.rs
++++ b/src/cli/viewer.rs
+@@ -13,6 +13,11 @@
+ use std::fs;
+ 
+ pub(super) fn launch(view: &View, storage: &super::storage::Storage) -> Result<u8, CliError> {
++    if view.cache.is_none() && (view.allow_partial || view.cache_playback.is_some()) {
++        return Err(CliError::usage(
++            "--cache-playback and --allow-partial require --cache".into(),
++        ));
++    }
+     if let Some(path) = &view.cache {
+         let cache = maelstrom::cache::Cache::open(path, view.allow_partial)
+             .map_err(|e| CliError::input(e.to_string()))?;
+@@ -42,6 +47,8 @@
+                 .parse()
+                 .map_err(|e: maelstrom::render::RenderError| CliError::input(e.to_string()))?,
+             view.cache_playback
++                .as_deref()
++                .unwrap_or("real-time")
+                 .parse()
+                 .map_err(|e: maelstrom::render::RenderError| CliError::input(e.to_string()))?,
+         )
+--- a/src/viewer/cached.rs
++++ b/src/viewer/cached.rs
+@@ -169,8 +169,8 @@
+     }
+ }
+ 
+-/// Opens exact cached observations in the shared viewer surface. Disk latency
+-/// never runs on the event thread. Real-time playback may skip presentations;
++/// Opens exact cached observations in the shared viewer surface. Disk reads
++/// run on the background reader. Real-time playback may skip presentations;
+ /// frame-accurate playback waits for each exact observation.
+ #[allow(clippy::too_many_arguments)]
+ pub fn run_cache(
+@@ -446,7 +446,7 @@
+                 self.index = index;
+                 if self.seeking {
+                     self.seeking = false;
+-                    self.last = Instant::now();
++                    self.last = now;
+                 }
+                 self.remaining += if self.index + 1 < self.cache.frame_count() {
+                     self.time(self.index + 1) - self.time(self.index)
+@@ -504,7 +504,7 @@
+             "Drag orbit | right-drag pan | wheel zoom | S save | P geometry | T timing | [ ] speed"
+                 .into(),
+             format!(
+-                "Solver {:.3} Hz | cache timing uses recorded step gaps | display target 60 Hz | loop {}",
++                "Recorded solver {:.3} Hz | cache uses recorded step gaps | display follows surface | loop {}",
+                 1.0 / dt,
+                 self.looping
+             ),
+@@ -689,6 +689,137 @@
+ #[cfg(test)]
+ mod tests {
+     use super::*;
++    fn inspection_window() -> (CachedWindow, PathBuf) {
++        static NEXT: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
++        let root = std::env::temp_dir().join(format!(
++            "maelstrom-cache-clock-{}-{}",
++            std::process::id(),
++            NEXT.fetch_add(1, std::sync::atomic::Ordering::Relaxed)
++        ));
++        let scene = crate::scene::load_resolved_scene(
++            std::path::Path::new("reference/small-lattice.toml"),
++            None,
++        )
++        .unwrap();
++        crate::cache::bake(
++            crate::cache::BakeRequest {
++                scene: &scene,
++                steps: 6,
++                stride: 2,
++                options: Default::default(),
++                destination: &root,
++            },
++            || false,
++            |_, _| {},
++        )
++        .unwrap();
++        let cache = Arc::new(Cache::open(&root, false).unwrap());
++        let mut app = CachedWindow {
++            reader: Reader::new(cache.clone(), 1).unwrap(),
++            boundaries: BoundaryLines::new(&scene.particles, &scene.planes, 0.1).unwrap(),
++            cache,
++            settings: Settings::default(),
++            selection: GraphicsSelection::default(),
++            renderer: ParticleRenderer::Indexed,
++            save: None,
++            window: None,
++            display: None,
++            current: None,
++            index: 0,
++            wanted: 0,
++            paused: true,
++            looping: false,
++            speed: 1.,
++            last: Instant::now(),
++            remaining: 0.,
++            policy: CachePlayback::RealTime,
++            position: 0.,
++            seeking: true,
++            started: Instant::now(),
++            cursor: [0.; 2],
++            drag: None,
++            message: String::new(),
++            seek: None,
++            error: None,
++        };
++        wait_for_seek(&mut app);
++        (app, root)
++    }
++    fn wait_for_seek(app: &mut CachedWindow) {
++        let deadline = Instant::now() + Duration::from_secs(5);
++        while app.seeking {
++            app.update(Instant::now()).unwrap();
++            assert!(Instant::now() < deadline);
++            thread::sleep(Duration::from_millis(1));
++        }
++    }
++    #[test]
++    fn same_frame_seek_reanchors_and_paused_inspection_stays_exact() {
++        let (mut app, root) = inspection_window();
++        for i in [0, 3, 2, 0, 0] {
++            app.seek(i);
++            wait_for_seek(&mut app);
++            assert_eq!(app.index, i);
++            assert_eq!(app.position, app.time(i));
++            let before = app.position;
++            app.tick_realtime(app.last + Duration::from_secs(100));
++            assert_eq!(app.position, before);
++        }
++        drop(app);
++        std::fs::remove_dir_all(root).unwrap();
++    }
++    #[test]
++    fn frame_accurate_requests_only_the_next_state_after_a_slow_redraw() {
++        let (mut app, root) = inspection_window();
++        app.policy = CachePlayback::FrameAccurate;
++        app.paused = false;
++        app.speed = 16.;
++        app.update(app.last + Duration::from_secs(1)).unwrap();
++        assert_eq!(app.index, 0);
++        assert_eq!(app.wanted, 1);
++        drop(app);
++        std::fs::remove_dir_all(root).unwrap();
++    }
++    #[test]
++    fn realtime_pause_resume_and_speed_change_keep_fractional_position() {
++        let (mut app, root) = inspection_window();
++        app.paused = false;
++        let start = app.last;
++        app.tick_realtime(start + Duration::from_millis(1));
++        assert!((app.position - 0.001).abs() < 1e-12);
++        app.speed = 2.;
++        app.tick_realtime(start + Duration::from_millis(2));
++        assert!((app.position - 0.003).abs() < 1e-12);
++        app.paused = true;
++        app.tick_realtime(start + Duration::from_secs(1));
++        assert!((app.position - 0.003).abs() < 1e-12);
++        app.paused = false;
++        app.tick_realtime(start + Duration::from_millis(1001));
++        assert!((app.position - 0.005).abs() < 1e-12);
++        drop(app);
++        std::fs::remove_dir_all(root).unwrap();
++    }
++    #[test]
++    fn superseded_read_can_progress_realtime_but_never_satisfies_an_exact_seek() {
++        let particles = Arc::new(Vec::new());
++        let reader = Reader {
++            shared: Arc::new((
++                Mutex::new(Reads {
++                    wanted: 0,
++                    frames: BTreeMap::new(),
++                    error: None,
++                    stop: false,
++                    latest: Some((3, particles)),
++                }),
++                Condvar::new(),
++            )),
++            worker: None,
++        };
++        assert_eq!(reader.request(10, 0).unwrap().unwrap().0, 3);
++        assert!(reader.get(10).unwrap().is_none());
++        assert!(reader.request(10, 4).unwrap().is_none());
++        assert!(reader.request(2, 0).unwrap().is_none());
++    }
+     #[test]
+     fn bounded_reader_seeks_exact_states_and_reports_corruption() {
+         use crate::cache::{BakeRequest, bake};
+--- a/src/viewer/mod.rs
++++ b/src/viewer/mod.rs
+@@ -2,8 +2,8 @@
+ //! Solver resources stay on the controller worker; graphics failures request
+ //! cooperative shutdown and keep pumping events until that worker has exited.
+ 
++mod cache_clock;
+ mod cached;
+-mod cache_clock;
+ pub use cache_clock::CachePlayback;
+ pub use cached::run_cache;
+ mod model;

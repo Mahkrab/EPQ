@@ -1,0 +1,71 @@
+--- a/src/viewer/cached.rs
++++ b/src/viewer/cached.rs
+@@ -440,22 +440,22 @@
+             self.reader.request(self.wanted, minimum)?
+         };
+         let ready = loaded.is_some();
+-        if let Some((index, frame)) = loaded {
+-            if was_loading || index != self.index || self.seeking {
+-                self.current = Some(frame);
+-                self.index = index;
+-                if self.seeking {
+-                    self.seeking = false;
+-                    self.last = now;
+-                }
+-                self.remaining += if self.index + 1 < self.cache.frame_count() {
+-                    self.time(self.index + 1) - self.time(self.index)
+-                } else if self.index > 0 {
+-                    self.time(self.index) - self.time(self.index - 1)
+-                } else {
+-                    1.0 / 60.0
+-                };
+-            }
++        if let Some((index, frame)) = loaded
++            && (was_loading || index != self.index || self.seeking)
++        {
++            self.current = Some(frame);
++            self.index = index;
++            if self.seeking {
++                self.seeking = false;
++                self.last = now;
++            }
++            self.remaining += if self.index + 1 < self.cache.frame_count() {
++                self.time(self.index + 1) - self.time(self.index)
++            } else if self.index > 0 {
++                self.time(self.index) - self.time(self.index - 1)
++            } else {
++                1.0 / 60.0
++            };
+         }
+         if self.policy == CachePlayback::FrameAccurate && !self.paused && ready && had_frame {
+             self.remaining -= elapsed * self.speed;
+@@ -662,11 +662,11 @@
+                 self.settings.camera.zoom((-y * 0.1).exp())
+             }
+             WindowEvent::RedrawRequested => {
+-                if self.display.is_some() {
+-                    if let Err(e) = self.redraw() {
+-                        self.error = Some(e);
+-                        event_loop.exit();
+-                    }
++                if self.display.is_some()
++                    && let Err(e) = self.redraw()
++                {
++                    self.error = Some(e);
++                    event_loop.exit();
+                 }
+                 Ok(())
+             }
+@@ -884,8 +884,10 @@
+     #[test]
+     fn portable_presentation_preserves_interactive_camera_and_colours_exactly() {
+         use crate::presentation::{CameraMode, ParticleColours, Presentation};
+-        let mut settings = Settings::default();
+-        settings.schema_version = 2;
++        let mut settings = Settings {
++            schema_version: 2,
++            ..Settings::default()
++        };
+         settings.camera.orbit(0.37, -0.12).unwrap();
+         settings.camera.pan(0.1, -0.05).unwrap();
+         settings.camera.zoom(0.8).unwrap();

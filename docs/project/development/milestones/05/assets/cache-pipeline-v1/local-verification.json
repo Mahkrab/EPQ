@@ -1,0 +1,40 @@
+{
+  "archives": [
+    {
+      "archive": "final-raw.tar.gz",
+      "members": 2935,
+      "archive_sha256": "9f2b8e1b66bbdf25ef0bff3db6f4be9d17e39af761f4d33c99e7600528604cce",
+      "summary_reproduced_exactly": true,
+      "resources_reproduced_exactly": true,
+      "cache_sizes_reconstructed_from_receipt_lengths_and_identity_contract": true,
+      "verified_locally": true
+    },
+    {
+      "archive": "earlier-raw.tar.gz",
+      "members": 2942,
+      "archive_sha256": "a984de80368d4879afbaa56a0e577db02f9c812b2505ac4fd7462b9b812ecfab",
+      "summary_reproduced_exactly": true,
+      "resources_reproduced_exactly": true,
+      "cache_sizes_reconstructed_from_receipt_lengths_and_identity_contract": true,
+      "verified_locally": true
+    },
+    {
+      "archive": "delivery-raw.tar.gz",
+      "members": 13,
+      "archive_sha256": "0b3c48100180254b026ca98de7005f6e9f97a166e8f46327b19e2b915de4ead7",
+      "verified_locally": true
+    }
+  ],
+  "parent_tool_tests": {
+    "passed": 3,
+    "failed": 0
+  },
+  "source_reconstruction": "source-reconstruction.json",
+  "owned_rustfmt": "passed with edition 2024 and skip_children=true; preserved unrelated CUDA file formatting",
+  "owned_tracked_diff_whitespace": "passed",
+  "new_document_file_links": "all exist",
+  "delivered_source_manifest_verified": true,
+  "preexisting_native_cuda_configuration_and_dependencies": "byte-identical to starting source manifest",
+  "source_reconstruction_patch_count": 3,
+  "headless_strict_clippy_and_cli": "passed on primary and local delivered sources"
+}

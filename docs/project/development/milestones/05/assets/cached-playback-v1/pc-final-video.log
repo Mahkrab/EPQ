@@ -1,0 +1,11 @@
+    Finished `release` profile [optimized] target(s) in 0.09s
+     Running unittests src/lib.rs (../target/release/deps/maelstrom-ae149651470e7ac4)
+
+running 4 tests
+test export::video::tests::endpoint_policy_is_explicit ... ok
+test export::video::encoder_tests::missing_encoder_and_invalid_dimensions_do_not_create_output ... ok
+test export::video::subprocess_tests::encoder_exit_and_missing_codec_are_actionable_and_leave_no_output ... ok
+test export::video::encoder_tests::real_encoder_order_duration_cleanup_and_no_overwrite ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 113 filtered out; finished in 0.36s
+

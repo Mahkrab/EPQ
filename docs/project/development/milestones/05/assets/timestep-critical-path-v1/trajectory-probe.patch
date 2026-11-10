@@ -1,0 +1,10 @@
+--- a/src/cuda/solver.rs
++++ b/src/cuda/solver.rs
+@@ -309,6 +309,7 @@
+         };
+         self.context.inner.reserve(11, capacity)?;
+         self.neighbour_capacity = capacity;
++        eprintln!("NEIGHBOUR_STORAGE {} {} {}", s.count, s.entries, self.neighbour_capacity);
+         self.operation(*s, 12)
+     }
+ 

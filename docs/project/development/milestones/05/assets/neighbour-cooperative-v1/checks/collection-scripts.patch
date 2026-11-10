@@ -1,0 +1,267 @@
+--- /dev/null
++++ b/runner/campaign.py
+@@ -0,0 +1,8 @@
++from pathlib import Path
++import sys,subprocess,json
++from tools.performance.live_viewer import run
++
++r=Path(__file__).resolve().parent.parent
++for count in [8000,32000,110592]:
++ for sample in ['warmup','baseline']:
++  run(r/'control-bin',r/'inputs'/f'{count}.toml',r/'results'/f'fresh-{count}-{sample}',1200,renderer='impostor')
+--- /dev/null
++++ b/runner/explore.py
+@@ -0,0 +1,13 @@
++from pathlib import Path
++import sys,json
++from tools.performance.live_viewer import run
++from tools.performance.timestep_report import identity
++r=Path(__file__).resolve().parent.parent
++variant=sys.argv[1]
++for v in ['control',variant]:
++ (r/f'{v}-identity.json').write_text(json.dumps(identity(r/v,r/f'{v}-bin'),indent=2)+'\n')
++for pair in range(3):
++ for v in (['control',variant] if pair%2==0 else [variant,'control']):
++  out=r/'results'/f'explore-{variant}-110592-p{pair}-{v}'
++  run(r/f'{v}-bin',r/'inputs/110592.toml',out,1200,renderer='impostor')
++  d=json.loads((out/'summary.json').read_text());print(json.dumps({'pair':pair,'variant':v,'solver_ms':d['solver_ms_per_step'],'rate':d['simulated_s_per_wall_s']}),flush=True)
+--- /dev/null
++++ b/runner/final_compare.py
+@@ -0,0 +1,14 @@
++from pathlib import Path
++import json,sys
++from tools.performance.live_viewer import run
++from tools.performance.timestep_report import identity,comparison
++r=Path(__file__).resolve().parent.parent
++v=sys.argv[1]
++for name in ['control',v]:
++ (r/f'{name}-identity.json').write_text(json.dumps(identity(r/name,r/f'{name}-bin'),indent=2)+'\n')
++for n in [8000,32000,110592]:
++ for pair in range(4):
++  for name in (['control',v] if pair%2==0 else [v,'control']):
++   run(r/f'{name}-bin',r/'inputs'/f'{n}.toml',r/'results'/f'final-{v}-{n}-p{pair}-{name}',1200,renderer='impostor')
++result=comparison(r/'results',f'final-{v}',v)
++(r/f'{v}-comparison.json').write_text(json.dumps(result,indent=2)+'\n')
+--- /dev/null
++++ b/runner/memory.py
+@@ -0,0 +1,22 @@
++from pathlib import Path
++import subprocess,os,json,re,statistics
++from tools.performance.timestep_report import identity
++r=Path(__file__).resolve().parent.parent
++env=os.environ|{'CARGO_TARGET_DIR':'/home/oliver/.cache/maelstrom-critical-target','MAELSTROM_CUDA_ARCH':'89'}
++records=[]
++for v in ['control','spatial','geometry']:
++ source=r/f'memory-{v}'
++ (source/'build.rs').touch()
++ with (r/f'memory-{v}-build.log').open('x') as log:
++  subprocess.run(['cargo','build','--locked','--offline','--release','--features','cuda,viewer','--example','traversal_witness'],cwd=source,env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
++ receipt=identity(source,Path(env['CARGO_TARGET_DIR'])/'release/examples/traversal_witness')
++ (r/f'memory-{v}-identity.json').write_text(json.dumps(receipt,indent=2)+'\n')
++ for n in ([8000,32000,110592] if v=='control' else [110592]):
++  out=r/f'memory-{v}-{n}.txt'
++  with (r/f'memory-{v}-{n}.log').open('x') as log:
++   subprocess.run([str(Path(env['CARGO_TARGET_DIR'])/'release/examples/traversal_witness'),str(r/'inputs'/f'{n}.toml'),'experimental','1200','default',str(out)],cwd=source,stdout=log,stderr=subprocess.STDOUT,check=True)
++  assert out.read_bytes()==(r/'trajectories'/f'control-{n}-experimental-default.txt').read_bytes()
++  rows=[tuple(map(int,m)) for m in re.findall(r'NEIGHBOUR_STORAGE (\d+) (\d+) (\d+) (\d+)',(r/f'memory-{v}-{n}.log').read_text())]
++  assert len(rows)==1200
++  records.append({'variant':v,'particles':n,'steps':len(rows),'mean_padding_percent':100*statistics.mean(x[2]/x[1]-1 for x in rows if x[1]),'peak_neighbour_reserved_bytes':max(x[3] for x in rows),'peak_logical_entries':max(x[1] for x in rows),'peak_physical_entries':max(x[2] for x in rows)})
++(r/'memory.json').write_text(json.dumps(records,indent=2)+'\n')
+--- /dev/null
++++ b/runner/pixels.py
+@@ -0,0 +1,13 @@
++from pathlib import Path
++import subprocess,json,os
++r=Path(__file__).resolve().parent.parent
++env=os.environ|{'CARGO_TARGET_DIR':'/home/oliver/.cache/maelstrom-critical-target','MAELSTROM_CUDA_ARCH':'89','MAELSTROM_PIXEL_INPUTS':str(r/'inputs')}
++records={}
++for v in ['control','spatial']:
++ source=r/v
++ (source/'build.rs').touch()
++ with (r/f'pixels-{v}.log').open('x') as log:
++  subprocess.run(['cargo','test','--locked','--offline','--release','--features','cuda,viewer','--test','viewer_pixels','--','--ignored','--nocapture'],cwd=source,env=env|{'MAELSTROM_PIXEL_OUTPUT':str(r/f'pixels-{v}')},stdout=log,stderr=subprocess.STDOUT,check=True)
++ records[v]=json.loads((r/f'pixels-{v}/images.json').read_text())
++assert records['control']==records['spatial']
++(r/'pixel-equivalence.json').write_text(json.dumps({'matched_images':len(records['control']),'identical_pixels_and_states':True,'records':records['control']},indent=2)+'\n')
+--- /dev/null
++++ b/runner/qualify.py
+@@ -0,0 +1,50 @@
++from pathlib import Path
++import subprocess,json,os,shutil,hashlib,sys
++from tools.performance.timestep_report import identity
++r=Path(__file__).resolve().parent.parent
++env=os.environ|{'CARGO_TARGET_DIR':'/home/oliver/.cache/maelstrom-critical-target','MAELSTROM_CUDA_ARCH':'89'}
++def execute(name,cmd,cwd,extra=None):
++ with (r/f'{name}.log').open('x') as f:
++  p=subprocess.run(cmd,cwd=cwd,env=env|(extra or {}),stdout=f,stderr=subprocess.STDOUT)
++ if p.returncode: raise RuntimeError(f'{name}: {p.returncode}')
++ print(name,'PASS',flush=True)
++for v in (['spatial','geometry','cooperative'] if '--resume' in sys.argv else ['control','spatial','geometry','cooperative']):
++ source=r/v
++ (source/'build.rs').touch()
++ execute(f'{v}-witness-rebuilt',['cargo','build','--locked','--offline','--release','--features','cuda,viewer','--example','traversal_witness'],source)
++ shutil.copy2(Path(env['CARGO_TARGET_DIR'])/'release/examples/traversal_witness',r/f'{v}-witness-bin')
++ expected=identity(source,r/f'{v}-bin')['source_sha256']
++ assert expected.encode() in (r/f'{v}-witness-bin').read_bytes()
++ cases=[(110592,'experimental',1200,'default')]
++ if v in ['control','spatial']:
++  cases=[(n,m,1200 if m=='experimental' else 240,'default') for n in [8000,32000,110592] for m in ['experimental','reference','fast','paper-baseline','scene']]
++  cases += [(n,'experimental',240,'effects') for n in [32000,110592]]
++ for n,mode,steps,effects in cases:
++  out=r/'trajectories'/f'{v}-{n}-{mode}-{effects}.txt';out.parent.mkdir(exist_ok=True)
++  execute(f'witness-{v}-{n}-{mode}-{effects}',[str(r/f'{v}-witness-bin'),str(r/'inputs'/f'{n}.toml'),mode,str(steps),effects,str(out)],r)
++  if v!='control':
++   control=r/'trajectories'/f'control-{n}-{mode}-{effects}.txt'
++   assert out.read_bytes()==control.read_bytes(),out.name
++source=r/'control'
++(source/'build.rs').touch()
++base=['cargo','test','--locked','--offline','--release','--features','cuda,viewer']
++execute('control-suite',base,source)
++execute('control-cuda',base+['--lib','cuda::solver','--','--ignored','--test-threads=1'],source)
++for name,args in [('boundary',['--test','cuda_boundary','--','--ignored']),('execution',['--test','cuda_execution','--','--ignored','--test-threads=1']),('graphics',['--test','render_device','hardware','--','--ignored','--test-threads=1']),('viewer-model',['--lib','viewer::'])]:
++ execute(f'control-{name}',base+args,source)
++# Existing user whitespace is kept. A formatting diagnostic may report it;
++# retain its result without treating an unrelated pre-existing diff as a fix.
++with (r/'control-fmt.log').open('x') as f:
++ p=subprocess.run(['cargo','fmt','--check'],cwd=source,env=env,stdout=f,stderr=subprocess.STDOUT)
++(r/'control-fmt-status.json').write_text(json.dumps({'exit_code':p.returncode})+'\n')
++execute('control-clippy',['cargo','clippy','--locked','--offline','--release','--features','cuda,viewer','--all-targets','--','-D','warnings'],source)
++execute('control-native-build',['c++','-std=c++17','-g','-O1','-fsanitize=address,undefined','-fno-omit-frame-pointer','-I/usr/local/cuda/include','tests/native/tests.cpp','-ldl','-o',str(r/'control-native-test')],source)
++execute('control-native',[str(r/'control-native-test')],source,{'ASAN_OPTIONS':'detect_leaks=1'})
++# Find the exact built library test artefact from Cargo's structured output.
++p=subprocess.run(base+['--lib','--no-run','--message-format=json'],cwd=source,env=env,capture_output=True,text=True,check=True)
++artifacts=[json.loads(line) for line in p.stdout.splitlines() if line.startswith('{')]
++(r/'control-test-artifacts.json').write_text(json.dumps(artifacts,indent=2)+'\n')
++exe=next(x['executable'] for x in artifacts if x.get('reason')=='compiler-artifact' and x.get('executable') and x['target']['kind']==['lib'])
++for name,test in [('empty','tiled_empty_rows'),('tiled','tiled_density_matches_independent'),('cancel','tiled_attempts_keep_every_cancellation')]:
++ execute(f'control-memcheck-{name}',['/usr/local/cuda/bin/compute-sanitizer','--tool','memcheck','--error-exitcode','97',exe,test,'--ignored','--test-threads=1'],source)
++(r/'qualification-complete.json').write_text(json.dumps({'complete':True})+'\n')
+--- /dev/null
++++ b/runner/rerun.py
+@@ -0,0 +1,15 @@
++from pathlib import Path
++import json,gzip
++from tools.performance.capture import invoke
++r=Path(__file__).resolve().parent.parent
++p,expected=invoke([str(r/'control-bin'),'run',str(r/'inputs/110592.toml'),'--backend','cuda','--device','0','--block-size','128','--numerical-mode','experimental','--steps','1200','--unpaced','--measure','--format','json'],r,r/'replay/record',timeout=180)
++assert p['exit_code']==0 and expected['completed_steps']=='1200'
++saved=r/'replay/recorded.json';saved.write_bytes(gzip.decompress((r/'replay/record/stdout.gz').read_bytes()))
++records=[]
++for v in ['control','spatial']:
++ p,actual=invoke([str(r/f'{v}-bin'),'rerun',str(saved),'--format','json'],r,r/f'replay/{v}',timeout=180)
++ assert p['exit_code']==0
++ for key in ['input','request','steps','final_snapshot','status','failures']:
++  assert json.dumps(actual[key],sort_keys=True)==json.dumps(expected[key],sort_keys=True),(v,key)
++ records.append({'variant':v,'steps':int(actual['completed_steps']),'exact_states_and_diagnostics':True})
++(r/'rerun-equivalence.json').write_text(json.dumps(records,indent=2)+'\n')
+--- /dev/null
++++ b/runner/resources.cpp
+@@ -0,0 +1,57 @@
++// Query resources from the driver-loaded PTX, independently of timed solver work.
++// The bridge owns this probe's isolated context and releases it on every exit.
++#include "bridge.cpp"
++#include <fstream>
++#include <iostream>
++#include <iterator>
++#include <string>
++
++int main(int argc, char **argv) {
++    if (argc!=2) return 2;
++    std::ifstream file(argv[1],std::ios::binary);
++    if (!file) return 2;
++    const std::string ptx((std::istreambuf_iterator<char>(file)),std::istreambuf_iterator<char>());
++    Resource resource;
++    auto status=resource.driver.load();
++    DeviceInfo info{};
++    if (!status.code) status=initialise(resource,0,ptx.c_str(),89,&info);
++    if (status.code) { std::cerr<<"module load failed: "<<status.code<<'\n';return 1; }
++    auto attribute=reinterpret_cast<decltype(&cuFuncGetAttribute)>(dlsym(resource.driver.library,"cuFuncGetAttribute"));
++    if (!attribute) return 1;
++    if (resource.driver.cuCtxPushCurrent_fn(resource.context)!=CUDA_SUCCESS) return 1;
++    std::cout<<"{\"scope\":\"driver-loaded function resources, not achieved occupancy\",\"functions\":[";
++#ifdef SPECIALISED
++    const auto count=solver_operation_count;
++#else
++    const auto count=4U;
++#endif
++    bool failed=false,printed=false;
++    for (unsigned int i=0;i<count && !failed;++i) {
++#ifdef SPECIALISED
++        const auto function=resource.solvers[i];
++        const auto name=solver_names[i];
++#else
++        const char *names[]={"solver","discover_neighbours","spatial_sort","prefix_counts"};
++        const auto name=names[i];
++        CUfunction function;
++        if (resource.driver.cuModuleGetFunction_fn(&function,resource.module,name)!=CUDA_SUCCESS) continue;
++#endif
++        int values[6]{};
++        const CUfunction_attribute fields[]={CU_FUNC_ATTRIBUTE_NUM_REGS,CU_FUNC_ATTRIBUTE_LOCAL_SIZE_BYTES,
++            CU_FUNC_ATTRIBUTE_SHARED_SIZE_BYTES,CU_FUNC_ATTRIBUTE_MAX_THREADS_PER_BLOCK,
++            CU_FUNC_ATTRIBUTE_BINARY_VERSION,CU_FUNC_ATTRIBUTE_PTX_VERSION};
++        for (unsigned int j=0;j<6;++j)
++            if (attribute(&values[j],fields[j],function)!=CUDA_SUCCESS) { failed=true;break; }
++        if (failed) break;
++        if (printed) std::cout<<',';
++        printed=true;
++        std::cout<<"{\"name\":\""<<name<<"\",\"registers\":"<<values[0]
++            <<",\"local_bytes\":"<<values[1]<<",\"shared_bytes\":"<<values[2]
++            <<",\"max_threads\":"<<values[3]<<",\"binary_version\":"<<values[4]
++            <<",\"ptx_version\":"<<values[5]<<'}';
++    }
++    std::cout<<"]}\n";
++    CUcontext previous;
++    if (resource.driver.cuCtxPopCurrent_fn(&previous)!=CUDA_SUCCESS) failed=true;
++    return failed ? 1 : 0;
++}
+--- /dev/null
++++ b/runner/resources.py
+@@ -0,0 +1,14 @@
++from pathlib import Path
++import subprocess,json
++from tools.performance.timestep_report import identity
++r=Path(__file__).resolve().parent.parent
++commands={'gpu':['nvidia-smi','--query-gpu=name,driver_version,memory.total','--format=csv,noheader'],'cpu':['lscpu','-J'],'rustc':['rustc','-Vv'],'nvcc':['/usr/local/cuda/bin/nvcc','--version'],'nsys':['nsys','--version']}
++(r/'environment.json').write_text(json.dumps({name:subprocess.check_output(cmd,text=True) for name,cmd in commands.items()},indent=2)+'\n')
++subprocess.run(['c++','-std=c++17','-O2',str(r/'runner/resources.cpp'),'-I'+str(r/'control/native'),'-I/usr/local/cuda/include','-ldl','-o',str(r/'resources-bin')],check=True)
++records={}
++for v in ['control','cooperative','spatial','geometry']:
++ receipt=identity(r/v,r/f'{v}-bin')
++ data=(r/f'{v}-bin').read_bytes();start=data.index(b'//\n// Generated by NVIDIA NVVM Compiler');end=data.index(b'\0',start)+1
++ ptx=r/f'{v}.ptx';ptx.write_bytes(data[start:end])
++ records[v]=json.loads(subprocess.check_output([str(r/'resources-bin'),str(ptx)],text=True))
++(r/'resources.json').write_text(json.dumps(records,indent=2)+'\n')
+--- /dev/null
++++ b/runner/traces.py
+@@ -0,0 +1,31 @@
++from pathlib import Path
++import subprocess,json,sys
++from tools.performance.live_viewer import run
++from tools.performance.timestep_report import identity,export_timeline,timeline,kernel_stages
++r=Path(__file__).resolve().parent.parent
++for v in sys.argv[1:]:
++ source=r/f'trace-{v}'; binary=r/f'trace-{v}-bin'
++ subprocess.run(['touch',str(source/'build.rs')],check=True)
++ env=__import__('os').environ|{'CARGO_TARGET_DIR':'/home/oliver/.cache/maelstrom-critical-target','MAELSTROM_CUDA_ARCH':'89'}
++ with (r/f'trace-{v}-build.log').open('w') as f:
++  subprocess.run(['cargo','build','--locked','--offline','--release','--features','cuda,viewer'],cwd=source,env=env,stdout=f,stderr=subprocess.STDOUT,check=True)
++ __import__('shutil').copy2(Path(env['CARGO_TARGET_DIR'])/'release/maelstrom',binary)
++ receipt=identity(source,binary)
++ ordinary=identity(r/v,r/f'{v}-bin')
++ assert receipt['ptx_sha256']==ordinary['ptx_sha256']
++ (r/f'trace-{v}-identity.json').write_text(json.dumps(receipt,indent=2)+'\n')
++ for n in ([8000,32000,110592] if v=='control' else [110592]):
++  out=r/'results'/f'trace-{v}-{n}'
++  run(binary,r/'inputs'/f'{n}.toml',out,1200,trace=True,renderer='impostor')
++  subprocess.run(['nsys','export','--type','sqlite','--output',str(out/'timeline.sqlite'),str(out/'timeline.nsys-rep')],check=True)
++  events=export_timeline(out/'timeline.sqlite')
++  stages=kernel_stages(events,n,n>=32000)
++  names={x['name'] for x in events if x['kind']=='kernel'}
++  assert names <= {'solver','observe_state','spatial_sort','prefix_counts','discover_neighbours'},names
++  if v=='cooperative':
++   assert sum(x['kind']=='kernel' and x['name']=='discover_neighbours' for x in events)==2400
++  result=timeline(events)|stages
++  (out/'analysis.json').write_text(json.dumps(result,indent=2)+'\n')
++  import gzip
++  (out/'analysis.events.json.gz').write_bytes(gzip.compress(json.dumps(events,separators=(',',':')).encode(),mtime=0))
++  print(json.dumps({'variant':v,'particles':n,'kernel_ms':result['kernel_ms_per_step']}),flush=True)

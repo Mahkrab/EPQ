@@ -1,0 +1,4431 @@
+--- /dev/null
++++ b/docs/cache.md
+@@ -0,0 +1,162 @@
++# Reusable particle caches
++
++`cache bake` starts a new simulation and retains selected accepted particle states. `render`
++consumes those states without constructing a simulation or CUDA context. A cache is an observation
++archive for visualisation, **not a solver restart checkpoint**. No command continues a solver from
++one of its frames.
++
++```sh
++# New simulation, no graphics or PNG work; both endpoints are retained.
++maelstrom cache bake builtin:large-impact --duration 5 --backend cuda --frame-stride 4 -o impact-cache
++maelstrom cache inspect impact-cache
++maelstrom cache validate impact-cache --full
++
++# Existing observations, no fluid steps. Each output directory must be new.
++maelstrom render impact-cache --render-config front.toml -o impact-front
++maelstrom render impact-cache --render-config side.toml --width 1920 --height 1080 -o impact-side
++maelstrom render impact-cache --frame 150 --render-config front.toml -o impact-still
++maelstrom render impact-cache --first-frame 30 --last-frame 150 --every 2 -o impact-excerpt
++maelstrom play impact-front
++
++# New simulation followed by rendering, retaining a reusable cache.
++maelstrom compile builtin:large-impact --duration 5 --frame-stride 4 --backend cuda \
++  --cache-output another-cache -o another-animation
++```
++
++Bare `compile` retains its existing direct pipeline and schema-1 PNG bundles. `--cache-output`
++selects staged orchestration explicitly. The image output and cache must be different new
++directories. A successful cache survives later graphics or image-output failure.
++
++Baking works in headless builds, including `--features cuda`; rendering requires `render` or
++`viewer`. Backend preferences, experimental numerical defaults and explicit overrides work as
++they do for `run` and `compile`. Render commands accept no simulation backend or numerical override.
++Their default presentation is the built-in view; use `--render-config` to choose the scene's saved
++camera/colours. Standalone caches contain physical geometry and scaling, not camera preferences.
++The staged `compile` convenience preserves its ordinary scene-package presentation resolution.
++
++Frame numbers passed to `render` are **cache-frame indices**, starting at zero. `--every` selects
++an increment in those indices; the inclusive last index is not appended when the increment does
++not reach it. `--frame-stride` belongs to simulation sampling, not cache rendering. A 240 Hz solver
++with stride 4 produces 301 observations for 1,200 steps: initial state, every fourth accepted state
++and final state. It does not retain all 1,201 boundaries or generate new intermediate states later.
++
++## Format and identity
++
++The version-1 directory contains:
++
++- `request.json`: immutable schema/kind, canonical decimal step/stride strings, particle count,
++  exact timestep bits, execution/backend/build provenance and input/identity file digests.
++- `input.json`: existing portable `RecordedInput`, with fully resolved numerics, initial particles,
++  stable identities and static planes. Reading never consults original scene paths or presets.
++- `identities.bin`: ascending, unique little-endian u64 identities, one per row, stored once.
++- `frames/frame-00000000.mpc`: independently addressable raw binary frames.
++- `receipts/frame-00000000.json`: committed frame index/step/length, binary SHA-256 and the existing
++  canonical snapshot SHA-256. Filenames are derived from integer indices, never supplied by receipts.
++- `diagnostics.jsonl`: one existing accepted-step diagnostic per line, streamed in accepted order.
++- `cache.json`: the final completion marker, request/receipt-chain/diagnostic hashes, frame/step
++  counts, warnings, content identity and overlapping stage measurements.
++- `failure.json`, when possible after an error: explicitly incomplete outcome with separate accepted
++  step and committed frame counts. It is never a completion marker.
++
++Each frame begins with this **160-byte little-endian header**:
++
++| Offset | Bytes | Meaning |
++| ---: | ---: | --- |
++| 0 | 8 | ASCII `MSPCACHE` |
++| 8 | 2 + 2 | Major 1, minor 0 |
++| 12 | 4 | Header size 160 |
++| 16 | 8 | Cache-frame index |
++| 24 | 8 | Accepted timestep index |
++| 32 | 8 | Particle count N |
++| 40 | 8 | Uncompressed payload length, 24N |
++| 48 | 8 | Stored payload length, 24N |
++| 56 | 8 | Position array file offset, 160 |
++| 64 | 8 | Velocity array file offset, 160 + 12N |
++| 72 | 4 + 4 | Codec 0 (raw), flags 0 |
++| 80 | 32 | SHA-256 of exact `request.json` bytes |
++| 112 | 32 | Canonical snapshot SHA-256 |
++| 144 | 16 | Reserved, all zero |
++
++The payload has N XYZ f32 positions followed by N XYZ f32 velocities. Values retain the original
++bits, including signed zero; no quantisation, spatial sorting or coordinate conversion occurs.
++Positions are metres, velocities metres per second, right-handed with positive Y upward. Row i
++uses identity i from the shared table. Birth/death, compression, other codecs and nonzero flags
++are unsupported and rejected. A frame has exactly 160 + 24N bytes; trailing bytes are invalid.
++
++The 160-byte header deliberately extends the review's suggested 128-byte header: the canonical
++digest is inside the binary checksum, binding the digest and particle bytes together. Canonical
++provenance still hashes the **unchanged standalone pretty snapshot JSON**, including velocities,
++using the retained streaming writer. Binary checksums never substitute for it.
++
++The reader checks input/identity digests, exact bit timestep, compact schedule, receipt chain and
++completed diagnostic stream. It pins the checked receipt digests in memory, then checks the selected
++frame's exact length, header, request binding, binary checksum and finite ordered particles before
++constructing an immutable `ValidatedFrame`. That sealed value supplies its bound canonical digest
++to the existing encoder. Changing a receipt after opening the cache cannot change that proof.
++`cache validate --full` additionally reconstructs and independently recomputes every canonical digest.
++Ordinary rendering avoids that repeated JSON formatting. Checksums establish integrity relative to
++the cache metadata; they are not signatures. Use full validation for externally produced caches.
++
++Request identity includes exact inputs, build/execution provenance, timestep, duration and sampling.
++Result identity additionally includes ordered receipts and accepted diagnostics. Labels and camera
++changes cannot make one physical cache supply states that were never recorded. File versions and
++required features are strict; future format conversion must be explicit.
++
++The particle payload for 301 frames is 57,792,000 bytes at 8,000 particles and 798,916,608 bytes at
++110,592 particles, plus 160 bytes/frame, static identities, resolved inputs and small receipts.
++Producer memory holds at most one pending particle frame, a packing buffer, fixed diagnostic/hash
++buffers and the solver/input state. It does not retain particle history or per-step diagnostic arrays.
++Readers retain typed inputs and at most 32 MB of receipt digests under the one-million-frame cap;
++particle arrays are loaded on demand. Image export retains bounded pixel/encoder work and its
++existing bounded-count manifest index.
++
++## Completion, cancellation and recovery
++
++The cache writer owns one asynchronous CPU job. Canonical hashing, packing, binary hashing and
++synced frame preparation overlap subsequent solver steps. The caller applies bounded backpressure
++and publishes receipts in order. The initial receipt closes before stepping; a simulation never
++waits for a PNG. All accepted numerical diagnostics and rollback/cancellation points are preserved.
++
++Files are exclusively staged, synced and linked into their final names. A receipt is published
++only after its complete frame, and `cache.json` only after the whole schedule and diagnostic stream
++close. Unix cache directories are synced at publication boundaries. Other platforms retain process-
++failure semantics without claiming directory durability. No power-loss qualification is implied.
++The writer is closed and joined on every return; cancellation discards any uncommitted CPU result.
++A prepared frame without its receipt is an orphan and is ignored during prefix inspection.
++
++```sh
++# Existing, incomplete observations; explicitly choose the available range.
++maelstrom cache inspect interrupted-cache --allow-partial
++maelstrom cache validate interrupted-cache --allow-partial --full
++maelstrom render interrupted-cache --allow-partial --last-frame 42 -o partial-preview
++```
++
++A completed prefix render means that the selected **image request** completed; its source manifest
++still records `source_cache.complete = false`. An incomplete cache never becomes complete by having
++all numbered files present. Missing/corrupt receipts or frames fail validation, existing destinations
++are never overwritten, and a failed image sequence retains `progress.json` and its published prefix.
++Retry rendering into a new output directory, optionally selecting only the missing range. Automatic
++in-place image repair and solver continuation are not supported.
++
++Cache-derived image sequences use **schema 2**, kind `maelstrom-cache-render`, with explicit cache
++selection, timestep bits and source identity. Their PNG bytes, RGBA and snapshot hash meanings,
++indexed renderer, shader and encoder policies are unchanged. `play` and `runs validate` accept both
++schemas. Images remain playable and independently verifiable after the source cache is moved or
++deleted. Existing `export saved`, `export rerun`, result JSON and schema-1 bundles retain their meaning.
++Recorded-input reruns start from zero; they do not load a cache as solver state.
++
++## Costs and limits
++
++The first staged export adds particle writes/reads and separate setup. A cache is valuable for
++repeated presentation, but is not a promise of a faster first export. Baked output records solver,
++capture, diagnostics, canonical hashing, packing, binary hashing, file/receipt publication and writer
++wait intervals. Image output records cache reads/validation, graphics/readback, encoding, hashes and
++publication. Worker intervals overlap caller intervals and must not be added as disjoint wall time.
++Complete process measurements include startup, completion publication and teardown.
++
++One GPU owns simulation during baking and graphics during rendering. This path does not introduce
++concurrent CUDA/graphics workers, compression or surface reconstruction. See
++[interactive playback and MP4 export](video.md) for cache viewing,
++portable cameras and bounded direct video encoding. The live solver viewer retains its existing
++analytic impostor behaviour.
++
+--- /dev/null
++++ b/docs/video.md
+@@ -0,0 +1,154 @@
++# Explore saved motion and export video
++
++Build with `cargo build --release --features viewer` for all commands. `--features render`
++supports PNG and MP4 export without a window. FFmpeg is an external executable, not a Rust
++build dependency. Install a build with the `libx264` encoder on PATH, or use `--ffmpeg PATH`.
++`ffmpeg -encoders` should list `libx264`; a missing executable or encoder produces an actionable
++error before frame delivery. The commands use argument-based subprocess execution.
++
++The following bake starts a **new simulation**. Every later command loads saved observations
++or images and executes no fluid timesteps; none resumes a solver.
++
++```sh
++maelstrom cache bake builtin:large-impact --duration 5 --backend cuda --frame-stride 4 -o impact-cache
++maelstrom view --cache impact-cache --paused --camera-output chosen-view.toml
++# Press S in the window to publish chosen-view.toml.
++maelstrom view --cache impact-cache --render-config chosen-view.toml --paused
++maelstrom render impact-cache --render-config chosen-view.toml --frame 150 -o preview
++maelstrom video cache impact-cache --render-config chosen-view.toml -o impact.mp4 --fps 60 --crf 18
++
++# The lossless image path remains supported, and images need no source cache afterwards.
++maelstrom render impact-cache --render-config chosen-view.toml -o impact-images
++maelstrom video images impact-images -o from-images.mp4 --fps 60 --crf 18
++```
++
++Every output path must be new, including the video provenance sidecar (`impact.mp4.json`).
++Camera saves also create new files: choose a new `--camera-output` for another viewpoint.
++Load the saved file with `--render-config` in the viewer, PNG renderer or video exporter.
++No original scene file is needed. Cache view rejects numerical/backend/step options.
++
++## Window controls and timing
++
++| Control | Action |
++| --- | --- |
++| Space | Play/pause |
++| N / B, or period / comma | Next/previous exact cached frame, paused |
++| J, index, Enter | Jump to any zero-based cache-frame index, paused |
++| Drag bottom seek strip | Scrub cached frames, paused |
++| R / Home | Restart at frame zero |
++| End | Last frame, paused |
++| L | Toggle loop |
++| `[` / `]` | Halve/double playback speed, 1/16× to 16× |
++| Left drag / arrows | Orbit |
++| Right drag | Pan |
++| Wheel / plus / minus | Zoom |
++| F | Fit frozen initial geometry |
++| P | Switch indexed/analytic impostor preview |
++| S | Save full current presentation to `--camera-output` |
++| Escape | Close (or cancel index entry) |
++
++The window title and panel report displayed frame, simulation timestamp, play/pause, loading,
++speed, loop and geometry choice. Playback uses the **recorded simulation timestamps**, including
++an irregular terminal interval. It never interpolates or changes particles. The solver frequency
++(e.g. 240 Hz), cache sampling frequency (normally 60 Hz at stride 4) and display refresh (a
++60 Hz redraw target, subject to presentation/driver limits) are different clocks. High playback
++speeds or slow displays may take longer than requested: every sequential state is displayed,
++with at most one advance per redraw. Disk stalls hold the last accepted frame and stop clock
++advancement; camera input continues. A seek supersedes the pending read-ahead target; at most
++one in-flight disk read must finish before the new target is loaded.
++
++`--cache-memory-mb 128` is the default **particle read-ahead/workspace budget**, not a total-process
++RSS limit. A conservative 256 bytes per particle per slot covers binary decode and conversion;
++two workspace/display slots are reserved, with two to eight read-ahead frames. Budgets too small
++for the minimum are rejected; there is no whole-animation load. Frozen input/identity metadata,
++receipt index, graphics resources and window resources have separate existing bounds. Only one
++background reader performs disk work. Shutdown joins its current read; a stalled filesystem can
++delay shutdown but does not block camera input during normal viewing. Cache metadata is validated
++at opening and frame bytes are validated before use.
++
++## Reproducing the camera
++
++The save includes explicit pixel dimensions, perspective eye/target/up, vertical FOV, near/far
++clipping distances, colour mode and colour/energy range. It writes a validated schema-2 fixed
++presentation using the existing TOML schema, so it does not depend on scene preferences or
++transient camera defaults. Dimensions reflect the drawable area at save time. Retain the same
++aspect ratio to preserve framing; changing only the output aspect changes horizontal framing.
++Only perspective projection is supported by the existing renderer.
++
++The cached viewer defaults to **indexed** geometry, the same geometry as offline PNG and cached
++video export. Both modes share `Graphics::draw`, camera basis, relative-coordinate conversion,
++vertical-FOV projection, aspect and clipping maths. Camera geometry therefore reproduces exactly
++at matching dimensions. Indexed preview is the appropriate composition check. P or
++`--preview-renderer impostor` selects the live viewer's analytic sphere representation for smoother
++spheres. Analytic surfaces and triangle meshes differ in silhouette, depth and normals, so their
++pixels are not expected to match. Surface format/driver/presentation and the viewer's diagnostic
++overlay can also differ from an offscreen PNG. Renderer selection is a preview choice; the
++portable configuration describes the supported indexed output. Use `render --frame INDEX` for
++an overlay-free lossless output preview. H.264 also introduces lossy colour/subsampling changes.
++
++## Video policy and reliability
++
++`video cache` requires an explicit **fixed** `--render-config`. It streams indexed RGBA readback
++to FFmpeg, without PNG files. `video images` consumes a validated completed Maelstrom PNG bundle
++(directory or `manifest.json`, schema 1 or 2); it validates ordered PNG and decoded-pixel hashes
++and never requires the cache. This command does not accept arbitrary unmanifested numbered PNGs.
++
++Both workflows accept `--width`, `--height`, `--fps`, `--crf`, `--first-frame`, `--last-frame`,
++`--every` and `--omit-terminal`. Frame bounds are inclusive, zero-based **source-frame indices**;
++`--every` never appends an unselected last frame. Invalid/out-of-range/empty selections fail.
++Images are scaled by FFmpeg when output dimensions differ; cache frames are rendered directly at
++the selected dimensions. H.264 output uses libx264, MP4, yuv420p and fast-start metadata. Output
++dimensions must be even, between 2 and 8192. FPS must be finite in (0, 1000]. CRF ranges from 0 to
++51, with 18 the default (lower values increase quality/size). Yuv420p output is not a replacement
++for lossless RGBA PNGs. See [FFmpeg's format documentation](https://ffmpeg.org/ffmpeg-formats.html)
++for rawvideo input and MP4 muxing.
++
++**Default: encode every selected observation once for one video-frame period.** A 240 Hz,
++five-second bake with stride 4 retains 301 observations (steps 0 through 1200). At 60 FPS this
++is 301/60 = 5.016666… seconds; the final observation remains visible for a full frame period.
++Use `--omit-terminal` explicitly for 300/60 = 5 seconds: it omits the final *selected* observation
++from this video only. The cache, image schedule and all identities remain intact. The provenance
++records the omission policy. No duration option silently resamples or drops endpoints. For a
++sparse or irregular selection, CFR video time is selected ordinal/FPS, while original simulation
++timestamps remain separate in provenance. It is intentionally a constant-frame-rate slideshow of
++selected observations, not an interpolation or a claim that sparse frames retain physical pacing.
++
++Frame delivery retains one producer frame, one queued frame and one writer frame, plus graphics
++readback/decode and FFmpeg's own encoder buffers. FFmpeg stderr is drained with a 64 KiB tail.
++Cancellation is checked during queue backpressure and encoder shutdown, kills/reaps FFmpeg,
++joins pipe threads and removes staging files. Graphics readback and a single disk decode finish
++before the next cancellation check. Encoder nonzero exit or a frame validation failure prevents
++publication. A private sibling staging directory holds the temporary MP4; successful completion
++syncs it and publishes through exclusive hard links. Existing destinations are never overwritten.
++Caught failures/cancellation remove incomplete outputs. Abrupt process/OS death can leave a hidden
++`.maelstrom-video-*` staging directory; automatic recovery and power-loss atomic publication of
++the MP4/JSON pair are not claimed. Publication requires a filesystem supporting hard links, as
++does the existing output publisher.
++
++The sidecar records FFmpeg version/path, codec, CRF/pixel format, dimensions, frame selection,
++original simulation timestamps, video timestamps/duration, timing policy and elapsed encoding
++wall time. Cached video records cache identity, timestep bits and resolved presentation. PNG
++conversion records the source manifest SHA-256 and its resolved presentation; the manifest binds
++original image and snapshot identities. No video throughput or primary-PC speedup claim is made.
++
++## Verification boundary
++
++Local WSL verification on 10 November 2026 passed 67 library tests, 56 CLI tests across
++`cli_usability`, `cli_workflow` and `saved_settings_cli`, all three opt-in cache graphics/video
++workflow tests, and the real-FFmpeg encoder tests. FFprobe checked codec, dimensions and frame
++count. Tests cover explicit endpoint omission, invalid ranges/FPS/dimensions, missing executable
++or libx264, encoder failure, cancellation, corrupt input and output preservation/cleanup.
++Headless and render-only builds were checked separately; the viewer build was exercised in a window.
++
++A scripted X11 journey on llvmpipe Vulkan exercised stepping, reverse stepping, arbitrary seeking,
++play/pause, speed, camera orbit/zoom, preview switching, save and reload. The saved camera was
++accepted by independent PNG and MP4 export. At matching frame 17 and 640×480 dimensions,
++140,160 pixels in the scene region outside the viewer controls matched the indexed PNG exactly.
++This is a same-device indexed regression observation, not a general cross-driver pixel guarantee
++or a claim of equality with analytic impostors. X11 testing supplied Ubuntu's documented
++`libxkbcommon-x11-0` and `libxcb-xkb1` libraries from a temporary extracted package directory;
++the system installation was not changed.
++
++No primary-PC throughput, 110,592-particle playback soak, cold-disk test or Windows/macOS graphical
++qualification was performed for this extension. The memory policy is an allocation bound, not a
++measured whole-process RSS claim. Existing cache-format identities and PNG schedules are unchanged.
+--- /dev/null
++++ b/src/cache/bake.rs
+@@ -0,0 +1,200 @@
++//! Cache production observes the unchanged solver at scheduled accepted indices.
++//! Diagnostics stream to disk; only bounded immutable particle copies are queued.
++use super::*;
++use crate::{
++    scene::ResolvedScene,
++    simulation::Simulation,
++    workflow::{ExecutionOptions, RecordedInput, RunMetadata, SnapshotRecord, StepDiagnostic},
++};
++use std::{
++    io::{BufWriter, Write},
++    time::Instant,
++};
++
++/// A fresh simulation and its required new particle-cache directory.
++pub struct BakeRequest<'a> {
++    /// Fully resolved numerical inputs; no presentation values enter the solver.
++    pub scene: &'a ResolvedScene,
++    /// Requested accepted timesteps, starting from zero.
++    pub steps: u64,
++    /// Output frequency in accepted steps, always including both endpoints.
++    pub stride: u64,
++    /// Explicit simulation resources and discovery selection.
++    pub options: ExecutionOptions,
++    /// Exclusive new destination; its parent must already exist.
++    pub destination: &'a Path,
++}
++
++/// Simulates once, asynchronously prepares frames, and transactionally closes the cache.
++/// On error, committed receipts identify the retained prefix. No PNG work occurs.
++pub fn bake(
++    request: BakeRequest<'_>,
++    mut cancelled: impl FnMut() -> bool,
++    mut progress: impl FnMut(u64, u64),
++) -> Result<serde_json::Value, CacheError> {
++    let started = Instant::now();
++    let schedule = Schedule::new(request.steps, request.stride)?;
++    let dt = f64::from(request.scene.configuration.numerical.fixed_timestep_s);
++    if !((request.steps as f64) * dt).is_finite()
++        || request.scene.particles.len() > crate::scene::MAX_SCENE_PARTICLES
++    {
++        return Err(invalid("cache input exceeds supported limits"));
++    }
++    if cancelled() {
++        return Err(CacheError::Cancelled);
++    }
++    match fs::symlink_metadata(request.destination) {
++        Ok(_) => return Err(invalid("cache destination already exists")),
++        Err(e) if e.kind() == io::ErrorKind::NotFound => {}
++        Err(e) => return Err(e.into()),
++    }
++    let mut solver = Simulation::from_scene_with_execution(
++        request.scene,
++        request.options.backend,
++        request.options.execution,
++    )
++    .map_err(invalid)?;
++    let input = RecordedInput::capture(request.scene, &solver);
++    let input_bytes = serde_json::to_vec_pretty(&input)?;
++    let identities: Vec<_> = solver
++        .snapshot()
++        .particles()
++        .iter()
++        .flat_map(|p| p.identity.to_le_bytes())
++        .collect();
++    let mut metadata = RunMetadata::new(
++        &input,
++        request.steps,
++        request.options.backend,
++        request.options.execution,
++    );
++    metadata.device = solver.device().cloned();
++    let specification = Request {
++        schema_version: 1,
++        kind: "maelstrom-particle-cache".into(),
++        steps: request.steps.to_string(),
++        stride: request.stride.to_string(),
++        particle_count: solver.snapshot().particles().len(),
++        timestep_bits: request
++            .scene
++            .configuration
++            .numerical
++            .fixed_timestep_s
++            .to_bits(),
++        input_sha256: digest(&input_bytes),
++        identities_sha256: digest(&identities),
++        execution: request.options.execution,
++        backend: metadata.backend.clone(),
++        metadata: serde_json::to_value(metadata)?,
++        build: build_identity(),
++    };
++    let bytes = serde_json::to_vec_pretty(&specification)?;
++    let request_hash = digest(&bytes);
++    fs::create_dir(request.destination)?;
++    fs::create_dir(request.destination.join("frames"))?;
++    fs::create_dir(request.destination.join("receipts"))?;
++    publish(&request.destination.join("input.json"), &input_bytes)?;
++    publish(&request.destination.join("identities.bin"), &identities)?;
++    publish(&request.destination.join("request.json"), &bytes)?;
++    sync_directory(request.destination)?;
++    drop(input_bytes);
++    drop(identities);
++    drop(input);
++    let file = fs::OpenOptions::new()
++        .write(true)
++        .create_new(true)
++        .open(request.destination.join("diagnostics.jsonl"))?;
++    let mut diagnostics_file = BufWriter::with_capacity(64 * 1024, file);
++    let mut diagnostics_hash = Sha256::new();
++    let mut writer = writer::Writer::new(request.destination, request_hash.clone())?;
++    let mut solver_s = 0.0;
++    let mut capture_s = 0.0;
++    let mut diagnostics_s = 0.0;
++    let mut warnings = 0;
++    let mut accepted = 0;
++    let setup_s = started.elapsed().as_secs_f64();
++    progress(0, schedule.len());
++    let result = (|| {
++        let mut next = 0;
++        for step in 0..=request.steps {
++            if cancelled() {
++                return Err(CacheError::Cancelled);
++            }
++            if step > 0 {
++                let start = Instant::now();
++                let outcome = solver
++                    .step_with_cancellation(&mut cancelled)
++                    .map_err(invalid)?;
++                solver_s += start.elapsed().as_secs_f64();
++                accepted = step;
++                let start = Instant::now();
++                let diagnostic = StepDiagnostic::new(step, outcome.cfl);
++                warnings += u64::from(diagnostic.warning);
++                let mut bytes = serde_json::to_vec(&diagnostic)?;
++                bytes.push(b'\n');
++                diagnostics_file.write_all(&bytes)?;
++                diagnostics_hash.update(&bytes);
++                diagnostics_s += start.elapsed().as_secs_f64();
++            }
++            if schedule.step(next) == Some(step) {
++                writer.collect(&mut cancelled)?;
++                progress(writer.count, schedule.len());
++                let start = Instant::now();
++                let snapshot = SnapshotRecord::capture(solver.snapshot());
++                capture_s += start.elapsed().as_secs_f64();
++                writer.submit(snapshot, next)?;
++                next += 1;
++                if step == 0 {
++                    writer.collect(&mut cancelled)?;
++                    progress(writer.count, schedule.len());
++                }
++            }
++        }
++        writer.collect(&mut cancelled)?;
++        progress(writer.count, schedule.len());
++        if cancelled() {
++            return Err(CacheError::Cancelled);
++        }
++        if writer.count != schedule.len() {
++            return Err(invalid("incomplete cache frame schedule"));
++        }
++        diagnostics_file.flush()?;
++        diagnostics_file.get_ref().sync_all()?;
++        let receipt_hash = writer.chain();
++        let diagnostic_hash = hex(diagnostics_hash.clone().finalize().as_slice());
++        let timings = serde_json::json!({"schema_version":1,"boundary":"bake_entry_to_before_completion_publication","setup_s":setup_s,"solver_s":solver_s,"capture_s":capture_s,"diagnostics_s":diagnostics_s,"worker":writer.timings,"worker_overlaps_simulation":true,"elapsed_s":started.elapsed().as_secs_f64(),"max_pending_particle_frames":1});
++        let completion = Completion {
++            schema_version: 1,
++            complete: true,
++            request_sha256: request_hash.clone(),
++            frames: writer.count,
++            accepted_steps: accepted.to_string(),
++            warnings,
++            cache_id: result_id(&request_hash, &receipt_hash, &diagnostic_hash),
++            receipts_sha256: receipt_hash,
++            diagnostics_sha256: diagnostic_hash,
++            timings,
++        };
++        publish(
++            &request.destination.join("cache.json"),
++            &serde_json::to_vec_pretty(&completion)?,
++        )?;
++        sync_directory(request.destination)?;
++        serde_json::to_value(completion).map_err(Into::into)
++    })();
++    if let Err(error) = &result {
++        // Drop joins the writer before any function return. A prepared frame
++        // without its receipt is an orphan, never part of the committed prefix.
++        let _ = diagnostics_file.flush();
++        let failure = serde_json::json!({"schema_version":1,"complete":false,"accepted_steps":accepted.to_string(),"committed_frames":writer.count,"error":error.to_string()});
++        if let Err(output) = publish(
++            &request.destination.join("failure.json"),
++            &serde_json::to_vec_pretty(&failure)?,
++        ) {
++            return Err(invalid(format!(
++                "{error}; recording cache failure also failed: {output}"
++            )));
++        }
++    }
++    result
++}
+--- /dev/null
++++ b/src/cache/format.rs
+@@ -0,0 +1,188 @@
++//! Fixed little-endian arrays preserve binary32 bits and stable row identities.
++//! The canonical digest is inside the checked frame, binding it to the payload.
++use super::*;
++use crate::{math::Vec3, scene::Particle, workflow::SnapshotRecord};
++
++pub(super) const HEADER: usize = 160;
++const MAGIC: &[u8; 8] = b"MSPCACHE";
++
++/// Compact accepted-step schedule, including both endpoints. No frame array is allocated.
++#[derive(Debug, Clone, Copy)]
++pub struct Schedule {
++    last: u64,
++    stride: u64,
++    count: u64,
++}
++impl Schedule {
++    /// Rejects zero stride, overflow and more than one million observations.
++    pub fn new(last: u64, stride: u64) -> Result<Self, CacheError> {
++        if stride == 0 {
++            return Err(invalid("step stride must be positive"));
++        }
++        let count = (last / stride)
++            .checked_add(1)
++            .and_then(|n| n.checked_add(u64::from(!last.is_multiple_of(stride))))
++            .ok_or_else(|| invalid("frame count overflow"))?;
++        if count > 1_000_000 {
++            return Err(invalid("frame count exceeds 1000000"));
++        }
++        Ok(Self {
++            last,
++            stride,
++            count,
++        })
++    }
++    /// Number of observations, including the initial observation.
++    pub fn len(self) -> u64 {
++        self.count
++    }
++    /// Schedules always contain the initial observation.
++    pub fn is_empty(self) -> bool {
++        false
++    }
++    /// Accepted step for an output index, or None outside the schedule.
++    pub fn step(self, index: u64) -> Option<u64> {
++        (index < self.count).then(|| index.saturating_mul(self.stride).min(self.last))
++    }
++}
++
++pub(super) fn size(count: usize) -> Result<usize, CacheError> {
++    count
++        .checked_mul(24)
++        .and_then(|n| n.checked_add(HEADER))
++        .ok_or_else(|| invalid("cache frame length overflow"))
++}
++fn put(bytes: &mut [u8], offset: usize, value: u64) {
++    bytes[offset..offset + 8].copy_from_slice(&value.to_le_bytes());
++}
++fn get(bytes: &[u8], offset: usize) -> Result<u64, CacheError> {
++    Ok(u64::from_le_bytes(
++        bytes
++            .get(offset..offset + 8)
++            .ok_or_else(|| invalid("short cache header"))?
++            .try_into()
++            .map_err(invalid)?,
++    ))
++}
++fn raw_digest(text: &str) -> Result<[u8; 32], CacheError> {
++    if !valid_digest(text) {
++        return Err(invalid("invalid cache digest"));
++    }
++    let mut digest = [0; 32];
++    for (i, pair) in text.as_bytes()[7..].as_chunks::<2>().0.iter().enumerate() {
++        let digit = |b: u8| if b <= b'9' { b - b'0' } else { b - b'a' + 10 };
++        digest[i] = digit(pair[0]) * 16 + digit(pair[1]);
++    }
++    Ok(digest)
++}
++pub(super) fn encode(
++    snapshot: &SnapshotRecord,
++    index: u64,
++    request: &str,
++    canonical: [u8; 32],
++) -> Result<Vec<u8>, CacheError> {
++    let n = snapshot.particles().len();
++    let len = size(n)?;
++    let mut bytes = Vec::new();
++    bytes.try_reserve_exact(len).map_err(invalid)?;
++    bytes.resize(len, 0);
++    bytes[..8].copy_from_slice(MAGIC);
++    bytes[8..10].copy_from_slice(&1u16.to_le_bytes());
++    bytes[12..16].copy_from_slice(&(HEADER as u32).to_le_bytes());
++    for (o, v) in [
++        (16, index),
++        (24, snapshot.completed_steps()),
++        (32, n as u64),
++        (40, (24 * n) as u64),
++        (48, (24 * n) as u64),
++        (56, HEADER as u64),
++        (64, (HEADER + 12 * n) as u64),
++    ] {
++        put(&mut bytes, o, v);
++    }
++    bytes[80..112].copy_from_slice(&raw_digest(request)?);
++    bytes[112..144].copy_from_slice(&canonical);
++    for (i, r) in snapshot.particles().iter().enumerate() {
++        let p = r.particle();
++        for (offset, v) in [
++            (HEADER + 12 * i, p.position_m),
++            (HEADER + 12 * n + 12 * i, p.velocity_m_s),
++        ] {
++            for (j, f) in [v.x, v.y, v.z].iter().enumerate() {
++                bytes[offset + 4 * j..offset + 4 * j + 4]
++                    .copy_from_slice(&f.to_bits().to_le_bytes());
++            }
++        }
++    }
++    Ok(bytes)
++}
++pub(super) fn decode(
++    bytes: &[u8],
++    receipt: &Receipt,
++    request: &str,
++    initial: &[Particle],
++) -> Result<(SnapshotRecord, [u8; 32], f64), CacheError> {
++    let validation_started = std::time::Instant::now();
++    let n = initial.len();
++    if bytes.len() != size(n)?
++        || bytes.len() as u64 != receipt.bytes
++        || bytes.get(..8) != Some(MAGIC.as_slice())
++    {
++        return Err(invalid("cache frame length or magic mismatch"));
++    }
++    if bytes[8..12] != [1, 0, 0, 0]
++        || bytes[12..16] != (HEADER as u32).to_le_bytes()
++        || bytes[72..80] != [0; 8]
++        || bytes[144..160] != [0; 16]
++    {
++        return Err(invalid("unsupported cache frame version, codec or flags"));
++    }
++    for (o, v) in [
++        (16, receipt.index),
++        (24, decimal(&receipt.step)?),
++        (32, n as u64),
++        (40, (24 * n) as u64),
++        (48, (24 * n) as u64),
++        (56, HEADER as u64),
++        (64, (HEADER + 12 * n) as u64),
++    ] {
++        if get(bytes, o)? != v {
++            return Err(invalid(
++                "cache frame header disagrees with receipt or layout",
++            ));
++        }
++    }
++    if bytes[80..112] != raw_digest(request)?
++        || bytes[112..144] != raw_digest(&receipt.snapshot_sha256)?
++        || digest(bytes) != receipt.file_sha256
++    {
++        return Err(invalid(
++            "cache frame checksum, request or canonical binding mismatch",
++        ));
++    }
++    let validation_s = validation_started.elapsed().as_secs_f64();
++    let mut particles = Vec::new();
++    particles.try_reserve_exact(n).map_err(invalid)?;
++    for (i, p) in initial.iter().enumerate() {
++        let vector = |offset: usize| -> Result<Vec3, CacheError> {
++            let f = |j: usize| -> Result<f32, CacheError> {
++                Ok(f32::from_bits(u32::from_le_bytes(
++                    bytes[offset + j * 4..offset + j * 4 + 4]
++                        .try_into()
++                        .map_err(invalid)?,
++                )))
++            };
++            Ok(Vec3::new(f(0)?, f(1)?, f(2)?))
++        };
++        particles.push(Particle {
++            identity: p.identity,
++            position_m: vector(HEADER + 12 * i)?,
++            velocity_m_s: vector(HEADER + 12 * n + 12 * i)?,
++        });
++    }
++    Ok((
++        SnapshotRecord::from_particles(particles, decimal(&receipt.step)?).map_err(invalid)?,
++        raw_digest(&receipt.snapshot_sha256)?,
++        validation_s,
++    ))
++}
+--- /dev/null
++++ b/src/cache/mod.rs
+@@ -0,0 +1,191 @@
++//! Particle caches retain scheduled accepted observations independently of images.
++//! Frames and receipts are immutable; only a completed manifest certifies the
++//! requested sequence. Reading a cache never constructs a simulation or a device.
++
++mod bake;
++mod format;
++mod reader;
++mod writer;
++
++pub use bake::{BakeRequest, bake};
++pub use format::Schedule;
++pub use reader::{Cache, ReadTimings, ValidatedFrame};
++
++use serde::{Deserialize, Serialize};
++use sha2::{Digest, Sha256};
++use std::{
++    fmt, fs,
++    io::{self, Read},
++    path::Path,
++};
++
++/// An invalid cache, a failed operation, cancellation, or a lost writer.
++#[derive(Debug)]
++pub enum CacheError {
++    /// Unsupported, inconsistent or corrupt input.
++    Invalid(String),
++    /// Filesystem operation failed; any committed prefix is retained.
++    Io(io::Error),
++    /// Cooperative cancellation before completion publication.
++    Cancelled,
++    /// The bounded writer stopped without returning its result.
++    WriterStopped,
++}
++impl fmt::Display for CacheError {
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        match self {
++            Self::Invalid(s) => f.write_str(s),
++            Self::Io(e) => write!(f, "cache I/O: {e}"),
++            Self::Cancelled => f.write_str("cache bake cancelled"),
++            Self::WriterStopped => f.write_str("cache writer stopped before completing its frame"),
++        }
++    }
++}
++impl std::error::Error for CacheError {}
++impl From<io::Error> for CacheError {
++    fn from(e: io::Error) -> Self {
++        Self::Io(e)
++    }
++}
++impl From<serde_json::Error> for CacheError {
++    fn from(e: serde_json::Error) -> Self {
++        invalid(format!("cache JSON: {e}"))
++    }
++}
++pub(crate) fn invalid(s: impl fmt::Display) -> CacheError {
++    CacheError::Invalid(s.to_string())
++}
++pub(crate) fn digest(bytes: &[u8]) -> String {
++    hex(Sha256::digest(bytes).as_slice())
++}
++pub(crate) fn hex(bytes: &[u8]) -> String {
++    format!(
++        "sha256:{}",
++        bytes.iter().map(|b| format!("{b:02x}")).collect::<String>()
++    )
++}
++fn valid_digest(s: &str) -> bool {
++    s.strip_prefix("sha256:").is_some_and(|s| {
++        s.len() == 64
++            && s.bytes()
++                .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
++    })
++}
++
++/// Build identity is recorded even in headless cache producers.
++pub(crate) fn build_identity() -> serde_json::Value {
++    serde_json::json!({"commit":option_env!("MAELSTROM_EXPORT_COMMIT"),"dirty":option_env!("MAELSTROM_EXPORT_DIRTY"),"source_sha256":option_env!("MAELSTROM_EXPORT_SOURCE"),"lock_sha256":option_env!("MAELSTROM_EXPORT_LOCK"),"rustc":option_env!("MAELSTROM_EXPORT_RUSTC"),"target":option_env!("MAELSTROM_EXPORT_TARGET"),"profile":option_env!("MAELSTROM_EXPORT_PROFILE"),"opt_level":option_env!("MAELSTROM_EXPORT_OPT_LEVEL"),"rustflags_sha256":option_env!("MAELSTROM_EXPORT_CARGO_ENCODED_RUSTFLAGS"),"debug_assertions":cfg!(debug_assertions),"features":{"cuda":cfg!(feature="cuda"),"render":cfg!(feature="render"),"viewer":cfg!(feature="viewer")}})
++}
++
++// Keep wire structs private: callers cannot manufacture a validated frame or digest.
++#[derive(Serialize, Deserialize)]
++#[serde(deny_unknown_fields)]
++struct Request {
++    schema_version: u32,
++    kind: String,
++    steps: String,
++    stride: String,
++    particle_count: usize,
++    timestep_bits: u32,
++    input_sha256: String,
++    identities_sha256: String,
++    execution: crate::execution::ExecutionMode,
++    backend: String,
++    metadata: serde_json::Value,
++    build: serde_json::Value,
++}
++#[derive(Serialize, Deserialize)]
++#[serde(deny_unknown_fields)]
++struct Receipt {
++    schema_version: u32,
++    index: u64,
++    step: String,
++    bytes: u64,
++    file_sha256: String,
++    snapshot_sha256: String,
++}
++#[derive(Serialize, Deserialize)]
++#[serde(deny_unknown_fields)]
++struct Completion {
++    schema_version: u32,
++    complete: bool,
++    request_sha256: String,
++    frames: u64,
++    accepted_steps: String,
++    warnings: u64,
++    receipts_sha256: String,
++    diagnostics_sha256: String,
++    cache_id: String,
++    timings: serde_json::Value,
++}
++
++fn decimal(s: &str) -> Result<u64, CacheError> {
++    let n: u64 = s.parse().map_err(invalid)?;
++    if n.to_string() != s {
++        return Err(invalid("non-canonical cache step"));
++    }
++    Ok(n)
++}
++
++// Refuse symlinks and verify the opened object too. Linux O_NOFOLLOW closes the
++// final-component race; all intermediate cache directories are checked at open/use.
++fn regular(path: &Path, limit: u64) -> Result<fs::File, CacheError> {
++    let m = fs::symlink_metadata(path)?;
++    if !m.is_file() || m.len() > limit {
++        return Err(invalid("expected a bounded regular cache file"));
++    }
++    let mut options = fs::OpenOptions::new();
++    options.read(true);
++    #[cfg(target_os = "linux")]
++    {
++        use std::os::unix::fs::OpenOptionsExt;
++        options.custom_flags(0x20000);
++    }
++    let file = options.open(path)?;
++    let opened = file.metadata()?;
++    if !opened.is_file() || opened.len() > limit {
++        return Err(invalid("opened cache file exceeds its limit"));
++    }
++    Ok(file)
++}
++fn directory(path: &Path) -> Result<(), CacheError> {
++    if !fs::symlink_metadata(path)?.is_dir() {
++        return Err(invalid("expected a cache directory, not a symlink"));
++    }
++    Ok(())
++}
++fn read(path: &Path, limit: u64) -> Result<Vec<u8>, CacheError> {
++    let file = regular(path, limit)?;
++    let mut bytes = Vec::new();
++    bytes
++        .try_reserve_exact(usize::try_from(file.metadata()?.len()).map_err(invalid)?)
++        .map_err(invalid)?;
++    file.take(limit + 1).read_to_end(&mut bytes)?;
++    if bytes.len() as u64 > limit {
++        return Err(invalid("cache file grew beyond its limit"));
++    }
++    Ok(bytes)
++}
++fn sync_directory(path: &Path) -> Result<(), CacheError> {
++    #[cfg(unix)]
++    fs::File::open(path)?.sync_all()?;
++    #[cfg(not(unix))]
++    let _ = path;
++    Ok(())
++}
++fn publish(path: &Path, bytes: &[u8]) -> Result<(), CacheError> {
++    crate::workflow::publish_bytes(path, bytes)?;
++    Ok(())
++}
++fn receipt_name(index: u64) -> String {
++    format!("frame-{index:08}.json")
++}
++fn frame_name(index: u64) -> String {
++    format!("frame-{index:08}.mpc")
++}
++fn result_id(request: &str, receipts: &str, diagnostics: &str) -> String {
++    digest(format!("maelstrom-cache-v1|{request}|{receipts}|{diagnostics}").as_bytes())
++}
++
++#[cfg(test)]
++mod tests;
+--- /dev/null
++++ b/src/cache/reader.rs
+@@ -0,0 +1,334 @@
++//! Readers retain typed inputs and a compact schedule, opening only selected frames.
++//! A checked binary frame carries the writer's canonical digest into presentation;
++//! full validation independently recomputes that digest when requested.
++use super::*;
++use crate::{
++    scene::ResolvedScene,
++    workflow::{RecordedInput, SnapshotRecord},
++};
++use std::{
++    io::{BufRead, BufReader},
++    path::PathBuf,
++};
++
++/// An immutable snapshot whose bytes and canonical-digest binding were checked together.
++pub struct ValidatedFrame {
++    snapshot: SnapshotRecord,
++    canonical: [u8; 32],
++    read_timings: ReadTimings,
++}
++/// Per-frame CPU wall costs; these intervals do not include rendering or canonical rehashing.
++#[derive(Debug, Clone, Copy, Default, Serialize)]
++pub struct ReadTimings {
++    /// File opens/reads and receipt validation.
++    pub reading_s: f64,
++    /// Header and complete binary checksum validation.
++    pub binary_validation_s: f64,
++    /// Conversion to finite, immutable snapshot records.
++    pub decoding_s: f64,
++}
++impl ValidatedFrame {
++    /// Exact accepted state, in stable identity order.
++    pub fn snapshot(&self) -> &SnapshotRecord {
++        &self.snapshot
++    }
++    /// Existing canonical pretty-JSON SHA-256, not the binary checksum.
++    pub fn canonical_sha256(&self) -> String {
++        hex(&self.canonical)
++    }
++    /// Diagnostic costs measured while reading this frame.
++    pub fn read_timings(&self) -> ReadTimings {
++        self.read_timings
++    }
++}
++
++/// Validated cache metadata. Frame data are read on demand, without a solver.
++pub struct Cache {
++    root: PathBuf,
++    request: Request,
++    pub(crate) input: RecordedInput,
++    scene: ResolvedScene,
++    schedule: Schedule,
++    frames: u64,
++    complete: bool,
++    request_hash: String,
++    identity: String,
++    receipt_hashes: Vec<[u8; 32]>,
++}
++
++impl Cache {
++    /// Opens a complete cache, or its receipt-backed prefix when explicitly allowed.
++    /// Metadata, receipt chain, identities and completed diagnostics are checked here;
++    /// particle files are checked by [`Self::frame`] before consumption.
++    pub fn open(root: &Path, allow_partial: bool) -> Result<Self, CacheError> {
++        directory(root)?;
++        directory(&root.join("frames"))?;
++        directory(&root.join("receipts"))?;
++        let bytes = read(&root.join("request.json"), 1024 * 1024)?;
++        let request_hash = digest(&bytes);
++        let request: Request = serde_json::from_slice(&bytes)?;
++        let schedule = Schedule::new(decimal(&request.steps)?, decimal(&request.stride)?)?;
++        if request.schema_version != 1
++            || request.kind != "maelstrom-particle-cache"
++            || request.particle_count > crate::scene::MAX_SCENE_PARTICLES
++            || !valid_digest(&request.input_sha256)
++            || !valid_digest(&request.identities_sha256)
++        {
++            return Err(invalid("unsupported or invalid cache request"));
++        }
++        let bytes = read(&root.join("input.json"), 256 * 1024 * 1024)?;
++        if digest(&bytes) != request.input_sha256 {
++            return Err(invalid("cache input checksum mismatch"));
++        }
++        let input: RecordedInput = serde_json::from_slice(&bytes)?;
++        drop(bytes);
++        let scene = input.resolve_observation().map_err(invalid)?;
++        if scene.particles.len() != request.particle_count
++            || scene.configuration.numerical.fixed_timestep_s.to_bits() != request.timestep_bits
++        {
++            return Err(invalid("cache input count or timestep mismatch"));
++        }
++        let bytes = read(
++            &root.join("identities.bin"),
++            8 * request.particle_count as u64,
++        )?;
++        if bytes.len() != 8 * request.particle_count
++            || digest(&bytes) != request.identities_sha256
++            || scene
++                .particles
++                .iter()
++                .zip(bytes.as_chunks::<8>().0.iter())
++                .any(|(p, b)| p.identity.to_le_bytes() != *b)
++        {
++            return Err(invalid("cache identity table mismatch"));
++        }
++        drop(bytes);
++        let completion = match fs::symlink_metadata(root.join("cache.json")) {
++            Ok(_) => Some(serde_json::from_slice::<Completion>(&read(
++                &root.join("cache.json"),
++                1024 * 1024,
++            )?)?),
++            Err(e) if e.kind() == io::ErrorKind::NotFound => None,
++            Err(e) => return Err(e.into()),
++        };
++        if completion.is_none() && !allow_partial {
++            return Err(invalid(
++                "incomplete cache requires explicit --allow-partial",
++            ));
++        }
++        let mut chain = Sha256::new();
++        let mut frames = 0;
++        let mut receipt_hashes = Vec::new();
++        receipt_hashes
++            .try_reserve_exact(schedule.len() as usize)
++            .map_err(invalid)?;
++        while frames < schedule.len() {
++            let path = root.join("receipts").join(receipt_name(frames));
++            if completion.is_none()
++                && matches!(fs::symlink_metadata(&path),Err(e) if e.kind()==io::ErrorKind::NotFound)
++            {
++                break;
++            }
++            let bytes = read(&path, 2048)?;
++            let receipt: Receipt = serde_json::from_slice(&bytes)?;
++            check_receipt(&receipt, frames, schedule, request.particle_count)?;
++            chain.update(&bytes);
++            receipt_hashes.push(Sha256::digest(&bytes).into());
++            frames += 1;
++        }
++        let identity = if let Some(c) = &completion {
++            if c.schema_version != 1
++                || !c.complete
++                || c.request_sha256 != request_hash
++                || c.frames != frames
++                || frames != schedule.len()
++                || c.accepted_steps != request.steps
++                || c.receipts_sha256 != hex(chain.finalize().as_slice())
++                || !valid_digest(&c.diagnostics_sha256)
++                || c.cache_id != result_id(&request_hash, &c.receipts_sha256, &c.diagnostics_sha256)
++            {
++                return Err(invalid(
++                    "cache completion disagrees with request or receipt chain",
++                ));
++            }
++            let (hash, warnings) = diagnostics(
++                &root.join("diagnostics.jsonl"),
++                decimal(&request.steps)?,
++                request.timestep_bits,
++            )?;
++            if hash != c.diagnostics_sha256 || warnings != c.warnings {
++                return Err(invalid(
++                    "cache diagnostic checksum or warning count mismatch",
++                ));
++            }
++            c.cache_id.clone()
++        } else {
++            format!("incomplete:{request_hash}:{frames}")
++        };
++        Ok(Self {
++            root: root.to_owned(),
++            request,
++            input,
++            scene,
++            schedule,
++            frames,
++            complete: completion.is_some(),
++            request_hash,
++            identity,
++            receipt_hashes,
++        })
++    }
++    /// Number of committed observations available, not the number of solver steps.
++    pub fn frame_count(&self) -> u64 {
++        self.frames
++    }
++    /// Whether the complete requested simulation was published successfully.
++    pub fn is_complete(&self) -> bool {
++        self.complete
++    }
++    /// Content identity, or an explicitly incomplete prefix identifier.
++    pub fn identity(&self) -> &str {
++        &self.identity
++    }
++    /// Frozen physical and display inputs. No mutable scene files are consulted.
++    pub fn scene(&self) -> &ResolvedScene {
++        &self.scene
++    }
++    /// Original resolved input record, retained for provenance and explicit reruns.
++    pub fn recorded_input(&self) -> &RecordedInput {
++        &self.input
++    }
++    /// Accepted step for an available frame index.
++    pub fn step(&self, index: u64) -> Option<u64> {
++        if index < self.frames {
++            self.schedule.step(index)
++        } else {
++            None
++        }
++    }
++    /// Summary suitable for inspection without loading particle frames.
++    pub fn info(&self) -> serde_json::Value {
++        serde_json::json!({"schema_version":1,"kind":"maelstrom-particle-cache","complete":self.complete,"frames":self.frames,"expected_frames":self.schedule.len(),"steps":self.request.steps,"stride":self.request.stride,"particle_count":self.request.particle_count,"cache_id":self.identity,"request_sha256":self.request_hash,"execution":self.request.execution,"backend":self.request.backend,"metadata":self.request.metadata,"build":self.request.build})
++    }
++    /// Opens and validates one independently addressable frame. No fluid steps execute.
++    pub fn frame(&self, index: u64) -> Result<ValidatedFrame, CacheError> {
++        let reading_started = std::time::Instant::now();
++        if index >= self.frames {
++            return Err(invalid("frame index outside committed cache prefix"));
++        }
++        directory(&self.root)?;
++        directory(&self.root.join("frames"))?;
++        directory(&self.root.join("receipts"))?;
++        let receipt_bytes = read(&self.root.join("receipts").join(receipt_name(index)), 2048)?;
++        let actual: [u8; 32] = Sha256::digest(&receipt_bytes).into();
++        if actual != self.receipt_hashes[index as usize] {
++            return Err(invalid("cache receipt changed after opening"));
++        }
++        let receipt: Receipt = serde_json::from_slice(&receipt_bytes)?;
++        check_receipt(&receipt, index, self.schedule, self.request.particle_count)?;
++        let bytes = read(
++            &self.root.join("frames").join(frame_name(index)),
++            format::size(self.request.particle_count)? as u64,
++        )?;
++        let reading_s = reading_started.elapsed().as_secs_f64();
++        let decoding_started = std::time::Instant::now();
++        let (snapshot, canonical, binary_validation_s) =
++            format::decode(&bytes, &receipt, &self.request_hash, &self.scene.particles)?;
++        Ok(ValidatedFrame {
++            snapshot,
++            canonical,
++            read_timings: ReadTimings {
++                reading_s,
++                binary_validation_s,
++                decoding_s: (decoding_started.elapsed().as_secs_f64() - binary_validation_s)
++                    .max(0.0),
++            },
++        })
++    }
++    /// Checks all available particle files and independently recomputes canonical hashes.
++    pub fn validate_full(&self, mut cancelled: impl FnMut() -> bool) -> Result<(), CacheError> {
++        for i in 0..self.frames {
++            if cancelled() {
++                return Err(CacheError::Cancelled);
++            }
++            let frame = self.frame(i)?;
++            if frame.snapshot.canonical_sha256().map_err(invalid)? != frame.canonical {
++                return Err(invalid(
++                    "cached canonical snapshot digest disagrees with particle bits",
++                ));
++            }
++        }
++        Ok(())
++    }
++}
++fn check_receipt(
++    r: &Receipt,
++    index: u64,
++    schedule: Schedule,
++    count: usize,
++) -> Result<(), CacheError> {
++    if r.schema_version != 1
++        || r.index != index
++        || Some(decimal(&r.step)?) != schedule.step(index)
++        || r.bytes != format::size(count)? as u64
++        || !valid_digest(&r.file_sha256)
++        || !valid_digest(&r.snapshot_sha256)
++    {
++        return Err(invalid("invalid cache frame receipt"));
++    }
++    Ok(())
++}
++pub(super) fn diagnostics(
++    path: &Path,
++    steps: u64,
++    timestep_bits: u32,
++) -> Result<(String, u64), CacheError> {
++    let file = regular(
++        path,
++        steps
++            .checked_mul(1024)
++            .ok_or_else(|| invalid("diagnostic length overflow"))?,
++    )?;
++    let mut reader = BufReader::new(file);
++    let mut hash = Sha256::new();
++    let mut warnings = 0;
++    let mut line = Vec::new();
++    for step in 1..=steps {
++        line.clear();
++        reader.by_ref().take(4097).read_until(b'\n', &mut line)?;
++        if line.len() > 4096 || line.last() != Some(&b'\n') {
++            return Err(invalid("short or oversized cache diagnostic"));
++        }
++        let d: serde_json::Value = serde_json::from_slice(&line)?;
++        let speed = d["maximum_speed_m_s"]
++            .as_f64()
++            .filter(|s| s.is_finite() && *s >= 0.0)
++            .ok_or_else(|| invalid("invalid cache diagnostic speed"))?;
++        let _ = speed;
++        let warning = d["warning"]
++            .as_bool()
++            .ok_or_else(|| invalid("invalid cache diagnostic warning"))?;
++        let expected = match d["cfl_limit"]["kind"].as_str() {
++            Some("unbounded") => false,
++            Some("finite") => {
++                let limit = d["cfl_limit"]["seconds"]
++                    .as_f64()
++                    .filter(|s| s.is_finite() && *s > 0.0)
++                    .ok_or_else(|| invalid("invalid cache CFL limit"))?;
++                f32::from_bits(timestep_bits) > (limit as f32)
++            }
++            _ => return Err(invalid("invalid cache CFL kind")),
++        };
++        if d["completed_steps"].as_str().map(decimal).transpose()? != Some(step)
++            || warning != expected
++        {
++            return Err(invalid("cache diagnostic order or CFL warning mismatch"));
++        }
++        warnings += u64::from(warning);
++        hash.update(&line);
++    }
++    if !reader.fill_buf()?.is_empty() {
++        return Err(invalid("extra cache diagnostics"));
++    }
++    Ok((hex(hash.finalize().as_slice()), warnings))
++}
+--- /dev/null
++++ b/src/cache/tests.rs
+@@ -0,0 +1,383 @@
++//! Independent wire fixtures and fault cases protect the observation boundary.
++//! Tests own their directories; no hardware or existing user cache is required.
++use super::*;
++use crate::{
++    math::Vec3,
++    scene::{Particle, load_resolved_scene},
++    workflow::SnapshotRecord,
++};
++use std::{
++    path::PathBuf,
++    sync::{
++        Arc,
++        atomic::{AtomicBool, AtomicU64, Ordering},
++    },
++};
++static NEXT: AtomicU64 = AtomicU64::new(0);
++struct Temp(PathBuf);
++impl Temp {
++    fn new() -> Self {
++        let p = std::env::temp_dir().join(format!(
++            "maelstrom-cache-test-{}-{}",
++            std::process::id(),
++            NEXT.fetch_add(1, Ordering::Relaxed)
++        ));
++        fs::create_dir(&p).unwrap();
++        Self(p)
++    }
++}
++impl Drop for Temp {
++    fn drop(&mut self) {
++        let _ = fs::remove_dir_all(&self.0);
++    }
++}
++fn scene() -> crate::scene::ResolvedScene {
++    load_resolved_scene(Path::new("reference/small-lattice.toml"), None).unwrap()
++}
++fn bake_at(path: &Path, steps: u64, stride: u64) {
++    let scene = scene();
++    bake(
++        BakeRequest {
++            scene: &scene,
++            steps,
++            stride,
++            options: Default::default(),
++            destination: path,
++        },
++        || false,
++        |_, _| {},
++    )
++    .unwrap();
++}
++
++#[test]
++fn wire_fixture_preserves_offsets_signed_zero_and_maximum_identity() {
++    let particles = vec![
++        Particle {
++            identity: 1,
++            position_m: Vec3::new(1.0, -0.0, 3.0),
++            velocity_m_s: Vec3::new(7.0, 8.0, 9.0),
++        },
++        Particle {
++            identity: u64::MAX,
++            position_m: Vec3::new(4.0, 5.0, 6.0),
++            velocity_m_s: Vec3::new(-0.0, 11.0, 12.0),
++        },
++    ];
++    let snapshot = SnapshotRecord::from_particles(particles.clone(), 23).unwrap();
++    // Derived generic JSON serialisation is independent of the streaming writer.
++    let canonical: [u8; 32] = Sha256::digest(snapshot.to_json().unwrap().as_bytes()).into();
++    let request = hex(&[9; 32]);
++    let mut expected = Vec::new();
++    expected.extend(b"MSPCACHE");
++    expected.extend([1, 0, 0, 0]);
++    expected.extend(160u32.to_le_bytes());
++    for v in [7u64, 23, 2, 48, 48, 160, 184] {
++        expected.extend(v.to_le_bytes());
++    }
++    expected.extend([0; 8]);
++    expected.extend([9; 32]);
++    expected.extend(canonical);
++    expected.extend([0; 16]);
++    for bits in [
++        0x3f800000u32,
++        0x80000000,
++        0x40400000,
++        0x40800000,
++        0x40a00000,
++        0x40c00000,
++        0x40e00000,
++        0x41000000,
++        0x41100000,
++        0x80000000,
++        0x41300000,
++        0x41400000,
++    ] {
++        expected.extend(bits.to_le_bytes());
++    }
++    assert_eq!(snapshot.canonical_sha256().unwrap(), canonical);
++    assert_eq!(
++        format::encode(&snapshot, 7, &request, canonical).unwrap(),
++        expected
++    );
++    let receipt = Receipt {
++        schema_version: 1,
++        index: 7,
++        step: "23".into(),
++        bytes: 208,
++        file_sha256: digest(&expected),
++        snapshot_sha256: hex(&canonical),
++    };
++    let decoded = format::decode(&expected, &receipt, &request, &particles)
++        .unwrap()
++        .0;
++    assert_eq!(decoded.to_json().unwrap(), snapshot.to_json().unwrap());
++    assert_eq!(
++        decoded.particles()[0].particle().position_m.y.to_bits(),
++        0x80000000
++    );
++    assert_eq!(decoded.particles()[1].particle().identity, u64::MAX);
++    for offset in [0, 8, 10, 12, 16, 24, 32, 40, 48, 56, 64, 72, 80, 112, 144] {
++        let mut changed = expected.clone();
++        changed[offset] ^= 1;
++        let r = Receipt {
++            file_sha256: digest(&changed),
++            ..Receipt {
++                schema_version: 1,
++                index: 7,
++                step: "23".into(),
++                bytes: 208,
++                file_sha256: String::new(),
++                snapshot_sha256: hex(&canonical),
++            }
++        };
++        assert!(
++            format::decode(&changed, &r, &request, &particles).is_err(),
++            "header offset {offset}"
++        );
++    }
++    let mut nonfinite = expected.clone();
++    nonfinite[160..164].copy_from_slice(&f32::NAN.to_bits().to_le_bytes());
++    let r = Receipt {
++        file_sha256: digest(&nonfinite),
++        ..receipt
++    };
++    assert!(format::decode(&nonfinite, &r, &request, &particles).is_err());
++}
++
++#[test]
++fn schedule_has_exact_endpoints_and_rejects_unbounded_frame_counts() {
++    let s = Schedule::new(5, 2).unwrap();
++    assert_eq!(
++        (0..s.len()).map(|i| s.step(i).unwrap()).collect::<Vec<_>>(),
++        [0, 2, 4, 5]
++    );
++    assert_eq!(Schedule::new(0, 7).unwrap().len(), 1);
++    assert!(s.step(4).is_none());
++    assert!(Schedule::new(1, 0).is_err());
++    assert!(Schedule::new(u64::MAX, 1).is_err());
++    assert!(Schedule::new(1_000_000, 1).is_err());
++}
++
++#[test]
++fn bake_round_trips_every_selected_accepted_state_and_diagnostic() {
++    let t = Temp::new();
++    let path = t.0.join("cache");
++    bake_at(&path, 5, 2);
++    let cache = Cache::open(&path, false).unwrap();
++    assert!(cache.is_complete());
++    assert_eq!(cache.frame_count(), 4);
++    cache.validate_full(|| false).unwrap();
++    let mut solver = crate::simulation::Simulation::from_scene(&scene()).unwrap();
++    for step in 0..=5 {
++        if step > 0 {
++            let _ = solver.step().unwrap();
++        }
++        if let Some(i) = (0..cache.frame_count()).find(|&i| cache.step(i) == Some(step)) {
++            let expected = SnapshotRecord::capture(solver.snapshot());
++            let frame = cache.frame(i).unwrap();
++            assert_eq!(
++                frame.snapshot().to_json().unwrap(),
++                expected.to_json().unwrap()
++            );
++            assert_eq!(
++                frame.canonical_sha256(),
++                digest(expected.to_json().unwrap().as_bytes())
++            );
++        }
++    }
++    let before = fs::read(path.join("cache.json")).unwrap();
++    assert!(
++        bake(
++            BakeRequest {
++                scene: &scene(),
++                steps: 5,
++                stride: 2,
++                options: Default::default(),
++                destination: &path
++            },
++            || false,
++            |_, _| {}
++        )
++        .is_err()
++    );
++    assert_eq!(fs::read(path.join("cache.json")).unwrap(), before);
++}
++
++#[test]
++fn cancellation_keeps_only_receipt_backed_prefix_and_never_completes() {
++    let t = Temp::new();
++    let path = t.0.join("cancel");
++    let flag = Arc::new(AtomicBool::new(false));
++    let signal = flag.clone();
++    let result = bake(
++        BakeRequest {
++            scene: &scene(),
++            steps: 10,
++            stride: 2,
++            options: Default::default(),
++            destination: &path,
++        },
++        || flag.load(Ordering::Relaxed),
++        |n, _| {
++            if n == 2 {
++                signal.store(true, Ordering::Relaxed);
++            }
++        },
++    );
++    assert!(matches!(result, Err(CacheError::Cancelled)));
++    assert!(!path.join("cache.json").exists());
++    assert!(path.join("failure.json").is_file());
++    assert!(Cache::open(&path, false).is_err());
++    let partial = Cache::open(&path, true).unwrap();
++    assert!(!partial.is_complete());
++    assert_eq!(partial.frame_count(), 2);
++    partial.validate_full(|| false).unwrap();
++    assert!(partial.frame(2).is_err());
++}
++
++#[test]
++fn asynchronous_write_failure_retains_previous_receipt_without_deadlock() {
++    let t = Temp::new();
++    let path = t.0.join("failure");
++    let mut blocked = false;
++    let error = bake(
++        BakeRequest {
++            scene: &scene(),
++            steps: 6,
++            stride: 2,
++            options: Default::default(),
++            destination: &path,
++        },
++        || false,
++        |n, _| {
++            if n == 1 && !blocked {
++                fs::create_dir(path.join("frames").join(frame_name(1))).unwrap();
++                blocked = true;
++            }
++        },
++    )
++    .unwrap_err();
++    assert!(matches!(error, CacheError::Io(_)));
++    assert!(!path.join("cache.json").exists());
++    let partial = Cache::open(&path, true).unwrap();
++    assert_eq!(partial.frame_count(), 1);
++    partial.validate_full(|| false).unwrap();
++}
++
++#[test]
++fn changed_receipts_payloads_and_truncation_cannot_reuse_a_digest() {
++    let t = Temp::new();
++    let path = t.0.join("cache");
++    bake_at(&path, 2, 1);
++    let cache = Cache::open(&path, false).unwrap();
++    let frame_path = path.join("frames").join(frame_name(1));
++    let bytes = fs::read(&frame_path).unwrap();
++    let mut changed = bytes.clone();
++    changed[160] ^= 1;
++    fs::write(&frame_path, changed).unwrap();
++    assert!(cache.frame(1).is_err());
++    fs::write(&frame_path, &bytes[..bytes.len() - 1]).unwrap();
++    assert!(cache.frame(1).is_err());
++    fs::write(&frame_path, &bytes).unwrap();
++    let receipt_path = path.join("receipts").join(receipt_name(1));
++    let mut receipt: serde_json::Value =
++        serde_json::from_slice(&fs::read(&receipt_path).unwrap()).unwrap();
++    receipt["snapshot_sha256"] = serde_json::json!(hex(&[0; 32]));
++    fs::write(&receipt_path, serde_json::to_vec(&receipt).unwrap()).unwrap();
++    assert!(cache.frame(1).is_err());
++    assert!(Cache::open(&path, false).is_err());
++}
++
++#[cfg(unix)]
++#[test]
++fn symlink_frames_are_rejected_even_when_the_target_has_valid_bytes() {
++    let t = Temp::new();
++    let path = t.0.join("cache");
++    bake_at(&path, 0, 1);
++    let cache = Cache::open(&path, false).unwrap();
++    let f = path.join("frames").join(frame_name(0));
++    let other = t.0.join("other");
++    fs::rename(&f, &other).unwrap();
++    std::os::unix::fs::symlink(other, &f).unwrap();
++    assert!(cache.frame(0).is_err());
++}
++
++#[test]
++fn missing_completion_is_explicit_even_if_all_frames_were_written() {
++    let t = Temp::new();
++    let path = t.0.join("cache");
++    bake_at(&path, 0, 1);
++    fs::remove_file(path.join("cache.json")).unwrap();
++    assert!(Cache::open(&path, false).is_err());
++    let partial = Cache::open(&path, true).unwrap();
++    assert_eq!(partial.frame_count(), 1);
++    assert!(!partial.is_complete());
++    fs::remove_file(path.join("receipts").join(receipt_name(0))).unwrap();
++    assert_eq!(Cache::open(&path, true).unwrap().frame_count(), 0);
++}
++
++#[test]
++fn empty_initial_observation_has_a_valid_zero_payload_and_no_diagnostics() {
++    let t = Temp::new();
++    let path = t.0.join("empty");
++    let mut scene = scene();
++    scene.particles.clear();
++    bake(
++        BakeRequest {
++            scene: &scene,
++            steps: 0,
++            stride: 4,
++            options: Default::default(),
++            destination: &path,
++        },
++        || false,
++        |_, _| {},
++    )
++    .unwrap();
++    let cache = Cache::open(&path, false).unwrap();
++    assert_eq!(cache.frame_count(), 1);
++    assert_eq!(
++        fs::metadata(path.join("frames").join(frame_name(0)))
++            .unwrap()
++            .len(),
++        160
++    );
++    assert_eq!(
++        fs::metadata(path.join("diagnostics.jsonl")).unwrap().len(),
++        0
++    );
++    assert!(cache.frame(0).unwrap().snapshot().particles().is_empty());
++    cache.validate_full(|| false).unwrap();
++}
++
++#[test]
++fn full_validation_detects_a_self_consistent_false_canonical_claim() {
++    let t = Temp::new();
++    let path = t.0.join("external");
++    bake_at(&path, 0, 1);
++    let frame_path = path.join("frames").join(frame_name(0));
++    let mut bytes = fs::read(&frame_path).unwrap();
++    bytes[112..144].fill(0);
++    fs::write(&frame_path, &bytes).unwrap();
++    let receipt_path = path.join("receipts").join(receipt_name(0));
++    let mut receipt: Receipt = serde_json::from_slice(&fs::read(&receipt_path).unwrap()).unwrap();
++    receipt.file_sha256 = digest(&bytes);
++    receipt.snapshot_sha256 = hex(&[0; 32]);
++    let receipt_bytes = serde_json::to_vec(&receipt).unwrap();
++    fs::write(&receipt_path, &receipt_bytes).unwrap();
++    let completion_path = path.join("cache.json");
++    let mut completion: Completion =
++        serde_json::from_slice(&fs::read(&completion_path).unwrap()).unwrap();
++    completion.receipts_sha256 = digest(&receipt_bytes);
++    completion.cache_id = result_id(
++        &completion.request_sha256,
++        &completion.receipts_sha256,
++        &completion.diagnostics_sha256,
++    );
++    fs::write(&completion_path, serde_json::to_vec(&completion).unwrap()).unwrap();
++    // A checksum is not authentication. Full validation checks the semantic
++    // canonical claim even when an external producer rewrites all integrity metadata.
++    let cache = Cache::open(&path, false).unwrap();
++    assert!(cache.validate_full(|| false).is_err());
++}
+--- /dev/null
++++ b/src/cache/writer.rs
+@@ -0,0 +1,159 @@
++//! A single owned particle frame crosses to the writer. Hashing, packing and
++//! synced file preparation overlap later solver work; receipts commit on collection.
++use super::*;
++use crate::workflow::SnapshotRecord;
++use std::{
++    path::PathBuf,
++    sync::mpsc::{self, Receiver, SyncSender},
++    thread::{self, JoinHandle},
++    time::Instant,
++};
++
++#[derive(Default, Serialize)]
++pub(super) struct Timings {
++    pub canonical_s: f64,
++    pub packing_s: f64,
++    pub binary_hash_s: f64,
++    pub writing_s: f64,
++    pub receipt_publication_s: f64,
++    pub writer_wait_s: f64,
++}
++struct Job {
++    snapshot: SnapshotRecord,
++    index: u64,
++}
++struct Prepared {
++    receipt: Receipt,
++    timings: Timings,
++}
++pub(super) struct Writer {
++    sender: Option<SyncSender<Job>>,
++    receiver: Receiver<Result<Prepared, CacheError>>,
++    thread: Option<JoinHandle<()>>,
++    pending: bool,
++    root: PathBuf,
++    pub count: u64,
++    pub timings: Timings,
++    chain: Sha256,
++}
++impl Writer {
++    pub fn new(root: &Path, request: String) -> Result<Self, CacheError> {
++        let (tx, jobs) = mpsc::sync_channel::<Job>(1);
++        let (done, receiver) = mpsc::sync_channel(1);
++        let destination = root.to_owned();
++        let thread = thread::Builder::new()
++            .name("particle-cache-writer".into())
++            .spawn(move || {
++                while let Ok(job) = jobs.recv() {
++                    let result = (|| {
++                        let mut t = Timings::default();
++                        let start = Instant::now();
++                        let canonical = job.snapshot.canonical_sha256().map_err(invalid)?;
++                        t.canonical_s = start.elapsed().as_secs_f64();
++                        let start = Instant::now();
++                        let bytes = format::encode(&job.snapshot, job.index, &request, canonical)?;
++                        t.packing_s = start.elapsed().as_secs_f64();
++                        let start = Instant::now();
++                        let file_sha256 = digest(&bytes);
++                        t.binary_hash_s = start.elapsed().as_secs_f64();
++                        let start = Instant::now();
++                        publish(
++                            &destination.join("frames").join(frame_name(job.index)),
++                            &bytes,
++                        )?;
++                        sync_directory(&destination.join("frames"))?;
++                        t.writing_s = start.elapsed().as_secs_f64();
++                        Ok(Prepared {
++                            receipt: Receipt {
++                                schema_version: 1,
++                                index: job.index,
++                                step: job.snapshot.completed_steps().to_string(),
++                                bytes: bytes.len() as u64,
++                                file_sha256,
++                                snapshot_sha256: hex(&canonical),
++                            },
++                            timings: t,
++                        })
++                    })();
++                    if done.send(result).is_err() {
++                        break;
++                    }
++                }
++            })?;
++        Ok(Self {
++            sender: Some(tx),
++            receiver,
++            thread: Some(thread),
++            pending: false,
++            root: root.to_owned(),
++            count: 0,
++            timings: Timings::default(),
++            chain: Sha256::new(),
++        })
++    }
++    pub fn submit(&mut self, snapshot: SnapshotRecord, index: u64) -> Result<(), CacheError> {
++        if self.pending || index != self.count {
++            return Err(invalid("previous cache frame has not been collected"));
++        }
++        self.sender
++            .as_ref()
++            .ok_or(CacheError::WriterStopped)?
++            .send(Job { snapshot, index })
++            .map_err(|_| CacheError::WriterStopped)?;
++        self.pending = true;
++        Ok(())
++    }
++    pub fn collect(&mut self, cancelled: &mut impl FnMut() -> bool) -> Result<(), CacheError> {
++        if !self.pending {
++            return Ok(());
++        }
++        let start = Instant::now();
++        // Poll only the CPU result, never abandon a resource-owning thread.
++        let prepared = loop {
++            if cancelled() {
++                return Err(CacheError::Cancelled);
++            }
++            match self
++                .receiver
++                .recv_timeout(std::time::Duration::from_millis(10))
++            {
++                Ok(r) => break r?,
++                Err(mpsc::RecvTimeoutError::Timeout) => continue,
++                Err(_) => return Err(CacheError::WriterStopped),
++            }
++        };
++        self.pending = false;
++        self.timings.writer_wait_s += start.elapsed().as_secs_f64();
++        if cancelled() {
++            return Err(CacheError::Cancelled);
++        }
++        let start = Instant::now();
++        let bytes = serde_json::to_vec(&prepared.receipt)?;
++        publish(
++            &self.root.join("receipts").join(receipt_name(self.count)),
++            &bytes,
++        )?;
++        sync_directory(&self.root.join("receipts"))?;
++        self.timings.receipt_publication_s += start.elapsed().as_secs_f64();
++        self.chain.update(&bytes);
++        self.count += 1;
++        self.timings.canonical_s += prepared.timings.canonical_s;
++        self.timings.packing_s += prepared.timings.packing_s;
++        self.timings.binary_hash_s += prepared.timings.binary_hash_s;
++        self.timings.writing_s += prepared.timings.writing_s;
++        Ok(())
++    }
++    pub fn chain(&self) -> String {
++        hex(self.chain.clone().finalize().as_slice())
++    }
++}
++impl Drop for Writer {
++    fn drop(&mut self) {
++        // At most one outstanding result fits the result channel. Closing the
++        // input and joining cannot deadlock, including cancellation or an unwind.
++        self.sender.take();
++        if let Some(thread) = self.thread.take() {
++            let _ = thread.join();
++        }
++    }
++}
+--- /dev/null
++++ b/src/cli/cache.rs
+@@ -0,0 +1,201 @@
++//! Cache commands distinguish fresh simulation from rendering immutable history.
++//! The same numerical selection and presentation resolvers serve existing commands.
++use super::{
++    CliError,
++    arguments::{CacheCommand, CacheRender, Cli},
++    storage::Storage,
++};
++use maelstrom::cache::{BakeRequest, Cache};
++use std::sync::{
++    Arc,
++    atomic::{AtomicBool, Ordering},
++};
++
++fn cancellation() -> Result<Arc<AtomicBool>, CliError> {
++    let flag = Arc::new(AtomicBool::new(false));
++    let signal = flag.clone();
++    ctrlc::set_handler(move || signal.store(true, Ordering::Relaxed))
++        .map_err(|e| CliError::input(e.to_string()))?;
++    Ok(flag)
++}
++fn failure(error: impl std::fmt::Display, cancel: &AtomicBool) -> CliError {
++    CliError {
++        code: if cancel.load(Ordering::Relaxed) {
++            130
++        } else {
++            5
++        },
++        message: error.to_string(),
++    }
++}
++
++pub(super) fn manage(cli: &Cli, storage: &Storage, command: &CacheCommand) -> Result<u8, CliError> {
++    let cancel = cancellation()?;
++    match command {
++        CacheCommand::Bake(args) => {
++            let resolved = super::inputs::resolve_in(&args.inputs, storage)?;
++            let steps = resolved.steps(&args.limit)?;
++            let scene = resolved
++                .scene
++                .as_ref()
++                .ok_or_else(|| CliError::usage("cache bake requires SCENE".into()))?;
++            let options = super::selection::resolve(&args.selection, &storage.preferences()?)?;
++            let mut bar = Progress::new();
++            let result = maelstrom::cache::bake(
++                BakeRequest {
++                    scene,
++                    steps,
++                    stride: args.frame_stride,
++                    options,
++                    destination: &args.output,
++                },
++                || cancel.load(Ordering::Relaxed),
++                |n, total| bar.update(n, total),
++            );
++            bar.finish();
++            let value = result.map_err(|e| failure(e, &cancel))?;
++            super::print_document(
++                cli.format,
++                format!(
++                    "Cached {} observations to {}; no images generated.",
++                    value["frames"],
++                    args.output.display()
++                ),
++                value,
++            )?;
++        }
++        CacheCommand::Inspect {
++            cache,
++            allow_partial,
++        }
++        | CacheCommand::Validate {
++            cache,
++            allow_partial,
++            ..
++        } => {
++            let opened =
++                Cache::open(cache, *allow_partial).map_err(|e| CliError::input(e.to_string()))?;
++            if let CacheCommand::Validate { full, .. } = command {
++                if *full {
++                    opened
++                        .validate_full(|| cancel.load(Ordering::Relaxed))
++                        .map_err(|e| failure(e, &cancel))?;
++                } else {
++                    for index in 0..opened.frame_count() {
++                        if cancel.load(Ordering::Relaxed) {
++                            return Err(failure("cache validation cancelled", &cancel));
++                        }
++                        opened
++                            .frame(index)
++                            .map_err(|e| CliError::input(e.to_string()))?;
++                    }
++                }
++            }
++            super::print_document(
++                cli.format,
++                format!(
++                    "Particle cache: {} committed frames; complete={}; no simulation performed.",
++                    opened.frame_count(),
++                    opened.is_complete()
++                ),
++                opened.info(),
++            )?;
++        }
++    }
++    Ok(0)
++}
++
++#[cfg(not(feature = "render"))]
++pub(super) fn render(_: &Cli, _: &CacheRender) -> Result<u8, CliError> {
++    Err(CliError::input(
++        "cache rendering requires render support; reinstall with --features render or viewer"
++            .into(),
++    ))
++}
++
++#[cfg(feature = "render")]
++pub(super) fn render(cli: &Cli, args: &CacheRender) -> Result<u8, CliError> {
++    use maelstrom::{
++        export::{CacheSelection, CachedRenderRequest, render_cache},
++        presentation::CameraMode,
++        render::GraphicsSelection,
++    };
++    if args.presentation.frame_stride.is_some() {
++        return Err(CliError::usage(
++            "cached rendering uses --every in cache-frame indices, not --frame-stride".into(),
++        ));
++    }
++    if args.allow_partial && args.frame.is_none() && args.last_frame.is_none() {
++        return Err(CliError::usage(
++            "--allow-partial requires an explicit --frame or --last-frame".into(),
++        ));
++    }
++    let cache =
++        Cache::open(&args.cache, args.allow_partial).map_err(|e| CliError::input(e.to_string()))?;
++    let last = cache
++        .frame_count()
++        .checked_sub(1)
++        .ok_or_else(|| CliError::input("cache has no committed frames".into()))?;
++    let selection = CacheSelection {
++        first: args.frame.or(args.first_frame).unwrap_or(0),
++        last: args.frame.or(args.last_frame).unwrap_or(last),
++        every: args.every.unwrap_or(1),
++    };
++    let selected = super::presentation::resolve(None, &args.presentation)?;
++    let cancel = cancellation()?;
++    let mut bar = Progress::new();
++    let result = render_cache(
++        CachedRenderRequest {
++            cache: &cache,
++            settings: selected.effective.settings,
++            graphics: GraphicsSelection {
++                index: args.graphics_adapter,
++                software: args.software,
++            },
++            fit_camera: selected.effective.camera_mode == CameraMode::Fit,
++            selection,
++            destination: &args.output,
++        },
++        || cancel.load(Ordering::Relaxed),
++        |n, total| bar.update(n as u64, total as u64),
++    );
++    bar.finish();
++    let value = result.map_err(|e| failure(e, &cancel))?;
++    super::print_document(
++        cli.format,
++        format!(
++            "Rendered {} cached frames to {}; no simulation performed.",
++            value["frame_count"],
++            args.output.display()
++        ),
++        serde_json::json!({"schema_version":2,"complete":true,"frame_count":value["frame_count"],"path":args.output,"source_cache":cache.identity(),"timing_profile":value["timing_profile"]}),
++    )?;
++    Ok(0)
++}
++
++struct Progress {
++    terminal: bool,
++    last: std::time::Instant,
++}
++impl Progress {
++    fn new() -> Self {
++        use std::io::IsTerminal;
++        Self {
++            terminal: std::io::stderr().is_terminal(),
++            last: std::time::Instant::now() - std::time::Duration::from_secs(1),
++        }
++    }
++    fn update(&mut self, n: u64, total: u64) {
++        use std::io::Write;
++        if self.terminal && self.last.elapsed() >= std::time::Duration::from_millis(100) {
++            eprint!("\r\x1b[2K{n}/{total} frames");
++            let _ = std::io::stderr().flush();
++            self.last = std::time::Instant::now();
++        }
++    }
++    fn finish(&self) {
++        if self.terminal {
++            eprintln!();
++        }
++    }
++}
+--- /dev/null
++++ b/src/cli/video.rs
+@@ -0,0 +1,190 @@
++//! Video commands consume validated observations or images, never numerical requests.
++use super::{
++    CliError,
++    arguments::{Cli, Video},
++};
++#[cfg(not(feature = "render"))]
++pub(super) fn launch(_: &Cli, _: &Video) -> Result<u8, CliError> {
++    Err(CliError::input(
++        "video requires --features render or viewer".into(),
++    ))
++}
++#[cfg(feature = "render")]
++pub(super) fn launch(cli: &Cli, args: &Video) -> Result<u8, CliError> {
++    use super::arguments::VideoSource;
++    use maelstrom::{
++        export::{
++            CacheSelection,
++            video::{VideoTiming, cached_pixels, encode_frames},
++        },
++        presentation::{CameraMode, Presentation},
++        render::{BoundaryLines, Graphics, GraphicsSelection},
++    };
++    use std::sync::{
++        Arc,
++        atomic::{AtomicBool, Ordering},
++    };
++    let output = args
++        .output
++        .as_ref()
++        .ok_or_else(|| CliError::usage("video requires --output FILE".into()))?;
++    let flag = Arc::new(AtomicBool::new(false));
++    let signal = flag.clone();
++    ctrlc::set_handler(move || signal.store(true, Ordering::Relaxed))
++        .map_err(|e| CliError::input(e.to_string()))?;
++    let cancel = || flag.load(Ordering::Relaxed);
++    let timing = VideoTiming {
++        fps: args.fps,
++        crf: args.crf,
++        omit_terminal: args.omit_terminal,
++    };
++    let range = |count: u64| -> Result<CacheSelection, CliError> {
++        Ok(CacheSelection {
++            first: args.first_frame.unwrap_or(0),
++            last: args.last_frame.unwrap_or(
++                count
++                    .checked_sub(1)
++                    .ok_or_else(|| CliError::input("source has no frames".into()))?,
++            ),
++            every: args.every,
++        })
++    };
++    let result = match &args.source {
++        VideoSource::Images { sequence } => {
++            let opened = maelstrom::playback::Sequence::open(sequence)
++                .map_err(|e| CliError::input(e.to_string()))?;
++            let dims = opened.dimensions();
++            let manifest = if sequence.is_dir() {
++                sequence.join("manifest.json")
++            } else {
++                sequence.clone()
++            };
++            #[derive(serde::Deserialize)]
++            struct PresentationOnly {
++                render: maelstrom::presentation::Settings,
++            }
++            let source_file =
++                std::fs::File::open(&manifest).map_err(|e| CliError::input(e.to_string()))?;
++            let saved: PresentationOnly =
++                serde_json::from_reader(std::io::BufReader::new(source_file))
++                    .map_err(|e| CliError::input(e.to_string()))?;
++            saved
++                .render
++                .validate()
++                .map_err(|e| CliError::input(e.to_string()))?;
++            use sha2::{Digest, Sha256};
++            use std::io::Read;
++            let mut file =
++                std::fs::File::open(&manifest).map_err(|e| CliError::input(e.to_string()))?;
++            let mut hash = Sha256::new();
++            let mut buffer = [0u8; 65536];
++            loop {
++                let n = file
++                    .read(&mut buffer)
++                    .map_err(|e| CliError::input(e.to_string()))?;
++                if n == 0 {
++                    break;
++                }
++                hash.update(&buffer[..n]);
++            }
++            let source = serde_json::json!({"mode":"validated_png_sequence", "manifest_sha256":hash.finalize().iter().map(|b| format!("{b:02x}")).collect::<String>(),"render":saved.render});
++            encode_frames(
++                output,
++                &args.ffmpeg,
++                dims,
++                (args.width.unwrap_or(dims.0), args.height.unwrap_or(dims.1)),
++                timing,
++                range(opened.frame_count() as u64)?,
++                &opened.timestamps(),
++                source,
++                |i| {
++                    opened
++                        .decode(i as usize)
++                        .map_err(|e| maelstrom::export::ExportError(e.to_string()))
++                },
++                cancel,
++            )
++        }
++        VideoSource::Cache {
++            cache,
++            render_config,
++            graphics_adapter,
++            software,
++        } => {
++            let opened = maelstrom::cache::Cache::open(cache, false)
++                .map_err(|e| CliError::input(e.to_string()))?;
++            let text = std::fs::read_to_string(render_config)
++                .map_err(|e| CliError::input(e.to_string()))?;
++            let presentation =
++                Presentation::parse(&text).map_err(|e| CliError::input(e.to_string()))?;
++            if presentation.camera_mode != CameraMode::Fixed {
++                return Err(CliError::usage(
++                    "video cache requires an explicit saved fixed camera".into(),
++                ));
++            }
++            let mut settings = presentation.settings;
++            if let Some(w) = args.width {
++                settings.width = w;
++            }
++            if let Some(h) = args.height {
++                settings.height = h;
++            }
++            settings
++                .validate()
++                .map_err(|e| CliError::input(e.to_string()))?;
++            let selection = range(opened.frame_count())?;
++            timing
++                .count(selection, opened.frame_count())
++                .map_err(|e| CliError::usage(e.to_string()))?;
++            let instance = Graphics::instance();
++            let graphics = pollster::block_on(Graphics::new(
++                &instance,
++                GraphicsSelection {
++                    index: *graphics_adapter,
++                    software: *software,
++                },
++                None,
++                wgpu::TextureFormat::Rgba8UnormSrgb,
++            ))
++            .map_err(|e| CliError::input(e.to_string()))?;
++            let scene = opened.scene();
++            let boundaries = BoundaryLines::new(
++                &scene.particles,
++                &scene.planes,
++                f64::from(scene.configuration.numerical.particle_spacing_m),
++            )
++            .map_err(|e| CliError::input(e.to_string()))?;
++            let dt = f64::from(scene.configuration.numerical.fixed_timestep_s);
++            let timestamps: Vec<_> = (0..opened.frame_count())
++                .map(|i| opened.step(i).unwrap_or(0) as f64 * dt)
++                .collect();
++            let source = serde_json::json!({"cache":opened.info(),"render":settings,"renderer":"opaque-spheres-lines-v2 indexed","solver_steps":0,"timestep_bits":scene.configuration.numerical.fixed_timestep_s.to_bits(),"application_version":env!("CARGO_PKG_VERSION")});
++            encode_frames(
++                output,
++                &args.ffmpeg,
++                (settings.width, settings.height),
++                (settings.width, settings.height),
++                timing,
++                selection,
++                &timestamps,
++                source,
++                |i| cached_pixels(&opened, &settings, &graphics, &boundaries, i),
++                cancel,
++            )
++        }
++    };
++    let value = result.map_err(|e| CliError {
++        code: if cancel() { 130 } else { 5 },
++        message: e.to_string(),
++    })?;
++    super::print_document(
++        cli.format,
++        format!(
++            "Encoded {} frames to {}; no simulation performed.",
++            value["frame_count"],
++            output.display()
++        ),
++        value,
++    )?;
++    Ok(0)
++}
+--- /dev/null
++++ b/src/export/cached.rs
+@@ -0,0 +1,196 @@
++//! Cached rendering owns graphics and image output only. Typed, checked frames
++//! supply canonical provenance without serialising the same particles again.
++use super::*;
++use crate::cache::Cache;
++
++/// Inclusive selection in cache-frame indices, independent of solver timesteps.
++#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
++#[serde(deny_unknown_fields)]
++pub struct CacheSelection {
++    /// First cached frame to render.
++    pub first: u64,
++    /// Last cached frame to render (inclusive).
++    pub last: u64,
++    /// Positive increment in cache-frame indices. A non-matching last index is not appended.
++    pub every: u64,
++}
++impl CacheSelection {
++    pub(crate) fn count(self, available: u64) -> Result<u64, ExportError> {
++        if self.every == 0 || self.first > self.last || self.last >= available {
++            return Err(fail("invalid cached frame range"));
++        }
++        Ok((self.last - self.first) / self.every + 1)
++    }
++}
++
++/// Presentation request over already validated cache metadata.
++pub struct CachedRenderRequest<'a> {
++    /// Complete cache, or an explicitly opened partial prefix.
++    pub cache: &'a Cache,
++    /// Presentation only; its step_stride does not resample the cache.
++    pub settings: Settings,
++    /// Independent graphics selection, never a CUDA device request.
++    pub graphics: GraphicsSelection,
++    /// Fit once against the frozen initial geometry.
++    pub fit_camera: bool,
++    /// Inclusive cached-frame range.
++    pub selection: CacheSelection,
++    /// Required new image sequence directory.
++    pub destination: &'a Path,
++}
++
++/// Renders cached states without constructing a simulation or running fluid steps.
++/// Schema-2 image manifests describe sparse schedules explicitly; schema 1 is unchanged.
++pub fn render_cache(
++    request: CachedRenderRequest<'_>,
++    mut cancelled: impl FnMut() -> bool,
++    mut notify: impl FnMut(usize, usize),
++) -> Result<Value, ExportError> {
++    let started = Instant::now();
++    let scene = request.cache.scene();
++    let count = request.selection.count(request.cache.frame_count())?;
++    let last_step = request
++        .cache
++        .step(request.selection.last)
++        .ok_or_else(|| fail("cached frame is unavailable"))?;
++    if last_step as f64 * f64::from(scene.configuration.numerical.fixed_timestep_s) > 1e12 {
++        return Err(fail("cached timestamp exceeds image playback limit"));
++    }
++    let mut settings = request.settings;
++    settings.validate().map_err(fail)?;
++    let spacing = f64::from(scene.configuration.numerical.particle_spacing_m);
++    let boundaries = BoundaryLines::new(&scene.particles, &scene.planes, spacing).map_err(fail)?;
++    if request.fit_camera {
++        settings
++            .camera
++            .fit_scene(
++                &scene.particles,
++                &scene.planes,
++                spacing / 2.0,
++                f64::from(settings.width) / f64::from(settings.height),
++            )
++            .map_err(fail)?;
++    }
++    if cancelled() {
++        return Err(fail("cached rendering cancelled"));
++    }
++    match fs::symlink_metadata(request.destination) {
++        Ok(_) => return Err(fail("output destination already exists")),
++        Err(e) if e.kind() == std::io::ErrorKind::NotFound => {}
++        Err(e) => return Err(fail(e)),
++    }
++    let instance = Graphics::instance();
++    let graphics = pollster::block_on(Graphics::new(
++        &instance,
++        request.graphics,
++        None,
++        wgpu::TextureFormat::Rgba8UnormSrgb,
++    ))
++    .map_err(fail)?;
++    let _ = graphics
++        .depth(settings.width, settings.height)
++        .map_err(fail)?;
++    fs::create_dir(request.destination).map_err(fail)?;
++    let mut progress = json!({"schema_version":2,"complete":false,"source_mode":"cache","source_cache":request.cache.info(),"frames":[],"failures":[]});
++    write_progress(request.destination, &progress)?;
++    let mut timings = timing::ExportTimings {
++        setup: started.elapsed(),
++        ..Default::default()
++    };
++    let mut read_validate = std::time::Duration::ZERO;
++    let mut cache_reading = 0.0;
++    let mut cache_validation = 0.0;
++    let mut cache_decoding = 0.0;
++    let result = (|| {
++        let mut writer = offscreen::FrameWriter {
++            operations: offscreen::FrameOperations::default(),
++            graphics: &graphics,
++            settings: &settings,
++            boundaries: &boundaries,
++            spacing,
++            mass_kg: scene.configuration.derived.particle_mass_kg,
++            dt: f64::from(scene.configuration.numerical.fixed_timestep_s),
++            destination: request.destination,
++            timings: Default::default(),
++            worker: encoding::Worker::new()?,
++        };
++        let mut frames = Vec::with_capacity(count as usize);
++        notify(0, count as usize);
++        for index in 0..count {
++            if cancelled() {
++                return Err(fail("cached rendering cancelled"));
++            }
++            let source_index = request.selection.first + index * request.selection.every;
++            let start = Instant::now();
++            let frame = request.cache.frame(source_index).map_err(fail)?;
++            read_validate += start.elapsed();
++            let read = frame.read_timings();
++            cache_reading += read.reading_s;
++            cache_validation += read.binary_validation_s;
++            cache_decoding += read.decoding_s;
++            let prepared = writer.prepare_cached(frame, index as usize);
++            if cancelled() {
++                return Err(fail("cached rendering cancelled"));
++            }
++            collect_frame_cancellable(
++                &mut writer,
++                &mut frames,
++                &mut progress,
++                &mut timings.progress,
++                &mut cancelled,
++            )?;
++            writer.submit(prepared?)?;
++            if index == 0 {
++                collect_frame_cancellable(
++                    &mut writer,
++                    &mut frames,
++                    &mut progress,
++                    &mut timings.progress,
++                    &mut cancelled,
++                )?;
++            }
++            notify(frames.len(), count as usize);
++        }
++        if cancelled() {
++            return Err(fail("cached rendering cancelled"));
++        }
++        collect_frame_cancellable(
++            &mut writer,
++            &mut frames,
++            &mut progress,
++            &mut timings.progress,
++            &mut cancelled,
++        )?;
++        if cancelled() {
++            return Err(fail("cached rendering cancelled before publication"));
++        }
++        graphics.check().map_err(fail)?;
++        notify(frames.len(), count as usize);
++        timings.frames = writer.timings;
++        let cache = request.cache.info();
++        let manifest = json!({"schema_version":2,"kind":"maelstrom-cache-render","complete":true,"source_mode":"cache","status":"cached_observations_rendered","application_version":env!("CARGO_PKG_VERSION"),"build":crate::cache::build_identity(),"source_cache":cache,
++            "cache_selection":request.selection,"timestep_bits":scene.configuration.numerical.fixed_timestep_s.to_bits(),"frame_count":frames.len(),"frames":frames,"render":settings,
++            "input":request.cache.input,"backend":cache["metadata"]["backend"],"execution":cache["execution"],
++            "request":{"steps":cache["steps"],"checkpoints":[]},"accepted_steps":request.cache.step(request.cache.frame_count()-1).map(|s|s.to_string()),"step_stride":cache["stride"],
++            "renderer":{"revision":"opaque-spheres-lines-v2","shader_sha256":hash(include_bytes!("../render/particles.wgsl")),"format":"Rgba8UnormSrgb","samples":1,"overlays":false},
++            "graphics":{"backend":format!("{:?}",graphics.adapter_info.backend),"name":graphics.adapter_info.name,"driver":graphics.adapter_info.driver,"driver_info":graphics.adapter_info.driver_info,"device_type":format!("{:?}",graphics.adapter_info.device_type),"vendor":graphics.adapter_info.vendor,"device":graphics.adapter_info.device,"software_requested":request.graphics.software,"selection_index":request.graphics.index},
++            "encoder":{"crate":"png","version":"0.18.1","colour":"RGBA8 sRGB","compression":"Balanced","filter":"Adaptive"},
++            "boundary_display_box":{"lower_m":boundaries.lower_m,"upper_m":boundaries.upper_m},
++            "timing_seconds":{"solver_steps":0.0,"cache_read_validate":read_validate.as_secs_f64(),"cache_reading":cache_reading,"cache_binary_validation":cache_validation,"cache_decoding":cache_decoding,"cache_canonical_rehashing":0.0,"graphics_readback":timings.frames.graphics_readback.as_secs_f64(),"encoding":timings.frames.png_encoding.as_secs_f64()},"timing_profile":timings.profile(started.elapsed())?});
++        publish_bytes(
++            &request.destination.join("manifest.json"),
++            &serde_json::to_vec_pretty(&manifest).map_err(fail)?,
++        )
++        .map_err(fail)?;
++        Ok(manifest)
++    })();
++    if let Err(error) = &result {
++        progress["failures"] = json!([error.to_string()]);
++        if let Err(output) = write_progress(request.destination, &progress) {
++            return Err(fail(format!(
++                "{error}; recording incomplete outcome also failed: {output}"
++            )));
++        }
++    }
++    result
++}
+--- /dev/null
++++ b/src/export/video.rs
+@@ -0,0 +1,641 @@
++//! Raw RGBA frames cross a bounded pipe into FFmpeg. Only a successfully closed
++//! MP4 and its provenance are published; teardown kills and reaps failed children.
++use super::*;
++use std::{
++    io::{Read, Write},
++    path::PathBuf,
++    process::{Child, Command, Stdio},
++    sync::mpsc,
++    thread,
++    time::Duration,
++};
++
++/// Constant-frame-rate policy over an explicit ordered selection.
++#[derive(Clone, Copy, Serialize)]
++pub struct VideoTiming {
++    /// Video frames per second, independent of recorded timestamps.
++    pub fps: f64,
++    /// libx264 constant rate factor, 0..=51.
++    pub crf: u8,
++    /// Omit the last selected observation only when explicitly requested.
++    pub omit_terminal: bool,
++}
++impl VideoTiming {
++    /// Validates the selection and endpoint policy before starting an encoder.
++    pub fn count(self, selection: CacheSelection, available: u64) -> Result<u64, ExportError> {
++        if !self.fps.is_finite() || self.fps <= 0.0 || self.fps > 1000.0 || self.crf > 51 {
++            return Err(fail("video requires finite FPS in (0,1000] and CRF 0..=51"));
++        }
++        let count = selection
++            .count(available)?
++            .saturating_sub(u64::from(self.omit_terminal));
++        if count == 0 {
++            return Err(fail("terminal omission would leave no video frames"));
++        }
++        Ok(count)
++    }
++}
++
++struct Encoder {
++    child: Child,
++    input: Option<mpsc::SyncSender<Vec<u8>>>,
++    writer: Option<thread::JoinHandle<Result<(), std::io::Error>>>,
++    errors: Option<thread::JoinHandle<String>>,
++    stage: PathBuf,
++    bytes: usize,
++}
++impl Encoder {
++    fn new(
++        executable: &Path,
++        output: &Path,
++        input: (u32, u32),
++        size: (u32, u32),
++        timing: VideoTiming,
++    ) -> Result<(Self, String), ExportError> {
++        for (w, h) in [input, size] {
++            if !(1..=8192).contains(&w) || !(1..=8192).contains(&h) {
++                return Err(fail("video dimensions must be 1..=8192"));
++            }
++        }
++        if !size.0.is_multiple_of(2) || !size.1.is_multiple_of(2) {
++            return Err(fail("H.264 yuv420p requires even output width and height"));
++        }
++        if fs::symlink_metadata(output).is_ok() || fs::symlink_metadata(sidecar(output)).is_ok() {
++            return Err(fail("video or provenance destination already exists"));
++        }
++        let version = Command::new(executable)
++            .arg("-version")
++            .output()
++            .map_err(|e| {
++                fail(format!(
++                    "cannot execute FFmpeg: {e}; install FFmpeg with libx264 or pass --ffmpeg PATH"
++                ))
++            })?;
++        if !version.status.success() {
++            return Err(fail("FFmpeg -version failed; check --ffmpeg PATH"));
++        }
++        let version = String::from_utf8_lossy(&version.stdout)
++            .lines()
++            .next()
++            .unwrap_or("FFmpeg (unknown version)")
++            .to_owned();
++        let encoders = Command::new(executable)
++            .args(["-hide_banner", "-encoders"])
++            .output()
++            .map_err(fail)?;
++        if !encoders.status.success()
++            || !String::from_utf8_lossy(&encoders.stdout)
++                .split_whitespace()
++                .any(|s| s == "libx264")
++        {
++            return Err(fail(
++                "FFmpeg has no libx264 H.264 encoder; install a build with libx264",
++            ));
++        }
++        let parent = output
++            .parent()
++            .filter(|p| !p.as_os_str().is_empty())
++            .unwrap_or(Path::new("."));
++        let mut attempt = 0u64;
++        let stage = loop {
++            let path = parent.join(format!(".maelstrom-video-{}-{attempt}", std::process::id()));
++            match fs::create_dir(&path) {
++                Ok(()) => break path,
++                Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => attempt += 1,
++                Err(e) => return Err(fail(e)),
++            }
++        };
++        let started = Command::new(executable)
++            .args([
++                "-hide_banner",
++                "-loglevel",
++                "error",
++                "-nostdin",
++                "-n",
++                "-f",
++                "rawvideo",
++                "-pixel_format",
++                "rgba",
++                "-video_size",
++            ])
++            .arg(format!("{}x{}", input.0, input.1))
++            .arg("-framerate")
++            .arg(timing.fps.to_string())
++            .args(["-i", "pipe:0", "-an", "-vf"])
++            .arg(format!("scale={}:{}", size.0, size.1))
++            .args(["-c:v", "libx264", "-crf"])
++            .arg(timing.crf.to_string())
++            .args([
++                "-pix_fmt",
++                "yuv420p",
++                "-movflags",
++                "+faststart",
++                "-f",
++                "mp4",
++            ])
++            .arg(stage.join("video.mp4"))
++            .stdin(Stdio::piped())
++            .stdout(Stdio::null())
++            .stderr(Stdio::piped())
++            .spawn();
++        let mut child = match started {
++            Ok(c) => c,
++            Err(e) => {
++                let _ = fs::remove_dir_all(&stage);
++                return Err(fail(e));
++            }
++        };
++        let stdin = child
++            .stdin
++            .take()
++            .ok_or_else(|| fail("FFmpeg stdin unavailable"))?;
++        let stderr = child
++            .stderr
++            .take()
++            .ok_or_else(|| fail("FFmpeg stderr unavailable"))?;
++        let (tx, rx) = mpsc::sync_channel::<Vec<u8>>(1);
++        let writer = thread::spawn(move || {
++            let mut stdin = stdin;
++            while let Ok(bytes) = rx.recv() {
++                stdin.write_all(&bytes)?;
++            }
++            Ok(())
++        });
++        let errors = thread::spawn(move || {
++            let mut stderr = stderr;
++            let mut retained = Vec::new();
++            let mut buf = [0u8; 4096];
++            while let Ok(n) = stderr.read(&mut buf) {
++                if n == 0 {
++                    break;
++                }
++                retained.extend_from_slice(&buf[..n]);
++                if retained.len() > 65536 {
++                    retained.drain(..retained.len() - 65536);
++                }
++            }
++            String::from_utf8_lossy(&retained).into_owned()
++        });
++        Ok((
++            Self {
++                child,
++                input: Some(tx),
++                writer: Some(writer),
++                errors: Some(errors),
++                stage,
++                bytes: input.0 as usize * input.1 as usize * 4,
++            },
++            version,
++        ))
++    }
++    fn send(
++        &mut self,
++        mut bytes: Vec<u8>,
++        cancelled: &mut impl FnMut() -> bool,
++    ) -> Result<(), ExportError> {
++        if bytes.len() != self.bytes {
++            return Err(fail("video RGBA frame size mismatch"));
++        }
++        loop {
++            if cancelled() {
++                return Err(fail("video export cancelled"));
++            }
++            match self
++                .input
++                .as_ref()
++                .ok_or_else(|| fail("encoder closed"))?
++                .try_send(bytes)
++            {
++                Ok(()) => return Ok(()),
++                Err(mpsc::TrySendError::Full(b)) => {
++                    bytes = b;
++                    if let Some(status) = self.child.try_wait().map_err(fail)? {
++                        return self
++                            .finish(cancelled)
++                            .and(Err(fail(format!("FFmpeg exited during input: {status}"))));
++                    }
++                    thread::sleep(Duration::from_millis(10));
++                }
++                Err(mpsc::TrySendError::Disconnected(_)) => {
++                    return Err(fail(
++                        "FFmpeg closed its input; check encoder availability and output storage",
++                    ));
++                }
++            }
++        }
++    }
++    fn finish(&mut self, cancelled: &mut impl FnMut() -> bool) -> Result<(), ExportError> {
++        self.input.take();
++        let status = loop {
++            if cancelled() {
++                return Err(fail("video export cancelled"));
++            }
++            if let Some(s) = self.child.try_wait().map_err(fail)? {
++                break s;
++            }
++            thread::sleep(Duration::from_millis(10));
++        };
++        let written = self
++            .writer
++            .take()
++            .ok_or_else(|| fail("encoder writer unavailable"))?
++            .join()
++            .map_err(|_| fail("encoder writer panicked"))?;
++        let errors = self
++            .errors
++            .take()
++            .ok_or_else(|| fail("encoder diagnostics unavailable"))?
++            .join()
++            .map_err(|_| fail("encoder diagnostic reader panicked"))?;
++        if !status.success() {
++            return Err(fail(format!("FFmpeg failed ({status}): {errors}")));
++        }
++        written.map_err(fail)?;
++        if fs::metadata(self.stage.join("video.mp4"))
++            .map_err(fail)?
++            .len()
++            == 0
++        {
++            return Err(fail("FFmpeg produced an empty MP4"));
++        }
++        Ok(())
++    }
++    fn publish(&self, output: &Path, provenance: &Value) -> Result<(), ExportError> {
++        fs::File::open(self.stage.join("video.mp4"))
++            .and_then(|f| f.sync_all())
++            .map_err(fail)?;
++        let bytes = serde_json::to_vec_pretty(provenance).map_err(fail)?;
++        publish_bytes(&self.stage.join("provenance.json"), &bytes).map_err(fail)?;
++        fs::hard_link(self.stage.join("provenance.json"), sidecar(output)).map_err(fail)?;
++        if let Err(e) = fs::hard_link(self.stage.join("video.mp4"), output) {
++            let _ = fs::remove_file(sidecar(output));
++            return Err(fail(e));
++        }
++        Ok(())
++    }
++}
++impl Drop for Encoder {
++    fn drop(&mut self) {
++        self.input.take();
++        let _ = self.child.kill();
++        let _ = self.child.wait();
++        if let Some(w) = self.writer.take() {
++            let _ = w.join();
++        }
++        if let Some(e) = self.errors.take() {
++            let _ = e.join();
++        }
++        let _ = fs::remove_dir_all(&self.stage);
++    }
++}
++fn sidecar(output: &Path) -> PathBuf {
++    let mut name = output.as_os_str().to_os_string();
++    name.push(".json");
++    PathBuf::from(name)
++}
++
++/// Streams one validated frame at a time. The callback must return top-left RGBA8;
++/// its provenance should identify the presentation and original observation source.
++#[allow(clippy::too_many_arguments)]
++pub fn encode_frames(
++    output: &Path,
++    executable: &Path,
++    input_size: (u32, u32),
++    output_size: (u32, u32),
++    timing: VideoTiming,
++    selection: CacheSelection,
++    timestamps: &[f64],
++    source: Value,
++    mut frame: impl FnMut(u64) -> Result<Vec<u8>, ExportError>,
++    mut cancelled: impl FnMut() -> bool,
++) -> Result<Value, ExportError> {
++    let count = timing.count(selection, timestamps.len() as u64)?;
++    if timestamps.iter().any(|t| !t.is_finite() || *t < 0.0)
++        || timestamps.windows(2).any(|t| t[1] <= t[0])
++    {
++        return Err(fail(
++            "video source timestamps must be finite, non-negative and strictly increasing",
++        ));
++    }
++
++    if cancelled() {
++        return Err(fail("video export cancelled"));
++    }
++    let (mut encoder, version) = Encoder::new(executable, output, input_size, output_size, timing)?;
++    let started = Instant::now();
++    let mut selected = Vec::with_capacity(count as usize);
++    for n in 0..count {
++        if cancelled() {
++            return Err(fail("video export cancelled"));
++        }
++        let index = selection.first + n * selection.every;
++        encoder.send(frame(index)?, &mut cancelled)?;
++        selected.push(json!({"source_index":index,"simulated_seconds":timestamps[index as usize],"video_seconds":n as f64/timing.fps}));
++    }
++    encoder.finish(&mut cancelled)?;
++    let provenance = json!({"schema_version":1,"kind":"maelstrom-video","complete":true,"source":source,
++        "encoder":{"version":version,"executable":executable,"codec":"libx264","container":"mp4","pixel_format":"yuv420p","crf":timing.crf},
++        "timing":timing,"selection":selection,"frames":selected,"frame_count":count,"duration_seconds":count as f64/timing.fps,
++        "input_dimensions":input_size,"output_dimensions":output_size,"elapsed_seconds":started.elapsed().as_secs_f64()});
++    if cancelled() {
++        return Err(fail("video export cancelled before publication"));
++    }
++    encoder.publish(output, &provenance)?;
++    Ok(provenance)
++}
++
++/// Draws exact observations using the same indexed graphics and readback as PNG export.
++pub fn cached_pixels(
++    cache: &crate::cache::Cache,
++    settings: &Settings,
++    graphics: &Graphics,
++    boundaries: &BoundaryLines,
++    index: u64,
++) -> Result<Vec<u8>, ExportError> {
++    let frame = cache.frame(index).map_err(fail)?;
++    let particles: Vec<_> = frame
++        .snapshot()
++        .particles()
++        .iter()
++        .map(|p| p.particle())
++        .collect();
++    let scene = cache.scene();
++    super::offscreen::pixels(
++        graphics,
++        &crate::render::DrawScene {
++            particles: &particles,
++            boundaries,
++            radius_m: f64::from(scene.configuration.numerical.particle_spacing_m) / 2.0,
++            camera: &settings.camera,
++            colours: &settings.particles,
++            particle_mass_kg: scene.configuration.derived.particle_mass_kg,
++            width: settings.width,
++            height: settings.height,
++        },
++    )
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++    #[test]
++    fn endpoint_policy_is_explicit() {
++        let s = CacheSelection {
++            first: 0,
++            last: 300,
++            every: 1,
++        };
++        let mut t = VideoTiming {
++            fps: 60.0,
++            crf: 18,
++            omit_terminal: false,
++        };
++        assert_eq!(t.count(s, 301).unwrap(), 301);
++        t.omit_terminal = true;
++        assert_eq!(t.count(s, 301).unwrap(), 300);
++        assert!(
++            t.count(
++                CacheSelection {
++                    first: 0,
++                    last: 0,
++                    every: 1
++                },
++                1
++            )
++            .is_err()
++        );
++        assert!(t.count(CacheSelection { every: 0, ..s }, 301).is_err());
++        t.fps = f64::NAN;
++        assert!(t.count(s, 301).is_err());
++    }
++}
++
++#[cfg(test)]
++mod encoder_tests {
++    use super::*;
++    use std::sync::atomic::{AtomicU64, Ordering};
++    static NEXT: AtomicU64 = AtomicU64::new(0);
++    fn root() -> PathBuf {
++        let p = std::env::temp_dir().join(format!(
++            "maelstrom-video-tests-{}-{}",
++            std::process::id(),
++            NEXT.fetch_add(1, Ordering::Relaxed)
++        ));
++        fs::create_dir(&p).unwrap();
++        p
++    }
++    #[test]
++    #[ignore = "requires FFmpeg with libx264 and ffprobe"]
++    fn real_encoder_order_duration_cleanup_and_no_overwrite() {
++        let root = root();
++        let output = root.join("movie.mp4");
++        let timing = VideoTiming {
++            fps: 60.0,
++            crf: 18,
++            omit_terminal: false,
++        };
++        let selection = CacheSelection {
++            first: 0,
++            last: 2,
++            every: 1,
++        };
++        let mut seen = vec![];
++        let result = encode_frames(
++            &output,
++            Path::new("ffmpeg"),
++            (16, 16),
++            (32, 24),
++            timing,
++            selection,
++            &[0.0, 0.1, 0.2],
++            json!({}),
++            |i| {
++                seen.push(i);
++                Ok([i as u8 * 100, 0, 0, 255].repeat(256))
++            },
++            || false,
++        )
++        .unwrap();
++        assert_eq!(seen, vec![0, 1, 2]);
++        assert_eq!(result["duration_seconds"], 0.05);
++        let probe = Command::new("ffprobe")
++            .args([
++                "-v",
++                "error",
++                "-count_frames",
++                "-show_entries",
++                "stream=codec_name,width,height,nb_read_frames",
++                "-of",
++                "json",
++            ])
++            .arg(&output)
++            .output()
++            .unwrap();
++        assert!(probe.status.success());
++        let v: Value = serde_json::from_slice(&probe.stdout).unwrap();
++        assert_eq!(v["streams"][0]["codec_name"], "h264");
++        assert_eq!(v["streams"][0]["nb_read_frames"], "3");
++        assert_eq!(v["streams"][0]["height"], 24);
++        assert!(
++            encode_frames(
++                &output,
++                Path::new("ffmpeg"),
++                (16, 16),
++                (16, 16),
++                timing,
++                selection,
++                &[0.0, 0.1, 0.2],
++                json!({}),
++                |_| panic!("existing destination must reject before rendering"),
++                || false
++            )
++            .is_err()
++        );
++        let failed = root.join("failed.mp4");
++        assert!(
++            encode_frames(
++                &failed,
++                Path::new("ffmpeg"),
++                (16, 16),
++                (16, 16),
++                timing,
++                selection,
++                &[0.0, 0.1, 0.2],
++                json!({}),
++                |_| Err(fail("injected read failure")),
++                || false
++            )
++            .is_err()
++        );
++        assert!(!failed.exists());
++        assert!(!sidecar(&failed).exists());
++        let cancelled = root.join("cancelled.mp4");
++        let mut checks = 0;
++        assert!(
++            encode_frames(
++                &cancelled,
++                Path::new("ffmpeg"),
++                (16, 16),
++                (16, 16),
++                timing,
++                selection,
++                &[0.0, 0.1, 0.2],
++                json!({}),
++                |_| Ok([0, 0, 0, 255].repeat(256)),
++                || {
++                    checks += 1;
++                    checks > 3
++                }
++            )
++            .is_err()
++        );
++        assert!(!cancelled.exists());
++        assert_eq!(fs::read_dir(&root).unwrap().count(), 2);
++        fs::remove_dir_all(root).unwrap();
++    }
++    #[test]
++    fn missing_encoder_and_invalid_dimensions_do_not_create_output() {
++        let root = root();
++        let output = root.join("movie.mp4");
++        let t = VideoTiming {
++            fps: 60.0,
++            crf: 18,
++            omit_terminal: false,
++        };
++        let s = CacheSelection {
++            first: 0,
++            last: 0,
++            every: 1,
++        };
++        let e = encode_frames(
++            &output,
++            &root.join("missing-ffmpeg"),
++            (16, 16),
++            (16, 16),
++            t,
++            s,
++            &[0.0],
++            json!({}),
++            |_| panic!(),
++            || false,
++        )
++        .unwrap_err();
++        assert!(e.to_string().contains("install FFmpeg"));
++        assert!(
++            encode_frames(
++                &output,
++                Path::new("ffmpeg"),
++                (16, 16),
++                (17, 16),
++                t,
++                s,
++                &[0.0],
++                json!({}),
++                |_| panic!(),
++                || false
++            )
++            .is_err()
++        );
++        assert_eq!(fs::read_dir(&root).unwrap().count(), 0);
++        fs::remove_dir(root).unwrap();
++    }
++}
++
++#[cfg(all(test, unix))]
++mod subprocess_tests {
++    use super::*;
++    use std::os::unix::fs::PermissionsExt;
++    #[test]
++    fn encoder_exit_and_missing_codec_are_actionable_and_leave_no_output() {
++        let root =
++            std::env::temp_dir().join(format!("maelstrom-encoder-failure-{}", std::process::id()));
++        fs::create_dir(&root).unwrap();
++        let executable = root.join("encoder");
++        fs::write(&executable,"#!/bin/sh\ncase \"$1\" in\n-version) echo 'test encoder'; exit 0;;\n-hide_banner) if [ \"$2\" = '-encoders' ]; then echo ' V libx264'; exit 0; fi;;\nesac\necho 'injected encoder failure' >&2\nexit 23\n").unwrap();
++        fs::set_permissions(&executable, fs::Permissions::from_mode(0o700)).unwrap();
++        let output = root.join("failed.mp4");
++        let t = VideoTiming {
++            fps: 60.0,
++            crf: 18,
++            omit_terminal: false,
++        };
++        let s = CacheSelection {
++            first: 0,
++            last: 0,
++            every: 1,
++        };
++        let e = encode_frames(
++            &output,
++            &executable,
++            (16, 16),
++            (16, 16),
++            t,
++            s,
++            &[0.0],
++            json!({}),
++            |_| Ok([0, 0, 0, 255].repeat(256)),
++            || false,
++        )
++        .unwrap_err();
++        assert!(e.to_string().contains("FFmpeg"));
++        assert!(!output.exists());
++        assert!(!sidecar(&output).exists());
++        assert_eq!(fs::read_dir(&root).unwrap().count(), 1);
++        fs::write(&executable, "#!/bin/sh\necho 'test encoder without H264'\n").unwrap();
++        let e = encode_frames(
++            &output,
++            &executable,
++            (16, 16),
++            (16, 16),
++            t,
++            s,
++            &[0.0],
++            json!({}),
++            |_| panic!(),
++            || false,
++        )
++        .unwrap_err();
++        assert!(e.to_string().contains("no libx264"));
++        fs::remove_dir_all(root).unwrap();
++    }
++}
+--- /dev/null
++++ b/src/viewer/cached.rs
+@@ -0,0 +1,660 @@
++//! Cached windows share the live surface and camera controls, but own only a
++//! bounded disk reader. No controller or numerical backend is constructed.
++use super::*;
++use crate::{
++    cache::Cache,
++    render::{BoundaryLines, ParticleRenderer},
++    scene::Particle,
++};
++use std::{
++    collections::BTreeMap,
++    path::PathBuf,
++    sync::{Condvar, Mutex},
++    thread,
++};
++
++type Frame = Arc<Vec<Particle>>;
++struct Reads {
++    wanted: u64,
++    frames: BTreeMap<u64, Frame>,
++    error: Option<String>,
++    stop: bool,
++}
++struct Reader {
++    shared: Arc<(Mutex<Reads>, Condvar)>,
++    worker: Option<thread::JoinHandle<()>>,
++}
++impl Reader {
++    fn new(cache: Arc<Cache>, budget_mb: usize) -> Result<Self, RenderError> {
++        // Conservative reservation covers decoded records, particles and binary
++        // workspace, including one superseded read and the displayed frame.
++        let per_frame = cache
++            .scene()
++            .particles
++            .len()
++            .max(1)
++            .checked_mul(256)
++            .ok_or_else(|| RenderError("cache memory estimate overflow".into()))?;
++        let budget = budget_mb
++            .checked_mul(1024 * 1024)
++            .ok_or_else(|| RenderError("cache memory budget overflow".into()))?;
++        let slots = (budget / per_frame).saturating_sub(2).min(8);
++        if slots < 2 {
++            return Err(RenderError("cache memory budget must hold two read-ahead frames plus decode/display workspace; increase --cache-memory-mb".into()));
++        }
++        let shared = Arc::new((
++            Mutex::new(Reads {
++                wanted: 0,
++                frames: BTreeMap::new(),
++                error: None,
++                stop: false,
++            }),
++            Condvar::new(),
++        ));
++        let state = shared.clone();
++        let worker = thread::Builder::new()
++            .name("cache-playback-reader".into())
++            .spawn(move || {
++                loop {
++                    let (lock, wake) = &*state;
++                    let mut s = match lock.lock() {
++                        Ok(s) => s,
++                        Err(_) => return,
++                    };
++                    let next = loop {
++                        if s.stop {
++                            return;
++                        }
++                        let first = s.wanted;
++                        let end = first.saturating_add(slots as u64).min(cache.frame_count());
++                        s.frames.retain(|i, _| *i >= first && *i < end);
++                        if let Some(i) = (first..end).find(|i| !s.frames.contains_key(i)) {
++                            break i;
++                        }
++                        s = match wake.wait(s) {
++                            Ok(s) => s,
++                            Err(_) => return,
++                        };
++                    };
++                    drop(s);
++                    let loaded = cache.frame(next).map(|f| {
++                        Arc::new(
++                            f.snapshot()
++                                .particles()
++                                .iter()
++                                .map(|p| p.particle())
++                                .collect(),
++                        )
++                    });
++                    let mut s = match lock.lock() {
++                        Ok(s) => s,
++                        Err(_) => return,
++                    };
++                    match loaded {
++                        Ok(frame)
++                            if next >= s.wanted && next < s.wanted.saturating_add(slots as u64) =>
++                        {
++                            s.frames.insert(next, frame);
++                        }
++                        Ok(_) => {}
++                        Err(e) => {
++                            s.error = Some(e.to_string());
++                            return;
++                        }
++                    }
++                }
++            })
++            .map_err(|e| RenderError(format!("cache reader: {e}")))?;
++        Ok(Self {
++            shared,
++            worker: Some(worker),
++        })
++    }
++    fn get(&self, index: u64) -> Result<Option<Frame>, RenderError> {
++        let (lock, wake) = &*self.shared;
++        let mut s = lock
++            .lock()
++            .map_err(|_| RenderError("cache reader lock failed".into()))?;
++        if let Some(e) = &s.error {
++            return Err(RenderError(e.clone()));
++        }
++        s.wanted = index;
++        let result = s.frames.get(&index).cloned();
++        wake.notify_one();
++        Ok(result)
++    }
++}
++impl Drop for Reader {
++    fn drop(&mut self) {
++        let (lock, wake) = &*self.shared;
++        if let Ok(mut s) = lock.lock() {
++            s.stop = true;
++            wake.notify_one();
++        }
++        if let Some(worker) = self.worker.take() {
++            let _ = worker.join();
++        }
++    }
++}
++
++/// Opens exact cached observations in the shared viewer surface. Disk latency
++/// stalls the animation clock; camera input and redraws continue without skipping states.
++#[allow(clippy::too_many_arguments)]
++pub fn run_cache(
++    cache: Cache,
++    mut settings: Settings,
++    selection: GraphicsSelection,
++    fit: bool,
++    paused: bool,
++    budget_mb: usize,
++    save: Option<PathBuf>,
++    renderer: ParticleRenderer,
++) -> Result<(), RenderError> {
++    settings.validate()?;
++    if cache.frame_count() == 0 {
++        return Err(RenderError("cache contains no frames".into()));
++    }
++    #[cfg(target_os = "linux")]
++    check_keyboard_libraries()?;
++    let scene = cache.scene();
++    let spacing = f64::from(scene.configuration.numerical.particle_spacing_m);
++    let boundaries = BoundaryLines::new(&scene.particles, &scene.planes, spacing)?;
++    if fit {
++        settings.camera.fit_scene(
++            &scene.particles,
++            &scene.planes,
++            spacing / 2.0,
++            settings.width as f64 / settings.height as f64,
++        )?;
++    }
++    let cache = Arc::new(cache);
++    let reader = Reader::new(cache.clone(), budget_mb)?;
++    let mut app = CachedWindow {
++        cache,
++        reader,
++        settings,
++        selection,
++        boundaries,
++        renderer,
++        save,
++        window: None,
++        display: None,
++        current: None,
++        index: 0,
++        wanted: 0,
++        paused,
++        looping: false,
++        speed: 1.0,
++        last: Instant::now(),
++        remaining: 0.0,
++        cursor: [0.0; 2],
++        drag: None,
++        message: String::new(),
++        seek: None,
++        error: None,
++    };
++    create_event_loop()?
++        .run_app(&mut app)
++        .map_err(|e| window_error("cache viewer", e))?;
++    app.error.map_or(Ok(()), Err)
++}
++struct CachedWindow {
++    cache: Arc<Cache>,
++    reader: Reader,
++    settings: Settings,
++    selection: GraphicsSelection,
++    boundaries: BoundaryLines,
++    renderer: ParticleRenderer,
++    save: Option<PathBuf>,
++    window: Option<Arc<Window>>,
++    display: Option<Display>,
++    current: Option<Frame>,
++    index: u64,
++    wanted: u64,
++    paused: bool,
++    looping: bool,
++    speed: f64,
++    last: Instant,
++    remaining: f64,
++    cursor: [f64; 2],
++    drag: Option<MouseButton>,
++    message: String,
++    seek: Option<String>,
++    error: Option<RenderError>,
++}
++impl CachedWindow {
++    fn time(&self, i: u64) -> f64 {
++        self.cache.step(i).unwrap_or(0) as f64
++            * f64::from(self.cache.scene().configuration.numerical.fixed_timestep_s)
++    }
++    fn seek(&mut self, i: u64) {
++        self.wanted = i.min(self.cache.frame_count() - 1);
++        self.remaining = 0.0;
++        self.last = Instant::now();
++    }
++    fn save(&mut self) -> Result<(), RenderError> {
++        let path = self.save.as_ref().ok_or_else(|| {
++            RenderError("select --camera-output FILE to save presentation".into())
++        })?;
++        self.settings.validate()?;
++        let presentation = crate::presentation::Presentation {
++            schema_version: 2,
++            settings: self.settings.clone(),
++            camera_mode: crate::presentation::CameraMode::Fixed,
++            supplied_fields: vec![],
++        };
++        let text = presentation
++            .to_toml()
++            .map_err(|e| RenderError(e.to_string()))?;
++        crate::presentation::Presentation::parse(&text)?;
++        crate::workflow::publish_bytes(path, text.as_bytes())
++            .map_err(|e| RenderError(e.to_string()))?;
++        self.message = format!("Saved {} (new files only)", path.display());
++        Ok(())
++    }
++    fn key(&mut self, key: &Key, event_loop: &ActiveEventLoop) -> Result<(), RenderError> {
++        if let Some(text) = &mut self.seek {
++            match key {
++                Key::Named(NamedKey::Escape) => self.seek = None,
++                Key::Named(NamedKey::Backspace) => {
++                    text.pop();
++                }
++                Key::Named(NamedKey::Enter) => {
++                    let i = text
++                        .parse::<u64>()
++                        .map_err(|_| RenderError("enter a cache-frame index".into()))?;
++                    if i >= self.cache.frame_count() {
++                        return Err(RenderError("frame outside cache".into()));
++                    }
++                    self.seek = None;
++                    self.paused = true;
++                    self.seek(i);
++                }
++                Key::Character(s) if s.chars().all(|c| c.is_ascii_digit()) && text.len() < 20 => {
++                    text.push_str(s)
++                }
++                _ => {}
++            }
++            return Ok(());
++        }
++        match key {
++            Key::Named(NamedKey::Escape) => event_loop.exit(),
++            Key::Named(NamedKey::Space) => {
++                self.paused = !self.paused;
++                self.last = Instant::now();
++            }
++            Key::Named(NamedKey::Home) => self.seek(0),
++            Key::Named(NamedKey::End) => {
++                self.paused = true;
++                self.seek(self.cache.frame_count() - 1);
++            }
++            Key::Named(NamedKey::ArrowLeft) => self.settings.camera.orbit(-0.1, 0.0)?,
++            Key::Named(NamedKey::ArrowRight) => self.settings.camera.orbit(0.1, 0.0)?,
++            Key::Named(NamedKey::ArrowUp) => self.settings.camera.orbit(0.0, 0.1)?,
++            Key::Named(NamedKey::ArrowDown) => self.settings.camera.orbit(0.0, -0.1)?,
++            Key::Character(s) => match s.to_lowercase().as_str() {
++                "n" | "." => {
++                    self.paused = true;
++                    self.seek(self.wanted.saturating_add(1));
++                }
++                "b" | "," => {
++                    self.paused = true;
++                    self.seek(self.wanted.saturating_sub(1));
++                }
++                "r" => self.seek(0),
++                "l" => self.looping = !self.looping,
++                "j" => self.seek = Some(String::new()),
++                "s" => self.save()?,
++                "[" => self.speed = (self.speed / 2.0).max(0.0625),
++                "]" => self.speed = (self.speed * 2.0).min(16.0),
++                "+" | "=" => self.settings.camera.zoom(0.9)?,
++                "-" => self.settings.camera.zoom(1.1)?,
++                "f" => {
++                    let scene = self.cache.scene();
++                    self.settings.camera.fit_scene(
++                        &scene.particles,
++                        &scene.planes,
++                        f64::from(scene.configuration.numerical.particle_spacing_m) / 2.0,
++                        self.settings.width as f64 / self.settings.height as f64,
++                    )?;
++                }
++                "p" => {
++                    self.renderer = if self.renderer == ParticleRenderer::Indexed {
++                        ParticleRenderer::Impostor
++                    } else {
++                        ParticleRenderer::Indexed
++                    };
++                }
++                _ => {}
++            },
++            _ => {}
++        }
++        Ok(())
++    }
++    fn redraw(&mut self) -> Result<(), RenderError> {
++        let now = Instant::now();
++        let elapsed = now.duration_since(self.last).as_secs_f64();
++        self.last = now;
++        let was_loading = self.current.is_none() || self.index != self.wanted;
++        let had_frame = self.current.is_some();
++        let loaded = self.reader.get(self.wanted)?;
++        let ready = loaded.is_some();
++        if let Some(frame) = loaded {
++            if was_loading {
++                self.current = Some(frame);
++                self.index = self.wanted;
++                self.remaining += if self.index + 1 < self.cache.frame_count() {
++                    self.time(self.index + 1) - self.time(self.index)
++                } else if self.index > 0 {
++                    self.time(self.index) - self.time(self.index - 1)
++                } else {
++                    1.0 / 60.0
++                };
++            }
++        }
++        if !self.paused && ready && had_frame {
++            self.remaining -= elapsed * self.speed;
++            if self.remaining <= 0.0 {
++                if self.index + 1 < self.cache.frame_count() {
++                    self.wanted = self.index + 1;
++                } else if self.looping {
++                    self.wanted = 0;
++                } else {
++                    self.paused = true;
++                }
++            }
++        }
++        let window = self
++            .window
++            .as_ref()
++            .ok_or_else(|| RenderError("window unavailable".into()))?;
++        let size = window.inner_size();
++        if size.width == 0 || size.height == 0 {
++            return Ok(());
++        }
++        self.settings.width = size.width;
++        self.settings.height = size.height;
++        let loading = self.current.is_none() || self.wanted != self.index;
++        let title = format!(
++            "Maelstrom cache | frame {}/{} | {:.6} simulation s | {} {}x | {} | {:?}",
++            self.index,
++            self.cache.frame_count() - 1,
++            self.time(self.index),
++            if self.paused { "paused" } else { "playing" },
++            self.speed,
++            if loading { "loading" } else { "ready" },
++            self.renderer
++        );
++        window.set_title(&title);
++        let dt = f64::from(self.cache.scene().configuration.numerical.fixed_timestep_s);
++        let lines = vec![
++            title,
++            "Space play/pause | N/B step | J frame index | R/Home restart | End last | L loop"
++                .into(),
++            "Drag orbit | right-drag pan | wheel zoom | S save | P indexed/impostor | [ ] speed"
++                .into(),
++            format!(
++                "Solver {:.3} Hz | cache timing uses recorded step gaps | display target 60 Hz | loop {}",
++                1.0 / dt,
++                self.looping
++            ),
++            format!(
++                "Jump: {} | {}",
++                self.seek.as_deref().unwrap_or("press J"),
++                self.message
++            ),
++        ];
++        let mut overlay = overlay::panel(&lines, size.width, size.height, 1.5);
++        super::overlay::scrubber(
++            &mut overlay,
++            size.width,
++            size.height,
++            self.wanted as f64 / (self.cache.frame_count() - 1).max(1) as f64,
++        );
++        let display = self
++            .display
++            .as_mut()
++            .ok_or_else(|| RenderError("display unavailable".into()))?;
++        display.graphics.set_particle_renderer(self.renderer);
++        let frame = match display.surface.get_current_texture() {
++            wgpu::CurrentSurfaceTexture::Success(f)
++            | wgpu::CurrentSurfaceTexture::Suboptimal(f) => f,
++            wgpu::CurrentSurfaceTexture::Outdated | wgpu::CurrentSurfaceTexture::Lost => {
++                display.resize(size.width, size.height)?;
++                return Ok(());
++            }
++            wgpu::CurrentSurfaceTexture::Timeout | wgpu::CurrentSurfaceTexture::Occluded => {
++                return Ok(());
++            }
++            wgpu::CurrentSurfaceTexture::Validation => {
++                return Err(RenderError("cache surface validation failed".into()));
++            }
++        };
++        let scene = self.cache.scene();
++        display.graphics.draw(
++            &frame.texture.create_view(&Default::default()),
++            &display.depth.create_view(&Default::default()),
++            &DrawScene {
++                particles: self.current.as_deref().map_or(&[], |p| p.as_slice()),
++                boundaries: &self.boundaries,
++                radius_m: f64::from(scene.configuration.numerical.particle_spacing_m) / 2.0,
++                camera: &self.settings.camera,
++                colours: &self.settings.particles,
++                particle_mass_kg: scene.configuration.derived.particle_mass_kg,
++                width: size.width,
++                height: size.height,
++            },
++            &overlay,
++        )?;
++        window.pre_present_notify();
++        display.graphics.queue.present(frame);
++        Ok(())
++    }
++}
++impl ApplicationHandler for CachedWindow {
++    fn resumed(&mut self, event_loop: &ActiveEventLoop) {
++        let result = (|| {
++            if self.window.is_none() {
++                self.window = Some(Arc::new(
++                    event_loop
++                        .create_window(
++                            Window::default_attributes()
++                                .with_title("Maelstrom cache")
++                                .with_inner_size(winit::dpi::PhysicalSize::new(
++                                    self.settings.width,
++                                    self.settings.height,
++                                )),
++                        )
++                        .map_err(|e| window_error("cache window", e))?,
++                ));
++            }
++            if self.display.is_none() {
++                self.display = Some(Display::new(
++                    self.window
++                        .as_ref()
++                        .ok_or_else(|| RenderError("window unavailable".into()))?
++                        .clone(),
++                    self.selection,
++                    event_loop.owned_display_handle(),
++                )?);
++            }
++            Ok(())
++        })();
++        if let Err(e) = result {
++            self.error = Some(e);
++            event_loop.exit();
++        }
++    }
++    fn suspended(&mut self, _: &ActiveEventLoop) {
++        self.display = None;
++    }
++    fn window_event(&mut self, event_loop: &ActiveEventLoop, _: WindowId, event: WindowEvent) {
++        let result = match event {
++            WindowEvent::CloseRequested => {
++                event_loop.exit();
++                Ok(())
++            }
++            WindowEvent::Resized(s) => self
++                .display
++                .as_mut()
++                .map_or(Ok(()), |d| d.resize(s.width, s.height)),
++            WindowEvent::KeyboardInput { event, .. } if event.state == ElementState::Pressed => {
++                self.key(&event.logical_key, event_loop)
++            }
++            WindowEvent::MouseInput { state, button, .. } => {
++                self.drag = if state == ElementState::Pressed {
++                    Some(button)
++                } else {
++                    None
++                };
++                Ok(())
++            }
++            WindowEvent::CursorMoved { position, .. } => {
++                let dx = position.x - self.cursor[0];
++                let dy = position.y - self.cursor[1];
++                self.cursor = [position.x, position.y];
++                // The bottom strip is a continuous scrub control over cached indices.
++                if self.drag == Some(MouseButton::Left)
++                    && self
++                        .window
++                        .as_ref()
++                        .is_some_and(|w| position.y >= w.inner_size().height as f64 - 30.0)
++                {
++                    if let Some(w) = &self.window {
++                        let f = (position.x / w.inner_size().width.max(1) as f64).clamp(0.0, 1.0);
++                        self.paused = true;
++                        self.seek((f * (self.cache.frame_count() - 1) as f64).round() as u64);
++                    }
++                    Ok(())
++                } else {
++                    match self.drag {
++                        Some(MouseButton::Left) => {
++                            self.settings.camera.orbit(-dx * 0.006, dy * 0.006)
++                        }
++                        Some(MouseButton::Right) => {
++                            self.settings.camera.pan(-dx * 0.001, dy * 0.001)
++                        }
++                        _ => Ok(()),
++                    }
++                }
++            }
++            WindowEvent::MouseWheel { delta, .. } => {
++                let y = match delta {
++                    MouseScrollDelta::LineDelta(_, y) => y as f64,
++                    MouseScrollDelta::PixelDelta(p) => p.y / 100.0,
++                };
++                self.settings.camera.zoom((-y * 0.1).exp())
++            }
++            WindowEvent::RedrawRequested => {
++                if self.display.is_some() {
++                    if let Err(e) = self.redraw() {
++                        self.error = Some(e);
++                        event_loop.exit();
++                    }
++                }
++                Ok(())
++            }
++            _ => Ok(()),
++        };
++        if let Err(e) = result {
++            self.message = e.to_string();
++        }
++    }
++    fn about_to_wait(&mut self, event_loop: &ActiveEventLoop) {
++        if let Some(w) = &self.window {
++            w.request_redraw();
++        }
++        event_loop.set_control_flow(ControlFlow::WaitUntil(
++            Instant::now() + Duration::from_millis(16),
++        ));
++    }
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++    #[test]
++    fn bounded_reader_seeks_exact_states_and_reports_corruption() {
++        use crate::cache::{BakeRequest, bake};
++        let root =
++            std::env::temp_dir().join(format!("maelstrom-cached-viewer-{}", std::process::id()));
++        let scene = crate::scene::load_resolved_scene(
++            std::path::Path::new("reference/small-lattice.toml"),
++            None,
++        )
++        .unwrap();
++        bake(
++            BakeRequest {
++                scene: &scene,
++                steps: 6,
++                stride: 2,
++                options: Default::default(),
++                destination: &root,
++            },
++            || false,
++            |_, _| {},
++        )
++        .unwrap();
++        let cache = Arc::new(Cache::open(&root, false).unwrap());
++        assert!(Reader::new(cache.clone(), 0).is_err());
++        let reader = Reader::new(cache.clone(), 1).unwrap();
++        for index in [0, 3, 1, 2, 0] {
++            let deadline = Instant::now() + Duration::from_secs(5);
++            let loaded = loop {
++                if let Some(f) = reader.get(index).unwrap() {
++                    break f;
++                }
++                assert!(Instant::now() < deadline);
++                thread::sleep(Duration::from_millis(1));
++            };
++            let expected: Vec<_> = cache
++                .frame(index)
++                .unwrap()
++                .snapshot()
++                .particles()
++                .iter()
++                .map(|p| p.particle())
++                .collect();
++            assert_eq!(*loaded, expected);
++            assert!(reader.shared.0.lock().unwrap().frames.len() <= 8);
++        }
++        drop(reader);
++        std::fs::write(root.join("frames/frame-00000003.mpc"), b"corrupt").unwrap();
++        let reader = Reader::new(cache.clone(), 1).unwrap();
++        let deadline = Instant::now() + Duration::from_secs(5);
++        loop {
++            match reader.get(3) {
++                Err(_) => break,
++                _ => {
++                    assert!(Instant::now() < deadline);
++                    thread::sleep(Duration::from_millis(1));
++                }
++            }
++        }
++        drop(reader);
++        std::fs::remove_dir_all(root).unwrap();
++    }
++    #[test]
++    fn portable_presentation_preserves_interactive_camera_and_colours_exactly() {
++        use crate::presentation::{CameraMode, ParticleColours, Presentation};
++        let mut settings = Settings::default();
++        settings.schema_version = 2;
++        settings.camera.orbit(0.37, -0.12).unwrap();
++        settings.camera.pan(0.1, -0.05).unwrap();
++        settings.camera.zoom(0.8).unwrap();
++        settings.particles = ParticleColours::KineticEnergy {
++            min_energy_j: 0.001,
++            max_energy_j: 0.123,
++        };
++        let original = serde_json::to_value(&settings).unwrap();
++        let p = Presentation {
++            schema_version: 2,
++            settings,
++            camera_mode: CameraMode::Fixed,
++            supplied_fields: vec![],
++        };
++        let loaded = Presentation::parse(&p.to_toml().unwrap()).unwrap();
++        assert_eq!(loaded.camera_mode, CameraMode::Fixed);
++        assert_eq!(serde_json::to_value(loaded.settings).unwrap(), original);
++    }
++}
+--- /dev/null
++++ b/tests/cache_workflow.rs
+@@ -0,0 +1,433 @@
++//! Public commands exercise cache ownership, independent rendering and migration.
++//! Hardware-independent checks run normally; software graphics checks are explicit.
++use serde_json::Value;
++#[cfg(feature = "render")]
++use std::path::Path;
++use std::{
++    fs,
++    path::PathBuf,
++    process::{Command, Output},
++    sync::atomic::{AtomicU64, Ordering},
++};
++static NEXT: AtomicU64 = AtomicU64::new(0);
++struct Temp(PathBuf);
++impl Temp {
++    fn new() -> Self {
++        let path = std::env::temp_dir().join(format!(
++            "maelstrom-cache-cli-{}-{}",
++            std::process::id(),
++            NEXT.fetch_add(1, Ordering::Relaxed)
++        ));
++        fs::create_dir(&path).unwrap();
++        Self(path)
++    }
++    fn command(&self) -> Command {
++        let mut c = Command::new(env!("CARGO_BIN_EXE_maelstrom"));
++        c.current_dir(env!("CARGO_MANIFEST_DIR"))
++            .env("XDG_CONFIG_HOME", self.0.join("config"))
++            .env("XDG_DATA_HOME", self.0.join("data"))
++            .env("MAELSTROM_RUNS_DIR", self.0.join("runs"))
++            .env("MAELSTROM_SCENES_DIR", self.0.join("scenes"))
++            .arg("--format")
++            .arg("json");
++        c
++    }
++    fn ok(&self, args: &[&str]) -> Value {
++        let output = self.command().args(args).output().unwrap();
++        assert!(
++            output.status.success(),
++            "{}",
++            String::from_utf8_lossy(&output.stderr)
++        );
++        serde_json::from_slice(&output.stdout).unwrap()
++    }
++    fn bake(&self) -> PathBuf {
++        let cache = self.0.join("cache");
++        self.ok(&[
++            "cache",
++            "bake",
++            "builtin:falling-block-04",
++            "--backend",
++            "serial-grid",
++            "--steps",
++            "5",
++            "--frame-stride",
++            "2",
++            "--output",
++            cache.to_str().unwrap(),
++        ]);
++        cache
++    }
++}
++impl Drop for Temp {
++    fn drop(&mut self) {
++        let _ = fs::remove_dir_all(&self.0);
++    }
++}
++fn failed(output: Output) {
++    assert!(!output.status.success());
++    assert!(!output.stderr.is_empty());
++}
++
++#[test]
++fn headless_cache_commands_validate_without_graphics_and_preserve_existing_output() {
++    let t = Temp::new();
++    let cache = t.bake();
++    let value = t.ok(&["cache", "validate", cache.to_str().unwrap(), "--full"]);
++    assert_eq!(value["complete"], true);
++    assert_eq!(value["frames"], 4);
++    assert_eq!(value["particle_count"], 64);
++    let request = fs::read(cache.join("request.json")).unwrap();
++    failed(
++        t.command()
++            .args([
++                "cache",
++                "bake",
++                "builtin:falling-block-04",
++                "--backend",
++                "serial-grid",
++                "--steps",
++                "0",
++                "--output",
++                cache.to_str().unwrap(),
++            ])
++            .output()
++            .unwrap(),
++    );
++    assert_eq!(fs::read(cache.join("request.json")).unwrap(), request);
++    fs::remove_file(cache.join("cache.json")).unwrap();
++    failed(
++        t.command()
++            .args(["cache", "inspect", cache.to_str().unwrap()])
++            .output()
++            .unwrap(),
++    );
++    let partial = t.ok(&[
++        "cache",
++        "inspect",
++        cache.to_str().unwrap(),
++        "--allow-partial",
++    ]);
++    assert_eq!(partial["complete"], false);
++    assert_eq!(partial["frames"], 4);
++    failed(
++        t.command()
++            .args([
++                "render",
++                cache.to_str().unwrap(),
++                "--allow-partial",
++                "--output",
++                t.0.join("bad").to_str().unwrap(),
++            ])
++            .output()
++            .unwrap(),
++    );
++}
++
++#[cfg(feature = "render")]
++fn manifest(path: &Path) -> Value {
++    serde_json::from_slice(&fs::read(path.join("manifest.json")).unwrap()).unwrap()
++}
++
++#[cfg(feature = "render")]
++#[test]
++#[ignore = "requires explicitly available software Vulkan"]
++fn cached_render_matches_direct_and_staged_compile_and_supports_sparse_views() {
++    let t = Temp::new();
++    let cache = t.bake();
++    let render_config = t.0.join("render.toml");
++    fs::write(&render_config,"schema_version = 2\nwidth = 80\nheight = 60\ncamera_mode = \"fit\"\n[particles]\ncolour_mode = \"fixed\"\ncolour = \"#258bdf\"\n").unwrap();
++    let direct = t.0.join("direct");
++    t.ok(&[
++        "compile",
++        "builtin:falling-block-04",
++        "--backend",
++        "serial-grid",
++        "--steps",
++        "5",
++        "--frame-stride",
++        "2",
++        "--software",
++        "--render-config",
++        render_config.to_str().unwrap(),
++        "--output",
++        direct.to_str().unwrap(),
++    ]);
++    let rendered = t.0.join("rendered");
++    let output = t
++        .command()
++        .env("CUDA_VISIBLE_DEVICES", "")
++        .args([
++            "render",
++            cache.to_str().unwrap(),
++            "--software",
++            "--render-config",
++            render_config.to_str().unwrap(),
++            "--output",
++            rendered.to_str().unwrap(),
++        ])
++        .output()
++        .unwrap();
++    assert!(
++        output.status.success(),
++        "{}",
++        String::from_utf8_lossy(&output.stderr)
++    );
++    let original = manifest(&direct);
++    let actual = manifest(&rendered);
++    assert_eq!(original["schema_version"], 1);
++    assert_eq!(actual["schema_version"], 2);
++    assert!(
++        actual["build"]["rustflags_sha256"]
++            .as_str()
++            .is_some_and(|s| s.starts_with("sha256:"))
++    );
++    assert!(actual["graphics"]["vendor"].is_u64());
++    assert!(actual["graphics"]["device"].is_u64());
++    assert_eq!(original["frames"], actual["frames"]);
++    assert_eq!(actual["timing_seconds"]["solver_steps"], 0.0);
++    for path in [&direct, &rendered] {
++        t.ok(&["runs", "validate", path.to_str().unwrap()]);
++    }
++    let staged = t.0.join("staged");
++    let staged_cache = t.0.join("staged-cache");
++    t.ok(&[
++        "compile",
++        "builtin:falling-block-04",
++        "--backend",
++        "serial-grid",
++        "--steps",
++        "5",
++        "--frame-stride",
++        "2",
++        "--software",
++        "--render-config",
++        render_config.to_str().unwrap(),
++        "--cache-output",
++        staged_cache.to_str().unwrap(),
++        "--output",
++        staged.to_str().unwrap(),
++    ]);
++    assert_eq!(original["frames"], manifest(&staged)["frames"]);
++    let still = t.0.join("still");
++    t.ok(&[
++        "render",
++        cache.to_str().unwrap(),
++        "--frame",
++        "1",
++        "--software",
++        "--render-config",
++        render_config.to_str().unwrap(),
++        "--output",
++        still.to_str().unwrap(),
++    ]);
++    let single = manifest(&still);
++    assert_eq!(single["frames"][0]["step"], "2");
++    assert_eq!(
++        single["frames"][0]["png_sha256"],
++        original["frames"][1]["png_sha256"]
++    );
++    assert_eq!(
++        maelstrom::playback::Sequence::open(&still)
++            .unwrap()
++            .frame_count(),
++        1
++    );
++    let sparse = t.0.join("sparse");
++    t.ok(&[
++        "render",
++        cache.to_str().unwrap(),
++        "--first-frame",
++        "1",
++        "--last-frame",
++        "3",
++        "--every",
++        "2",
++        "--software",
++        "--render-config",
++        render_config.to_str().unwrap(),
++        "--output",
++        sparse.to_str().unwrap(),
++    ]);
++    assert_eq!(
++        maelstrom::playback::Sequence::open(&sparse)
++            .unwrap()
++            .frame_count(),
++        2
++    );
++    t.ok(&["runs", "validate", sparse.to_str().unwrap()]);
++    let before = maelstrom::cache::Cache::open(&cache, false)
++        .unwrap()
++        .identity()
++        .to_owned();
++    let alternate = t.0.join("alternate.toml");
++    fs::write(&alternate,"schema_version = 2\nwidth = 96\nheight = 72\ncamera_mode = \"fixed\"\n[camera]\neye_m = [1.5, 1.2, 1.0]\ntarget_m = [0.5, 0.5, 0.5]\n[particles]\ncolour_mode = \"fixed\"\ncolour = \"#ff0000\"\n").unwrap();
++    let changed = t.0.join("changed");
++    t.ok(&[
++        "render",
++        cache.to_str().unwrap(),
++        "--software",
++        "--render-config",
++        alternate.to_str().unwrap(),
++        "--output",
++        changed.to_str().unwrap(),
++    ]);
++    let changed_manifest = manifest(&changed);
++    assert_ne!(
++        changed_manifest["frames"][0]["png_sha256"],
++        actual["frames"][0]["png_sha256"]
++    );
++    assert_eq!(
++        changed_manifest["frames"][1]["snapshot_sha256"],
++        actual["frames"][1]["snapshot_sha256"]
++    );
++    assert_eq!(
++        maelstrom::cache::Cache::open(&cache, false)
++            .unwrap()
++            .identity(),
++        before
++    );
++    fs::remove_dir_all(&cache).unwrap();
++    t.ok(&["runs", "validate", rendered.to_str().unwrap()]);
++    assert!(
++        maelstrom::workflow::replay_options(
++            &fs::read_to_string(rendered.join("manifest.json")).unwrap()
++        )
++        .is_ok()
++    );
++}
++
++#[cfg(feature = "render")]
++#[test]
++#[ignore = "requires explicitly available software Vulkan"]
++fn incomplete_prefix_requires_explicit_selection_and_corrupt_frames_never_complete() {
++    let t = Temp::new();
++    let cache = t.bake();
++    fs::remove_file(cache.join("cache.json")).unwrap();
++    let output = t.0.join("partial");
++    t.ok(&[
++        "render",
++        cache.to_str().unwrap(),
++        "--allow-partial",
++        "--last-frame",
++        "1",
++        "--width",
++        "32",
++        "--height",
++        "32",
++        "--software",
++        "--output",
++        output.to_str().unwrap(),
++    ]);
++    let result = manifest(&output);
++    assert_eq!(result["source_cache"]["complete"], false);
++    assert_eq!(result["frame_count"], 2);
++    t.ok(&["runs", "validate", output.to_str().unwrap()]);
++    let frame = cache.join("frames/frame-00000000.mpc");
++    let mut bytes = fs::read(&frame).unwrap();
++    bytes[160] ^= 1;
++    fs::write(&frame, bytes).unwrap();
++    let bad = t.0.join("bad");
++    failed(
++        t.command()
++            .args([
++                "render",
++                cache.to_str().unwrap(),
++                "--allow-partial",
++                "--last-frame",
++                "1",
++                "--width",
++                "32",
++                "--height",
++                "32",
++                "--software",
++                "--output",
++                bad.to_str().unwrap(),
++            ])
++            .output()
++            .unwrap(),
++    );
++    assert!(!bad.join("manifest.json").exists());
++    assert!(!bad.join("frame-00000000.png").exists());
++}
++
++#[cfg(feature = "render")]
++#[test]
++#[ignore = "requires software graphics, FFmpeg with libx264 and ffprobe"]
++fn cached_video_and_png_conversion_preserve_selection_without_solver() {
++    let t = Temp::new();
++    let cache = t.bake();
++    let config = t.0.join("camera.toml");
++    fs::write(&config,"schema_version = 2\nwidth = 64\nheight = 48\ncamera_mode = 'fixed'\n[camera]\neye_m = [1.4, 1.2, 1.1]\ntarget_m = [0.1, 0.1, 0.1]\n[particles]\ncolour_mode = 'fixed'\ncolour = '#00ffaa'\n").unwrap();
++    let video = t.0.join("cache.mp4");
++    let v = t.ok(&[
++        "video",
++        "cache",
++        cache.to_str().unwrap(),
++        "--render-config",
++        config.to_str().unwrap(),
++        "--software",
++        "-o",
++        video.to_str().unwrap(),
++        "--first-frame",
++        "1",
++        "--last-frame",
++        "3",
++        "--every",
++        "2",
++        "--fps",
++        "24",
++    ]);
++    assert_eq!(v["frame_count"], 2);
++    assert_eq!(v["source"]["solver_steps"], 0);
++    assert_eq!(v["frames"][0]["source_index"], 1);
++    assert_eq!(v["frames"][1]["source_index"], 3);
++    assert_eq!(
++        v["frames"][1]["simulated_seconds"],
++        5.0 * f64::from(1.0f32 / 240.0)
++    );
++    let images = t.0.join("images");
++    t.ok(&[
++        "render",
++        cache.to_str().unwrap(),
++        "--render-config",
++        config.to_str().unwrap(),
++        "--software",
++        "-o",
++        images.to_str().unwrap(),
++    ]);
++    fs::remove_dir_all(&cache).unwrap();
++    let png_video = t.0.join("images.mp4");
++    let v = t.ok(&[
++        "video",
++        "images",
++        images.to_str().unwrap(),
++        "-o",
++        png_video.to_str().unwrap(),
++        "--omit-terminal",
++        "--fps",
++        "60",
++    ]);
++    assert_eq!(v["frame_count"], 3);
++    assert_eq!(v["duration_seconds"], 0.05);
++    assert_eq!(
++        v["source"]["render"]["camera"]["eye_m"],
++        serde_json::json!([1.4, 1.2, 1.1])
++    );
++    let png = images.join("frame-00000000.png");
++    fs::write(png, b"corrupt").unwrap();
++    let failed_video = t.0.join("corrupt.mp4");
++    failed(
++        t.command()
++            .args([
++                "video",
++                "images",
++                images.to_str().unwrap(),
++                "-o",
++                failed_video.to_str().unwrap(),
++            ])
++            .output()
++            .unwrap(),
++    );
++    assert!(!failed_video.exists());
++}
+--- /dev/null
++++ b/tests/unit/cuda/tiled_tests.rs
+@@ -0,0 +1,294 @@
++//! Interleaving rows must preserve the independent CPU intermediates even for
++//! dense, tail and changed-position inputs with fixed prediction membership.
++
++use super::*;
++use crate::{fluid::PbfParameters, neighbours::brute_force};
++
++#[test]
++#[ignore = "requires an explicitly selected CUDA hardware test run"]
++fn tiled_empty_rows_need_no_neighbour_allocation_and_keep_the_self_term() {
++    let config = crate::config::resolve_effective_configuration(None, None, None).unwrap();
++    for threads in [32, 64, 128, 256] {
++        for count in [1, 31, 32, 33, 65] {
++            let particles: Vec<_> = (0..count)
++                .map(|i| Particle {
++                    identity: i as u64,
++                    position_m: Vec3::new(i as f32 * 2.0, 0.0, 0.0),
++                    velocity_m_s: Vec3::ZERO,
++                })
++                .collect();
++            let points: Vec<_> = particles.iter().map(|p| p.position_m).collect();
++            let mut gpu = CudaSolver::new(0, threads).unwrap();
++            let mut s = settings(&config, count, 0).unwrap();
++            s.neighbour_layout = 1;
++            gpu.prepare(s, &particles, &[]).unwrap();
++            gpu.context
++                .inner
++                .upload(2, &points.iter().copied().map(array).collect::<Vec<_>>())
++                .unwrap();
++            gpu.discover(&mut s, &points).unwrap();
++            assert_eq!(s.entries, 0);
++            assert_eq!(gpu.neighbour_capacity, 0);
++            gpu.group(s, 5).unwrap();
++            let expected = crate::kernel::poly6(0.0, s.radius).unwrap().to_bits();
++            assert!(
++                gpu.context
++                    .inner
++                    .download::<f32>(4, count)
++                    .unwrap()
++                    .iter()
++                    .all(|x| x.to_bits() == expected)
++            );
++            assert_eq!(
++                gpu.context.inner.download::<[f32; 3]>(7, count).unwrap(),
++                vec![[0.0; 3]; count]
++            );
++        }
++    }
++}
++
++#[test]
++#[ignore = "requires an explicitly selected CUDA hardware test run"]
++fn tiled_prefix_rejects_invalid_counts_before_reusing_sort_scratch() {
++    let config = crate::config::resolve_effective_configuration(None, None, None).unwrap();
++    for threads in [32, 64, 128, 256] {
++        let mut gpu = CudaSolver::new(0, threads).unwrap();
++        let particles: Vec<_> = (0..33)
++            .map(|i| Particle {
++                identity: i,
++                position_m: Vec3::ZERO,
++                velocity_m_s: Vec3::ZERO,
++            })
++            .collect();
++        let mut s = settings(&config, particles.len(), 0).unwrap();
++        s.neighbour_layout = 1;
++        gpu.prepare(s, &particles, &[]).unwrap();
++        let scratch = vec![0xa5a5a5a5_u32; storage_sizes(s).unwrap()[10] / 4];
++        gpu.context.inner.upload(10, &scratch).unwrap();
++        let mut counts = vec![0_u64; 34];
++        counts[1] = 33; // A row can contain at most the other 32 particles.
++        gpu.context.inner.upload(13, &counts).unwrap();
++        assert_eq!(gpu.context.inner.prefix(s, threads, false).unwrap(), 52);
++        assert_eq!(
++            gpu.context
++                .inner
++                .download::<u32>(10, scratch.len())
++                .unwrap(),
++            scratch
++        );
++        gpu.context.inner.begin_attempt().unwrap();
++        counts[1] = 32;
++        gpu.context.inner.upload(13, &counts).unwrap();
++        assert_eq!(
++            gpu.context.inner.prefix(s, threads, false).unwrap(),
++            u64::MAX
++        );
++        assert_eq!(
++            gpu.context
++                .inner
++                .download_at::<u64>(10, s.padded as usize * 4, 3)
++                .unwrap(),
++            vec![0, 32 * 32, 32 * 32]
++        );
++    }
++}
++
++#[test]
++#[ignore = "requires an explicitly selected CUDA hardware test run"]
++fn tiled_attempts_keep_every_cancellation_boundary_and_retry_from_accepted_state() {
++    use crate::{execution::ExecutionMode, neighbours::SearchBackend, simulation::Simulation};
++
++    let config = crate::config::resolve_effective_configuration(None, None, None).unwrap();
++    let particles: Vec<_> = (0..32_000)
++        .map(|i| Particle {
++            identity: i,
++            position_m: Vec3::new(
++                (i % 40) as f32 * 0.05,
++                ((i / 40) % 40) as f32 * 0.05 + 0.4,
++                (i / 1600) as f32 * 0.05,
++            ),
++            velocity_m_s: Vec3::ZERO,
++        })
++        .collect();
++    let build = || {
++        Simulation::new_with_execution(
++            &config,
++            particles.clone(),
++            vec![],
++            SearchBackend::UniformGrid,
++            ExecutionMode::Cuda {
++                device: 0,
++                threads: 128,
++            },
++        )
++        .unwrap()
++    };
++    let mut reference = build();
++    let mut candidate = build();
++    let mut polls = 0;
++    let _ = reference
++        .step_with_cancellation(|| {
++            polls += 1;
++            false
++        })
++        .unwrap();
++    for boundary in 1..=polls {
++        if boundary != 1 {
++            let _ = reference.step().unwrap();
++        }
++        let old = candidate.snapshot().clone();
++        let mut observed = 0;
++        assert!(matches!(
++            candidate.step_with_cancellation(|| {
++                observed += 1;
++                observed == boundary
++            }),
++            Err(StepError::Cancelled)
++        ));
++        assert_eq!(candidate.snapshot(), &old);
++        let _ = candidate.step().unwrap();
++        assert_eq!(candidate.snapshot(), reference.snapshot());
++    }
++}
++
++fn scalar_bits(values: Vec<f32>) -> Vec<u32> {
++    values.into_iter().map(f32::to_bits).collect()
++}
++
++#[test]
++#[ignore = "requires an explicitly selected CUDA hardware test run"]
++fn tiled_density_matches_independent_intermediates_for_fixed_rows() {
++    let config = crate::config::resolve_effective_configuration(None, None, None).unwrap();
++    for threads in [32, 64, 128, 256] {
++        let mut gpu = CudaSolver::new(0, threads).unwrap();
++        for count in [0, 1, 33, 65, 257, 513, 17] {
++            let mut original: Vec<_> = (0..count)
++                .map(|i| {
++                    Vec3::new(
++                        (i % 11) as f32 * 0.015 - 0.08,
++                        ((i / 11) % 9) as f32 * 0.015 - 0.06,
++                        (i / 99) as f32 * 0.015 - 0.04,
++                    )
++                })
++                .collect();
++            original.reverse();
++            original.rotate_left(count / 3);
++            let fixed = brute_force(&original, 0.2).unwrap();
++            let particles: Vec<_> = original
++                .iter()
++                .enumerate()
++                .map(|(i, &position_m)| Particle {
++                    identity: (3 * i + 7) as u64,
++                    position_m,
++                    velocity_m_s: Vec3::ZERO,
++                })
++                .collect();
++            let mut s = settings(&config, count, 0).unwrap();
++            s.neighbour_layout = 1;
++            s.radius = 0.2;
++            s.relaxation = 0.01;
++            s.strength = 0.1;
++            s.reference_weight = crate::kernel::poly6(0.04, 0.2).unwrap();
++            s.correction_scale = 1.0;
++            gpu.prepare(s, &particles, &[]).unwrap();
++            gpu.context
++                .inner
++                .upload(2, &original.iter().copied().map(array).collect::<Vec<_>>())
++                .unwrap();
++            gpu.discover(&mut s, &original).unwrap();
++            // Derive physical storage independently from brute-force row
++            // lengths. Check only members, never unspecified padding words.
++            let mut tile_offsets = vec![0_u64];
++            for first in (0..count).step_by(32) {
++                let longest = (first..(first + 32).min(count))
++                    .map(|i| fixed.for_particle(i).unwrap().len())
++                    .max()
++                    .unwrap();
++                tile_offsets.push(tile_offsets.last().unwrap() + longest as u64 * 32);
++            }
++            assert_eq!(s.entries, *tile_offsets.last().unwrap());
++            if count != 0 {
++                assert_eq!(
++                    gpu.context
++                        .inner
++                        .download_at::<u64>(10, s.padded as usize * 4, tile_offsets.len())
++                        .unwrap(),
++                    tile_offsets
++                );
++                let indices = gpu
++                    .context
++                    .inner
++                    .download::<u32>(11, s.entries as usize)
++                    .unwrap();
++                for i in 0..count {
++                    let row = fixed.for_particle(i).unwrap();
++                    let actual: Vec<_> = (0..row.len())
++                        .map(|k| indices[tile_offsets[i / 32] as usize + k * 32 + i % 32] as usize)
++                        .collect();
++                    assert_eq!(actual, row, "block {threads}, row {i}");
++                }
++            }
++            for changed in [false, true, false] {
++                let mut positions = original.clone();
++                if changed {
++                    for (i, point) in positions.iter_mut().enumerate() {
++                        if i % 7 == 0 {
++                            point.x += 0.4;
++                        } else if i % 11 == 0 {
++                            *point = Vec3::new(-0.0, 0.0, 0.0);
++                        }
++                    }
++                }
++                let input: Vec<_> = positions.iter().copied().map(array).collect();
++                gpu.context.inner.upload(2, &input).unwrap();
++                for density in [3.0, 10_000.0] {
++                    s.rest_density = density;
++                    assert_eq!(
++                        gpu.context.inner.checked_group(s, 5, threads).unwrap(),
++                        u64::MAX
++                    );
++                    let expected = crate::fluid::compute_jacobi_stage(
++                        &positions,
++                        &fixed,
++                        PbfParameters::new(0.2, density, 0.01, 0.1, 0.04, 4.0).unwrap(),
++                    )
++                    .unwrap();
++                    for (slot, expected) in [
++                        (4, expected.normalised_densities),
++                        (5, expected.constraints),
++                        (6, expected.multipliers),
++                    ] {
++                        assert_eq!(
++                            scalar_bits(gpu.context.inner.download(slot, count).unwrap()),
++                            scalar_bits(expected),
++                            "block {threads}, count {count}, changed {changed}, slot {slot}"
++                        );
++                    }
++                    assert_eq!(
++                        gpu.context
++                            .inner
++                            .download::<[f32; 3]>(7, count)
++                            .unwrap()
++                            .into_iter()
++                            .map(|v| v.map(f32::to_bits))
++                            .collect::<Vec<_>>(),
++                        expected
++                            .corrections
++                            .into_iter()
++                            .map(array)
++                            .map(|v| v.map(f32::to_bits))
++                            .collect::<Vec<_>>()
++                    );
++                    assert_eq!(
++                        gpu.context.inner.download::<u32>(12, count).unwrap(),
++                        vec![0; count]
++                    );
++                    assert_eq!(
++                        gpu.context.inner.download::<[f32; 3]>(2, count).unwrap(),
++                        input
++                    );
++                }
++            }
++        }
++    }
++}

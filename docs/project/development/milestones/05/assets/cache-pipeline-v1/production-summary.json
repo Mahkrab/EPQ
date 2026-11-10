@@ -1,0 +1,2482 @@
+[
+  {
+    "scene": "falling-block-20",
+    "samples": [
+      {
+        "round": 0,
+        "warmup": true,
+        "stages": {
+          "bake": {
+            "boundary": "bake_entry_to_before_completion_publication",
+            "capture_s": 0.003774894000000001,
+            "diagnostics_s": 0.0013713599999999933,
+            "elapsed_s": 3.498721088,
+            "max_pending_particle_frames": 1,
+            "schema_version": 1,
+            "setup_s": 0.226373271,
+            "solver_s": 2.5055431660000016,
+            "worker": {
+              "binary_hash_s": 0.024111625,
+              "canonical_s": 0.4964339159999998,
+              "packing_s": 0.004389212999999998,
+              "receipt_publication_s": 0.7449753760000006,
+              "writer_wait_s": 0.009479605000000006,
+              "writing_s": 0.8835000299999999
+            },
+            "worker_overlaps_simulation": true
+          },
+          "direct": {
+            "boundary": "export_entry_to_before_manifest",
+            "components_s": {
+              "comparison": 3.9288e-05,
+              "frame_output_wait": 0.224269508,
+              "frame_particle_copy": 0.007148505,
+              "frame_publication": 0.484672146,
+              "graphics_readback": 0.931791337,
+              "other": 0.007196846,
+              "progress": 0.527314178,
+              "setup": 0.546987313,
+              "snapshot_capture": 0.01063508,
+              "solver_steps": 2.607971516
+            },
+            "schema_version": 2,
+            "total_s": 5.348025717,
+            "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+            "worker_components_s": {
+              "frame_hashing": 0.63844705,
+              "png_encoding": 3.041670025
+            }
+          },
+          "render": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 1.99752236,
+                "frame_particle_copy": 0.002945429,
+                "frame_publication": 0.501512336,
+                "graphics_readback": 1.138309631,
+                "other": 0.108357062,
+                "progress": 0.543272667,
+                "setup": 0.325760025,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 4.61767951,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.158430547,
+                "png_encoding": 3.021850922
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.029150016999999997,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.036805864000000015,
+              "cache_read_validate": 0.089081832,
+              "cache_reading": 0.022991552000000002,
+              "encoding": 3.021850922,
+              "graphics_readback": 1.138309631,
+              "solver_steps": 0.0
+            }
+          },
+          "repeat": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 2.01428906,
+                "frame_particle_copy": 0.002832891,
+                "frame_publication": 0.491734252,
+                "graphics_readback": 1.123449059,
+                "other": 0.109493266,
+                "progress": 0.554246788,
+                "setup": 0.34863371,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 4.644679026,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.157484508,
+                "png_encoding": 3.031102184
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.028509894000000004,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.03600144699999999,
+              "cache_read_validate": 0.092865543,
+              "cache_reading": 0.028226614,
+              "encoding": 3.031102184,
+              "graphics_readback": 1.123449059,
+              "solver_steps": 0.0
+            }
+          },
+          "alt": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 3.082153205,
+                "frame_particle_copy": 0.002818555,
+                "frame_publication": 0.589971397,
+                "graphics_readback": 2.007328707,
+                "other": 0.105243663,
+                "progress": 0.553060516,
+                "setup": 0.337883896,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 6.678459939,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.467864429,
+                "png_encoding": 4.65577587
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.027972728999999995,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.03549726999999998,
+              "cache_read_validate": 0.085662389,
+              "cache_reading": 0.022052242999999985,
+              "encoding": 4.65577587,
+              "graphics_readback": 2.007328707,
+              "solver_steps": 0.0
+            }
+          }
+        },
+        "direct": {
+          "command": [
+            "/tmp/maelstrom-cache-final/baseline-target/release/maelstrom",
+            "--format",
+            "json",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/library",
+            "compile",
+            "builtin:falling-block-20",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/a-0-images"
+          ],
+          "wall_s": 5.52191252198827,
+          "returncode": 0,
+          "user_s": 6.27,
+          "system_s": 0.7,
+          "rss_kib": 302356.0
+        },
+        "direct_alt": {
+          "command": [
+            "/tmp/maelstrom-cache-final/baseline-target/release/maelstrom",
+            "--format",
+            "json",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/library",
+            "compile",
+            "builtin:falling-block-20",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/alternative.toml",
+            "--no-fit-camera",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/a-0-alt-images"
+          ],
+          "wall_s": 7.5082071509968955,
+          "returncode": 0,
+          "user_s": 8.56,
+          "system_s": 0.61,
+          "rss_kib": 301808.0
+        },
+        "bake": {
+          "command": [
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "cache",
+            "bake",
+            "builtin:falling-block-20",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-0-cache"
+          ],
+          "wall_s": 3.5937996730062878,
+          "returncode": 0,
+          "user_s": 2.76,
+          "system_s": 0.46,
+          "rss_kib": 112356.0
+        },
+        "render": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-0-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-0-render-images"
+          ],
+          "wall_s": 4.711865691991989,
+          "returncode": 0,
+          "user_s": 3.53,
+          "system_s": 0.45,
+          "rss_kib": 202176.0
+        },
+        "repeat": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-0-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-0-repeat-images"
+          ],
+          "wall_s": 4.751342834002571,
+          "returncode": 0,
+          "user_s": 3.58,
+          "system_s": 0.4,
+          "rss_kib": 201772.0
+        },
+        "alt": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-0-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/alternative.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-0-alt-images"
+          ],
+          "wall_s": 6.803097062991583,
+          "returncode": 0,
+          "user_s": 5.53,
+          "system_s": 0.42,
+          "rss_kib": 203332.0
+        },
+        "first_staged_s": 8.305665364998276
+      },
+      {
+        "round": 1,
+        "warmup": false,
+        "stages": {
+          "bake": {
+            "boundary": "bake_entry_to_before_completion_publication",
+            "capture_s": 0.0035796120000000002,
+            "diagnostics_s": 0.001346158999999998,
+            "elapsed_s": 3.526209562,
+            "max_pending_particle_frames": 1,
+            "schema_version": 1,
+            "setup_s": 0.235691674,
+            "solver_s": 2.5257129039999984,
+            "worker": {
+              "binary_hash_s": 0.024121861999999977,
+              "canonical_s": 0.4985958120000002,
+              "packing_s": 0.004176842000000001,
+              "receipt_publication_s": 0.7430822130000005,
+              "writer_wait_s": 0.009407915000000005,
+              "writing_s": 0.9046820669999999
+            },
+            "worker_overlaps_simulation": true
+          },
+          "direct": {
+            "boundary": "export_entry_to_before_manifest",
+            "components_s": {
+              "comparison": 4.0046e-05,
+              "frame_output_wait": 0.178897701,
+              "frame_particle_copy": 0.006400254,
+              "frame_publication": 0.458712858,
+              "graphics_readback": 0.97077452,
+              "other": 0.007214173,
+              "progress": 0.518801447,
+              "setup": 0.546421624,
+              "snapshot_capture": 0.010330556,
+              "solver_steps": 2.618325337
+            },
+            "schema_version": 2,
+            "total_s": 5.315918516,
+            "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+            "worker_components_s": {
+              "frame_hashing": 0.638797841,
+              "png_encoding": 3.036705697
+            }
+          },
+          "render": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 2.022364174,
+                "frame_particle_copy": 0.002839019,
+                "frame_publication": 0.537105701,
+                "graphics_readback": 1.106853438,
+                "other": 0.100390059,
+                "progress": 0.535438484,
+                "setup": 0.329341021,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 4.634331896,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.157812967,
+                "png_encoding": 3.013347962
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.02715959700000003,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.035664743000000006,
+              "cache_read_validate": 0.083685733,
+              "cache_reading": 0.020727155000000018,
+              "encoding": 3.013347962,
+              "graphics_readback": 1.106853438,
+              "solver_steps": 0.0
+            }
+          },
+          "repeat": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 1.895663949,
+                "frame_particle_copy": 0.002976694,
+                "frame_publication": 0.497639137,
+                "graphics_readback": 1.218226444,
+                "other": 0.108917554,
+                "progress": 0.535247255,
+                "setup": 0.34123476,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 4.599905793,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.157573131,
+                "png_encoding": 3.004938491
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.028989018999999994,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.036188741,
+              "cache_read_validate": 0.091770416,
+              "cache_reading": 0.026459588000000003,
+              "encoding": 3.004938491,
+              "graphics_readback": 1.218226444,
+              "solver_steps": 0.0
+            }
+          },
+          "alt": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 3.247689294,
+                "frame_particle_copy": 0.002927403,
+                "frame_publication": 0.542996444,
+                "graphics_readback": 1.8549288860000002,
+                "other": 0.104536957,
+                "progress": 0.537609206,
+                "setup": 0.340643892,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 6.631332082,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.469658035,
+                "png_encoding": 4.667586335
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.028401931000000002,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.036384458,
+              "cache_read_validate": 0.085112174,
+              "cache_reading": 0.020163829999999994,
+              "encoding": 4.667586335,
+              "graphics_readback": 1.8549288860000002,
+              "solver_steps": 0.0
+            }
+          }
+        },
+        "direct": {
+          "command": [
+            "/tmp/maelstrom-cache-final/baseline-target/release/maelstrom",
+            "--format",
+            "json",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/library",
+            "compile",
+            "builtin:falling-block-20",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/a-1-images"
+          ],
+          "wall_s": 5.468069716007449,
+          "returncode": 0,
+          "user_s": 6.36,
+          "system_s": 0.59,
+          "rss_kib": 302884.0
+        },
+        "direct_alt": {
+          "command": [
+            "/tmp/maelstrom-cache-final/baseline-target/release/maelstrom",
+            "--format",
+            "json",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/library",
+            "compile",
+            "builtin:falling-block-20",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/alternative.toml",
+            "--no-fit-camera",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/a-1-alt-images"
+          ],
+          "wall_s": 7.6697138939925935,
+          "returncode": 0,
+          "user_s": 8.32,
+          "system_s": 0.82,
+          "rss_kib": 302284.0
+        },
+        "bake": {
+          "command": [
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "cache",
+            "bake",
+            "builtin:falling-block-20",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-1-cache"
+          ],
+          "wall_s": 3.6146411150111817,
+          "returncode": 0,
+          "user_s": 2.79,
+          "system_s": 0.46,
+          "rss_kib": 112540.0
+        },
+        "render": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-1-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-1-render-images"
+          ],
+          "wall_s": 4.748200536996592,
+          "returncode": 0,
+          "user_s": 3.54,
+          "system_s": 0.42,
+          "rss_kib": 201772.0
+        },
+        "repeat": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-1-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-1-repeat-images"
+          ],
+          "wall_s": 4.698946475997218,
+          "returncode": 0,
+          "user_s": 3.55,
+          "system_s": 0.41,
+          "rss_kib": 201772.0
+        },
+        "alt": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-1-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/alternative.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-1-alt-images"
+          ],
+          "wall_s": 6.714130959007889,
+          "returncode": 0,
+          "user_s": 5.55,
+          "system_s": 0.37,
+          "rss_kib": 203132.0
+        },
+        "first_staged_s": 8.362841652007774
+      },
+      {
+        "round": 2,
+        "warmup": false,
+        "stages": {
+          "bake": {
+            "boundary": "bake_entry_to_before_completion_publication",
+            "capture_s": 0.0041934719999999984,
+            "diagnostics_s": 0.0017151129999999927,
+            "elapsed_s": 4.153203598,
+            "max_pending_particle_frames": 1,
+            "schema_version": 1,
+            "setup_s": 0.22930854,
+            "solver_s": 2.6625202079999966,
+            "worker": {
+              "binary_hash_s": 0.024050753000000015,
+              "canonical_s": 0.5072495760000003,
+              "packing_s": 0.004271368999999999,
+              "receipt_publication_s": 1.2322100400000002,
+              "writer_wait_s": 0.013846925000000008,
+              "writing_s": 1.3708770329999995
+            },
+            "worker_overlaps_simulation": true
+          },
+          "direct": {
+            "boundary": "export_entry_to_before_manifest",
+            "components_s": {
+              "comparison": 4.2016e-05,
+              "frame_output_wait": 0.09188516,
+              "frame_particle_copy": 0.007848022,
+              "frame_publication": 0.511787574,
+              "graphics_readback": 1.037902448,
+              "other": 0.007048895,
+              "progress": 0.531210797,
+              "setup": 0.516108407,
+              "snapshot_capture": 0.010262086,
+              "solver_steps": 2.791805906
+            },
+            "schema_version": 2,
+            "total_s": 5.505901311,
+            "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+            "worker_components_s": {
+              "frame_hashing": 0.64136404,
+              "png_encoding": 3.049188761
+            }
+          },
+          "render": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 2.038589894,
+                "frame_particle_copy": 0.00286412,
+                "frame_publication": 0.705496623,
+                "graphics_readback": 1.11192356,
+                "other": 0.107378505,
+                "progress": 0.795939055,
+                "setup": 0.325013327,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 5.087205084,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.157538814,
+                "png_encoding": 3.040207959
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.03038184300000002,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.03781931600000002,
+              "cache_read_validate": 0.090059186,
+              "cache_reading": 0.021725989999999997,
+              "encoding": 3.040207959,
+              "graphics_readback": 1.11192356,
+              "solver_steps": 0.0
+            }
+          },
+          "repeat": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 1.959548164,
+                "frame_particle_copy": 0.003139936,
+                "frame_publication": 0.7220576,
+                "graphics_readback": 1.187833352,
+                "other": 0.116884001,
+                "progress": 0.796994226,
+                "setup": 0.342357399,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 5.128814678,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.157892872,
+                "png_encoding": 3.04464501
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.03136015599999999,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.038521260000000015,
+              "cache_read_validate": 0.097381511,
+              "cache_reading": 0.02736031500000002,
+              "encoding": 3.04464501,
+              "graphics_readback": 1.187833352,
+              "solver_steps": 0.0
+            }
+          },
+          "alt": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 3.09082724,
+                "frame_particle_copy": 0.003050516,
+                "frame_publication": 0.808441022,
+                "graphics_readback": 2.016467611,
+                "other": 0.104927484,
+                "progress": 0.772288091,
+                "setup": 0.350341694,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 7.146343658,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.469354108,
+                "png_encoding": 4.673188807
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.028700685,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.03656431900000002,
+              "cache_read_validate": 0.085785327,
+              "cache_reading": 0.020371610999999998,
+              "encoding": 4.673188807,
+              "graphics_readback": 2.016467611,
+              "solver_steps": 0.0
+            }
+          }
+        },
+        "direct": {
+          "command": [
+            "/tmp/maelstrom-cache-final/baseline-target/release/maelstrom",
+            "--format",
+            "json",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/library",
+            "compile",
+            "builtin:falling-block-20",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/a-2-images"
+          ],
+          "wall_s": 5.697027127011097,
+          "returncode": 0,
+          "user_s": 6.58,
+          "system_s": 0.59,
+          "rss_kib": 302156.0
+        },
+        "direct_alt": {
+          "command": [
+            "/tmp/maelstrom-cache-final/baseline-target/release/maelstrom",
+            "--format",
+            "json",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/library",
+            "compile",
+            "builtin:falling-block-20",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/alternative.toml",
+            "--no-fit-camera",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/a-2-alt-images"
+          ],
+          "wall_s": 7.903386985999532,
+          "returncode": 0,
+          "user_s": 8.36,
+          "system_s": 0.71,
+          "rss_kib": 302432.0
+        },
+        "bake": {
+          "command": [
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "cache",
+            "bake",
+            "builtin:falling-block-20",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-2-cache"
+          ],
+          "wall_s": 4.247825525002554,
+          "returncode": 0,
+          "user_s": 2.89,
+          "system_s": 0.51,
+          "rss_kib": 112176.0
+        },
+        "render": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-2-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-2-render-images"
+          ],
+          "wall_s": 5.188551964005455,
+          "returncode": 0,
+          "user_s": 3.54,
+          "system_s": 0.53,
+          "rss_kib": 201388.0
+        },
+        "repeat": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-2-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-2-repeat-images"
+          ],
+          "wall_s": 5.233698900003219,
+          "returncode": 0,
+          "user_s": 3.58,
+          "system_s": 0.5,
+          "rss_kib": 201720.0
+        },
+        "alt": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-2-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/alternative.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-2-alt-images"
+          ],
+          "wall_s": 7.241098496000632,
+          "returncode": 0,
+          "user_s": 5.54,
+          "system_s": 0.55,
+          "rss_kib": 203820.0
+        },
+        "first_staged_s": 9.43637748900801
+      },
+      {
+        "round": 3,
+        "warmup": false,
+        "stages": {
+          "bake": {
+            "boundary": "bake_entry_to_before_completion_publication",
+            "capture_s": 0.004191688999999999,
+            "diagnostics_s": 0.0016991549999999973,
+            "elapsed_s": 4.490675612,
+            "max_pending_particle_frames": 1,
+            "schema_version": 1,
+            "setup_s": 0.236900192,
+            "solver_s": 2.6660283470000006,
+            "worker": {
+              "binary_hash_s": 0.024512656,
+              "canonical_s": 0.5071892240000002,
+              "packing_s": 0.004272085,
+              "receipt_publication_s": 1.3581661549999995,
+              "writer_wait_s": 0.205964775,
+              "writing_s": 1.6494427530000002
+            },
+            "worker_overlaps_simulation": true
+          },
+          "direct": {
+            "boundary": "export_entry_to_before_manifest",
+            "components_s": {
+              "comparison": 5.034e-05,
+              "frame_output_wait": 0.105268523,
+              "frame_particle_copy": 0.006426493,
+              "frame_publication": 0.928860983,
+              "graphics_readback": 1.025245002,
+              "other": 0.007541272,
+              "progress": 1.010733714,
+              "setup": 0.539108419,
+              "snapshot_capture": 0.009586093,
+              "solver_steps": 2.7914315
+            },
+            "schema_version": 2,
+            "total_s": 6.424252339,
+            "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+            "worker_components_s": {
+              "frame_hashing": 0.646267532,
+              "png_encoding": 3.058961699
+            }
+          },
+          "render": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 1.959106263,
+                "frame_particle_copy": 0.003103977,
+                "frame_publication": 0.903617849,
+                "graphics_readback": 1.187275343,
+                "other": 0.110568887,
+                "progress": 1.037743326,
+                "setup": 0.318303418,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 5.519719063,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.158029529,
+                "png_encoding": 3.034595731
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.030964184,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.03991084499999999,
+              "cache_read_validate": 0.091615984,
+              "cache_reading": 0.02059659,
+              "encoding": 3.034595731,
+              "graphics_readback": 1.187275343,
+              "solver_steps": 0.0
+            }
+          },
+          "repeat": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 1.799728618,
+                "frame_particle_copy": 0.002960314,
+                "frame_publication": 0.843739771,
+                "graphics_readback": 1.342643071,
+                "other": 0.114132796,
+                "progress": 1.1800498959999999,
+                "setup": 0.341015305,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 5.624269771,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.157259087,
+                "png_encoding": 3.037244911
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.030742001000000005,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.03744878099999996,
+              "cache_read_validate": 0.094750322,
+              "cache_reading": 0.02641490500000002,
+              "encoding": 3.037244911,
+              "graphics_readback": 1.342643071,
+              "solver_steps": 0.0
+            }
+          },
+          "alt": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 3.062917556,
+                "frame_particle_copy": 0.002982384,
+                "frame_publication": 1.092847595,
+                "graphics_readback": 2.054315662,
+                "other": 0.105167153,
+                "progress": 1.096232852,
+                "setup": 0.337810393,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 7.752273595,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.465952902,
+                "png_encoding": 4.686887734
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.029731726999999996,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.037432102000000037,
+              "cache_read_validate": 0.086576269,
+              "cache_reading": 0.019267617000000008,
+              "encoding": 4.686887734,
+              "graphics_readback": 2.054315662,
+              "solver_steps": 0.0
+            }
+          }
+        },
+        "direct": {
+          "command": [
+            "/tmp/maelstrom-cache-final/baseline-target/release/maelstrom",
+            "--format",
+            "json",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/library",
+            "compile",
+            "builtin:falling-block-20",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/a-3-images"
+          ],
+          "wall_s": 6.622797276999336,
+          "returncode": 0,
+          "user_s": 6.69,
+          "system_s": 0.5,
+          "rss_kib": 301760.0
+        },
+        "direct_alt": {
+          "command": [
+            "/tmp/maelstrom-cache-final/baseline-target/release/maelstrom",
+            "--format",
+            "json",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/library",
+            "compile",
+            "builtin:falling-block-20",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/alternative.toml",
+            "--no-fit-camera",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/a-3-alt-images"
+          ],
+          "wall_s": 8.469495623998228,
+          "returncode": 0,
+          "user_s": 8.45,
+          "system_s": 0.65,
+          "rss_kib": 302388.0
+        },
+        "bake": {
+          "command": [
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "cache",
+            "bake",
+            "builtin:falling-block-20",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-3-cache"
+          ],
+          "wall_s": 4.582037806001608,
+          "returncode": 0,
+          "user_s": 2.92,
+          "system_s": 0.49,
+          "rss_kib": 112392.0
+        },
+        "render": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-3-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-3-render-images"
+          ],
+          "wall_s": 5.642810548000853,
+          "returncode": 0,
+          "user_s": 3.61,
+          "system_s": 0.39,
+          "rss_kib": 201604.0
+        },
+        "repeat": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-3-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-3-repeat-images"
+          ],
+          "wall_s": 5.756864212002256,
+          "returncode": 0,
+          "user_s": 3.59,
+          "system_s": 0.42,
+          "rss_kib": 201932.0
+        },
+        "alt": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-3-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/alternative.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/falling-block-20/b-3-alt-images"
+          ],
+          "wall_s": 7.891209083987633,
+          "returncode": 0,
+          "user_s": 5.55,
+          "system_s": 0.4,
+          "rss_kib": 202940.0
+        },
+        "first_staged_s": 10.22484835400246
+      }
+    ],
+    "median_s": {
+      "direct": 5.697027127011097,
+      "direct_alt": 7.903386985999532,
+      "bake": 4.247825525002554,
+      "render": 5.188551964005455,
+      "repeat": 5.233698900003219,
+      "alt": 7.241098496000632
+    },
+    "first_staged_median_s": 9.43637748900801,
+    "paired_first_speedups": [
+      0.6538530733383742,
+      0.603730312150748,
+      0.6477159413720672
+    ],
+    "paired_alternative_speedups": [
+      1.1423241430378512,
+      1.0914624335471603,
+      1.0732823745836388
+    ]
+  },
+  {
+    "scene": "large-impact",
+    "samples": [
+      {
+        "round": 0,
+        "warmup": true,
+        "stages": {
+          "bake": {
+            "boundary": "bake_entry_to_before_completion_publication",
+            "capture_s": 0.058797948999999995,
+            "diagnostics_s": 0.002756039999999996,
+            "elapsed_s": 13.148525798,
+            "max_pending_particle_frames": 1,
+            "schema_version": 1,
+            "setup_s": 0.329091084,
+            "solver_s": 11.680572876000005,
+            "worker": {
+              "binary_hash_s": 0.3224439569999998,
+              "canonical_s": 6.881246200999999,
+              "packing_s": 0.08474561400000002,
+              "receipt_publication_s": 0.7833530099999999,
+              "writer_wait_s": 0.28534241699999974,
+              "writing_s": 2.0774576259999993
+            },
+            "worker_overlaps_simulation": true
+          },
+          "direct": {
+            "boundary": "export_entry_to_before_manifest",
+            "components_s": {
+              "comparison": 0.00011994,
+              "frame_output_wait": 0.085033973,
+              "frame_particle_copy": 0.105565713,
+              "frame_publication": 4.191850981,
+              "graphics_readback": 3.038733447,
+              "other": 0.01090589,
+              "progress": 1.213627829,
+              "setup": 0.582186669,
+              "snapshot_capture": 0.163705198,
+              "solver_steps": 11.665753407
+            },
+            "schema_version": 2,
+            "total_s": 21.057483047,
+            "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+            "worker_components_s": {
+              "frame_hashing": 6.906731564,
+              "png_encoding": 3.2638667359999998
+            }
+          },
+          "render": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 0.154290136,
+                "frame_particle_copy": 0.045810304,
+                "frame_publication": 0.549252171,
+                "graphics_readback": 2.995269948,
+                "other": 1.155178277,
+                "progress": 0.567664877,
+                "setup": 0.333955036,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 5.801420749,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.16012697,
+                "png_encoding": 3.2229768500000002
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.35851492900000004,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.47653238899999995,
+              "cache_read_validate": 0.914220292,
+              "cache_reading": 0.0789611869999999,
+              "encoding": 3.2229768500000002,
+              "graphics_readback": 2.995269948,
+              "solver_steps": 0.0
+            }
+          },
+          "repeat": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 0.13235412,
+                "frame_particle_copy": 0.046641016,
+                "frame_publication": 0.55632313,
+                "graphics_readback": 3.081294882,
+                "other": 1.220463396,
+                "progress": 0.552823348,
+                "setup": 0.366194697,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 5.956094589,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.162301312,
+                "png_encoding": 3.244658771
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.3564624899999998,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.4611423660000001,
+              "cache_read_validate": 0.984106306,
+              "cache_reading": 0.16625835000000003,
+              "encoding": 3.244658771,
+              "graphics_readback": 3.081294882,
+              "solver_steps": 0.0
+            }
+          },
+          "alt": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 0.489716519,
+                "frame_particle_copy": 0.048662416,
+                "frame_publication": 0.624270992,
+                "graphics_readback": 3.233909489,
+                "other": 1.143694961,
+                "progress": 0.561318879,
+                "setup": 0.321121233,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 6.422694489,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.480665889,
+                "png_encoding": 4.065320408
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.36272087000000025,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.4701955059999997,
+              "cache_read_validate": 0.906647057,
+              "cache_reading": 0.073497584,
+              "encoding": 4.065320408,
+              "graphics_readback": 3.233909489,
+              "solver_steps": 0.0
+            }
+          }
+        },
+        "direct": {
+          "command": [
+            "/tmp/maelstrom-cache-final/baseline-target/release/maelstrom",
+            "--format",
+            "json",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-final/runs/large-impact/library",
+            "compile",
+            "builtin:large-impact",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/a-0-images"
+          ],
+          "wall_s": 22.036169800005155,
+          "returncode": 0,
+          "user_s": 22.35,
+          "system_s": 0.89,
+          "rss_kib": 590236.0
+        },
+        "direct_alt": {
+          "command": [
+            "/tmp/maelstrom-cache-final/baseline-target/release/maelstrom",
+            "--format",
+            "json",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-final/runs/large-impact/library",
+            "compile",
+            "builtin:large-impact",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/alternative.toml",
+            "--no-fit-camera",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/a-0-alt-images"
+          ],
+          "wall_s": 20.62356174099841,
+          "returncode": 0,
+          "user_s": 23.41,
+          "system_s": 0.95,
+          "rss_kib": 591392.0
+        },
+        "bake": {
+          "command": [
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "cache",
+            "bake",
+            "builtin:large-impact",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-0-cache"
+          ],
+          "wall_s": 13.309437639007228,
+          "returncode": 0,
+          "user_s": 18.24,
+          "system_s": 1.3,
+          "rss_kib": 164040.0
+        },
+        "render": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-0-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-0-render-images"
+          ],
+          "wall_s": 6.2505456100043375,
+          "returncode": 0,
+          "user_s": 5.15,
+          "system_s": 0.79,
+          "rss_kib": 507776.0
+        },
+        "repeat": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-0-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-0-repeat-images"
+          ],
+          "wall_s": 6.417376430996228,
+          "returncode": 0,
+          "user_s": 5.14,
+          "system_s": 0.86,
+          "rss_kib": 507448.0
+        },
+        "alt": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-0-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/alternative.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-0-alt-images"
+          ],
+          "wall_s": 6.869579278994934,
+          "returncode": 0,
+          "user_s": 6.32,
+          "system_s": 0.77,
+          "rss_kib": 508160.0
+        },
+        "first_staged_s": 19.559983249011566
+      },
+      {
+        "round": 1,
+        "warmup": false,
+        "stages": {
+          "bake": {
+            "boundary": "bake_entry_to_before_completion_publication",
+            "capture_s": 0.05873527199999997,
+            "diagnostics_s": 0.0026508180000000023,
+            "elapsed_s": 13.131275734,
+            "max_pending_particle_frames": 1,
+            "schema_version": 1,
+            "setup_s": 0.341510766,
+            "solver_s": 11.666325799999987,
+            "worker": {
+              "binary_hash_s": 0.3226909019999999,
+              "canonical_s": 6.725663296999999,
+              "packing_s": 0.08900839000000003,
+              "receipt_publication_s": 0.7770300049999996,
+              "writer_wait_s": 0.2766276739999997,
+              "writing_s": 2.18530876
+            },
+            "worker_overlaps_simulation": true
+          },
+          "direct": {
+            "boundary": "export_entry_to_before_manifest",
+            "components_s": {
+              "comparison": 0.000123219,
+              "frame_output_wait": 0.085205214,
+              "frame_particle_copy": 0.111235332,
+              "frame_publication": 1.776409513,
+              "graphics_readback": 2.954517472,
+              "other": 0.010858609,
+              "progress": 0.753036325,
+              "setup": 0.582311709,
+              "snapshot_capture": 0.187540284,
+              "solver_steps": 11.675895202
+            },
+            "schema_version": 2,
+            "total_s": 18.137132879,
+            "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+            "worker_components_s": {
+              "frame_hashing": 6.929249744,
+              "png_encoding": 3.276417871
+            }
+          },
+          "render": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 0.167480749,
+                "frame_particle_copy": 0.04741813,
+                "frame_publication": 0.540318776,
+                "graphics_readback": 2.954674476,
+                "other": 1.159446657,
+                "progress": 0.566582508,
+                "setup": 0.32710674,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 5.763028036,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.161521011,
+                "png_encoding": 3.222599589
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.3630120170000001,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.47842032200000023,
+              "cache_read_validate": 0.916875586,
+              "cache_reading": 0.07523342900000002,
+              "encoding": 3.222599589,
+              "graphics_readback": 2.954674476,
+              "solver_steps": 0.0
+            }
+          },
+          "repeat": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 0.133548505,
+                "frame_particle_copy": 0.050977596,
+                "frame_publication": 0.549605363,
+                "graphics_readback": 3.045757637,
+                "other": 1.2228071950000001,
+                "progress": 0.542533874,
+                "setup": 0.341338405,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 5.886568575,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.160308608,
+                "png_encoding": 3.203604595
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.3533644850000002,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.47316916800000014,
+              "cache_read_validate": 0.983767015,
+              "cache_reading": 0.15703741399999996,
+              "encoding": 3.203604595,
+              "graphics_readback": 3.045757637,
+              "solver_steps": 0.0
+            }
+          },
+          "alt": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 0.419123305,
+                "frame_particle_copy": 0.056289333,
+                "frame_publication": 0.615014899,
+                "graphics_readback": 3.336884752,
+                "other": 1.145396959,
+                "progress": 0.554766848,
+                "setup": 0.373932924,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 6.50140902,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.48254639,
+                "png_encoding": 4.068311005
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.3611047130000001,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.47144712600000005,
+              "cache_read_validate": 0.906909396,
+              "cache_reading": 0.07413941800000003,
+              "encoding": 4.068311005,
+              "graphics_readback": 3.336884752,
+              "solver_steps": 0.0
+            }
+          }
+        },
+        "direct": {
+          "command": [
+            "/tmp/maelstrom-cache-final/baseline-target/release/maelstrom",
+            "--format",
+            "json",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-final/runs/large-impact/library",
+            "compile",
+            "builtin:large-impact",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/a-1-images"
+          ],
+          "wall_s": 18.908783118007705,
+          "returncode": 0,
+          "user_s": 22.25,
+          "system_s": 1.1,
+          "rss_kib": 590532.0
+        },
+        "direct_alt": {
+          "command": [
+            "/tmp/maelstrom-cache-final/baseline-target/release/maelstrom",
+            "--format",
+            "json",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-final/runs/large-impact/library",
+            "compile",
+            "builtin:large-impact",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/alternative.toml",
+            "--no-fit-camera",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/a-1-alt-images"
+          ],
+          "wall_s": 19.387883172006696,
+          "returncode": 0,
+          "user_s": 23.49,
+          "system_s": 1.0,
+          "rss_kib": 591196.0
+        },
+        "bake": {
+          "command": [
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "cache",
+            "bake",
+            "builtin:large-impact",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-1-cache"
+          ],
+          "wall_s": 13.30633347199182,
+          "returncode": 0,
+          "user_s": 18.1,
+          "system_s": 1.36,
+          "rss_kib": 162504.0
+        },
+        "render": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-1-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-1-render-images"
+          ],
+          "wall_s": 6.231964514008723,
+          "returncode": 0,
+          "user_s": 5.11,
+          "system_s": 0.84,
+          "rss_kib": 507060.0
+        },
+        "repeat": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-1-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-1-repeat-images"
+          ],
+          "wall_s": 6.324676113988971,
+          "returncode": 0,
+          "user_s": 5.04,
+          "system_s": 0.96,
+          "rss_kib": 507252.0
+        },
+        "alt": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-1-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/alternative.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-1-alt-images"
+          ],
+          "wall_s": 6.9604095370013965,
+          "returncode": 0,
+          "user_s": 6.31,
+          "system_s": 0.86,
+          "rss_kib": 508408.0
+        },
+        "first_staged_s": 19.538297986000543
+      },
+      {
+        "round": 2,
+        "warmup": false,
+        "stages": {
+          "bake": {
+            "boundary": "bake_entry_to_before_completion_publication",
+            "capture_s": 0.06027437999999999,
+            "diagnostics_s": 0.002396486000000009,
+            "elapsed_s": 13.160034392,
+            "max_pending_particle_frames": 1,
+            "schema_version": 1,
+            "setup_s": 0.33381751,
+            "solver_s": 11.640804834999999,
+            "worker": {
+              "binary_hash_s": 0.32300114500000027,
+              "canonical_s": 6.762177823999998,
+              "packing_s": 0.08657467999999999,
+              "receipt_publication_s": 0.7768145270000001,
+              "writer_wait_s": 0.33706106800000035,
+              "writing_s": 2.2814712290000005
+            },
+            "worker_overlaps_simulation": true
+          },
+          "direct": {
+            "boundary": "export_entry_to_before_manifest",
+            "components_s": {
+              "comparison": 8.9935e-05,
+              "frame_output_wait": 0.07737411,
+              "frame_particle_copy": 0.108933898,
+              "frame_publication": 1.965582648,
+              "graphics_readback": 3.023957106,
+              "other": 0.011051177,
+              "progress": 0.783231476,
+              "setup": 0.571724254,
+              "snapshot_capture": 0.185962302,
+              "solver_steps": 11.644545513
+            },
+            "schema_version": 2,
+            "total_s": 18.372452419,
+            "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+            "worker_components_s": {
+              "frame_hashing": 6.956214679,
+              "png_encoding": 3.28273785
+            }
+          },
+          "render": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 0.162044257,
+                "frame_particle_copy": 0.04613442,
+                "frame_publication": 0.611070233,
+                "graphics_readback": 3.004682993,
+                "other": 1.142436043,
+                "progress": 0.611104054,
+                "setup": 0.335185662,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 5.912657662,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.161944259,
+                "png_encoding": 3.239044279
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.3587349840000003,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.46977754399999994,
+              "cache_read_validate": 0.903845821,
+              "cache_reading": 0.07511821599999996,
+              "encoding": 3.239044279,
+              "graphics_readback": 3.004682993,
+              "solver_steps": 0.0
+            }
+          },
+          "repeat": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 0.142956484,
+                "frame_particle_copy": 0.045706763,
+                "frame_publication": 0.602755557,
+                "graphics_readback": 3.097094488,
+                "other": 1.192028363,
+                "progress": 0.589603758,
+                "setup": 0.322131453,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 5.992276866,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.160959422,
+                "png_encoding": 3.207847164
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.34442155300000027,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.45211775499999957,
+              "cache_read_validate": 0.952008537,
+              "cache_reading": 0.15525346899999995,
+              "encoding": 3.207847164,
+              "graphics_readback": 3.097094488,
+              "solver_steps": 0.0
+            }
+          },
+          "alt": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 0.418799387,
+                "frame_particle_copy": 0.045124796,
+                "frame_publication": 0.753784709,
+                "graphics_readback": 3.357926448,
+                "other": 1.128339556,
+                "progress": 0.600591952,
+                "setup": 0.327746122,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 6.63231297,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.482395998,
+                "png_encoding": 4.058546011
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.35857921700000006,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.4639660599999998,
+              "cache_read_validate": 0.891485543,
+              "cache_reading": 0.06872376899999998,
+              "encoding": 4.058546011,
+              "graphics_readback": 3.357926448,
+              "solver_steps": 0.0
+            }
+          }
+        },
+        "direct": {
+          "command": [
+            "/tmp/maelstrom-cache-final/baseline-target/release/maelstrom",
+            "--format",
+            "json",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-final/runs/large-impact/library",
+            "compile",
+            "builtin:large-impact",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/a-2-images"
+          ],
+          "wall_s": 19.145312780994573,
+          "returncode": 0,
+          "user_s": 22.39,
+          "system_s": 0.98,
+          "rss_kib": 590492.0
+        },
+        "direct_alt": {
+          "command": [
+            "/tmp/maelstrom-cache-final/baseline-target/release/maelstrom",
+            "--format",
+            "json",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-final/runs/large-impact/library",
+            "compile",
+            "builtin:large-impact",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/alternative.toml",
+            "--no-fit-camera",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/a-2-alt-images"
+          ],
+          "wall_s": 18.253546815991285,
+          "returncode": 0,
+          "user_s": 23.45,
+          "system_s": 0.94,
+          "rss_kib": 591876.0
+        },
+        "bake": {
+          "command": [
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "cache",
+            "bake",
+            "builtin:large-impact",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-2-cache"
+          ],
+          "wall_s": 13.29963568400126,
+          "returncode": 0,
+          "user_s": 17.99,
+          "system_s": 1.53,
+          "rss_kib": 162312.0
+        },
+        "render": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-2-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-2-render-images"
+          ],
+          "wall_s": 6.341908318005153,
+          "returncode": 0,
+          "user_s": 5.15,
+          "system_s": 0.87,
+          "rss_kib": 507444.0
+        },
+        "repeat": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-2-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-2-repeat-images"
+          ],
+          "wall_s": 6.4623375149967615,
+          "returncode": 0,
+          "user_s": 5.09,
+          "system_s": 0.96,
+          "rss_kib": 507828.0
+        },
+        "alt": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-2-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/alternative.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-2-alt-images"
+          ],
+          "wall_s": 7.090175649995217,
+          "returncode": 0,
+          "user_s": 6.29,
+          "system_s": 0.96,
+          "rss_kib": 508352.0
+        },
+        "first_staged_s": 19.641544002006412
+      },
+      {
+        "round": 3,
+        "warmup": false,
+        "stages": {
+          "bake": {
+            "boundary": "bake_entry_to_before_completion_publication",
+            "capture_s": 0.06019951800000005,
+            "diagnostics_s": 0.0028026970000000016,
+            "elapsed_s": 13.202861685,
+            "max_pending_particle_frames": 1,
+            "schema_version": 1,
+            "setup_s": 0.349271694,
+            "solver_s": 11.656337034000012,
+            "worker": {
+              "binary_hash_s": 0.3234521249999997,
+              "canonical_s": 6.762775336999999,
+              "packing_s": 0.08375396299999997,
+              "receipt_publication_s": 0.7921285800000001,
+              "writer_wait_s": 0.33328697500000004,
+              "writing_s": 2.3406824739999994
+            },
+            "worker_overlaps_simulation": true
+          },
+          "direct": {
+            "boundary": "export_entry_to_before_manifest",
+            "components_s": {
+              "comparison": 6.9233e-05,
+              "frame_output_wait": 0.081233581,
+              "frame_particle_copy": 0.11197944,
+              "frame_publication": 0.656691238,
+              "graphics_readback": 2.9437248179999997,
+              "other": 0.009952513,
+              "progress": 0.608493205,
+              "setup": 0.602802046,
+              "snapshot_capture": 0.192390545,
+              "solver_steps": 11.653385475
+            },
+            "schema_version": 2,
+            "total_s": 16.860722094,
+            "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+            "worker_components_s": {
+              "frame_hashing": 6.940817435,
+              "png_encoding": 3.281646258
+            }
+          },
+          "render": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 0.164128116,
+                "frame_particle_copy": 0.046373784,
+                "frame_publication": 0.604101614,
+                "graphics_readback": 3.053504842,
+                "other": 1.154858009,
+                "progress": 0.604652856,
+                "setup": 0.331759838,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 5.959379059,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.160992093,
+                "png_encoding": 3.221965802
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.35829545799999973,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.4777662209999999,
+              "cache_read_validate": 0.913100001,
+              "cache_reading": 0.07678904800000003,
+              "encoding": 3.221965802,
+              "graphics_readback": 3.053504842,
+              "solver_steps": 0.0
+            }
+          },
+          "repeat": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 0.148223089,
+                "frame_particle_copy": 0.057220982,
+                "frame_publication": 0.588872059,
+                "graphics_readback": 2.980289227,
+                "other": 1.3764576640000001,
+                "progress": 0.617731188,
+                "setup": 0.412258252,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 6.181052461,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.161834064,
+                "png_encoding": 3.236266828
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.3556565410000001,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.482911889,
+              "cache_read_validate": 1.135790358,
+              "cache_reading": 0.2970161630000001,
+              "encoding": 3.236266828,
+              "graphics_readback": 2.980289227,
+              "solver_steps": 0.0
+            }
+          },
+          "alt": {
+            "profile": {
+              "boundary": "export_entry_to_before_manifest",
+              "components_s": {
+                "comparison": 0.0,
+                "frame_output_wait": 0.418745063,
+                "frame_particle_copy": 0.050575244,
+                "frame_publication": 0.714308037,
+                "graphics_readback": 3.345119811,
+                "other": 1.151003289,
+                "progress": 0.590439184,
+                "setup": 0.324177865,
+                "snapshot_capture": 0.0,
+                "solver_steps": 0.0
+              },
+              "schema_version": 2,
+              "total_s": 6.594368493,
+              "worker_boundary": "encoding_and_hashing; overlaps_export_thread",
+              "worker_components_s": {
+                "frame_hashing": 0.478877364,
+                "png_encoding": 4.066136082
+              }
+            },
+            "seconds": {
+              "cache_binary_validation": 0.35256889799999985,
+              "cache_canonical_rehashing": 0.0,
+              "cache_decoding": 0.46318228800000016,
+              "cache_read_validate": 0.897638101,
+              "cache_reading": 0.08162564000000001,
+              "encoding": 4.066136082,
+              "graphics_readback": 3.345119811,
+              "solver_steps": 0.0
+            }
+          }
+        },
+        "direct": {
+          "command": [
+            "/tmp/maelstrom-cache-final/baseline-target/release/maelstrom",
+            "--format",
+            "json",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-final/runs/large-impact/library",
+            "compile",
+            "builtin:large-impact",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/a-3-images"
+          ],
+          "wall_s": 17.613851521993638,
+          "returncode": 0,
+          "user_s": 22.38,
+          "system_s": 1.03,
+          "rss_kib": 590344.0
+        },
+        "direct_alt": {
+          "command": [
+            "/tmp/maelstrom-cache-final/baseline-target/release/maelstrom",
+            "--format",
+            "json",
+            "--runs-dir",
+            "/tmp/maelstrom-cache-final/runs/large-impact/library",
+            "compile",
+            "builtin:large-impact",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/alternative.toml",
+            "--no-fit-camera",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/a-3-alt-images"
+          ],
+          "wall_s": 18.495822730008513,
+          "returncode": 0,
+          "user_s": 23.27,
+          "system_s": 1.26,
+          "rss_kib": 590680.0
+        },
+        "bake": {
+          "command": [
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "cache",
+            "bake",
+            "builtin:large-impact",
+            "--backend",
+            "cuda",
+            "--device",
+            "0",
+            "--block-size",
+            "128",
+            "--numerical-mode",
+            "experimental",
+            "--steps",
+            "1200",
+            "--frame-stride",
+            "4",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-3-cache"
+          ],
+          "wall_s": 13.37450276799791,
+          "returncode": 0,
+          "user_s": 18.08,
+          "system_s": 1.51,
+          "rss_kib": 163660.0
+        },
+        "render": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-3-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-3-render-images"
+          ],
+          "wall_s": 6.423133727992536,
+          "returncode": 0,
+          "user_s": 5.12,
+          "system_s": 0.96,
+          "rss_kib": 508024.0
+        },
+        "repeat": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-3-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/render.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-3-repeat-images"
+          ],
+          "wall_s": 6.648538003995782,
+          "returncode": 0,
+          "user_s": 5.17,
+          "system_s": 1.17,
+          "rss_kib": 507256.0
+        },
+        "alt": {
+          "command": [
+            "env",
+            "CUDA_VISIBLE_DEVICES=",
+            "/tmp/maelstrom-cache-final/candidate-target/release/maelstrom",
+            "--format",
+            "json",
+            "render",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-3-cache",
+            "--render-config",
+            "/tmp/maelstrom-cache-final/runs/large-impact/alternative.toml",
+            "--output",
+            "/tmp/maelstrom-cache-final/runs/large-impact/b-3-alt-images"
+          ],
+          "wall_s": 7.037220869009616,
+          "returncode": 0,
+          "user_s": 6.26,
+          "system_s": 1.01,
+          "rss_kib": 507444.0
+        },
+        "first_staged_s": 19.797636495990446
+      }
+    ],
+    "median_s": {
+      "direct": 18.908783118007705,
+      "direct_alt": 18.495822730008513,
+      "bake": 13.30633347199182,
+      "render": 6.341908318005153,
+      "repeat": 6.4623375149967615,
+      "alt": 7.037220869009616
+    },
+    "first_staged_median_s": 19.641544002006412,
+    "paired_first_speedups": [
+      0.9677804653996016,
+      0.9747356307141053,
+      0.8896946625705001
+    ],
+    "paired_alternative_speedups": [
+      2.7854514980679084,
+      2.5744844298749636,
+      2.62828509638799
+    ]
+  }
+]

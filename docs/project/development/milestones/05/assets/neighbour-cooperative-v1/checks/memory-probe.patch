@@ -1,0 +1,11 @@
+--- a/src/cuda/solver.rs
++++ b/src/cuda/solver.rs
+@@ -317,6 +317,8 @@
+         };
+         self.context.inner.reserve(11, capacity)?;
+         self.neighbour_capacity = capacity;
++        let logical = self.context.inner.download_at::<u64>(13, s.count as usize, 1)?[0];
++        eprintln!("NEIGHBOUR_STORAGE {} {} {} {}", s.count, logical, s.entries, self.neighbour_capacity);
+         self.operation(*s, 12)
+     }
+ 

@@ -1,0 +1,24 @@
+control-witness-build PASS
+witness-control-8000-experimental-default PASS
+witness-control-8000-reference-default PASS
+witness-control-8000-fast-default PASS
+witness-control-8000-paper-baseline-default PASS
+witness-control-8000-scene-default PASS
+witness-control-32000-experimental-default PASS
+witness-control-32000-reference-default PASS
+witness-control-32000-fast-default PASS
+witness-control-32000-paper-baseline-default PASS
+witness-control-32000-scene-default PASS
+witness-control-110592-experimental-default PASS
+witness-control-110592-reference-default PASS
+witness-control-110592-fast-default PASS
+witness-control-110592-paper-baseline-default PASS
+witness-control-110592-scene-default PASS
+witness-control-32000-experimental-effects PASS
+witness-control-110592-experimental-effects PASS
+spatial-witness-build PASS
+Traceback (most recent call last):
+  File "/home/oliver/.cache/maelstrom-neighbour-traversal-20261110/runner/qualify.py", line 16, in <module>
+    assert expected.encode() in (r/f'{v}-witness-bin').read_bytes()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

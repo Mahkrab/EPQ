@@ -1,0 +1,91 @@
+--- a/native/bridge.cpp
++++ b/native/bridge.cpp
+@@ -60,6 +60,7 @@
+     CUfunction kernel = nullptr;
+     CUfunction solver = nullptr;
+     CUfunction spatial_sort = nullptr;
++    CUfunction correction_rows = nullptr;
+     CUfunction observe_state = nullptr;
+     CUfunction prefix_counts = nullptr;
+     CUdeviceptr diagnostic = 0;
+@@ -109,6 +110,7 @@
+     if (!status.code && (code = d.cuModuleGetFunction_fn(&r.spatial_sort, r.module, "spatial_sort")) != CUDA_SUCCESS) status = {code, 5};
+     if (!status.code && (code = d.cuModuleGetFunction_fn(&r.observe_state, r.module, "observe_state")) != CUDA_SUCCESS) status = {code, 5};
+     if (!status.code && (code = d.cuModuleGetFunction_fn(&r.prefix_counts, r.module, "prefix_counts")) != CUDA_SUCCESS) status = {code, 5};
++    if (!status.code && (code = d.cuModuleGetFunction_fn(&r.correction_rows, r.module, "correction_rows")) != CUDA_SUCCESS) status = {code, 5};
+     // Pageable uploads may return before DMA finishes on the legacy stream.
+     // This private stream must inherit that dependency before reading the data.
+     if (!status.code && (code = d.cuStreamCreate_fn(&r.stream, CU_STREAM_DEFAULT)) != CUDA_SUCCESS) status = {code, 6};
+@@ -326,7 +328,9 @@
+             // Conservatively mark before submission: even an immediate error
+             // must pass through the completion/poisoning boundary.
+             r.pending=true;
+-            auto code=r.driver.cuLaunchKernel_fn(function,static_cast<unsigned int>((count+threads-1)/threads),
++            const bool cooperative=kernel_operation==7;
++            const auto lanes=cooperative ? count*8 : count;
++            auto code=r.driver.cuLaunchKernel_fn(cooperative ? r.correction_rows : function,static_cast<unsigned int>((lanes+threads-1)/threads),
+                 1,1,threads,1,1,0,r.stream,args,nullptr);
+             return {code,code==CUDA_SUCCESS ? 0 : 9};
+         };
+--- a/native/solver.cu
++++ b/native/solver.cu
+@@ -322,3 +322,59 @@
+     // Checked already retained the first failing expression within that lane.
+     if (c.error && b.diagnostic) record_diagnostic(b,pass,(static_cast<unsigned long long>(i)<<32)|c.error);
+ }
++
++// Eight lanes evaluate consecutive neighbours concurrently. The shuffles gather
++// each contribution in identity order; additions and first-error selection retain
++// the scalar row's sequence rather than using a floating-point tree reduction.
++extern "C" __global__ void correction_rows(SolverBuffers b, SolverSettings s, unsigned int operation) {
++    constexpr unsigned int width=8;
++    const auto thread=static_cast<std::uint64_t>(blockIdx.x)*blockDim.x+threadIdx.x;
++    const auto owner=thread/width;
++    if (owner>=s.count) return;
++    const auto i=static_cast<unsigned int>(owner), lane=threadIdx.x%width;
++    const auto mask=0xffU<<(threadIdx.x%32-lane);
++    const auto pass=b.first_operation ? operation-b.first_operation : 0;
++    for (unsigned int earlier=0;earlier<pass;++earlier)
++        if (b.diagnostic[earlier]!=ULLONG_MAX) return;
++    const auto stop=b.offsets[i+1];
++    Checked c;
++    Vector sum{0,0,0};
++    for (auto base=b.offsets[i];base<stop;base+=width) {
++        Checked pair_check;
++        Vector contribution{0,0,0};
++        bool included=false;
++        if (base+lane<stop) {
++            const auto j=b.neighbours[base+lane];
++            included=active(b,s,i,j,pair_check);
++            if (included) {
++                Vector displacement=sub(b.position[i],b.position[j]);
++                float distance=separation(b.position[i],b.position[j],pair_check,18);
++                Vector direction=spiky(displacement,s.radius,pair_check);
++                float weight=poly6(distance,s.radius,pair_check), pressure=0;
++                if (weight!=0 && s.strength!=0) {
++                    float ratio=pair_check.scalar(__fdiv_rn(weight,s.reference_weight),34);
++                    float shaped=pair_check.scalar(ordered_power(ratio,s.exponent),35);
++                    pressure=pair_check.scalar(-s.strength*shaped,36);
++                }
++                float pair=pair_check.scalar(b.multiplier[i]+b.multiplier[j],37);
++                float coefficient=pair_check.scalar(pair+pressure,38);
++                contribution=pair_check.vector(mul(direction,coefficient),39);
++            }
++        }
++        const auto batch=static_cast<unsigned int>(min(static_cast<std::uint64_t>(width),stop-base));
++        for (unsigned int source=0;source<batch;++source) {
++            const auto error=__shfl_sync(mask,pair_check.error,source,width);
++            const auto take=__shfl_sync(mask,static_cast<unsigned int>(included),source,width);
++            Vector value{__shfl_sync(mask,contribution.x,source,width),
++                         __shfl_sync(mask,contribution.y,source,width),
++                         __shfl_sync(mask,contribution.z,source,width)};
++            if (!c.error) c.error=error;
++            if (take) sum=c.vector(add(sum,value),40);
++        }
++    }
++    if (lane) return;
++    Vector correction=c.vector(mul(sum,c.scalar(__fdiv_rn(1.0f,s.rest_density),26)),41);
++    b.correction[i]=s.correction_scale==1.0f ? correction : c.vector(mul(correction,s.correction_scale),42);
++    b.errors[i]=c.error;
++    if (c.error && b.diagnostic) record_diagnostic(b,pass,(static_cast<unsigned long long>(i)<<32)|c.error);
++}

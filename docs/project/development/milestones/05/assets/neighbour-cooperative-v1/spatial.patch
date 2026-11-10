@@ -1,0 +1,137 @@
+--- a/native/neighbours.cuh
++++ b/native/neighbours.cuh
+@@ -17,7 +17,9 @@
+         if (stop) {
+             if (s.neighbour_layout==1) {
+                 const auto offsets=reinterpret_cast<const std::uint64_t *>(b.cells+s.padded);
+-                indices=b.neighbours+offsets[i/32]+i%32;
++                const auto ranks=reinterpret_cast<const std::uint32_t *>(offsets+(s.count+31ULL)/32+1);
++                const auto rank=ranks[i];
++                indices=b.neighbours+offsets[rank/32]+rank%32;
+                 stride=32;
+             } else indices=b.neighbours+b.offsets[i];
+         }
+@@ -73,7 +75,9 @@
+                         auto target=cursor;
+                         if (s.neighbour_layout==1) {
+                             const auto offsets=reinterpret_cast<const std::uint64_t *>(b.cells+s.padded);
+-                            target=offsets[i/32]+(cursor-start)*32+i%32;
++                            const auto ranks=reinterpret_cast<const std::uint32_t *>(offsets+(s.count+31ULL)/32+1);
++                            const auto rank=ranks[i];
++                            target=offsets[rank/32]+(cursor-start)*32+rank%32;
+                         }
+                         b.neighbours[target]=j;
+                     }
+--- a/native/solver.cu
++++ b/native/solver.cu
+@@ -98,13 +98,13 @@
+         // Block sizes are multiples of a warp. A tail row therefore exits as
+         // a whole warp, leaving every lane named by a shuffle participating.
+         if (row>=s.count || (b.diagnostic && b.diagnostic[0]!=ULLONG_MAX)) return;
+-        const auto owner=static_cast<unsigned int>(row);
++        const auto owner=s.neighbour_layout==1 ? b.cells[row].index : static_cast<unsigned int>(row);
+         const auto start=b.offsets[owner], stop=b.offsets[owner+1];
+         if (b.errors[owner] || start>stop || stop>s.entries) return;
+         if (start!=stop) {
+             if (s.neighbour_layout==1) {
+                 const auto offsets=reinterpret_cast<const std::uint64_t *>(b.cells+s.padded);
+-                sort_row_cooperatively<32>(b.neighbours+offsets[owner/32]+owner%32,stop-start,threadIdx.x%32);
++                sort_row_cooperatively<32>(b.neighbours+offsets[row/32]+row%32,stop-start,threadIdx.x%32);
+             } else sort_row_cooperatively(b.neighbours+start,stop-start,threadIdx.x%32);
+         }
+         return;
+@@ -112,7 +112,7 @@
+     if (lane>=s.count) return;
+     // Adjacent lanes traverse nearby cells, while offsets and diagnostics stay
+     // indexed by particle identity. Every particle still owns exactly one row.
+-    auto i=(operation==4 || operation==12) ? b.cells[lane].index
++    auto i=(operation==4 || operation==12 || (s.neighbour_layout==1 && operation>=5 && operation<=17)) ? b.cells[lane].index
+         : static_cast<unsigned int>(lane);
+     const auto pass=b.first_operation ? operation-b.first_operation : 0;
+     // Earlier kernels have completed on this stream. Their records are no
+--- a/native/state_observation.cuh
++++ b/native/state_observation.cuh
+@@ -119,7 +119,16 @@
+         for (auto tile=first;tile<last;++tile) {
+             std::uint64_t largest=0;
+             for (auto i=tile*32;i<min((tile+1)*32,static_cast<std::uint64_t>(s.count));++i)
+-                largest=max(largest,b.offsets[i+1]-b.offsets[i]);
++                {
++                const auto owner=b.cells[i].index;
++                if (owner>=s.count) {
++                    record_diagnostic(b,1,(static_cast<unsigned long long>(i)<<32)|52);
++                    continue;
++                }
++                largest=max(largest,b.offsets[owner+1]-b.offsets[owner]);
++                auto *ranks=reinterpret_cast<std::uint32_t *>(offsets+tiles+1);
++                ranks[owner]=static_cast<std::uint32_t>(i);
++                }
+             offsets[tile]=largest*32;
+             sum+=largest*32;
+         }
+--- a/tests/unit/cuda/tiled_tests.rs
++++ b/tests/unit/cuda/tiled_tests.rs
+@@ -77,6 +77,11 @@
+             scratch
+         );
+         gpu.context.inner.begin_attempt().unwrap();
++        // Spatial tile lengths need the completed cell permutation. The
++        // invalid-count path above must still reject before accessing it.
++        gpu.context.inner.upload(2, &vec![[0.0_f32; 3]; 33]).unwrap();
++        s.width = 1.0;
++        gpu.operation(s, 2).unwrap();
+         counts[1] = 32;
+         gpu.context.inner.upload(13, &counts).unwrap();
+         assert_eq!(
+@@ -198,10 +203,20 @@
+             gpu.discover(&mut s, &original).unwrap();
+             // Derive physical storage independently from brute-force row
+             // lengths. Check only members, never unspecified padding words.
++            let mut owners: Vec<_> = (0..count).collect();
++            owners.sort_by_key(|&i| {
++                let p = original[i];
++                (
++                    (f64::from(p.x) / s.width).floor() as i64,
++                    (f64::from(p.y) / s.width).floor() as i64,
++                    (f64::from(p.z) / s.width).floor() as i64,
++                    i,
++                )
++            });
+             let mut tile_offsets = vec![0_u64];
+             for first in (0..count).step_by(32) {
+                 let longest = (first..(first + 32).min(count))
+-                    .map(|i| fixed.for_particle(i).unwrap().len())
++                    .map(|rank| fixed.for_particle(owners[rank]).unwrap().len())
+                     .max()
+                     .unwrap();
+                 tile_offsets.push(tile_offsets.last().unwrap() + longest as u64 * 32);
+@@ -215,15 +230,27 @@
+                         .unwrap(),
+                     tile_offsets
+                 );
++                let ranks = gpu
++                    .context
++                    .inner
++                    .download_at::<u32>(
++                        10,
++                        s.padded as usize * 8 + tile_offsets.len() * 2,
++                        count,
++                    )
++                    .unwrap();
++                for (rank, &owner) in owners.iter().enumerate() {
++                    assert_eq!(ranks[owner], rank as u32);
++                }
+                 let indices = gpu
+                     .context
+                     .inner
+                     .download::<u32>(11, s.entries as usize)
+                     .unwrap();
+-                for i in 0..count {
++                for (rank, &i) in owners.iter().enumerate() {
+                     let row = fixed.for_particle(i).unwrap();
+                     let actual: Vec<_> = (0..row.len())
+-                        .map(|k| indices[tile_offsets[i / 32] as usize + k * 32 + i % 32] as usize)
++                        .map(|k| indices[tile_offsets[rank / 32] as usize + k * 32 + rank % 32] as usize)
+                         .collect();
+                     assert_eq!(actual, row, "block {threads}, row {i}");
+                 }

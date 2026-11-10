@@ -1,0 +1,575 @@
+--- a/src/cuda/solver.rs
++++ b/src/cuda/solver.rs
+@@ -39,9 +39,10 @@
+     entries: u64,
+     xsph: f32,
+     vorticity: f32,
++    neighbour_layout: u32,
+ }
+ const _: () = {
+-    assert!(size_of::<Settings>() == 96 && align_of::<Settings>() == 8);
++    assert!(size_of::<Settings>() == 104 && align_of::<Settings>() == 8);
+     assert!(std::mem::offset_of!(Settings, width) == 64);
+ };
+ 
+@@ -291,10 +292,17 @@
+         }
+         let record = self.context.inner.prefix(*s, self.threads, true)?;
+         diagnostic_error(record, s.count)?;
+-        s.entries = self
+-            .context
+-            .inner
+-            .download_at::<u64>(13, s.count as usize, 1)?[0];
++        s.entries = if s.neighbour_layout == 1 {
++            self.context.inner.download_at::<u64>(
++                10,
++                s.padded as usize * 4 + (s.count as usize).div_ceil(32),
++                1,
++            )?[0]
++        } else {
++            self.context
++                .inner
++                .download_at::<u64>(13, s.count as usize, 1)?[0]
++        };
+         let required = storage_sizes(*s)?[11];
+         // Membership changes as the block moves. Geometric growth avoids a
+         // device reallocation for every small increase, without capping a row.
+@@ -376,6 +384,9 @@
+         while s.width < minimum {
+             s.width *= 2.0;
+         }
++        // The PC comparison favours compact rows for small inputs. Larger
++        // inputs amortise tiled construction across repeated numerical passes.
++        s.neighbour_layout = u32::from(particles.len() >= 32_000);
+         self.discover_with_width(&mut s)?;
+         check_cancellation(cancelled)?;
+         clock.mark(Stage::NeighbourSearch);
+@@ -557,3 +568,7 @@
+ #[cfg(test)]
+ #[path = "../../tests/unit/cuda/mirror_tests.rs"]
+ mod mirror_tests;
++
++#[cfg(test)]
++#[path = "../../tests/unit/cuda/tiled_tests.rs"]
++mod tiled_tests;
+--- a/native/bridge.cpp
++++ b/native/bridge.cpp
+@@ -276,7 +276,8 @@
+     if (r.poisoned) return {-3,14};
+     const bool state=observation==Observation::State;
+     const bool prefix=observation==Observation::CountPrefix || observation==Observation::Prefix;
+-    if ((observation!=Observation::None && (!diagnostic || grouped)) ||
++    const bool tiled=settings.neighbour_layout==1;
++    if (settings.neighbour_layout>1 || (observation!=Observation::None && (!diagnostic || grouped)) ||
+         (state && operation>1) || (prefix && operation!=4) ||
+         (grouped && (!diagnostic || (operation!=5 && operation!=9))) ||
+         (operation>17 && operation!=24) || ((operation==2 || (operation==4 && observation!=Observation::Prefix) || operation==12) && (!std::isfinite(settings.width) || settings.width<=0)) ||
+@@ -348,8 +349,9 @@
+                 function=r.prefix_counts;
+                 settings.stride=observation==Observation::CountPrefix;
+                 settings.span=static_cast<unsigned int>((static_cast<std::uint64_t>(settings.count)+threads)/threads);
+-                for (kernel_operation=21;kernel_operation<=23;++kernel_operation) {
+-                    count=kernel_operation==22 ? threads : static_cast<std::uint64_t>(settings.count)+1;
++                for (kernel_operation=21;kernel_operation<=(tiled ? 25U : 23U);++kernel_operation) {
++                    if (kernel_operation==24) continue;
++                    count=(kernel_operation==22 || kernel_operation==25) ? threads : static_cast<std::uint64_t>(settings.count)+1;
+                     const auto status=launch();
+                     if (status.code) return status;
+                 }
+--- a/native/neighbours.cuh
++++ b/native/neighbours.cuh
+@@ -1,21 +1,29 @@
+ // Prediction-time rows contain only actual neighbours, sorted by identity. The
+ // count and fill passes share geometry; checked prefix totals determine storage.
++// Tiled rows interleave 32 identities without changing their logical sequence.
++// Their offsets occupy the cell sort's unused second half after sorting finishes.
+ #pragma once
+ #include "row_sort.cuh"
+ 
+ struct Members {
+     const std::uint32_t *indices;
+     std::uint64_t cursor, stop;
+-    unsigned int owner;
++    unsigned int owner, stride;
+     bool include_self;
+-    __device__ Members(SolverBuffers b, SolverSettings, unsigned int i, bool self=false)
+-        :indices(b.neighbours),cursor(b.offsets[i]),stop(b.offsets[i+1]),owner(i),include_self(self) {}
++    __device__ Members(SolverBuffers b, SolverSettings s, unsigned int i, bool self=false)
++        :indices(b.neighbours+b.offsets[i]),cursor(0),stop(b.offsets[i+1]-b.offsets[i]),owner(i),stride(1),include_self(self) {
++        if (s.neighbour_layout==1) {
++            const auto offsets=reinterpret_cast<const std::uint64_t *>(b.cells+s.padded);
++            indices=b.neighbours+offsets[i/32]+i%32;
++            stride=32;
++        }
++    }
+     __device__ unsigned int next(unsigned int end) {
+-        if (include_self && (cursor==stop || owner<indices[cursor])) {
++        if (include_self && (cursor==stop || owner<indices[cursor*stride])) {
+             include_self=false;
+             return owner;
+         }
+-        return cursor==stop ? end : indices[cursor++];
++        return cursor==stop ? end : indices[(cursor++)*stride];
+     }
+ };
+ 
+@@ -58,7 +66,12 @@
+                 if (i!=j && separation(b.position[i],b.position[j],c)<s.radius) {
+                     if (fill) {
+                         if (cursor==stop) { c.error=52; return; }
+-                        b.neighbours[cursor]=j;
++                        auto target=cursor;
++                        if (s.neighbour_layout==1) {
++                            const auto offsets=reinterpret_cast<const std::uint64_t *>(b.cells+s.padded);
++                            target=offsets[i/32]+(cursor-start)*32+i%32;
++                        }
++                        b.neighbours[target]=j;
+                     }
+                     ++cursor;
+                 }
+--- a/native/row_sort.cuh
++++ b/native/row_sort.cuh
+@@ -4,20 +4,22 @@
+ #include <cstdint>
+ #include <climits>
+ 
++template<unsigned int Stride>
+ __device__ void sift_down(std::uint32_t *row, std::uint64_t root, std::uint64_t count) {
+     while (root<count/2) {
+         auto child=root*2+1;
+-        if (child+1<count && row[child]<row[child+1]) ++child;
+-        if (row[root]>=row[child]) return;
+-        auto value=row[root]; row[root]=row[child]; row[child]=value;
++        if (child+1<count && row[child*Stride]<row[(child+1)*Stride]) ++child;
++        if (row[root*Stride]>=row[child*Stride]) return;
++        auto value=row[root*Stride]; row[root*Stride]=row[child*Stride]; row[child*Stride]=value;
+         root=child;
+     }
+ }
++template<unsigned int Stride>
+ __device__ void sort_row(std::uint32_t *row, std::uint64_t count) {
+-    for (auto root=count/2;root>0;--root) sift_down(row,root-1,count);
++    for (auto root=count/2;root>0;--root) sift_down<Stride>(row,root-1,count);
+     for (auto end=count;end>1;--end) {
+-        auto value=row[0]; row[0]=row[end-1]; row[end-1]=value;
+-        sift_down(row,0,end-1);
++        auto value=row[0]; row[0]=row[(end-1)*Stride]; row[(end-1)*Stride]=value;
++        sift_down<Stride>(row,0,end-1);
+     }
+ }
+ 
+@@ -41,29 +43,30 @@
+     else if constexpr (Span<Width) row_network<Width,Span*2,Span>(values,lane);
+ }
+ 
+-template<unsigned int Width>
++template<unsigned int Width, unsigned int Stride>
+ __device__ __forceinline__ void warp_sort_row(std::uint32_t *row, std::uint64_t count,
+                                              unsigned int lane) {
+     std::uint32_t values[Width/32];
+     #pragma unroll
+     for (unsigned int slot=0;slot<Width/32;++slot) {
+         const auto index=slot*32+lane;
+-        values[slot]=index<count ? row[index] : UINT_MAX;
++        values[slot]=index<count ? row[index*Stride] : UINT_MAX;
+     }
+     row_network<Width,2,1>(values,lane);
+     #pragma unroll
+     for (unsigned int slot=0;slot<Width/32;++slot) {
+         const auto index=slot*32+lane;
+-        if (index<count) row[index]=values[slot];
++        if (index<count) row[index*Stride]=values[slot];
+     }
+ }
+ 
++template<unsigned int Stride=1>
+ __device__ void sort_row_cooperatively(std::uint32_t *row, std::uint64_t count,
+                                       unsigned int lane) {
+     if (count<2) return;
+-    if (count<=32) warp_sort_row<32>(row,count,lane);
+-    else if (count<=64) warp_sort_row<64>(row,count,lane);
+-    else if (count<=128) warp_sort_row<128>(row,count,lane);
+-    else if (count<=256) warp_sort_row<256>(row,count,lane);
+-    else if (lane==0) sort_row(row,count);
++    if (count<=32) warp_sort_row<32,Stride>(row,count,lane);
++    else if (count<=64) warp_sort_row<64,Stride>(row,count,lane);
++    else if (count<=128) warp_sort_row<128,Stride>(row,count,lane);
++    else if (count<=256) warp_sort_row<256,Stride>(row,count,lane);
++    else if (lane==0) sort_row<Stride>(row,count);
+ }
+--- a/native/solver.cu
++++ b/native/solver.cu
+@@ -101,7 +101,12 @@
+         const auto owner=static_cast<unsigned int>(row);
+         const auto start=b.offsets[owner], stop=b.offsets[owner+1];
+         if (b.errors[owner] || start>stop || stop>s.entries) return;
+-        if (start!=stop) sort_row_cooperatively(b.neighbours+start,stop-start,threadIdx.x%32);
++        if (start!=stop) {
++            if (s.neighbour_layout==1) {
++                const auto offsets=reinterpret_cast<const std::uint64_t *>(b.cells+s.padded);
++                sort_row_cooperatively<32>(b.neighbours+offsets[owner/32]+owner%32,stop-start,threadIdx.x%32);
++            } else sort_row_cooperatively(b.neighbours+start,stop-start,threadIdx.x%32);
++        }
+         return;
+     }
+     if (lane>=s.count) return;
+--- a/native/solver.h
++++ b/native/solver.h
+@@ -27,6 +27,9 @@
+     std::uint32_t stride, span;
+     std::uint64_t entries;
+     float xsph, vorticity;
++    // Zero selects compact CSR; one selects identity-ordered rows interleaved
++    // in tiles of 32. Tile offsets reuse the finished cell sort's second half.
++    std::uint32_t neighbour_layout;
+ };
+ struct SolverBuffers {
+     Vector *old_position, *old_velocity, *position, *velocity;
+@@ -42,6 +45,6 @@
+ };
+ static_assert(sizeof(Vector) == 12 && sizeof(DevicePlane) == 16 && sizeof(Cell) == 32);
+ static_assert(sizeof(PendingJacobi) == 16);
+-static_assert(sizeof(SolverSettings) == 96 && offsetof(SolverSettings, width) == 64);
++static_assert(sizeof(SolverSettings) == 104 && offsetof(SolverSettings, width) == 64);
+ static_assert(sizeof(SolverBuffers) == 128 && offsetof(SolverBuffers,diagnostic) == 112 &&
+               offsetof(SolverBuffers,first_operation) == 120);
+--- a/native/state_observation.cuh
++++ b/native/state_observation.cuh
+@@ -104,6 +104,36 @@
+     if (b.diagnostic[0]!=ULLONG_MAX) return;
+     const auto lane=threadIdx.x;
+     __shared__ std::uint64_t scan[256];
++    if (operation==25) {
++        // CSR offsets are complete and checked. Pad each group of 32 rows to
++        // its longest row, then scan tile sizes using contiguous lane-owned
++        // slices. The cell sort has finished with this second scratch half.
++        // A partial tile reserves all 32 lanes, so every numerical row uses
++        // the same stride without reading another row's padding.
++        if (blockIdx.x || b.diagnostic[1]!=ULLONG_MAX) return;
++        const auto tiles=(static_cast<std::uint64_t>(s.count)+31)/32;
++        auto *offsets=reinterpret_cast<std::uint64_t *>(b.cells+s.padded);
++        const auto chunk=(tiles+blockDim.x-1)/blockDim.x;
++        const auto first=lane*chunk, last=min(first+chunk,tiles);
++        std::uint64_t sum=0;
++        for (auto tile=first;tile<last;++tile) {
++            std::uint64_t largest=0;
++            for (auto i=tile*32;i<min((tile+1)*32,static_cast<std::uint64_t>(s.count));++i)
++                largest=max(largest,b.offsets[i+1]-b.offsets[i]);
++            offsets[tile]=largest*32;
++            sum+=largest*32;
++        }
++        scan[lane]=sum;
++        inclusive_block_prefix(scan);
++        auto carry=lane ? scan[lane-1] : 0;
++        for (auto tile=first;tile<last;++tile) {
++            const auto length=offsets[tile];
++            offsets[tile]=carry;
++            carry+=length;
++        }
++        if (lane==blockDim.x-1) offsets[tiles]=scan[lane];
++        return;
++    }
+     const auto n=static_cast<std::uint64_t>(s.count)+1;
+     auto *totals=reinterpret_cast<std::uint64_t *>(b.correction);
+     if (operation==22) {
+--- /dev/null
++++ b/tests/unit/cuda/tiled_tests.rs
+@@ -0,0 +1,251 @@
++//! Interleaving rows must preserve the independent CPU intermediates even for
++//! dense, tail and changed-position inputs with fixed prediction membership.
++
++use super::*;
++use crate::{fluid::PbfParameters, neighbours::brute_force};
++
++#[test]
++#[ignore = "requires an explicitly selected CUDA hardware test run"]
++fn tiled_prefix_rejects_invalid_counts_before_reusing_sort_scratch() {
++    let config = crate::config::resolve_effective_configuration(None, None, None).unwrap();
++    for threads in [32, 64, 128, 256] {
++        let mut gpu = CudaSolver::new(0, threads).unwrap();
++        let particles: Vec<_> = (0..33)
++            .map(|i| Particle {
++                identity: i,
++                position_m: Vec3::ZERO,
++                velocity_m_s: Vec3::ZERO,
++            })
++            .collect();
++        let mut s = settings(&config, particles.len(), 0).unwrap();
++        s.neighbour_layout = 1;
++        gpu.prepare(s, &particles, &[]).unwrap();
++        let scratch = vec![0xa5a5a5a5_u32; storage_sizes(s).unwrap()[10] / 4];
++        gpu.context.inner.upload(10, &scratch).unwrap();
++        let mut counts = vec![0_u64; 34];
++        counts[1] = 33; // A row can contain at most the other 32 particles.
++        gpu.context.inner.upload(13, &counts).unwrap();
++        assert_eq!(gpu.context.inner.prefix(s, threads, false).unwrap(), 52);
++        assert_eq!(
++            gpu.context
++                .inner
++                .download::<u32>(10, scratch.len())
++                .unwrap(),
++            scratch
++        );
++        gpu.context.inner.begin_attempt().unwrap();
++        counts[1] = 32;
++        gpu.context.inner.upload(13, &counts).unwrap();
++        assert_eq!(
++            gpu.context.inner.prefix(s, threads, false).unwrap(),
++            u64::MAX
++        );
++        assert_eq!(
++            gpu.context
++                .inner
++                .download_at::<u64>(10, s.padded as usize * 4, 3)
++                .unwrap(),
++            vec![0, 32 * 32, 32 * 32]
++        );
++    }
++}
++
++#[test]
++#[ignore = "requires an explicitly selected CUDA hardware test run"]
++fn tiled_attempts_keep_every_cancellation_boundary_and_retry_from_accepted_state() {
++    use crate::{execution::ExecutionMode, neighbours::SearchBackend, simulation::Simulation};
++
++    let config = crate::config::resolve_effective_configuration(None, None, None).unwrap();
++    let particles: Vec<_> = (0..32_000)
++        .map(|i| Particle {
++            identity: i,
++            position_m: Vec3::new(
++                (i % 40) as f32 * 0.05,
++                ((i / 40) % 40) as f32 * 0.05 + 0.4,
++                (i / 1600) as f32 * 0.05,
++            ),
++            velocity_m_s: Vec3::ZERO,
++        })
++        .collect();
++    let build = || {
++        Simulation::new_with_execution(
++            &config,
++            particles.clone(),
++            vec![],
++            SearchBackend::UniformGrid,
++            ExecutionMode::Cuda {
++                device: 0,
++                threads: 128,
++            },
++        )
++        .unwrap()
++    };
++    let mut reference = build();
++    let mut candidate = build();
++    let mut polls = 0;
++    let _ = reference
++        .step_with_cancellation(|| {
++            polls += 1;
++            false
++        })
++        .unwrap();
++    for boundary in 1..=polls {
++        if boundary != 1 {
++            let _ = reference.step().unwrap();
++        }
++        let old = candidate.snapshot().clone();
++        let mut observed = 0;
++        assert!(matches!(
++            candidate.step_with_cancellation(|| {
++                observed += 1;
++                observed == boundary
++            }),
++            Err(StepError::Cancelled)
++        ));
++        assert_eq!(candidate.snapshot(), &old);
++        let _ = candidate.step().unwrap();
++        assert_eq!(candidate.snapshot(), reference.snapshot());
++    }
++}
++
++fn scalar_bits(values: Vec<f32>) -> Vec<u32> {
++    values.into_iter().map(f32::to_bits).collect()
++}
++
++#[test]
++#[ignore = "requires an explicitly selected CUDA hardware test run"]
++fn tiled_density_matches_independent_intermediates_for_fixed_rows() {
++    let config = crate::config::resolve_effective_configuration(None, None, None).unwrap();
++    for threads in [32, 64, 128, 256] {
++        let mut gpu = CudaSolver::new(0, threads).unwrap();
++        for count in [0, 1, 33, 65, 257, 513, 17] {
++            let mut original: Vec<_> = (0..count)
++                .map(|i| {
++                    Vec3::new(
++                        (i % 11) as f32 * 0.015 - 0.08,
++                        ((i / 11) % 9) as f32 * 0.015 - 0.06,
++                        (i / 99) as f32 * 0.015 - 0.04,
++                    )
++                })
++                .collect();
++            original.reverse();
++            original.rotate_left(count / 3);
++            let fixed = brute_force(&original, 0.2).unwrap();
++            let particles: Vec<_> = original
++                .iter()
++                .enumerate()
++                .map(|(i, &position_m)| Particle {
++                    identity: (3 * i + 7) as u64,
++                    position_m,
++                    velocity_m_s: Vec3::ZERO,
++                })
++                .collect();
++            let mut s = settings(&config, count, 0).unwrap();
++            s.neighbour_layout = 1;
++            s.radius = 0.2;
++            s.relaxation = 0.01;
++            s.strength = 0.1;
++            s.reference_weight = crate::kernel::poly6(0.04, 0.2).unwrap();
++            s.correction_scale = 1.0;
++            gpu.prepare(s, &particles, &[]).unwrap();
++            gpu.context
++                .inner
++                .upload(2, &original.iter().copied().map(array).collect::<Vec<_>>())
++                .unwrap();
++            gpu.discover(&mut s, &original).unwrap();
++            // Derive physical storage independently from brute-force row
++            // lengths. Check only members, never unspecified padding words.
++            let mut tile_offsets = vec![0_u64];
++            for first in (0..count).step_by(32) {
++                let longest = (first..(first + 32).min(count))
++                    .map(|i| fixed.for_particle(i).unwrap().len())
++                    .max()
++                    .unwrap();
++                tile_offsets.push(tile_offsets.last().unwrap() + longest as u64 * 32);
++            }
++            assert_eq!(s.entries, *tile_offsets.last().unwrap());
++            if count != 0 {
++                assert_eq!(
++                    gpu.context
++                        .inner
++                        .download_at::<u64>(10, s.padded as usize * 4, tile_offsets.len())
++                        .unwrap(),
++                    tile_offsets
++                );
++                let indices = gpu
++                    .context
++                    .inner
++                    .download::<u32>(11, s.entries as usize)
++                    .unwrap();
++                for i in 0..count {
++                    let row = fixed.for_particle(i).unwrap();
++                    let actual: Vec<_> = (0..row.len())
++                        .map(|k| indices[tile_offsets[i / 32] as usize + k * 32 + i % 32] as usize)
++                        .collect();
++                    assert_eq!(actual, row, "block {threads}, row {i}");
++                }
++            }
++            for changed in [false, true, false] {
++                let mut positions = original.clone();
++                if changed {
++                    for (i, point) in positions.iter_mut().enumerate() {
++                        if i % 7 == 0 {
++                            point.x += 0.4;
++                        } else if i % 11 == 0 {
++                            *point = Vec3::new(-0.0, 0.0, 0.0);
++                        }
++                    }
++                }
++                let input: Vec<_> = positions.iter().copied().map(array).collect();
++                gpu.context.inner.upload(2, &input).unwrap();
++                for density in [3.0, 10_000.0] {
++                    s.rest_density = density;
++                    assert_eq!(
++                        gpu.context.inner.checked_group(s, 5, threads).unwrap(),
++                        u64::MAX
++                    );
++                    let expected = crate::fluid::compute_jacobi_stage(
++                        &positions,
++                        &fixed,
++                        PbfParameters::new(0.2, density, 0.01, 0.1, 0.04, 4.0).unwrap(),
++                    )
++                    .unwrap();
++                    for (slot, expected) in [
++                        (4, expected.normalised_densities),
++                        (5, expected.constraints),
++                        (6, expected.multipliers),
++                    ] {
++                        assert_eq!(
++                            scalar_bits(gpu.context.inner.download(slot, count).unwrap()),
++                            scalar_bits(expected),
++                            "block {threads}, count {count}, changed {changed}, slot {slot}"
++                        );
++                    }
++                    assert_eq!(
++                        gpu.context
++                            .inner
++                            .download::<[f32; 3]>(7, count)
++                            .unwrap()
++                            .into_iter()
++                            .map(|v| v.map(f32::to_bits))
++                            .collect::<Vec<_>>(),
++                        expected
++                            .corrections
++                            .into_iter()
++                            .map(array)
++                            .map(|v| v.map(f32::to_bits))
++                            .collect::<Vec<_>>()
++                    );
++                    assert_eq!(
++                        gpu.context.inner.download::<u32>(12, count).unwrap(),
++                        vec![0; count]
++                    );
++                    assert_eq!(
++                        gpu.context.inner.download::<[f32; 3]>(2, count).unwrap(),
++                        input
++                    );
++                }
++            }
++        }
++    }
++}
+--- a/tests/native/tests.cpp
++++ b/tests/native/tests.cpp
+@@ -586,11 +586,12 @@
+ }
+ 
+ static void compact_observation_failures() {
+-    for (auto prefix : {false,true}) for (auto failure : {0,9,10,13,16}) {
+-        const auto passes=prefix ? 4 : 1;
++    for (auto layout : {0U,1U}) for (auto prefix : {false,true}) for (auto failure : {0,9,10,13,16}) {
++        const auto passes=prefix ? 4+static_cast<int>(layout) : 1;
+         for (int launch=1;launch<=passes;++launch) {
+             observed={};Resource r;ready(r);
+             SolverSettings s{};s.count=5;s.padded=8;s.width=1;
++            s.neighbour_layout=layout;
+             for (unsigned int slot=0;slot<14;++slot)
+                 assert(maelstrom_cuda_storage(&r,slot,nullptr,512,0).code==0);
+             assert(maelstrom_cuda_begin_attempt(&r).code==0);
+@@ -613,6 +614,10 @@
+                     assert(observed.launches[0].operation==4);
+                     for (int pass=1;pass<4;++pass)
+                         assert(observed.launches[pass].operation==20U+pass);
++                    if (layout) {
++                        assert(observed.launches[4].operation==25);
++                        assert(observed.launches[4].grid==1);
++                    }
+                 }
+             }
+             if (failure) assert(maelstrom_cuda_prefix(&r,s,128,1,results).stage==14);
+--- a/docs/cuda.md
++++ b/docs/cuda.md
+@@ -208,6 +208,16 @@
+ fixed neighbour rows and strict final-distance support; no extra discovery or device allocation is
+ introduced. Strengths and numerical revisions are part of recorded physical inputs.
+ 
++For inputs of at least 32,000 particles, neighbour rows are interleaved in tiles of
++32 identities. Each tile reserves its longest row for every lane; readers still
++visit exactly the original identity-sorted members, excluding padding. Compact
++CSR offsets retain logical row lengths, while a checked integer prefix supplies
++the physical allocation size. Tile offsets reuse the cell sort's finished scratch
++half. Cooperative row sorting uses the same network and unrestricted dense-row
++fallback with a stride of 32. Small inputs retain compact rows because their
++measured timestep saving did not repay tiled construction. This storage choice
++changes neither prediction membership nor the arithmetic/cancellation sequence.
++
+ The exhaustive power check is a standalone CUDA test, separate from the Driver API
+ solver and its production dependencies. It uses the toolkit's Runtime API only for
+ test setup, launches and counters. Build it with the solver's precise flags; its

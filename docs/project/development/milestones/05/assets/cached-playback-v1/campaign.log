@@ -1,0 +1,39 @@
+control-8000-720-1x-p0 0.9954746613007877 172.46597607555987
+candidate-8000-720-1x-p0 0.9968520721465101 173.9620760331542
+control-8000-720-4x-p0 2.871546971675999 173.53590317708978
+candidate-8000-720-4x-p0 3.984896444634366 173.33050750281734
+control-8000-1080-1x-p0 0.995315030775307 95.79906671581263
+candidate-8000-1080-1x-p0 0.9966342286297403 96.05061877476109
+control-8000-1080-4x-p0 1.586748451879805 95.70335713253098
+candidate-8000-1080-4x-p0 3.9846020486064786 98.51627444042536
+candidate-8000-720-1x-p1 0.9965765882158151 176.02033071344272
+control-8000-720-1x-p1 0.9953686777443527 171.91973587589158
+candidate-8000-720-4x-p1 3.984817491236102 168.49728168667252
+control-8000-720-4x-p1 2.8867256584147514 174.44780870776373
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/oliver/.local/share/maelstrom-experiments/cached-playback-v1/tools/performance/cached_campaign.py", line 42, in <module>
+    campaign(args.root.resolve(), args.existing.resolve(), args.pairs, args.seconds)
+  File "/home/oliver/.local/share/maelstrom-experiments/cached-playback-v1/tools/performance/cached_campaign.py", line 29, in campaign
+    result = run(args)
+             ^^^^^^^^^
+  File "/home/oliver/.local/share/maelstrom-experiments/cached-playback-v1/tools/performance/cached_playback.py", line 89, in run
+    protocol["measure_start_s"] = viewer_time()
+                                  ^^^^^^^^^^^^^
+  File "/home/oliver/.local/share/maelstrom-experiments/cached-playback-v1/tools/performance/cached_playback.py", line 87, in viewer_time
+    return next(json.loads(s[12:])["wall_s"] for s in reversed(lines)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oliver/.local/share/maelstrom-experiments/cached-playback-v1/tools/performance/cached_playback.py", line 87, in <genexpr>
+    return next(json.loads(s[12:])["wall_s"] for s in reversed(lines)
+                ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+json.decoder.JSONDecodeError: Expecting ':' delimiter: line 1 column 446 (char 445)

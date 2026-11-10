@@ -1,0 +1,18 @@
+--- a/tests/viewer_pixels.rs
++++ b/tests/viewer_pixels.rs
+@@ -24,13 +24,14 @@
+     let output = PathBuf::from(std::env::var_os("MAELSTROM_PIXEL_OUTPUT").unwrap());
+     fs::create_dir(&output).unwrap();
+     let instance = Graphics::instance();
+-    let g = pollster::block_on(Graphics::new(
++    let mut g = pollster::block_on(Graphics::new(
+         &instance,
+         GraphicsSelection::default(),
+         None,
+         wgpu::TextureFormat::Rgba8UnormSrgb,
+     ))
+     .unwrap();
++    g.set_particle_renderer(maelstrom::render::ParticleRenderer::Impostor);
+     eprintln!("PIXEL_ADAPTER {:?}", g.adapter_info);
+     let extent = wgpu::Extent3d {
+         width: 1280,

@@ -1,0 +1,20 @@
+   Compiling maelstrom v0.1.0 (/home/oliver/.cache/maelstrom-critical-path-20261109/final)
+    Finished `release` profile [optimized] target(s) in 6.84s
+     Running unittests src/lib.rs (/home/oliver/documents/programs/EPQ/Maelstrom/target/release/deps/maelstrom-ae149651470e7ac4)
+
+running 12 tests
+test viewer::tests::close_during_running_work_retains_terminal_accepted_state ... ok
+test viewer::tests::overlay_is_bounded_to_the_drawable_and_has_complete_triangles ... ok
+test viewer::tests::invalid_draft_preserves_selection_and_resource_failure_retains_prior ... ok
+test viewer::tests::graphics_failure_requests_worker_teardown_and_preserves_accepted_state ... ok
+test viewer::tests::zero_extent_and_occlusion_skip_graphics_configuration_and_drawing ... ok
+test viewer::windowing::tests::window_transport_is_explicit_and_rejects_invalid_names ... ok
+test viewer::tests::presentation_resolution_failure_retains_generation_camera_and_snapshot ... ok
+test viewer::tests::camera_save_uses_displayed_selection_and_does_not_change_accepted_state ... ok
+test viewer::tests::receipts_are_polled_and_removed_without_blocking ... ok
+test viewer::tests::requested_audit_is_labelled_by_snapshot_and_does_not_change_acceptance ... ok
+test viewer::tests::presentation_cadence_camera_draft_and_reset_preserve_all_cpu_modes ... ok
+test viewer::tests::cuda_viewer_observations_preserve_exact_headless_results_and_teardown ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 80 filtered out; finished in 0.57s
+

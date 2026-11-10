@@ -1,0 +1,22 @@
+{
+  "archive_sha256": "347340532bf0bfc6ec6461a13379527982f94960fd07482660e33cecc85b3e34",
+  "verified_members": 273,
+  "current_assessor_summary_exact": true,
+  "environment": "local WSL2; retained primary-PC data; no simulation",
+  "python_tests": {
+    "command": "python3 -m unittest tests.performance.test_cache_review",
+    "passed": 4,
+    "failed": 0,
+    "scope": "process evidence validation, fixed-camera TOML fixture and refusal to prepare a Git checkout"
+  },
+  "python_compile_check": true,
+  "internal_links_and_anchors_checked": 41,
+  "source_identities_checked": 5,
+  "hosted_or_browser_validation": false,
+  "maintained_tool_sha256": {
+    "tools/performance/cache_review.py": "42b66363b7c78dcd7d977bca69d1e7fac08c8e3bf38a771ac58cf38aab2d343f",
+    "tools/performance/cache_review_checks.py": "fd831f33fa9a23ef103272ea4fc59e5329c7b607eb04004b848dec7e7e5efe6e",
+    "tools/performance/cache_review_probe.rs": "ad5ccee92073e9ed9bcc7079ce747ffae26c2cb075f532723eeb9db619c99c6d",
+    "tests/performance/test_cache_review.py": "b6dcfe0e192071620856491547bf0ec06b5dbe584f493f0301e5ec4a9008e7ab"
+  }
+}

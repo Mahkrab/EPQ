@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "warmups": 1,
+  "measured_pairs": 3,
+  "order": [
+    "AB",
+    "BA",
+    "AB",
+    "BA"
+  ],
+  "steps": 1200,
+  "frame_stride": 4,
+  "frames": 301,
+  "numerical_mode": "experimental",
+  "device": 0,
+  "block_size": 128,
+  "size": [
+    640,
+    480
+  ],
+  "alternative_size": [
+    1280,
+    720
+  ],
+  "binary_sha256": {
+    "baseline": "2a23926ac808fefecdb2173d66bad394af226fa3706b81a67c01dbf7fd41b1d6",
+    "candidate": "96ae79349b0e802c7cba4dc9da8a3b3f0d7b42757dc04531c90ba8456d514848"
+  },
+  "limits": "warm OS cache; whole-device GPU samples; no forced clocks or disk policy; stages may overlap"
+}

@@ -1,0 +1,1445 @@
+{
+  "command": [
+    "/home/oliver/.local/share/maelstrom-experiments/cached-playback-v1/final-maelstrom",
+    "view",
+    "--cache",
+    "/home/oliver/.local/share/maelstrom-experiments/cache-pipeline-v1/runs/large-impact/b-1-cache",
+    "--paused",
+    "--width",
+    "1280",
+    "--height",
+    "720",
+    "--camera-output",
+    "/home/oliver/.local/share/maelstrom-experiments/cached-playback-v1/final-journey/camera.toml"
+  ],
+  "delayed_reads": false,
+  "initial": {
+    "camera": {
+      "eye_m": [
+        3.31535547122927,
+        2.6957488060186314,
+        3.31535547122927
+      ],
+      "far_m": 18.131030932772322,
+      "near_m": 0.0014082968279171563,
+      "target_m": [
+        0.75,
+        0.8999999761581421,
+        0.75
+      ],
+      "up": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "vertical_fov_deg": 45.0
+    },
+    "event": "present",
+    "height": 720,
+    "index": 0,
+    "loading": false,
+    "paused": true,
+    "policy": "RealTime",
+    "prepare_s": 0.001810757,
+    "simulation_s": 0.0,
+    "speed": 1.0,
+    "submit_s": 0.0197823,
+    "timeline_s": 0.0,
+    "upload_s": 0.003290557,
+    "wall_s": 0.500103444,
+    "wanted": 0,
+    "width": 1280
+  },
+  "selected": {
+    "camera": {
+      "eye_m": [
+        0.9568147196711667,
+        2.2049960336097234,
+        1.8357539976266353
+      ],
+      "far_m": 18.131030932772322,
+      "near_m": 0.0014082968279171563,
+      "target_m": [
+        0.4857336406582072,
+        1.010285247019059,
+        0.8489735245720232
+      ],
+      "up": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "vertical_fov_deg": 45.0
+    },
+    "event": "present",
+    "height": 480,
+    "index": 17,
+    "loading": false,
+    "paused": true,
+    "policy": "RealTime",
+    "prepare_s": 0.001044291,
+    "simulation_s": 0.2833333481103182,
+    "speed": 4.0,
+    "submit_s": 0.000669902,
+    "timeline_s": 0.2833333481103182,
+    "upload_s": 0.000249062,
+    "wall_s": 5.373508772,
+    "wanted": 17,
+    "width": 640
+  },
+  "camera_checks": [
+    {
+      "action": "paused-orbit",
+      "external_response_s": 0.11875291900651064,
+      "handled_key_to_submission_s": 0.009927408999999998,
+      "before": {
+        "camera": {
+          "eye_m": [
+            3.31535547122927,
+            2.6957488060186314,
+            3.31535547122927
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.75,
+            0.8999999761581421,
+            0.75
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 0,
+        "loading": false,
+        "paused": true,
+        "policy": "RealTime",
+        "prepare_s": 0.001810757,
+        "simulation_s": 0.0,
+        "speed": 1.0,
+        "submit_s": 0.0197823,
+        "timeline_s": 0.0,
+        "upload_s": 0.003290557,
+        "wall_s": 0.500103444,
+        "wanted": 0,
+        "width": 1280
+      },
+      "after": {
+        "camera": {
+          "eye_m": [
+            3.558647580898348,
+            2.6957488060186314,
+            3.0464311776854442
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.75,
+            0.8999999761581421,
+            0.75
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 0,
+        "loading": false,
+        "paused": true,
+        "policy": "RealTime",
+        "prepare_s": 0.000923776,
+        "simulation_s": 0.0,
+        "speed": 1.0,
+        "submit_s": 0.000525169,
+        "timeline_s": 0.0,
+        "upload_s": 0.000274043,
+        "wall_s": 0.616236173,
+        "wanted": 0,
+        "width": 1280
+      }
+    },
+    {
+      "action": "paused-drag-orbit",
+      "external_response_s": 0.0856110019958578,
+      "handled_key_to_submission_s": null,
+      "before": {
+        "camera": {
+          "eye_m": [
+            3.558647580898348,
+            2.6957488060186314,
+            3.0464311776854442
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.75,
+            0.8999999761581421,
+            0.75
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 0,
+        "loading": false,
+        "paused": true,
+        "policy": "RealTime",
+        "prepare_s": 0.000923776,
+        "simulation_s": 0.0,
+        "speed": 1.0,
+        "submit_s": 0.000525169,
+        "timeline_s": 0.0,
+        "upload_s": 0.000274043,
+        "wall_s": 0.616236173,
+        "wanted": 0,
+        "width": 1280
+      },
+      "after": {
+        "camera": {
+          "eye_m": [
+            2.9879802289608928,
+            3.0145567573233527,
+            3.3780991917135825
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.75,
+            0.8999999761581421,
+            0.75
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 0,
+        "loading": false,
+        "paused": true,
+        "policy": "RealTime",
+        "prepare_s": 0.001057774,
+        "simulation_s": 0.0,
+        "speed": 1.0,
+        "submit_s": 0.00086734,
+        "timeline_s": 0.0,
+        "upload_s": 0.000391085,
+        "wall_s": 0.700698676,
+        "wanted": 0,
+        "width": 1280
+      }
+    },
+    {
+      "action": "paused-zoom",
+      "external_response_s": 0.12785406100738328,
+      "handled_key_to_submission_s": 0.009193647000000027,
+      "before": {
+        "camera": {
+          "eye_m": [
+            2.9879802289608928,
+            3.0145567573233527,
+            3.3780991917135825
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.75,
+            0.8999999761581421,
+            0.75
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 0,
+        "loading": false,
+        "paused": true,
+        "policy": "RealTime",
+        "prepare_s": 0.001057774,
+        "simulation_s": 0.0,
+        "speed": 1.0,
+        "submit_s": 0.00086734,
+        "timeline_s": 0.0,
+        "upload_s": 0.000391085,
+        "wall_s": 0.700698676,
+        "wanted": 0,
+        "width": 1280
+      },
+      "after": {
+        "camera": {
+          "eye_m": [
+            2.7641822060648034,
+            2.8031010792068316,
+            3.1152892725422245
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.75,
+            0.8999999761581421,
+            0.75
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 0,
+        "loading": false,
+        "paused": true,
+        "policy": "RealTime",
+        "prepare_s": 0.000954293,
+        "simulation_s": 0.0,
+        "speed": 1.0,
+        "submit_s": 0.000741965,
+        "timeline_s": 0.0,
+        "upload_s": 0.000357999,
+        "wall_s": 0.827741058,
+        "wanted": 0,
+        "width": 1280
+      }
+    },
+    {
+      "action": "paused-wheel",
+      "external_response_s": 0.04170817299745977,
+      "handled_key_to_submission_s": null,
+      "before": {
+        "camera": {
+          "eye_m": [
+            2.7641822060648034,
+            2.8031010792068316,
+            3.1152892725422245
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.75,
+            0.8999999761581421,
+            0.75
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 0,
+        "loading": false,
+        "paused": true,
+        "policy": "RealTime",
+        "prepare_s": 0.000954293,
+        "simulation_s": 0.0,
+        "speed": 1.0,
+        "submit_s": 0.000741965,
+        "timeline_s": 0.0,
+        "upload_s": 0.000357999,
+        "wall_s": 0.827741058,
+        "wanted": 0,
+        "width": 1280
+      },
+      "after": {
+        "camera": {
+          "eye_m": [
+            2.399072914407707,
+            2.458127375440734,
+            2.6865350673557673
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.75,
+            0.8999999761581421,
+            0.75
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 0,
+        "loading": false,
+        "paused": true,
+        "policy": "RealTime",
+        "prepare_s": 0.000980911,
+        "simulation_s": 0.0,
+        "speed": 1.0,
+        "submit_s": 0.000664654,
+        "timeline_s": 0.0,
+        "upload_s": 0.000508984,
+        "wall_s": 0.865644203,
+        "wanted": 0,
+        "width": 1280
+      }
+    },
+    {
+      "action": "paused-pan",
+      "external_response_s": 0.08748291399388108,
+      "handled_key_to_submission_s": null,
+      "before": {
+        "camera": {
+          "eye_m": [
+            2.399072914407707,
+            2.458127375440734,
+            2.6865350673557673
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.75,
+            0.8999999761581421,
+            0.75
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 0,
+        "loading": false,
+        "paused": true,
+        "policy": "RealTime",
+        "prepare_s": 0.000980911,
+        "simulation_s": 0.0,
+        "speed": 1.0,
+        "submit_s": 0.000664654,
+        "timeline_s": 0.0,
+        "upload_s": 0.000508984,
+        "wall_s": 0.865644203,
+        "wanted": 0,
+        "width": 1280
+      },
+      "after": {
+        "camera": {
+          "eye_m": [
+            2.288029073503258,
+            2.508998229745067,
+            2.74016493452499
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.6389561590955509,
+            0.9508708304624752,
+            0.8036298671692226
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 0,
+        "loading": false,
+        "paused": true,
+        "policy": "RealTime",
+        "prepare_s": 0.001042894,
+        "simulation_s": 0.0,
+        "speed": 1.0,
+        "submit_s": 0.000732299,
+        "timeline_s": 0.0,
+        "upload_s": 0.000535995,
+        "wall_s": 0.956782928,
+        "wanted": 0,
+        "width": 1280
+      }
+    },
+    {
+      "action": "normal-orbit",
+      "external_response_s": 0.1203157489944715,
+      "handled_key_to_submission_s": 0.009143451999999996,
+      "before": {
+        "camera": {
+          "eye_m": [
+            2.288029073503258,
+            2.508998229745067,
+            2.74016493452499
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.6389561590955509,
+            0.9508708304624752,
+            0.8036298671692226
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 0,
+        "loading": false,
+        "paused": true,
+        "policy": "RealTime",
+        "prepare_s": 0.001194725,
+        "simulation_s": 0.0,
+        "speed": 1.0,
+        "submit_s": 0.00054667,
+        "timeline_s": 0.0,
+        "upload_s": 0.000418594,
+        "wall_s": 1.162636301,
+        "wanted": 0,
+        "width": 1280
+      },
+      "after": {
+        "camera": {
+          "eye_m": [
+            2.4731214900089142,
+            2.508998229745067,
+            2.5658577420501096
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.6389561590955509,
+            0.9508708304624752,
+            0.8036298671692226
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 6,
+        "loading": false,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.000926103,
+        "simulation_s": 0.10000000521540642,
+        "speed": 1.0,
+        "submit_s": 0.000868421,
+        "timeline_s": 0.105425804,
+        "upload_s": 0.000306706,
+        "wall_s": 1.28723047,
+        "wanted": 6,
+        "width": 1280
+      }
+    },
+    {
+      "action": "normal-drag-orbit",
+      "external_response_s": 0.08523453299130779,
+      "handled_key_to_submission_s": null,
+      "before": {
+        "camera": {
+          "eye_m": [
+            2.4731214900089142,
+            2.508998229745067,
+            2.5658577420501096
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.6389561590955509,
+            0.9508708304624752,
+            0.8036298671692226
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 6,
+        "loading": false,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.000926103,
+        "simulation_s": 0.10000000521540642,
+        "speed": 1.0,
+        "submit_s": 0.000868421,
+        "timeline_s": 0.105425804,
+        "upload_s": 0.000306706,
+        "wall_s": 1.28723047,
+        "wanted": 6,
+        "width": 1280
+      },
+      "after": {
+        "camera": {
+          "eye_m": [
+            2.039987160396754,
+            2.731302001225686,
+            2.7438740569800197
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.6389561590955509,
+            0.9508708304624752,
+            0.8036298671692226
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 11,
+        "loading": false,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.001154523,
+        "simulation_s": 0.18333334289491177,
+        "speed": 1.0,
+        "submit_s": 0.000769016,
+        "timeline_s": 0.18382977899999997,
+        "upload_s": 0.000553354,
+        "wall_s": 1.366119281,
+        "wanted": 11,
+        "width": 1280
+      }
+    },
+    {
+      "action": "normal-zoom",
+      "external_response_s": 0.1246144339966122,
+      "handled_key_to_submission_s": 0.009221966000000137,
+      "before": {
+        "camera": {
+          "eye_m": [
+            2.039987160396754,
+            2.731302001225686,
+            2.7438740569800197
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.6389561590955509,
+            0.9508708304624752,
+            0.8036298671692226
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 11,
+        "loading": false,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.001154523,
+        "simulation_s": 0.18333334289491177,
+        "speed": 1.0,
+        "submit_s": 0.000769016,
+        "timeline_s": 0.18382977899999997,
+        "upload_s": 0.000553354,
+        "wall_s": 1.366119281,
+        "wanted": 11,
+        "width": 1280
+      },
+      "after": {
+        "camera": {
+          "eye_m": [
+            1.899884060266634,
+            2.553258884149365,
+            2.54984963799894
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.6389561590955509,
+            0.9508708304624752,
+            0.8036298671692226
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 18,
+        "loading": false,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.000938929,
+        "simulation_s": 0.30000001564621925,
+        "speed": 1.0,
+        "submit_s": 0.000741349,
+        "timeline_s": 0.314010364,
+        "upload_s": 0.000398588,
+        "wall_s": 1.4958721480000001,
+        "wanted": 18,
+        "width": 1280
+      }
+    },
+    {
+      "action": "normal-wheel",
+      "external_response_s": 0.04293636301008519,
+      "handled_key_to_submission_s": null,
+      "before": {
+        "camera": {
+          "eye_m": [
+            1.899884060266634,
+            2.553258884149365,
+            2.54984963799894
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.6389561590955509,
+            0.9508708304624752,
+            0.8036298671692226
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 18,
+        "loading": false,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.000938929,
+        "simulation_s": 0.30000001564621925,
+        "speed": 1.0,
+        "submit_s": 0.000741349,
+        "timeline_s": 0.314010364,
+        "upload_s": 0.000398588,
+        "wall_s": 1.4958721480000001,
+        "wanted": 18,
+        "width": 1280
+      },
+      "after": {
+        "camera": {
+          "eye_m": [
+            1.6713166091983909,
+            2.262795208380704,
+            2.233313695180298
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.6389561590955509,
+            0.9508708304624752,
+            0.8036298671692226
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 21,
+        "loading": false,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.001064435,
+        "simulation_s": 0.35000001825392246,
+        "speed": 1.0,
+        "submit_s": 0.000804853,
+        "timeline_s": 0.353216769,
+        "upload_s": 0.000695451,
+        "wall_s": 1.5357918430000002,
+        "wanted": 21,
+        "width": 1280
+      }
+    },
+    {
+      "action": "normal-pan",
+      "external_response_s": 0.08382996699947398,
+      "handled_key_to_submission_s": null,
+      "before": {
+        "camera": {
+          "eye_m": [
+            1.6713166091983909,
+            2.262795208380704,
+            2.233313695180298
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.6389561590955509,
+            0.9508708304624752,
+            0.8036298671692226
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 21,
+        "loading": false,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.001064435,
+        "simulation_s": 0.35000001825392246,
+        "speed": 1.0,
+        "submit_s": 0.000804853,
+        "timeline_s": 0.353216769,
+        "upload_s": 0.000695451,
+        "wall_s": 1.5357918430000002,
+        "wanted": 21,
+        "width": 1280
+      },
+      "after": {
+        "camera": {
+          "eye_m": [
+            1.5846788534112124,
+            2.2980642539987124,
+            2.2635099322659715
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.5523184033083726,
+            0.9861398760804839,
+            0.8338261042548961
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 26,
+        "loading": false,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.00103187,
+        "simulation_s": 0.4333333559334278,
+        "speed": 1.0,
+        "submit_s": 0.000854508,
+        "timeline_s": 0.436677204,
+        "upload_s": 0.000387199,
+        "wall_s": 1.618705693,
+        "wanted": 26,
+        "width": 1280
+      }
+    },
+    {
+      "action": "fast-orbit",
+      "external_response_s": 0.1270228780049365,
+      "handled_key_to_submission_s": 0.009403551000000121,
+      "before": {
+        "camera": {
+          "eye_m": [
+            1.5846788534112124,
+            2.2980642539987124,
+            2.2635099322659715
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.5523184033083726,
+            0.9861398760804839,
+            0.8338261042548961
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 42,
+        "loading": true,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.001224461,
+        "simulation_s": 0.7000000365078449,
+        "speed": 2.0,
+        "submit_s": 0.001010734,
+        "timeline_s": 0.717238688,
+        "upload_s": 0.002430135,
+        "wall_s": 1.825446275,
+        "wanted": 43,
+        "width": 1280
+      },
+      "after": {
+        "camera": {
+          "eye_m": [
+            1.7222515725040575,
+            2.2980642539987124,
+            2.153303397211725
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.5523184033083726,
+            0.9861398760804839,
+            0.8338261042548961
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 70,
+        "loading": true,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.001042957,
+        "simulation_s": 1.1666667275130749,
+        "speed": 4.0,
+        "submit_s": 0.001022173,
+        "timeline_s": 1.189625698,
+        "upload_s": 0.000503533,
+        "wall_s": 1.952004929,
+        "wanted": 71,
+        "width": 1280
+      }
+    },
+    {
+      "action": "fast-drag-orbit",
+      "external_response_s": 0.08584166200307664,
+      "handled_key_to_submission_s": null,
+      "before": {
+        "camera": {
+          "eye_m": [
+            1.7222515725040575,
+            2.2980642539987124,
+            2.153303397211725
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.5523184033083726,
+            0.9861398760804839,
+            0.8338261042548961
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 72,
+        "loading": true,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.001126573,
+        "simulation_s": 1.200000062584877,
+        "speed": 4.0,
+        "submit_s": 0.001154693,
+        "timeline_s": 1.228260514,
+        "upload_s": 0.000729527,
+        "wall_s": 1.961956362,
+        "wanted": 73,
+        "width": 1280
+      },
+      "after": {
+        "camera": {
+          "eye_m": [
+            1.4022530316085677,
+            2.4512510783604586,
+            2.2345294322151776
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.5523184033083726,
+            0.9861398760804839,
+            0.8338261042548961
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 90,
+        "loading": true,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.001049125,
+        "simulation_s": 1.5000000782310963,
+        "speed": 4.0,
+        "submit_s": 0.000762762,
+        "timeline_s": 1.5360339019999996,
+        "upload_s": 0.000558829,
+        "wall_s": 2.038387216,
+        "wanted": 92,
+        "width": 1280
+      }
+    },
+    {
+      "action": "fast-zoom",
+      "external_response_s": 0.13189180599874817,
+      "handled_key_to_submission_s": 0.009616140999999967,
+      "before": {
+        "camera": {
+          "eye_m": [
+            1.4022530316085677,
+            2.4512510783604586,
+            2.2345294322151776
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.5523184033083726,
+            0.9861398760804839,
+            0.8338261042548961
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 93,
+        "loading": true,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.001085652,
+        "simulation_s": 1.5500000808387995,
+        "speed": 4.0,
+        "submit_s": 0.000878892,
+        "timeline_s": 1.5737639379999995,
+        "upload_s": 0.000455758,
+        "wall_s": 2.048070174,
+        "wanted": 94,
+        "width": 1280
+      },
+      "after": {
+        "camera": {
+          "eye_m": [
+            1.3172595687785482,
+            2.3047399581324615,
+            2.0944590994191494
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.5523184033083726,
+            0.9861398760804839,
+            0.8338261042548961
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 123,
+        "loading": true,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.001176141,
+        "simulation_s": 2.0500001069158316,
+        "speed": 4.0,
+        "submit_s": 0.000896531,
+        "timeline_s": 2.0790717619999985,
+        "upload_s": 0.000629017,
+        "wall_s": 2.174568432,
+        "wanted": 124,
+        "width": 1280
+      }
+    },
+    {
+      "action": "fast-wheel",
+      "external_response_s": 0.04721261700615287,
+      "handled_key_to_submission_s": null,
+      "before": {
+        "camera": {
+          "eye_m": [
+            1.3172595687785482,
+            2.3047399581324615,
+            2.0944590994191494
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.5523184033083726,
+            0.9861398760804839,
+            0.8338261042548961
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 123,
+        "loading": true,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.001176141,
+        "simulation_s": 2.0500001069158316,
+        "speed": 4.0,
+        "submit_s": 0.000896531,
+        "timeline_s": 2.0790717619999985,
+        "upload_s": 0.000629017,
+        "wall_s": 2.174568432,
+        "wanted": 124,
+        "width": 1280
+      },
+      "after": {
+        "camera": {
+          "eye_m": [
+            1.1785992597741186,
+            2.0657183142675883,
+            1.865945105740677
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.5523184033083726,
+            0.9861398760804839,
+            0.8338261042548961
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 135,
+        "loading": true,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.000975336,
+        "simulation_s": 2.2500001173466444,
+        "speed": 4.0,
+        "submit_s": 0.000848422,
+        "timeline_s": 2.273170177999998,
+        "upload_s": 0.000415166,
+        "wall_s": 2.222396698,
+        "wanted": 136,
+        "width": 1280
+      }
+    },
+    {
+      "action": "fast-pan",
+      "external_response_s": 0.08836723200511187,
+      "handled_key_to_submission_s": null,
+      "before": {
+        "camera": {
+          "eye_m": [
+            1.1785992597741186,
+            2.0657183142675883,
+            1.865945105740677
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.5523184033083726,
+            0.9861398760804839,
+            0.8338261042548961
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 135,
+        "loading": true,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.000975336,
+        "simulation_s": 2.2500001173466444,
+        "speed": 4.0,
+        "submit_s": 0.000848422,
+        "timeline_s": 2.273170177999998,
+        "upload_s": 0.000415166,
+        "wall_s": 2.222396698,
+        "wanted": 136,
+        "width": 1280
+      },
+      "after": {
+        "camera": {
+          "eye_m": [
+            1.1120144971239532,
+            2.0898636852061636,
+            1.8810925260578042
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.4857336406582072,
+            1.010285247019059,
+            0.8489735245720232
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 156,
+        "loading": true,
+        "paused": false,
+        "policy": "RealTime",
+        "prepare_s": 0.001218882,
+        "simulation_s": 2.600000135600567,
+        "speed": 4.0,
+        "submit_s": 0.001400465,
+        "timeline_s": 2.621654153999998,
+        "upload_s": 0.000561172,
+        "wall_s": 2.310086499,
+        "wanted": 157,
+        "width": 1280
+      }
+    },
+    {
+      "action": "orbit-during-scrub",
+      "external_response_s": 0.13012854199041612,
+      "handled_key_to_submission_s": 0.008495473999999614,
+      "before": {
+        "camera": {
+          "eye_m": [
+            1.1120144971239532,
+            2.0898636852061636,
+            1.8810925260578042
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.4857336406582072,
+            1.010285247019059,
+            0.8489735245720232
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 293,
+        "loading": false,
+        "paused": true,
+        "policy": "RealTime",
+        "prepare_s": 0.001052361,
+        "simulation_s": 4.883333588019013,
+        "speed": 4.0,
+        "submit_s": 0.00059166,
+        "timeline_s": 4.883333588019013,
+        "upload_s": 0.00034255,
+        "wall_s": 3.62487919,
+        "wanted": 293,
+        "width": 1280
+      },
+      "after": {
+        "camera": {
+          "eye_m": [
+            1.0058457351710757,
+            2.0898636852061636,
+            1.9384599877944493
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.4857336406582072,
+            1.010285247019059,
+            0.8489735245720232
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 720,
+        "index": 293,
+        "loading": false,
+        "paused": true,
+        "policy": "RealTime",
+        "prepare_s": 0.001002609,
+        "simulation_s": 4.883333588019013,
+        "speed": 4.0,
+        "submit_s": 0.000818389,
+        "timeline_s": 4.883333588019013,
+        "upload_s": 0.000415539,
+        "wall_s": 3.747111365,
+        "wanted": 293,
+        "width": 1280
+      }
+    },
+    {
+      "action": "resized-orbit",
+      "external_response_s": 0.13409544200112578,
+      "handled_key_to_submission_s": 0.01542751000000031,
+      "before": {
+        "camera": {
+          "eye_m": [
+            1.0058457351710757,
+            2.0898636852061636,
+            1.9384599877944493
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.4857336406582072,
+            1.010285247019059,
+            0.8489735245720232
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 480,
+        "index": 16,
+        "loading": false,
+        "paused": true,
+        "policy": "RealTime",
+        "prepare_s": 0.0009208,
+        "simulation_s": 0.2666666805744171,
+        "speed": 4.0,
+        "submit_s": 0.000573296,
+        "timeline_s": 0.2666666805744171,
+        "upload_s": 0.00024504,
+        "wall_s": 4.818742031,
+        "wanted": 16,
+        "width": 640
+      },
+      "after": {
+        "camera": {
+          "eye_m": [
+            0.9568147196711667,
+            2.2049960336097234,
+            1.8357539976266353
+          ],
+          "far_m": 18.131030932772322,
+          "near_m": 0.0014082968279171563,
+          "target_m": [
+            0.4857336406582072,
+            1.010285247019059,
+            0.8489735245720232
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_deg": 45.0
+        },
+        "event": "present",
+        "height": 480,
+        "index": 16,
+        "loading": false,
+        "paused": true,
+        "policy": "RealTime",
+        "prepare_s": 0.001098204,
+        "simulation_s": 0.2666666805744171,
+        "speed": 4.0,
+        "submit_s": 0.00051653,
+        "timeline_s": 0.2666666805744171,
+        "upload_s": 0.000297236,
+        "wall_s": 4.947921129,
+        "wanted": 16,
+        "width": 640
+      }
+    }
+  ],
+  "resources": {
+    "cpu_s": 3.17,
+    "peak_rss_kib": 229516,
+    "virtual_kib": 1737124
+  },
+  "capture_exit": 0,
+  "capture_stderr": "",
+  "controls": "end, reverse, home, beginning, timing toggle, play/pause, arbitrary seek, resize, save",
+  "close_s": 0.11459730599017348,
+  "exit_code": 0
+}

@@ -1,0 +1,40 @@
+{
+  "source_manifest_sha256": "7f5bfffee0f547f27c63b5378fad838d332623fdc530c163e0f339f780d92dea",
+  "embedded_source": "sha256:aa127c63455c9c5a30ef2351d500308c41a59e7a871684f299c8e297cab6d0c0",
+  "binary_sha256": "a7573ebeeab3c530044dcbc3c5384f695e6561131c7ad3f97ac5bb23f9b2542f",
+  "ptx_sha256": "cf4a83d08b2db15e1576a975759b41844d853b2b52e69235890cc254dce45b8b",
+  "ptx_bytes": 317123,
+  "source_matches_delivery_manifest": true,
+  "counts": {
+    "ordinary": {
+      "passed": 368,
+      "failed": 0,
+      "log": "delivery-tests.log"
+    },
+    "optin_library": {
+      "passed": 38,
+      "failed": 0,
+      "log": "delivery-optin-library.log"
+    },
+    "optin_integration": {
+      "passed": 21,
+      "failed": 0,
+      "log": "delivery-optin-integration.log"
+    },
+    "cache_workflow_repeated_after_import_fix": {
+      "passed": 3,
+      "failed": 0,
+      "log": "delivery-cache-workflow.log"
+    },
+    "headless_cli": {
+      "passed": 1,
+      "failed": 0,
+      "log": "delivery-headless-cli.log"
+    }
+  },
+  "all_features_release_clippy": "delivery-final-clippy.log",
+  "headless_release_clippy": "delivery-headless-clippy.log",
+  "large_cache_replay_without_fluid_steps": true,
+  "large_single_frame_matches_measured_direct_png_rgba_and_canonical_hash": true,
+  "performance": "No remeasurement: only a leading blank line and a feature-conditional test import differ from timed sources."
+}

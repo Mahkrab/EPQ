@@ -1,0 +1,199 @@
+{
+  "steps": 1200,
+  "complete_ms_per_step": 11.972350930833333,
+  "solver_gpu_ms_per_step": 9.015661553333333,
+  "without_solver_gpu_ms_per_step": 2.9566893775,
+  "components": {
+    "api:cuLaunchKernel": {
+      "count_per_step": 70.0,
+      "inclusive_ms_per_step": 0.29816973166666666,
+      "without_solver_gpu_ms_per_step": 0.16761593666666666
+    },
+    "api:cuMemAlloc_v2": {
+      "count_per_step": 0.013333333333333334,
+      "inclusive_ms_per_step": 0.0037598216666666667,
+      "without_solver_gpu_ms_per_step": 0.0037580216666666666
+    },
+    "api:cuMemFree_v2": {
+      "count_per_step": 0.0016666666666666668,
+      "inclusive_ms_per_step": 0.004153954166666667,
+      "without_solver_gpu_ms_per_step": 0.004153954166666667
+    },
+    "api:cuMemcpyDtoH_v2": {
+      "count_per_step": 5.0,
+      "inclusive_ms_per_step": 0.5147759666666667,
+      "without_solver_gpu_ms_per_step": 0.38525578416666667
+    },
+    "api:cuMemcpyHtoD_v2": {
+      "count_per_step": 0.0025,
+      "inclusive_ms_per_step": 0.00023318916666666668,
+      "without_solver_gpu_ms_per_step": 0.00015039916666666667
+    },
+    "api:cuMemsetD8Async": {
+      "count_per_step": 0.0008333333333333334,
+      "inclusive_ms_per_step": 0.00012477416666666666,
+      "without_solver_gpu_ms_per_step": 0.00012185333333333333
+    },
+    "api:cuStreamSynchronize": {
+      "count_per_step": 21.0,
+      "inclusive_ms_per_step": 10.167102745833333,
+      "without_solver_gpu_ms_per_step": 1.4764442966666667
+    },
+    "copy:1": {
+      "count_per_step": 0.0025,
+      "inclusive_ms_per_step": 9.2465e-05,
+      "without_solver_gpu_ms_per_step": 0.0
+    },
+    "copy:2": {
+      "count_per_step": 5.0,
+      "inclusive_ms_per_step": 0.11701692833333334,
+      "without_solver_gpu_ms_per_step": 0.0
+    },
+    "kernel:observe_state": {
+      "count_per_step": 2.0,
+      "inclusive_ms_per_step": 0.010663789166666666,
+      "without_solver_gpu_ms_per_step": 0.0
+    },
+    "kernel:prefix_counts": {
+      "count_per_step": 4.0,
+      "inclusive_ms_per_step": 0.07059581083333333,
+      "without_solver_gpu_ms_per_step": 0.0
+    },
+    "kernel:solver": {
+      "count_per_step": 53.0,
+      "inclusive_ms_per_step": 8.588051415,
+      "without_solver_gpu_ms_per_step": 0.0
+    },
+    "kernel:spatial_sort": {
+      "count_per_step": 11.0,
+      "inclusive_ms_per_step": 0.22924053583333334,
+      "without_solver_gpu_ms_per_step": 0.0
+    },
+    "memset:reset": {
+      "count_per_step": 0.0008333333333333334,
+      "inclusive_ms_per_step": 6.091666666666666e-07,
+      "without_solver_gpu_ms_per_step": 0.0
+    },
+    "range:CUDA step": {
+      "count_per_step": 1.0,
+      "inclusive_ms_per_step": 11.701325165,
+      "without_solver_gpu_ms_per_step": 2.6856636116666666
+    },
+    "range:Jacobi group": {
+      "count_per_step": 8.0,
+      "inclusive_ms_per_step": 7.2098221225,
+      "without_solver_gpu_ms_per_step": 0.5894193891666667
+    },
+    "range:accepted state publication": {
+      "count_per_step": 1.0,
+      "inclusive_ms_per_step": 0.008755048333333333,
+      "without_solver_gpu_ms_per_step": 0.008755048333333333
+    },
+    "range:complete timestep": {
+      "count_per_step": 1.0,
+      "inclusive_ms_per_step": 11.972350930833333,
+      "without_solver_gpu_ms_per_step": 2.9566893775
+    },
+    "range:final vector readback": {
+      "count_per_step": 1.0,
+      "inclusive_ms_per_step": 0.4846210025,
+      "without_solver_gpu_ms_per_step": 0.36638156083333334
+    },
+    "range:host input validation": {
+      "count_per_step": 1.0,
+      "inclusive_ms_per_step": 0.12587850666666667,
+      "without_solver_gpu_ms_per_step": 0.12587850666666667
+    },
+    "range:host output validation": {
+      "count_per_step": 1.0,
+      "inclusive_ms_per_step": 0.13240219666666667,
+      "without_solver_gpu_ms_per_step": 0.13240219666666667
+    },
+    "range:particle materialisation": {
+      "count_per_step": 1.0,
+      "inclusive_ms_per_step": 0.46531387333333335,
+      "without_solver_gpu_ms_per_step": 0.46531387333333335
+    },
+    "range:projection group": {
+      "count_per_step": 8.0,
+      "inclusive_ms_per_step": 0.7278882858333333,
+      "without_solver_gpu_ms_per_step": 0.660212575
+    }
+  },
+  "kernel_ms_per_step": {
+    "acceleration summary": 0.004052663333333334,
+    "candidate": 0.046373532499999995,
+    "cell keys": 0.020147585833333332,
+    "correction": 2.3657265508333336,
+    "density and lambda": 4.166160299166667,
+    "lambda publication": 0.04156307,
+    "neighbour count": 0.7059585241666666,
+    "neighbour fill": 0.8843311025000001,
+    "physical density check": 0.0330534625,
+    "plane projection": 0.04686361666666666,
+    "prediction summary": 0.006611125833333334,
+    "row prefix": 0.008336088333333333,
+    "row sort": 0.2715672591666667,
+    "spatial sort": 0.22924053583333331,
+    "tile prefix": 0.0622597225,
+    "velocity and containment": 0.006306411666666667
+  },
+  "windows": {
+    "1-240": {
+      "acceleration summary": 0.004130579166666666,
+      "prediction summary": 0.006719558333333334,
+      "cell keys": 0.018611325,
+      "spatial sort": 0.223632725,
+      "neighbour count": 0.6053122083333334,
+      "row prefix": 0.0090443875,
+      "tile prefix": 0.061447575,
+      "neighbour fill": 0.7173429791666667,
+      "row sort": 0.2514540416666667,
+      "density and lambda": 2.7195155541666667,
+      "lambda publication": 0.039123529166666664,
+      "correction": 2.2439422208333335,
+      "physical density check": 0.03265230833333333,
+      "candidate": 0.04601362916666667,
+      "plane projection": 0.045222558333333336,
+      "velocity and containment": 0.0062465624999999995
+    },
+    "241-480": {
+      "acceleration summary": 0.004023975,
+      "prediction summary": 0.006570833333333333,
+      "cell keys": 0.019891079166666666,
+      "spatial sort": 0.22834042083333334,
+      "neighbour count": 0.7073377458333333,
+      "row prefix": 0.008140629166666666,
+      "tile prefix": 0.05679620416666666,
+      "neighbour fill": 0.8420233208333333,
+      "row sort": 0.26216795,
+      "density and lambda": 4.101919420833333,
+      "lambda publication": 0.042750345833333335,
+      "correction": 2.3847881458333333,
+      "physical density check": 0.033168633333333336,
+      "candidate": 0.04621420416666667,
+      "plane projection": 0.0466616375,
+      "velocity and containment": 0.0062503333333333334
+    },
+    "481-1200": {
+      "acceleration summary": 0.004036254166666666,
+      "prediction summary": 0.0065884125,
+      "cell keys": 0.020745175,
+      "spatial sort": 0.23140984444444443,
+      "neighbour count": 0.7390475555555556,
+      "row prefix": 0.008165141666666667,
+      "tile prefix": 0.06435161111111111,
+      "neighbour fill": 0.9540964041666667,
+      "row sort": 0.2814047680555556,
+      "density and lambda": 4.669788840277778,
+      "lambda publication": 0.04198049166666667,
+      "correction": 2.3999674625,
+      "physical density check": 0.03314879027777778,
+      "candidate": 0.04654660972222222,
+      "plane projection": 0.047477962500000005,
+      "velocity and containment": 0.006345054166666666
+    }
+  },
+  "worker_publications": 1200,
+  "worker_publication_ms": 0.1575256125
+}

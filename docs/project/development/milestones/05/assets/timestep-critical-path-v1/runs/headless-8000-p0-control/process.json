@@ -1,0 +1,32 @@
+{
+  "command": [
+    "/home/oliver/.cache/maelstrom-critical-path-20261109/control-bin",
+    "run",
+    "/home/oliver/.cache/maelstrom-critical-path-20261109/inputs/8000.toml",
+    "--backend",
+    "cuda",
+    "--device",
+    "0",
+    "--block-size",
+    "128",
+    "--numerical-mode",
+    "experimental",
+    "--steps",
+    "1200",
+    "--unpaced",
+    "--measure",
+    "--format",
+    "json"
+  ],
+  "started_utc": "2026-11-09T19:23:57.325410+00:00",
+  "finished_utc": "2026-11-09T19:24:00.077599+00:00",
+  "wall_s": 2.595293530001072,
+  "exit_code": 0,
+  "timed_out": false,
+  "interrupted": false,
+  "killed_after_grace": false,
+  "stdout_sha256": "4075d44afa09b5f239d42e635eb890025439265f304dbfad9965ec646bada793",
+  "stdout_gzip_sha256": "bd682484f408ed8acd69c325a2a18d4e1ce526927b928bdfb96807a245cb244b",
+  "stderr_sha256": "233bfbb4cd438903a89b2a7146bb760e673ba9dbf76ccc18b0c0336a00192ae7",
+  "parse_error": null
+}
